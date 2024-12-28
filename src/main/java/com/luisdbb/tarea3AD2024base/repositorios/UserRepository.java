@@ -5,7 +5,10 @@ import org.springframework.stereotype.Repository;
 
 import com.luisdbb.tarea3AD2024base.modelo.User;
 
-
+/**
+ * @author Carla Ruiz
+ * @since 28/12/2024
+ */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 

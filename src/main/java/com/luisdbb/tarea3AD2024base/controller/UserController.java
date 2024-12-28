@@ -47,8 +47,8 @@ import javafx.scene.image.ImageView;
 import javafx.util.Callback;
 
 /**
- * @author Ram Alapure
- * @since 05-04-2017
+ * @author Carla Ruiz
+ * @since 28/12/2024
  */
 
 @Controller

@@ -13,7 +13,8 @@ import com.luisdbb.tarea3AD2024base.repositorios.UserRepository;
  * @since 28/12/2024
  */
 @Service
-public class UserService {
+public class MainService {
+	//cambiar, esto es de userService
 
 	@Autowired
 	private UserRepository userRepository;

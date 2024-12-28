@@ -22,10 +22,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 /**
- * @author Ram Alapure
- * @since 05-04-2017
+ * @author Carla Ruiz
+ * @since 28/12/2024
  */
-
 @Controller
 public class LoginController implements Initializable{
 

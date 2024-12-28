@@ -10,6 +10,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
+/**
+ * @author Carla Ruiz
+ * @since 28/12/2024
+ */
 @Entity
 @Table(name="carnets")
 public class Carnet {

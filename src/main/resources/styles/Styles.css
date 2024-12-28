@@ -1,10 +1,15 @@
 /* CSS for app */
 
+/* #FFF2AB-CLARO // #AA8F00-MOSTAZA // #FFD700-FLECHA // #FFE247-MEDIO // #4C4524-OSCURO */
+
+
+
+
 .btnGreen{
-	-fx-background-color:  #3cbc53;
+	-fx-background-color:#4C4524;
 }
 
 .background{
-	-fx-background-color: DODGERBLUE;
+	-fx-background-color:#FFD700;
 }
 

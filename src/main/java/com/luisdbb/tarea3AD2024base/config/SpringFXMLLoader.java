@@ -9,26 +9,33 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 /**
- * Will load the FXML hierarchy as specified in the load method and register
- * Spring as the FXML Controller Factory. Allows Spring and Java FX to coexist
- * once the Spring Application context has been bootstrapped.
+ * Cargará FXML en el método load y registrará a Spring como la fábrica de
+ * controladores FXML. Permite que Spring y JavaFX coexistan una vez que el
+ * contexto de la aplicación de Spring ha sido inicializado.
+ * 
+ * @author Carla Ruiz
+ * @since 28/12/2024
  */
 @Component
 public class SpringFXMLLoader {
-    private final ResourceBundle resourceBundle;
-    private final ApplicationContext context;
 
-    @Autowired
-    public SpringFXMLLoader(ApplicationContext context, ResourceBundle resourceBundle) {
-        this.resourceBundle = resourceBundle;
-        this.context = context;
-    }
+	private final ResourceBundle resourceBundle;
 
-    public Parent load(String fxmlPath) throws IOException {      
-        FXMLLoader loader = new FXMLLoader();
-        loader.setControllerFactory(context::getBean); //Spring now FXML Controller Factory
-        loader.setResources(resourceBundle);
-        loader.setLocation(getClass().getResource(fxmlPath));
-        return loader.load();
-    }
+	// contexto Spring contiene todos los beans y permite acceder a ellos
+	private final ApplicationContext context;
+
+	// automaticamente este constructor
+	@Autowired
+	public SpringFXMLLoader(ApplicationContext context, ResourceBundle resourceBundle) {
+		this.resourceBundle = resourceBundle;
+		this.context = context;
+	}
+
+	public Parent load(String fxmlPath) throws IOException {
+		FXMLLoader loader = new FXMLLoader();
+		loader.setControllerFactory(context::getBean); // Spring now FXML Controller Factory
+		loader.setResources(resourceBundle);
+		loader.setLocation(getClass().getResource(fxmlPath));
+		return loader.load();
+	}
 }

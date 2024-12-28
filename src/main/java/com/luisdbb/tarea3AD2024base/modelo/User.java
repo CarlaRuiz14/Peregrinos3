@@ -10,8 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 /**
- * @author Ram Alapure
- * @since 05-04-2017
+ * @author Carla Ruiz
+ * @since 28/12/2024
  */
 
 @Entity
