@@ -13,8 +13,11 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane prefHeight="380.0" prefWidth="380.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/23.0.1" 
-xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.luisdbb.tarea3AD2024base.controller.LoginController">
+<StackPane prefHeight="380.0" 
+prefWidth="380.0" 
+stylesheets="@../styles/Styles.css" 
+xmlns="http://javafx.com/javafx/23.0.1" 
+xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.luisdbb.tarea3AD2024base.controller.AdminController">
    <children>
       <GridPane alignment="CENTER" maxHeight="340.0" maxWidth="340.0" prefHeight="340.0" prefWidth="340.0" styleClass="panel" StackPane.alignment="CENTER">
         <columnConstraints>

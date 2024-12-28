@@ -7,15 +7,38 @@ import java.util.ResourceBundle;
  * @since 28/12/2024
  */
 public enum FxmlView {
-	USER {
+	
+	ADMIN {
 		@Override
 		public String getTitle() {
-			return getStringFromResourceBundle("user.title");
+			return getStringFromResourceBundle("admin.title");
 		}
 
 		@Override
 		public String getFxmlFile() {
-			return "/fxml/User.fxml";
+			return "/fxml/Admin.fxml";
+		}
+	},
+	CARNET {
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("carnet.title");
+		}
+
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/Carnet.fxml";
+		}
+	},
+	EXPPARADA {
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("expParada.title");
+		}
+
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/ExpParada.fxml";
 		}
 	},
 	LOGIN {
@@ -38,6 +61,83 @@ public enum FxmlView {
 		@Override
 		public String getFxmlFile() {
 			return "/fxml/Main.fxml";
+		}
+	},	
+	PARADA {
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("parada.title");
+		}
+
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/Parada.fxml";
+		}
+	},
+	PEREGRINO {
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("peregrino.title");
+		}
+
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/Peregrino.fxml";
+		}
+	},
+	RECUPERACION {
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("recuperacion.title");
+		}
+
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/Recuperacion.fxml";
+		}
+	},
+	REGPARADA {
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("regParada.title");
+		}
+
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/RegParada.fxml";
+		}
+	},
+	REGPEREGRINO {
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("regPeregrino.title");
+		}
+
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/RegPeregrino.fxml";
+		}
+	},
+	SELLAR {
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("sellar.title");
+		}
+
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/Sellar.fxml";
+		}
+	},
+	USER {
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("user.title");
+		}
+
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/User.fxml";
 		}
 	};
 
