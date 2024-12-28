@@ -1,6 +1,6 @@
 package com.luisdbb.tarea3AD2024base.controller;
 
-
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -10,11 +10,19 @@ import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.services.MainService;
+import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 /**
  * @author Carla Ruiz
@@ -22,36 +30,101 @@ import javafx.scene.control.Label;
  */
 
 @Controller
-public class MainController implements Initializable{
+public class MainController implements Initializable {
 
 	@FXML
-    private Label lblEstela;
+	private Label lblEstela;
 
-    @FXML
-    private Button btnFlecha;
+	@FXML
+	private Button btnFlecha;
 
-    @FXML
-    private Button btnAdmin;
+	@FXML
+	private Button btnAdmin;
 
-    @FXML
-    private Button btnSalir;
-    
-    //inyecta autamaticamente los beans
-    @Autowired
-    private MainService mainService;
-    
-    //controla el cambio de escenas
-    @Lazy //solo cuando sea necesario, no inmediatamente
-    @Autowired
-    private StageManager stageManager;        
-	
-	
+	@FXML
+	private Button btnSalir;
 
-    //automaticamente cuando se carga el fxml asociado
-    //(ubicacion de fxml, recursos bundle)
+	// inyecta autamaticamente los beans
+	@Autowired
+	private MainService mainService;
+
+	// controla el cambio de escenas
+	@Lazy // solo cuando sea necesario, no inmediatamente
+	@Autowired
+	private StageManager stageManager;
+
+	// automaticamente cuando se carga el fxml asociado
+	// (ubicacion de fxml, recursos bundle)
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+
+		// configuracion imagen boton flecha
+		String rutaFlecha = resources.getString("btnFlecha.icon");
+		Image imgFlecha = new Image(getClass().getResourceAsStream(rutaFlecha));
+		ImageView viewFlecha = new ImageView(imgFlecha);
+		viewFlecha.setFitWidth(80);
+		viewFlecha.setFitHeight(40);
+		btnFlecha.setGraphic(viewFlecha);
+
+		// configuracion imagen boton Admin
+		String rutaAdmin = resources.getString("btnAdmin.icon");
+		Image imgAdmin = new Image(getClass().getResourceAsStream(rutaAdmin));
+		ImageView viewAdmin = new ImageView(imgAdmin);
+		viewAdmin.setFitWidth(20);
+		viewAdmin.setFitHeight(20);
+		btnAdmin.setGraphic(viewAdmin);
+
+		// configuracion imagen boton Salir
+		String rutaSalir = resources.getString("btnSalir.icon");
+		Image imgSalir = new Image(getClass().getResourceAsStream(rutaSalir));
+		ImageView viewSalir = new ImageView(imgSalir);
+		viewSalir.setFitWidth(20);
+		viewSalir.setFitHeight(20);
+		btnSalir.setGraphic(viewSalir);
+
+		// mnenomicos
+		btnFlecha.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.E) {
+				btnFlecha.fire(); // Simula el clic en el botón
+				event.consume(); // Detiene la propagación del evento
+			}
+		});
+
+		btnAdmin.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.A) {
+				btnAdmin.fire(); // Simula el clic en el botón
+				event.consume(); // Detiene la propagación del evento
+			}
+		});
+
+		btnSalir.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.S) {
+				btnSalir.fire(); // Simula el clic en el botón
+				event.consume(); // Detiene la propagación del evento
+			}
+		});
+
+		// tooltips
+		btnFlecha.setTooltip(new Tooltip("Intro (Alt+E)"));
+		btnAdmin.setTooltip(new Tooltip("Admin (Alt+A)"));
+		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
+
+	}
+
+	// handler botones
+	@FXML
+	private void handlerFlecha(ActionEvent event) throws IOException {
+		stageManager.switchScene(FxmlView.LOGIN);
+	}
+
+	@FXML
+	private void handlerAdmin(ActionEvent event) throws IOException {
+		stageManager.switchScene(FxmlView.LOGIN);
+	}
+
+	@FXML
+	private void handlerSalir(ActionEvent event) throws IOException {
+		Platform.exit();
 	}
 
 }

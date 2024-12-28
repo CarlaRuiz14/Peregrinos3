@@ -1,15 +1,49 @@
 /* CSS for app */
 
-/* #FFF2AB-CLARO // #AA8F00-MOSTAZA // #FFD700-FLECHA // #FFE247-MEDIO // #4C4524-OSCURO */
+/* #FBFAF9-BLANCO // #AF9400-MOSTAZA // #FFD700-FLECHA // #FFEA77-CLARO // #877828-OSCURO */
+/* #C4C5C4-GRIS // #008A09-VERDE // #00C90D-PISTACHO // #6BE372-VCLARO // #1F6A24-NEGRO*/
 
-
-
-
-.btnGreen{
-	-fx-background-color:#4C4524;
+@font-face {
+    font-family: "Patrick Hand SC";
+    src: url("/fonts/PatrickHandSC-Regular.ttf");
 }
 
-.background{
-	-fx-background-color:#FFD700;
+.panel {
+    -fx-background-color:#6BE372;
+}
+
+.lblEstela{
+	-fx-font-size: 70px;
+	-fx-text-fill: #1F6A24;
+	-fx-font-weight: bold;
+	
+}
+
+.root{
+	-fx-background-color:#008A09;
+	-fx-font-family: "Patrick Hand SC"; 
+	-fx-font-size: 16px;	
+}
+
+Button{
+	-fx-background-color:#008A09;
+	-fx-background-radius: 20;
+	
+	
+}
+
+Button:hover {
+    -fx-background-color: #1F6A24; 
+	-fx-scale-x:1.2;
+	-fx-scale-y:1.2;
+}
+
+.button:pressed{
+	-fx-translate-y:2px;
+}
+
+.btnFlecha{
+	-fx-padding: 10;
+	
 }
 

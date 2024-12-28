@@ -1,5 +1,7 @@
 package com.luisdbb.tarea3AD2024base;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.util.ResourceBundle;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -48,6 +50,8 @@ public class Tarea3Ad2024baseApplication extends Application {
 		ResourceBundle bundle = ResourceBundle.getBundle("Bundle");
 		String iconPath = bundle.getString("app.icon");
 		primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(iconPath)));
+		
+		primaryStage.setResizable(false);
 
 	}
 
