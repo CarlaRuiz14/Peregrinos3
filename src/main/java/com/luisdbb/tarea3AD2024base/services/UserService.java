@@ -42,12 +42,12 @@ public class UserService {
 		return userRepository.findAll();
 	}
 
-	public boolean authenticate(String username, String password) {
-		User user = this.findByEmail(username);
+	public boolean authenticate(String usuario, String contraseña) {
+		User user = this.findByEmail(usuario);
 		if (user == null) {
 			return false;
 		} else {
-			if (password.equals(user.getPassword()))
+			if (contraseña.equals(user.getPassword()))
 				return true;
 			else
 				return false;
