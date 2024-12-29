@@ -13,42 +13,41 @@ import com.luisdbb.tarea3AD2024base.repositorios.UsuarioRepository;
  * @since 28/12/2024
  */
 @Service
-public class MainService {
-	//cambiar, esto es de userService
+public class UsuarioService {
 
 	@Autowired
-	private UsuarioRepository userRepository;
+	private UsuarioRepository usuarioRepository;
 
 	public Usuario save(Usuario entity) {
-		return userRepository.save(entity);
+		return usuarioRepository.save(entity);
 	}
 
 	public Usuario update(Usuario entity) {
-		return userRepository.save(entity);
+		return usuarioRepository.save(entity);
 	}
 
 	public void delete(Usuario entity) {
-		userRepository.delete(entity);
+		usuarioRepository.delete(entity);
 	}
 
 	public void delete(Long id) {
-		userRepository.deleteById(id);
+		usuarioRepository.deleteById(id);
 	}
 
 	public Usuario find(Long id) {
-		return userRepository.findById(id).get();
+		return usuarioRepository.findById(id).get();
 	}
 
 	public List<Usuario> findAll() {
-		return userRepository.findAll();
+		return usuarioRepository.findAll();
 	}
 
-	public boolean authenticate(String username, String password) {
-		Usuario user = this.findByUsuario(username);
+	public boolean authenticate(String usuario, String contraseña) {
+		Usuario user = this.findByUsuario(usuario);
 		if (user == null) {
 			return false;
 		} else {
-			if (password.equals(user.getContraseña()))
+			if (contraseña.equals(user.getContraseña()))
 				return true;
 			else
 				return false;
@@ -56,11 +55,11 @@ public class MainService {
 	}
 
 	public Usuario findByUsuario(String usuario) {
-		return userRepository.findByUsuario(usuario);
+		return usuarioRepository.findByUsuario(usuario);
 	}
 
 	public void deleteInBatch(List<Usuario> users) {
-		userRepository.deleteAll(users);
+		usuarioRepository.deleteAll(users);
 	}
 
 }

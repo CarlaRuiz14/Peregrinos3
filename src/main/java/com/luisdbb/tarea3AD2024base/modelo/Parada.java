@@ -28,7 +28,7 @@ public class Parada {
 	
 	@OneToOne (cascade = CascadeType.ALL)
 	@JoinColumn(nullable = false, unique = true)
-	private User usuario;
+	private Usuario usuario;
 
 	@OneToMany(mappedBy = "parada")
 	private List<Estancia> estancias;

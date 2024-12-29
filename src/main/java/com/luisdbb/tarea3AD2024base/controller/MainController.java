@@ -31,9 +31,10 @@ import javafx.scene.input.KeyEvent;
 
 @Controller
 public class MainController implements Initializable {
+	// Falta boton admin y alertas
 
 	@FXML
-	private Label lblEstela;
+	private Label lblTitulo;
 
 	@FXML
 	private Button btnFlecha;

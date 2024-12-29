@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
@@ -11,10 +10,8 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
 
-<StackPane prefHeight="380.0" prefWidth="380.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/23.0.1" 
-xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.luisdbb.tarea3AD2024base.controller.RecuperacionController">
+<StackPane prefHeight="380.0" prefWidth="380.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.luisdbb.tarea3AD2024base.controller.RecuperacionController">
    <children>
       <GridPane alignment="CENTER" maxHeight="340.0" maxWidth="340.0" prefHeight="340.0" prefWidth="340.0" styleClass="panel" StackPane.alignment="CENTER">
         <columnConstraints>
@@ -22,40 +19,30 @@ xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.luisdbb.tarea3AD2024base.
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>            
-          <RowConstraints minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />           
+          <RowConstraints minHeight="10.0" prefHeight="90.0" vgrow="SOMETIMES" />           
+          <RowConstraints minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />                                
         </rowConstraints>
          <children>
-            <Label fx:id="lblLogin" alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="lblEstela" text="LOGIN" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <HBox alignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <Label fx:id="lblTitulo" alignment="CENTER" contentDisplay="CENTER" prefHeight="90.0" prefWidth="250.0" styleClass="lblRecuperacion" text="RECUPERAR CONTRASEÑA" textAlignment="CENTER" wrapText="true" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <HBox alignment="CENTER" spacing="10.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <children>
-                  <ImageView fx:id="imgUsuario" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-                  <TextField fx:id="txtUsuario" alignment="CENTER" maxWidth="200.0" prefWidth="182.0" promptText="Usuario" />
+                  <ImageView fx:id="imgInfo" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" />
+                  <Label prefHeight="60.0" prefWidth="240.0" text="Le enviaremos su contraseña a su email. Introduzca su nombre de usuario:" wrapText="true" />
                </children>
             </HBox>
             <HBox alignment="CENTER" GridPane.columnSpan="2" GridPane.rowIndex="2">
                <children>
-                  <ImageView fx:id="imgContraseña" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
-                  <TextField fx:id="txtContraseña" alignment="CENTER" maxWidth="200.0" prefWidth="182.0" promptText="Contraseña" />
+                  <TextField fx:id="txtUsuario" alignment="CENTER" maxWidth="200.0" prefWidth="182.0" promptText="Usuario" />
                </children>
             </HBox>
-            <VBox alignment="CENTER" prefHeight="50.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
-               <children>
-                  <Hyperlink fx:id="hpContraseña" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="200.0" text="¿ Olvidaste tu contraseña?" />
-                  <Hyperlink fx:id="hpRegistro" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="200.0" text="Registrarse como peregrino" />
-               </children>
-               <GridPane.margin>
-                  <Insets top="5.0" />
-               </GridPane.margin>
-            </VBox>
-            <Button fx:id="btnLogin" alignment="CENTER" onAction="#handlerLogin" prefHeight="30.0" prefWidth="60.0" styleClass="btnLogin" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+            <Label fx:id="lblEmail" alignment="CENTER" contentDisplay="CENTER" prefHeight="19.0" prefWidth="181.0" text="Email" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+            <Button fx:id="btnEnviar" alignment="CENTER" onAction="#handlerEnviar" prefHeight="30.0" prefWidth="60.0" styleClass="btnEnviar" text="Enviar" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
             <Button fx:id="btnSalir" onAction="#handlerSalir" prefHeight="20.0" prefWidth="20.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="7" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets right="20.0" />
@@ -71,7 +58,7 @@ xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.luisdbb.tarea3AD2024base.
             <Insets />
          </StackPane.margin>
          <padding>
-            <Insets bottom="20.0" top="20.0" />
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
       </GridPane>
    </children>

@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.StageManager;
-import com.luisdbb.tarea3AD2024base.services.UserService;
+import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
@@ -19,7 +19,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -30,9 +29,10 @@ import javafx.scene.image.ImageView;
  */
 @Controller
 public class LoginController implements Initializable {
+	//corregir boton login
 
 	@FXML
-	private Label lblLogin;
+	private Label lblTitulo;
 	
 	@FXML
 	private ImageView imgUsuario;
@@ -63,7 +63,7 @@ public class LoginController implements Initializable {
 
 	// mirar
 	@Autowired
-	private UserService userService;
+	private UsuarioService userService;
 
 	@Lazy
 	@Autowired
@@ -123,7 +123,7 @@ public class LoginController implements Initializable {
 			stageManager.switchScene(FxmlView.USER);
 
 		} else {
-			lblLogin.setText("Login Failed.");
+			lblTitulo.setText("Login Failed.");
 		}
 	}
 
@@ -135,6 +135,16 @@ public class LoginController implements Initializable {
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		Platform.exit();
+	}
+	
+	//handler hipervinculos
+	@FXML
+	private void handlerHpContraseña(ActionEvent event) throws IOException {
+		stageManager.switchScene(FxmlView.RECUPERACION);
+	}
+	@FXML
+	private void handlerHpRegistro(ActionEvent event) throws IOException {
+		stageManager.switchScene(FxmlView.REGPEREGRINO);
 	}
 
 }

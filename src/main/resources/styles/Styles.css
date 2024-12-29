@@ -12,11 +12,19 @@
     -fx-background-color:#6BE372;
 }
 
-.lblEstela{
+Label{
+	-fx-text-fill: #1F6A24;
+}
+.lblTitulo{
 	-fx-font-size: 70px;
 	-fx-text-fill: #1F6A24;
+	-fx-font-weight: bold;	
+}
+
+.lblRecuperacion{
+	-fx-font-size: 30px;
+	-fx-text-fill: #1F6A24;
 	-fx-font-weight: bold;
-	
 }
 
 .root{
@@ -28,7 +36,7 @@
 Button{
 	-fx-background-color:#008A09;
 	-fx-background-radius: 20;
-	
+	-fx-text-fill: #FFD700;
 	
 }
 
@@ -43,7 +51,6 @@ Button:hover {
 }
 
 .btnFlecha{
-	-fx-padding: 10;
-	
+	-fx-padding: 10;	
 }
 

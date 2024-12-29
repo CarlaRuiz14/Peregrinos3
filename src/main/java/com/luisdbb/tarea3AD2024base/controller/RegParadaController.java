@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.StageManager;
-import com.luisdbb.tarea3AD2024base.services.UserService;
+import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
@@ -63,7 +63,7 @@ public class RegParadaController implements Initializable {
 
 	// mirar
 	@Autowired
-	private UserService userService;
+	private UsuarioService userService;
 
 	@Lazy
 	@Autowired

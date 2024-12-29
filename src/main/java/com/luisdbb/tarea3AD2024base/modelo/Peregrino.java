@@ -30,7 +30,7 @@ public class Peregrino {
 	// relacion uno a uno con user
 	@OneToOne (cascade = CascadeType.ALL)
 	@JoinColumn(nullable = false, unique = true) // Clave foránea a User, especificar unique y nullable, no implicito en FK
-	private User usuario; // de User se saca la PK para la FK aqui y el nombre de la columna sera este
+	private Usuario usuario; // de User se saca la PK para la FK aqui y el nombre de la columna sera este
 	// relacion uno a muchos con estancias
 	@OneToMany(mappedBy = "peregrino", cascade = CascadeType.ALL) // Relación uno a muchos
 	private List<Estancia> estancias;

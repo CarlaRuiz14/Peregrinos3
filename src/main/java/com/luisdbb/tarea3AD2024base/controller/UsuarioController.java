@@ -14,8 +14,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.StageManager;
-import com.luisdbb.tarea3AD2024base.modelo.User;
-import com.luisdbb.tarea3AD2024base.services.UserService;
+import com.luisdbb.tarea3AD2024base.modelo.Usuario;
+import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
@@ -52,7 +52,7 @@ import javafx.util.Callback;
  */
 
 @Controller
-public class UserController implements Initializable {
+public class UsuarioController implements Initializable {
 
 	@FXML
 	private Button btnLogout;
@@ -94,31 +94,31 @@ public class UserController implements Initializable {
 	private Button saveUser;
 
 	@FXML
-	private TableView<User> userTable;
+	private TableView<Usuario> userTable;
 
 	@FXML
-	private TableColumn<User, Long> colUserId;
+	private TableColumn<Usuario, Long> colUserId;
 
 	@FXML
-	private TableColumn<User, String> colFirstName;
+	private TableColumn<Usuario, String> colFirstName;
 
 	@FXML
-	private TableColumn<User, String> colLastName;
+	private TableColumn<Usuario, String> colLastName;
 
 	@FXML
-	private TableColumn<User, LocalDate> colDOB;
+	private TableColumn<Usuario, LocalDate> colDOB;
 
 	@FXML
-	private TableColumn<User, String> colGender;
+	private TableColumn<Usuario, String> colGender;
 
 	@FXML
-	private TableColumn<User, String> colRole;
+	private TableColumn<Usuario, String> colRole;
 
 	@FXML
-	private TableColumn<User, String> colEmail;
+	private TableColumn<Usuario, String> colEmail;
 
 	@FXML
-	private TableColumn<User, Boolean> colEdit;
+	private TableColumn<Usuario, Boolean> colEdit;
 
 	@FXML
 	private MenuItem deleteUsers;
@@ -128,9 +128,9 @@ public class UserController implements Initializable {
 	private StageManager stageManager;
 
 	@Autowired
-	private UserService userService;
+	private UsuarioService userService;
 
-	private ObservableList<User> userList = FXCollections.observableArrayList();
+	private ObservableList<Usuario> userList = FXCollections.observableArrayList();
 	private ObservableList<String> roles = FXCollections.observableArrayList("Admin", "User");
 
 	@FXML
@@ -162,29 +162,29 @@ public class UserController implements Initializable {
 				if (validate("Email", getEmail(), "[a-zA-Z0-9][a-zA-Z0-9._]*@[a-zA-Z0-9]+([.][a-zA-Z]+)+")
 						&& emptyValidation("Password", getPassword().isEmpty())) {
 
-					User user = new User();
-					user.setFirstName(getFirstName());
-					user.setLastName(getLastName());
-					user.setDob(getDob());
-					user.setGender(getGender());
-					user.setRole(getRole());
+					Usuario user = new Usuario();
+					user.setNombre(getFirstName());
+					user.setApellidos(getLastName());
+					user.setFechaNacimiento(getDob());
+					user.setGenero(getGender());
+					user.setRol(getRole());
 					user.setEmail(getEmail());
-					user.setPassword(getPassword());
+					user.setContraseña(getPassword());
 
-					User newUser = userService.save(user);
+					Usuario newUser = userService.save(user);
 
-					saveAlert(newUser);
+					//saveAlert(newUser);
 				}
 
 			} else {
-				User user = userService.find(Long.parseLong(userId.getText()));
-				user.setFirstName(getFirstName());
-				user.setLastName(getLastName());
-				user.setDob(getDob());
-				user.setGender(getGender());
-				user.setRole(getRole());
-				User updatedUser = userService.update(user);
-				updateAlert(updatedUser);
+				Usuario user = userService.find(Long.parseLong(userId.getText()));
+				user.setNombre(getFirstName());
+				user.setApellidos(getLastName());
+				user.setFechaNacimiento(getDob());
+				user.setGenero(getGender());
+				user.setRol(getRole());
+				Usuario updatedUser = userService.update(user);
+				//updateAlert(updatedUser);
 			}
 
 			clearFields();
@@ -195,7 +195,7 @@ public class UserController implements Initializable {
 
 	@FXML
 	private void deleteUsers(ActionEvent event) {
-		List<User> users = userTable.getSelectionModel().getSelectedItems();
+		List<Usuario> users = userTable.getSelectionModel().getSelectedItems();
 
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmation Dialog");
@@ -221,26 +221,26 @@ public class UserController implements Initializable {
 		password.clear();
 	}
 
-	private void saveAlert(User user) {
+//	private void saveAlert(Usuario user) {
+//
+//		Alert alert = new Alert(AlertType.INFORMATION);
+//		alert.setTitle("User saved successfully.");
+//		alert.setHeaderText(null);
+//		alert.setContentText("The user " + user.getFirstName() + " " + user.getLastName() + " has been created and \n"
+//				+ getGenderTitle(user.getGender()) + " id is " + user.getId() + ".");
+//		alert.showAndWait();
+//	}
+//
+//	private void updateAlert(Usuario user) {
+//
+//		Alert alert = new Alert(AlertType.INFORMATION);
+//		alert.setTitle("User updated successfully.");
+//		alert.setHeaderText(null);
+//		alert.setContentText("The user " + user.getFirstName() + " " + user.getLastName() + " has been updated.");
+//		alert.showAndWait();
+//	}
 
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("User saved successfully.");
-		alert.setHeaderText(null);
-		alert.setContentText("The user " + user.getFirstName() + " " + user.getLastName() + " has been created and \n"
-				+ getGenderTitle(user.getGender()) + " id is " + user.getId() + ".");
-		alert.showAndWait();
-	}
-
-	private void updateAlert(User user) {
-
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("User updated successfully.");
-		alert.setHeaderText(null);
-		alert.setContentText("The user " + user.getFirstName() + " " + user.getLastName() + " has been updated.");
-		alert.showAndWait();
-	}
-
-	private String getGenderTitle(String gender) {
+	private String getGeneroTitle(String genero) {
 		return (gender.equals("Male")) ? "his" : "her";
 	}
 
@@ -313,10 +313,10 @@ public class UserController implements Initializable {
 		colEdit.setCellFactory(cellFactory);
 	}
 
-	Callback<TableColumn<User, Boolean>, TableCell<User, Boolean>> cellFactory = new Callback<TableColumn<User, Boolean>, TableCell<User, Boolean>>() {
+	Callback<TableColumn<Usuario, Boolean>, TableCell<Usuario, Boolean>> cellFactory = new Callback<TableColumn<Usuario, Boolean>, TableCell<Usuario, Boolean>>() {
 		@Override
-		public TableCell<User, Boolean> call(final TableColumn<User, Boolean> param) {
-			final TableCell<User, Boolean> cell = new TableCell<User, Boolean>() {
+		public TableCell<Usuario, Boolean> call(final TableColumn<Usuario, Boolean> param) {
+			final TableCell<Usuario, Boolean> cell = new TableCell<Usuario, Boolean>() {
 				Image imgEdit = new Image(getClass().getResourceAsStream("/images/edit.png"));
 				final Button btnEdit = new Button();
 
@@ -328,7 +328,7 @@ public class UserController implements Initializable {
 						setText(null);
 					} else {
 						btnEdit.setOnAction(e -> {
-							User user = getTableView().getItems().get(getIndex());
+							Usuario user = getTableView().getItems().get(getIndex());
 							updateUser(user);
 						});
 
@@ -346,16 +346,16 @@ public class UserController implements Initializable {
 					}
 				}
 
-				private void updateUser(User user) {
+				private void updateUser(Usuario user) {
 					userId.setText(Long.toString(user.getId()));
-					firstName.setText(user.getFirstName());
-					lastName.setText(user.getLastName());
-					dob.setValue(user.getDob());
-					if (user.getGender().equals("Male"))
+					firstName.setText(user.getNombre());
+					lastName.setText(user.getApellidos());
+					dob.setValue(user.getFechaNacimiento());
+					if (user.getGenero().equals("Male"))
 						rbMale.setSelected(true);
 					else
 						rbFemale.setSelected(true);
-					cbRole.getSelectionModel().select(user.getRole());
+					cbRole.getSelectionModel().select(user.getRol());
 				}
 			};
 			return cell;

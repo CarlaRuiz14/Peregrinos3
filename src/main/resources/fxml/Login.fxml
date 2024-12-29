@@ -13,8 +13,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane prefHeight="380.0" prefWidth="380.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/23.0.1" 
-xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.luisdbb.tarea3AD2024base.controller.LoginController">
+<StackPane prefHeight="380.0" prefWidth="380.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.luisdbb.tarea3AD2024base.controller.LoginController">
    <children>
       <GridPane alignment="CENTER" maxHeight="340.0" maxWidth="340.0" prefHeight="340.0" prefWidth="340.0" styleClass="panel" StackPane.alignment="CENTER">
         <columnConstraints>
@@ -33,7 +32,7 @@ xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.luisdbb.tarea3AD2024base.
                                 
         </rowConstraints>
          <children>
-            <Label fx:id="lblLogin" alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="lblEstela" text="LOGIN" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Label fx:id="lblTitulo" alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="lblTitulo" text="LOGIN" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             <HBox alignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <children>
                   <ImageView fx:id="imgUsuario" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
@@ -48,8 +47,8 @@ xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.luisdbb.tarea3AD2024base.
             </HBox>
             <VBox alignment="CENTER" prefHeight="50.0" GridPane.columnSpan="2" GridPane.rowIndex="3">
                <children>
-                  <Hyperlink fx:id="hpContraseña" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="200.0" text="¿ Olvidaste tu contraseña?" />
-                  <Hyperlink fx:id="hpRegistro" alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="200.0" text="Registrarse como peregrino" />
+                  <Hyperlink fx:id="hpContraseña" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerHpContraseña" prefHeight="25.0" prefWidth="200.0" text="¿ Olvidaste tu contraseña?" />
+                  <Hyperlink fx:id="hpRegistro" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerHpRegistro" prefHeight="25.0" prefWidth="200.0" text="Registrarse como peregrino" />
                </children>
                <GridPane.margin>
                   <Insets top="5.0" />

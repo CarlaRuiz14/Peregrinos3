@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.StageManager;
-import com.luisdbb.tarea3AD2024base.services.UserService;
+import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
@@ -17,9 +17,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -32,28 +30,19 @@ import javafx.scene.image.ImageView;
 public class RecuperacionController implements Initializable {
 
 	@FXML
-	private Label lblLogin;
+	private Label lblTitulo;
 	
 	@FXML
-	private ImageView imgUsuario;
+	private ImageView imgInfo;
 
 	@FXML
 	private TextField txtUsuario;	
 
 	@FXML
-	private ImageView imgContraseña;
+	private Label email;	
 
 	@FXML
-	private TextField txtContraseña;
-
-	@FXML
-	private Hyperlink hpContraseña;
-
-	@FXML
-	private Hyperlink hpRegistro;
-
-	@FXML
-	private Button btnLogin;
+	private Button btnEnviar;
 
 	@FXML
 	private Button btnVolver;
@@ -63,30 +52,15 @@ public class RecuperacionController implements Initializable {
 
 	// mirar
 	@Autowired
-	private UserService userService;
+	private UsuarioService userService;
 
 	@Lazy
 	@Autowired
-	private StageManager stageManager;
+	private StageManager stageManager;	
 
-	public String getContraseña() {
-		return txtContraseña.getText();
-	}
-
-	public String getUsuario() {
-		return txtUsuario.getText();
-	}
 
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-
-		// configuracion imagen boton Login
-		String rutaLogin = resources.getString("btnLogin.icon");
-		Image imgLogin = new Image(getClass().getResourceAsStream(rutaLogin));
-		ImageView viewLogin = new ImageView(imgLogin);
-		viewLogin.setFitWidth(60);
-		viewLogin.setFitHeight(30);
-		btnLogin.setGraphic(viewLogin);
+	public void initialize(URL location, ResourceBundle resources) {		
 
 		// configuracion imagen boton Volver
 		String rutaVolver = resources.getString("btnVolver.icon");
@@ -104,12 +78,11 @@ public class RecuperacionController implements Initializable {
 		viewSalir.setFitHeight(20);
 		btnSalir.setGraphic(viewSalir);
 
-		// configuracion imagenes
-		String rutaUsu = resources.getString("usuario.icon");
-		imgUsuario.setImage(new Image(getClass().getResourceAsStream(rutaUsu)));
+		// configuracion imagen info
+		String rutaInfo = resources.getString("info.icon");
+		imgInfo.setImage(new Image(getClass().getResourceAsStream(rutaInfo)));
 
-		String rutaCon = resources.getString("contraseña.icon");
-		imgContraseña.setImage(new Image(getClass().getResourceAsStream(rutaCon)));
+		
 
 		
 	}
@@ -117,19 +90,13 @@ public class RecuperacionController implements Initializable {
 	// handler botones
 
 	@FXML
-	private void handlerLogin(ActionEvent event) throws IOException {
-		if (userService.authenticate(getUsuario(), getContraseña())) {
-
-			stageManager.switchScene(FxmlView.USER);
-
-		} else {
-			lblLogin.setText("Login Failed.");
-		}
+	private void handlerEnviar(ActionEvent event) throws IOException {
+		
 	}
 
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
-		stageManager.switchScene(FxmlView.MAIN);
+		stageManager.switchScene(FxmlView.LOGIN);
 	}
 
 	@FXML
