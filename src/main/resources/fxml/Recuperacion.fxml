@@ -36,12 +36,8 @@
                   <Label prefHeight="60.0" prefWidth="240.0" text="Le enviaremos su contraseña a su email. Introduzca su nombre de usuario:" wrapText="true" />
                </children>
             </HBox>
-            <HBox alignment="CENTER" GridPane.columnSpan="2" GridPane.rowIndex="2">
-               <children>
-                  <TextField fx:id="txtUsuario" alignment="CENTER" maxWidth="200.0" prefWidth="182.0" promptText="Usuario" />
-               </children>
-            </HBox>
-            <Label fx:id="lblEmail" alignment="CENTER" contentDisplay="CENTER" prefHeight="19.0" prefWidth="181.0" text="Email" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+            <TextField fx:id="txtUsuario" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="20.0" prefWidth="180.0" promptText="Usuario" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <Label fx:id="lblEmail" alignment="CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="180.0" text="Email" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
             <Button fx:id="btnEnviar" alignment="CENTER" onAction="#handlerEnviar" prefHeight="30.0" prefWidth="60.0" styleClass="btnEnviar" text="Enviar" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
             <Button fx:id="btnSalir" onAction="#handlerSalir" prefHeight="20.0" prefWidth="20.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="7" GridPane.valignment="BOTTOM">
                <GridPane.margin>
