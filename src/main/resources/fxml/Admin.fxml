@@ -23,7 +23,7 @@
         </rowConstraints>
          <children>
             <Label fx:id="lblTitulo" alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="lblTitulo2" text="ADMINISTRACIÓN" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <Button fx:id="btnParada" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerParada" prefHeight="30.0" prefWidth="120.0" styleClass="btnFlecha" text="Nueva Parada" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button fx:id="btnParada" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerParada" prefHeight="30.0" prefWidth="150.0" text="Nueva Parada" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
             <Button fx:id="btnSalir" onAction="#handlerSalir" prefHeight="20.0" prefWidth="20.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets right="20.0" />

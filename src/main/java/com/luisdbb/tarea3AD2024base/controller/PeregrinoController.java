@@ -30,13 +30,16 @@ import javafx.scene.input.KeyEvent;
  */
 
 @Controller
-public class PeregrinoController implements Initializable {	
+public class PeregrinoController implements Initializable {
 
 	@FXML
 	private Label lblTitulo;
 
 	@FXML
-	private Button btnParada;
+	private Button btnExportar;
+
+	@FXML
+	private Button btnEditar;
 
 	@FXML
 	private Button btnLogout;
@@ -56,7 +59,7 @@ public class PeregrinoController implements Initializable {
 	// automaticamente cuando se carga el fxml asociado
 	// (ubicacion de fxml, recursos bundle)
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {	
+	public void initialize(URL location, ResourceBundle resources) {
 
 		// configuracion imagen boton Logout
 		String rutaLog = resources.getString("btnLogout.icon");
@@ -75,9 +78,16 @@ public class PeregrinoController implements Initializable {
 		btnSalir.setGraphic(viewSalir);
 
 		// mnenomicos
-		btnParada.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.N) {
-				btnParada.fire(); 
+		btnExportar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.X) {
+				btnExportar.fire();
+				event.consume();
+			}
+		});
+
+		btnEditar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.E) {
+				btnEditar.fire();
 				event.consume();
 			}
 		});
@@ -97,7 +107,8 @@ public class PeregrinoController implements Initializable {
 		});
 
 		// tooltips
-		btnParada.setTooltip(new Tooltip("Nueva Parada (Alt+N)"));
+		btnExportar.setTooltip(new Tooltip("Exportar Carnet (Alt+X)"));
+		btnEditar.setTooltip(new Tooltip("Editar (Alt+E)"));
 		btnLogout.setTooltip(new Tooltip("Logout (Alt+L)"));
 		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
 
@@ -105,8 +116,13 @@ public class PeregrinoController implements Initializable {
 
 	// handler botones
 	@FXML
-	private void handlerParada(ActionEvent event) throws IOException {
-		stageManager.switchScene(FxmlView.LOGIN);
+	private void handlerExportar(ActionEvent event) throws IOException {
+
+	}
+
+	@FXML
+	private void handlerEditar(ActionEvent event) throws IOException {
+
 	}
 
 	@FXML
