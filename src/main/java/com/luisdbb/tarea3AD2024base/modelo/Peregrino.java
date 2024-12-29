@@ -1,5 +1,6 @@
 package com.luisdbb.tarea3AD2024base.modelo;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -26,7 +27,12 @@ public class Peregrino {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String nombre;
+	private String apellidos;
+	private LocalDate fechaNacimiento;
+	private String genero;
 	private String nacionalidad;
+	private String email;
+	
 	// relacion uno a uno con user
 	@OneToOne (cascade = CascadeType.ALL)
 	@JoinColumn(nullable = false, unique = true) // Clave foránea a User, especificar unique y nullable, no implicito en FK

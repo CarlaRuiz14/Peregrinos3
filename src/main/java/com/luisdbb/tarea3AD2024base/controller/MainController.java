@@ -93,15 +93,15 @@ public class MainController implements Initializable {
 
 		btnAdmin.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.A) {
-				btnAdmin.fire(); // Simula el clic en el botón
-				event.consume(); // Detiene la propagación del evento
+				btnAdmin.fire();
+				event.consume();
 			}
 		});
 
 		btnSalir.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.S) {
-				btnSalir.fire(); // Simula el clic en el botón
-				event.consume(); // Detiene la propagación del evento
+				btnSalir.fire(); 
+				event.consume();
 			}
 		});
 

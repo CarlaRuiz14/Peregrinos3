@@ -1,7 +1,5 @@
 package com.luisdbb.tarea3AD2024base;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.util.ResourceBundle;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -60,7 +58,7 @@ public class Tarea3Ad2024baseApplication extends Application {
 	 * primera escena que se muestra al iniciar.
 	 */
 	protected void displayInitialScene() {
-		stageManager.switchScene(FxmlView.RECUPERACION);
+		stageManager.switchScene(FxmlView.REGPEREGRINO);
 	}
 
 	// CONFIGURA el contexto de Spring

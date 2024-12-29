@@ -20,8 +20,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 /**
  * @author Carla Ruiz
@@ -29,16 +32,16 @@ import javafx.scene.image.ImageView;
  */
 @Controller
 public class LoginController implements Initializable {
-	//corregir boton login
+	// corregir boton login
 
 	@FXML
 	private Label lblTitulo;
-	
+
 	@FXML
 	private ImageView imgUsuario;
 
 	@FXML
-	private TextField txtUsuario;	
+	private TextField txtUsuario;
 
 	@FXML
 	private ImageView imgContraseña;
@@ -111,7 +114,47 @@ public class LoginController implements Initializable {
 		String rutaCon = resources.getString("contraseña.icon");
 		imgContraseña.setImage(new Image(getClass().getResourceAsStream(rutaCon)));
 
-		
+		// mnenomicos
+		hpContraseña.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.C) {
+				btnLogin.fire();
+				event.consume();
+			}
+		});
+		hpRegistro.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.R) {
+				btnLogin.fire();
+				event.consume();
+			}
+		});
+		btnLogin.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.L) {
+				btnLogin.fire();
+				event.consume();
+			}
+		});
+
+		btnVolver.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.V) {
+				btnVolver.fire();
+				event.consume();
+			}
+		});
+
+		btnSalir.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.S) {
+				btnSalir.fire();
+				event.consume();
+			}
+		});
+
+		// tooltips
+		hpContraseña.setTooltip(new Tooltip("Recuperar (Alt+C)"));
+		hpRegistro.setTooltip(new Tooltip("Registro (Alt+R)"));
+		btnLogin.setTooltip(new Tooltip("Login (Alt+L)"));
+		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
+		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
+
 	}
 
 	// handler botones
@@ -136,12 +179,13 @@ public class LoginController implements Initializable {
 	private void handlerSalir(ActionEvent event) throws IOException {
 		Platform.exit();
 	}
-	
-	//handler hipervinculos
+
+	// handler hipervinculos
 	@FXML
 	private void handlerHpContraseña(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.RECUPERACION);
 	}
+
 	@FXML
 	private void handlerHpRegistro(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.REGPEREGRINO);

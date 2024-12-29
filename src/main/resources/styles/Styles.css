@@ -21,7 +21,7 @@ Label{
 	-fx-font-weight: bold;	
 }
 
-.lblRecuperacion{
+.lblTitulo2{
 	-fx-font-size: 30px;
 	-fx-text-fill: #1F6A24;
 	-fx-font-weight: bold;
@@ -36,8 +36,7 @@ Label{
 Button{
 	-fx-background-color:#008A09;
 	-fx-background-radius: 20;
-	-fx-text-fill: #FFD700;
-	
+	-fx-text-fill: #FFD700;	
 }
 
 Button:hover {
@@ -52,5 +51,17 @@ Button:hover {
 
 .btnFlecha{
 	-fx-padding: 10;	
+}
+
+.radio-button {
+    -fx-text-fill:#1F6A24; 
+}
+
+.tooltip {
+    -fx-text-fill: #FFD700; 
+    -fx-background-color: #1F6A24; 
+    -fx-font-size: 14px;     
+    -fx-border-color: #FFD700;
+    -fx-border-width:1px;
 }
 
