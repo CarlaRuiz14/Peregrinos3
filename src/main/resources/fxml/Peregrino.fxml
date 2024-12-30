@@ -27,7 +27,7 @@
             <VBox alignment="CENTER" spacing="10.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
                <children>
                   <Button fx:id="btnExportar" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerExportar" prefHeight="30.0" prefWidth="150.0" text="Exportar Carnet" />
-                  <Button fx:id="btnEditar" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerEditar" prefHeight="30.0" prefWidth="150.0" text="Editar Datos" />
+                  <Button fx:id="btnEditar" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerEditar" prefHeight="30.0" prefWidth="150.0" text="Editar Usuario" />
                </children>
             </VBox>
             <Button fx:id="btnSalir" onAction="#handlerSalir" prefHeight="20.0" prefWidth="20.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">

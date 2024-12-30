@@ -12,6 +12,10 @@
     -fx-background-color:#6BE372;
 }
 
+.panelP{
+	-fx-background-color: rgba(31, 106, 36, 0.3);
+}
+
 Label{
 	-fx-text-fill: #1F6A24;
 }
@@ -27,6 +31,11 @@ Label{
 	-fx-font-weight: bold;
 }
 
+.lblTitulo3{
+	-fx-font-size: 20px;
+	-fx-text-fill: #1F6A24;
+	
+}
 .root{
 	-fx-background-color:#008A09;
 	-fx-font-family: "Patrick Hand SC"; 
