@@ -8,17 +8,34 @@
     src: url("/fonts/PatrickHandSC-Regular.ttf");
 }
 
+.root{
+	-fx-background-color:#008A09;
+	-fx-font-family: "Patrick Hand SC"; 
+	-fx-font-size: 16px;	
+}
+
+/* Fondo Gridpane*/
 .panel {
     -fx-background-color:#6BE372;
 }
 
+/* Paneles verde oscuro con opacidad 30*/
 .panelP{
 	-fx-background-color: rgba(31, 106, 36, 0.3);
 }
 
+.panelB{
+	-fx-background-color: #AF9400;
+}
+.panelC{
+	-fx-background-color: #FFEA77;
+}
+
+/* Etiquetas de titulo*/
 Label{
 	-fx-text-fill: #1F6A24;
 }
+
 .lblTitulo{
 	-fx-font-size: 70px;
 	-fx-text-fill: #1F6A24;
@@ -33,15 +50,10 @@ Label{
 
 .lblTitulo3{
 	-fx-font-size: 20px;
-	-fx-text-fill: #1F6A24;
-	
-}
-.root{
-	-fx-background-color:#008A09;
-	-fx-font-family: "Patrick Hand SC"; 
-	-fx-font-size: 16px;	
+	-fx-text-fill: #1F6A24;	
 }
 
+/* Botones */
 Button{
 	-fx-background-color:#008A09;
 	-fx-background-radius: 20;
@@ -66,6 +78,7 @@ Button:hover {
     -fx-text-fill:#1F6A24; 
 }
 
+/* Tooltips */
 .tooltip {
     -fx-text-fill: #FFD700; 
     -fx-background-color: #1F6A24; 
@@ -73,4 +86,35 @@ Button:hover {
     -fx-border-color: #FFD700;
     -fx-border-width:1px;
 }
+
+/* Tablas */
+.table-view {    
+    -fx-border-color: #008A09;
+    -fx-border-width: 2;
+}
+
+.table-view .column-header {
+	-fx-background-color:#AF9400;             
+}
+
+.table-view .column-header .label{    
+    -fx-text-fill: #FFEA77;         
+    -fx-font-weight: bold;               
+}
+
+/* Alinear contenido celda al centro*/
+.table-cell {
+    -fx-alignment: CENTER;
+}
+
+.table-row-cell {
+    -fx-background-color: #FFEA77 ;   
+}
+
+.table-view .table-row-cell .text {
+    -fx-fill: #1F6A24; /* Cambia el color del texto predeterminado */
+}
+
+
+
 

@@ -44,21 +44,21 @@
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" styleClass="panelP" GridPane.rowIndex="1">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="120.0" styleClass="lblTitulo3" text="Responsable" />
-                  <TextField fx:id="txtUsuario" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="20.0" prefWidth="120.0" promptText="Usuario" />
-                  <TextField fx:id="txtEmail" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="20.0" prefWidth="120.0" promptText="Email" />
+                  <TextField fx:id="txtUsuario" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="120.0" promptText="Usuario" />
+                  <TextField fx:id="txtEmail" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="120.0" promptText="Email" />
                </children>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" styleClass="panelP" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="120.0" styleClass="lblTitulo3" text="Parada" />
-                  <TextField fx:id="txtNombreP" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="120.0" promptText="Nombre" />
-                  <TextField fx:id="txtRegionP" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="120.0" promptText="Región" />
+                  <TextField fx:id="txtNombreP" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="120.0" promptText="Nombre" />
+                  <TextField fx:id="txtRegionP" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="120.0" promptText="Región" />
                </children>
             </VBox>
             <VBox alignment="CENTER" spacing="10.0" styleClass="panelP" GridPane.columnSpan="2" GridPane.rowIndex="3">
                <children>
-                  <TextField fx:id="txtContraseña" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="170.0" promptText="Contraseña" />
-                  <TextField fx:id="txtConfirmacion" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="25.0" prefWidth="170.0" promptText="Confirmación Contraseña" />
+                  <TextField fx:id="txtContraseña" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="170.0" promptText="Contraseña" />
+                  <TextField fx:id="txtConfirmacion" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="170.0" promptText="Confirmación Contraseña" />
                </children>
                <GridPane.margin>
                   <Insets left="40.0" right="40.0" />

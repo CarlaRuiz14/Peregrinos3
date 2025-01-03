@@ -17,12 +17,15 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "estancias")
 public class Estancia {
+	
+	//corregir constructor y getters y setters
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
 	private LocalDate fecha;
-	private boolean vip;
+	private Boolean vip;
 	
 	@ManyToOne 
 	@JoinColumn(nullable = false) 
@@ -31,4 +34,48 @@ public class Estancia {
 	@ManyToOne 
 	@JoinColumn(nullable = false) 
 	private Parada parada;
+
+	public Estancia(long id, LocalDate fecha, Boolean vip) {
+		super();
+		this.id = id;
+		this.fecha = fecha;
+		this.vip = vip;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public LocalDate getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(LocalDate fecha) {
+		this.fecha = fecha;
+	}
+
+	public Parada getParada() {
+		return parada;
+	}
+
+	public void setParada(Parada parada) {
+		this.parada = parada;
+	}
+
+	public Boolean getVip() {
+		return vip;
+	}
+
+	public void setVip(Boolean vip) {
+		this.vip = vip;
+	}
+
+	
+	
+	
+	
 }

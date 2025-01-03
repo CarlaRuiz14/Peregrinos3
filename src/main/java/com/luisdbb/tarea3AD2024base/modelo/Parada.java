@@ -19,12 +19,14 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "paradas")
 public class Parada {
+	
+	//corregir constructor y getters y setters
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String nombre;
-	private char region;
+	private Character region;
 	
 	@OneToOne (cascade = CascadeType.ALL)
 	@JoinColumn(nullable = false, unique = true)
@@ -32,8 +34,51 @@ public class Parada {
 
 	@OneToMany(mappedBy = "parada")
 	private List<Estancia> estancias;
+
+	public Parada(long id, String nombre, Character region) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.region = region;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public List<Estancia> getEstancias() {
+		return estancias;
+	}
+
+	public void setEstancias(List<Estancia> estancias) {
+		this.estancias = estancias;
+	}
+
+	public Character getRegion() {
+		return region;
+	}
+
+	public void setRegion(Character region) {
+		this.region = region;
+	}
 	
 	// relacion uno a muchos con los peregrinos de paradasperegrinos
 //	@OneToMany(mappedBy = "idParada") 
 //	private List<ParadasPeregrinos> peregrinos;
+	
+	
+	
+	
 }

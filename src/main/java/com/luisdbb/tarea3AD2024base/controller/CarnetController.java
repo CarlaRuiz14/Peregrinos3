@@ -2,6 +2,7 @@ package com.luisdbb.tarea3AD2024base.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,20 +10,29 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.StageManager;
+import com.luisdbb.tarea3AD2024base.modelo.Estancia;
+import com.luisdbb.tarea3AD2024base.modelo.Parada;
 import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.Tooltip;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 /**
  * @author Carla Ruiz
@@ -30,30 +40,65 @@ import javafx.scene.image.ImageView;
  */
 @Controller
 public class CarnetController implements Initializable {
-
-	@FXML
-	private Label lblLogin;
 	
-	@FXML
-	private ImageView imgUsuario;
+	//falta corregir columna region
 
 	@FXML
-	private TextField txtUsuario;	
+	private Hyperlink hpInfo;
 
 	@FXML
-	private ImageView imgContraseña;
+	private ImageView imgCarnet;
 
 	@FXML
-	private TextField txtContraseña;
+	private Label lblIdCarnet;
 
 	@FXML
-	private Hyperlink hpContraseña;
+	private Label lblExpedicion;
 
 	@FXML
-	private Hyperlink hpRegistro;
+	private Label lblIdPeregrino;
 
 	@FXML
-	private Button btnLogin;
+	private Label lblNombre;
+
+	@FXML
+	private Label lblApellidos;
+
+	@FXML
+	private Label lblNacionalidad;
+
+	@FXML
+	private Label lblDistancia;
+
+	@FXML
+	private Label lblVips;
+
+	@FXML
+	private TableView<Parada> tblParadas = new TableView<>();
+
+	@FXML
+	private TableColumn<Parada, Long> colIdParada;
+
+	@FXML
+	private TableColumn<Parada, String> colNombreParada;
+
+	@FXML
+	private TableColumn<Parada, Character> colRegion;
+
+	@FXML
+	private TableView<Estancia> tblEstancias = new TableView<>();
+
+	@FXML
+	private TableColumn<Estancia, Long> colIdEstancia;
+
+	@FXML
+	private TableColumn<Estancia, LocalDate> colFecha;
+
+	@FXML
+	private TableColumn<Estancia, Boolean> colVip;
+
+	@FXML
+	private Button btnExportar;
 
 	@FXML
 	private Button btnVolver;
@@ -69,24 +114,64 @@ public class CarnetController implements Initializable {
 	@Autowired
 	private StageManager stageManager;
 
-	public String getContraseña() {
-		return txtContraseña.getText();
-	}
-
-	public String getUsuario() {
-		return txtUsuario.getText();
-	}
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		// configuracion imagen boton Login
-		String rutaLogin = resources.getString("btnLogin.icon");
-		Image imgLogin = new Image(getClass().getResourceAsStream(rutaLogin));
-		ImageView viewLogin = new ImageView(imgLogin);
-		viewLogin.setFitWidth(60);
-		viewLogin.setFitHeight(30);
-		btnLogin.setGraphic(viewLogin);
+		// configuracion info
+		String rutaInfo = resources.getString("info.icon");
+		Image imagen = new Image(getClass().getResourceAsStream(rutaInfo));
+		ImageView imageView = new ImageView(imagen);
+		imageView.setFitWidth(30);
+		imageView.setFitHeight(30);
+		imageView.setPreserveRatio(true);
+		hpInfo.setGraphic(imageView);
+
+		// configuracion imagen concha
+		String rutaConcha = resources.getString("carnet.icon");
+		imgCarnet.setImage(new Image(getClass().getResourceAsStream(rutaConcha)));
+
+		// Configuración de la tabla Paradas
+		colIdParada.setCellValueFactory(new PropertyValueFactory<>("id"));
+		colNombreParada.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+		colRegion.setCellValueFactory(new PropertyValueFactory<>("region"));
+
+		ObservableList<Parada> listParadas = FXCollections.observableArrayList(new Parada(1, "Pruebaa", 'P'),
+				new Parada(1, "Pruebaa", 'P'), new Parada(1, "Pruebaa", 'P'), new Parada(1, "Pruebaa", 'P'),
+				new Parada(1, "Pruebaa", 'P'), new Parada(1, "Pruebaa", 'P'));
+
+		tblParadas.setItems(listParadas);
+
+		// configuracion tabla Estancias
+		colIdEstancia.setCellValueFactory(new PropertyValueFactory<>("id"));
+		colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
+		colVip.setCellValueFactory(new PropertyValueFactory<>("vip"));
+
+		colVip.setCellFactory(tc -> new TableCell<Estancia, Boolean>() {
+			@Override
+			protected void updateItem(Boolean vip, boolean empty) {
+				super.updateItem(vip, empty);
+				if (empty || vip == null) {
+					setText(null);
+				} else {
+					System.out.println("VIP Value: " + vip);
+					setText(vip ? "Sí" : "No");
+				}
+			}
+		});
+
+		ObservableList<Estancia> listEstancias = FXCollections.observableArrayList(
+				new Estancia(1, LocalDate.of(1990, 9, 14), true), new Estancia(1, LocalDate.of(1990, 9, 14), true),
+				new Estancia(1, LocalDate.of(1990, 9, 14), true));
+
+		tblEstancias.setItems(listEstancias);
+
+		// configuracion imagen boton Exportar
+		String rutaExportar = resources.getString("btnExportar.icon");
+		Image imgExp = new Image(getClass().getResourceAsStream(rutaExportar));
+		ImageView viewExp = new ImageView(imgExp);
+		viewExp.setFitWidth(60);
+		viewExp.setFitHeight(30);
+		btnExportar.setGraphic(viewExp);
 
 		// configuracion imagen boton Volver
 		String rutaVolver = resources.getString("btnVolver.icon");
@@ -104,27 +189,53 @@ public class CarnetController implements Initializable {
 		viewSalir.setFitHeight(20);
 		btnSalir.setGraphic(viewSalir);
 
-		// configuracion imagenes
-		String rutaUsu = resources.getString("usuario.icon");
-		imgUsuario.setImage(new Image(getClass().getResourceAsStream(rutaUsu)));
+		// mnenomicos
+		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.I) {
+				hpInfo.fire();
+				event.consume();
+			}
+		});
 
-		String rutaCon = resources.getString("contraseña.icon");
-		imgContraseña.setImage(new Image(getClass().getResourceAsStream(rutaCon)));
+		btnExportar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.X) {
+				btnExportar.fire();
+				event.consume();
+			}
+		});
 
-		
+		btnVolver.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.V) {
+				btnVolver.fire();
+				event.consume();
+			}
+		});
+
+		btnSalir.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.S) {
+				btnSalir.fire();
+				event.consume();
+			}
+		});
+
+		// tooltips
+		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
+		btnExportar.setTooltip(new Tooltip("Exportar (Alt+X)"));
+		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
+		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
+
 	}
 
 	// handler botones
 
 	@FXML
-	private void handlerLogin(ActionEvent event) throws IOException {
-		if (userService.authenticate(getUsuario(), getContraseña())) {
+	private void handlerInfo(ActionEvent event) throws IOException {
 
-			stageManager.switchScene(FxmlView.USER);
+	}
 
-		} else {
-			lblLogin.setText("Login Failed.");
-		}
+	@FXML
+	private void handlerExportar(ActionEvent event) throws IOException {
+
 	}
 
 	@FXML
