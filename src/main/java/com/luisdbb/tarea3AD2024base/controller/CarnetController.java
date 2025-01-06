@@ -158,7 +158,7 @@ public class CarnetController implements Initializable {
 				}
 			}
 		});
-
+		// prueba:
 		ObservableList<Estancia> listEstancias = FXCollections.observableArrayList(
 				new Estancia(1, LocalDate.of(1990, 9, 14), true), new Estancia(1, LocalDate.of(1990, 9, 14), true),
 				new Estancia(1, LocalDate.of(1990, 9, 14), true));
@@ -240,7 +240,7 @@ public class CarnetController implements Initializable {
 
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
-		stageManager.switchScene(FxmlView.MAIN);
+		stageManager.switchScene(FxmlView.PEREGRINO);
 	}
 
 	@FXML

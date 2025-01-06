@@ -47,5 +47,22 @@ public class Peregrino {
 	// relacion uno a muchos con las paradas de paradasperegrinos
 //	@OneToMany(mappedBy = "idPeregrino") 
 //	private List<ParadasPeregrinos> paradas;
+	public String getNombre() {
+		return nombre;
+	}
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	public Peregrino() {
+		super();
+	}
+	public Peregrino(String nombre) {
+		super();
+		this.nombre = nombre;
+	}
+	
+	
+	
+	
 
 }

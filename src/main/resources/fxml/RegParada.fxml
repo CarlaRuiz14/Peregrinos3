@@ -37,7 +37,7 @@
                   <Insets />
                </GridPane.margin>
             </Hyperlink>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" prefWidth="200.0" styleClass="lblTitulo2" text="NUEVA PARADA" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" styleClass="lblTitulo2" text="NUEVA PARADA" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin></Label>

@@ -23,8 +23,8 @@
             <RowConstraints />           
         </rowConstraints>
          <children>
-            <Label fx:id="lblTitulo" alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="lblTitulo2" text="MI CUENTA" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <VBox alignment="CENTER" spacing="10.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+            <Label fx:id="lblTitulo" alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" styleClass="lblTitulo2" text="MI CUENTA" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <VBox alignment="CENTER" spacing="20.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
                <children>
                   <Button fx:id="btnExportar" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerExportar" prefHeight="30.0" prefWidth="150.0" text="Exportar Carnet" />
                   <Button fx:id="btnEditar" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerEditar" prefHeight="30.0" prefWidth="150.0" text="Editar Usuario" />

@@ -3,15 +3,9 @@
 /* #FBFAF9-BLANCO // #AF9400-MOSTAZA // #FFD700-FLECHA // #FFEA77-CLARO // #877828-OSCURO */
 /* #C4C5C4-GRIS // #008A09-VERDE // #00C90D-PISTACHO // #6BE372-VCLARO // #1F6A24-NEGRO*/
 
-@font-face {
-    font-family: "Patrick Hand SC";
-    src: url("/fonts/PatrickHandSC-Regular.ttf");
-}
 
-.root{
-	-fx-background-color:#008A09;
-	-fx-font-family: "Patrick Hand SC"; 
-	-fx-font-size: 16px;	
+.root {
+    -fx-background-color: #008A09;   
 }
 
 /* Fondo Gridpane*/
@@ -34,20 +28,29 @@
 /* Etiquetas de titulo*/
 Label{
 	-fx-text-fill: #1F6A24;
+	-fx-font-size: 16px;	
+	
+}
+
+.lblNegrita{
+	-fx-font-weight: bold;	
+	
 }
 
 .lblTitulo{
-	-fx-font-size: 70px;
+	-fx-font-size: 50px;
 	-fx-text-fill: #1F6A24;
 	-fx-font-weight: bold;	
 }
 
+/* Titulos largos*/
 .lblTitulo2{
 	-fx-font-size: 30px;
 	-fx-text-fill: #1F6A24;
 	-fx-font-weight: bold;
 }
 
+/* RegParada*/
 .lblTitulo3{
 	-fx-font-size: 20px;
 	-fx-text-fill: #1F6A24;	
@@ -87,7 +90,7 @@ Button:hover {
     -fx-border-width:1px;
 }
 
-/* Tablas */
+/* Tabla Carnet */
 .table-view {    
     -fx-border-color: #008A09;
     -fx-border-width: 2;
@@ -112,9 +115,32 @@ Button:hover {
 }
 
 .table-view .table-row-cell .text {
-    -fx-fill: #1F6A24; /* Cambia el color del texto predeterminado */
+    -fx-fill: #1F6A24; 
 }
 
+/* Tabla Exportar Parada */
+
+.tblExpParada {    
+    -fx-border-color: #1F6A24;
+    -fx-border-width: 2;
+}
+
+.tblExpParada .column-header {
+	-fx-background-color:#1F6A24;             
+}
+
+.tblExpParada .column-header .label{    
+    -fx-text-fill: #FFD700;         
+    -fx-font-weight: bold;               
+}
+
+.tblExpParada .table-row-cell {
+    -fx-background-color: #6BE372;   
+}
+
+.tblExpParada .table-row-cell .text {
+    -fx-fill: #1F6A24;
+}
 
 
 

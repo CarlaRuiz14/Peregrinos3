@@ -180,7 +180,7 @@ public class RegParadaController implements Initializable {
 
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
-		stageManager.switchScene(FxmlView.LOGIN);
+		stageManager.switchScene(FxmlView.ADMIN);
 	}
 
 	@FXML

@@ -40,7 +40,26 @@ public class Estancia {
 		this.id = id;
 		this.fecha = fecha;
 		this.vip = vip;
+	}	
+	
+	public Estancia(long id,Peregrino peregrino, LocalDate fecha, Boolean vip) {
+		super();
+		this.id = id;
+		this.fecha = fecha;
+		this.vip = vip;
+		this.peregrino = peregrino;		
 	}
+
+	public Estancia(long id, LocalDate fecha, Boolean vip, Peregrino peregrino, Parada parada) {
+		super();
+		this.id = id;
+		this.fecha = fecha;
+		this.vip = vip;
+		this.peregrino = peregrino;
+		this.parada = parada;
+	}
+
+
 
 	public long getId() {
 		return id;
@@ -72,6 +91,14 @@ public class Estancia {
 
 	public void setVip(Boolean vip) {
 		this.vip = vip;
+	}
+
+	public Peregrino getPeregrino() {
+		return peregrino;
+	}
+
+	public void setPeregrino(Peregrino peregrino) {
+		this.peregrino = peregrino;
 	}
 
 	

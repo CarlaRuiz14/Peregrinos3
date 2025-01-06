@@ -128,17 +128,18 @@ public class ParadaController implements Initializable {
 	// handler botones
 	@FXML
 	private void handlerExportar(ActionEvent event) throws IOException {
+		stageManager.switchScene(FxmlView.EXPPARADA);
 
 	}
 
 	@FXML
 	private void handlerSellar(ActionEvent event) throws IOException {
-
+		stageManager.switchScene(FxmlView.SELLAR);
 	}
 
 	@FXML
 	private void handlerEditar(ActionEvent event) throws IOException {
-
+		
 	}
 
 	@FXML

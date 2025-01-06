@@ -117,7 +117,7 @@ public class PeregrinoController implements Initializable {
 	// handler botones
 	@FXML
 	private void handlerExportar(ActionEvent event) throws IOException {
-
+		stageManager.switchScene(FxmlView.CARNET);
 	}
 
 	@FXML
