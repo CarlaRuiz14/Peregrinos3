@@ -99,11 +99,7 @@ public class ExpParadaController implements Initializable {
 	private Label lblFeed;
 
 	@FXML
-	private Button btnSalir;
-
-	// mirar
-	@Autowired
-	private UsuarioService userService;
+	private Button btnSalir;	
 
 	@Lazy
 	@Autowired
@@ -144,7 +140,7 @@ public class ExpParadaController implements Initializable {
 			}
 		});
 
-		Peregrino p1 = new Peregrino("Maria");
+		Peregrino p1 = new Peregrino();
 		// prueba:
 		ObservableList<Estancia> listEstancias = FXCollections.observableArrayList(
 				new Estancia(1, p1, LocalDate.of(1990, 9, 14), true),

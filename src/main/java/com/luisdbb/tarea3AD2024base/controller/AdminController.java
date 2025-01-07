@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.StageManager;
-import com.luisdbb.tarea3AD2024base.services.MainService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
@@ -42,11 +41,7 @@ public class AdminController implements Initializable {
 	private Button btnLogout;
 
 	@FXML
-	private Button btnSalir;
-
-	// inyecta autamaticamente los beans
-	@Autowired
-	private MainService mainService;
+	private Button btnSalir;	
 
 	// controla el cambio de escenas
 	@Lazy // solo cuando sea necesario, no inmediatamente

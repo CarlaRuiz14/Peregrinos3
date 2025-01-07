@@ -15,53 +15,33 @@ import jakarta.persistence.Table;
  * @since 28/12/2024
  */
 @Entity
-@Table(name = "estancias")
-public class Estancia {
+@Table(name = "paradasPeregrinos")
+public class ParadasPeregrino {
 
 	// atributos
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	private LocalDate fecha;
-
-	private Boolean vip;
-
 	@ManyToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn(name = "peregrino_id", nullable = false)
 	private Peregrino peregrino;
 
 	@ManyToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn(name = "parada_id", nullable = false)
 	private Parada parada;
 
-	// constructores
-	public Estancia() {
-		super();
+	private LocalDate fecha;
+
+	// Constructor por defecto
+	public ParadasPeregrino() {
 	}
 
-	public Estancia(long id, LocalDate fecha, Boolean vip) {
-		super();
-		this.id = id;
-		this.fecha = fecha;
-		this.vip = vip;
-	}
-
-	public Estancia(long id, Peregrino peregrino, LocalDate fecha, Boolean vip) {
-		super();
-		this.id = id;
-		this.fecha = fecha;
-		this.vip = vip;
-		this.peregrino = peregrino;
-	}
-
-	public Estancia(long id, LocalDate fecha, Boolean vip, Peregrino peregrino, Parada parada) {
-		super();
-		this.id = id;
-		this.fecha = fecha;
-		this.vip = vip;
+	// Constructor con parámetros
+	public ParadasPeregrino(Peregrino peregrino, Parada parada, LocalDate fecha) {
 		this.peregrino = peregrino;
 		this.parada = parada;
+		this.fecha = fecha;
 	}
 
 	// getters y setters
@@ -71,22 +51,6 @@ public class Estancia {
 
 	public void setId(long id) {
 		this.id = id;
-	}
-
-	public LocalDate getFecha() {
-		return fecha;
-	}
-
-	public void setFecha(LocalDate fecha) {
-		this.fecha = fecha;
-	}
-
-	public Boolean getVip() {
-		return vip;
-	}
-
-	public void setVip(Boolean vip) {
-		this.vip = vip;
 	}
 
 	public Peregrino getPeregrino() {
@@ -103,6 +67,14 @@ public class Estancia {
 
 	public void setParada(Parada parada) {
 		this.parada = parada;
+	}
+
+	public LocalDate getFecha() {
+		return fecha;
+	}
+
+	public void setFecha(LocalDate fecha) {
+		this.fecha = fecha;
 	}
 
 }

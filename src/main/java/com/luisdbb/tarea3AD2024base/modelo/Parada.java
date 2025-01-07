@@ -1,5 +1,6 @@
 package com.luisdbb.tarea3AD2024base.modelo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -19,21 +20,30 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "paradas")
 public class Parada {
-	
-	//corregir constructor y getters y setters
 
+	// atributos
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+
 	private String nombre;
+
 	private Character region;
-	
-	@OneToOne (cascade = CascadeType.ALL)
+
+	@OneToMany(mappedBy = "parada")
+	private List<ParadasPeregrino> paradasPeregrino = new ArrayList<>();
+
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(nullable = false, unique = true)
 	private Usuario usuario;
 
 	@OneToMany(mappedBy = "parada")
-	private List<Estancia> estancias;
+	private List<Estancia> estancias = new ArrayList<>();
+
+	// constructores
+	public Parada() {
+		super();
+	}
 
 	public Parada(long id, String nombre, Character region) {
 		super();
@@ -42,6 +52,18 @@ public class Parada {
 		this.region = region;
 	}
 
+	public Parada(long id, String nombre, Character region, List<ParadasPeregrino> paradasPeregrino, Usuario usuario,
+			List<Estancia> estancias) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.region = region;
+		this.paradasPeregrino = paradasPeregrino;
+		this.usuario = usuario;
+		this.estancias = estancias;
+	}
+
+	// getters y setters
 	public long getId() {
 		return id;
 	}
@@ -58,6 +80,30 @@ public class Parada {
 		this.nombre = nombre;
 	}
 
+	public Character getRegion() {
+		return region;
+	}
+
+	public void setRegion(Character region) {
+		this.region = region;
+	}
+
+	public List<ParadasPeregrino> getParadasPeregrino() {
+		return paradasPeregrino;
+	}
+
+	public void setParadasPeregrino(List<ParadasPeregrino> paradasPeregrino) {
+		this.paradasPeregrino = paradasPeregrino;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
 	public List<Estancia> getEstancias() {
 		return estancias;
 	}
@@ -66,19 +112,6 @@ public class Parada {
 		this.estancias = estancias;
 	}
 
-	public Character getRegion() {
-		return region;
-	}
+	
 
-	public void setRegion(Character region) {
-		this.region = region;
-	}
-	
-	// relacion uno a muchos con los peregrinos de paradasperegrinos
-//	@OneToMany(mappedBy = "idParada") 
-//	private List<ParadasPeregrinos> peregrinos;
-	
-	
-	
-	
 }

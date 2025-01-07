@@ -45,11 +45,7 @@ public class PeregrinoController implements Initializable {
 	private Button btnLogout;
 
 	@FXML
-	private Button btnSalir;
-
-	// inyecta autamaticamente los beans
-	@Autowired
-	private MainService mainService;
+	private Button btnSalir;	
 
 	// controla el cambio de escenas
 	@Lazy // solo cuando sea necesario, no inmediatamente

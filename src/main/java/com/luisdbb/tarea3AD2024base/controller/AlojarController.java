@@ -62,11 +62,7 @@ public class AlojarController implements Initializable {
 	private Button btnVolver;
 
 	@FXML
-	private Button btnSalir;
-
-	// mirar
-	@Autowired
-	private UsuarioService userService;
+	private Button btnSalir;	
 
 	@Lazy
 	@Autowired

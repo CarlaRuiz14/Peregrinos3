@@ -12,5 +12,5 @@ import com.luisdbb.tarea3AD2024base.modelo.Usuario;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-	Usuario findByUsuario(String usuario);
+//	Usuario findByUsuario(String nombreUsuario);
 }

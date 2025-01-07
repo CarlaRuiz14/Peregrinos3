@@ -32,7 +32,7 @@
                                 
         </rowConstraints>
          <children>
-            <Label fx:id="lblTitulo" alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" styleClass="lblTitulo" text="LOGIN" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" styleClass="lblTitulo" text="LOGIN" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             <HBox alignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <children>
                   <ImageView fx:id="imgUsuario" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />

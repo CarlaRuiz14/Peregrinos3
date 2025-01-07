@@ -35,9 +35,6 @@ public class LoginController implements Initializable {
 	// corregir boton login
 
 	@FXML
-	private Label lblTitulo;
-
-	@FXML
 	private ImageView imgUsuario;
 
 	@FXML
@@ -66,10 +63,6 @@ public class LoginController implements Initializable {
 
 	@FXML
 	private Button btnSalir;
-
-	// mirar
-	@Autowired
-	private UsuarioService userService;
 
 	@Lazy
 	@Autowired
@@ -164,13 +157,7 @@ public class LoginController implements Initializable {
 
 	@FXML
 	private void handlerLogin(ActionEvent event) throws IOException {
-		if (userService.authenticate(getUsuario(), getContraseña())) {
-
-			stageManager.switchScene(FxmlView.USER);
-
-		} else {
-			lblTitulo.setText("Login Failed.");
-		}
+		
 	}
 
 	@FXML

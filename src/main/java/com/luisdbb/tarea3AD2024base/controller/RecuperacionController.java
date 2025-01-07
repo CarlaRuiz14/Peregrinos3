@@ -57,10 +57,6 @@ public class RecuperacionController implements Initializable {
 	@FXML
 	private Button btnSalir;
 
-	// mirar
-	@Autowired
-	private UsuarioService userService;
-
 	@Lazy
 	@Autowired
 	private StageManager stageManager;

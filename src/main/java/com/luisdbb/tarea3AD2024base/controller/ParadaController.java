@@ -49,11 +49,7 @@ public class ParadaController implements Initializable {
 
 	@FXML
 	private Button btnSalir;
-
-	// inyecta autamaticamente los beans
-	@Autowired
-	private MainService mainService;
-
+	
 	// controla el cambio de escenas
 	@Lazy // solo cuando sea necesario, no inmediatamente
 	@Autowired
