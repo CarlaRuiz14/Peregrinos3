@@ -85,10 +85,10 @@
                   <DatePicker fx:id="dateFechaI" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="27.0" prefWidth="120.0" promptText="Fecha Inicio" />
                   <Label text="a" />
                   <DatePicker fx:id="dateFechaF" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="27.0" prefWidth="120.0" promptText="Fecha Fin" />
-                  <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#handlerBuscar" text="Buscar" />
+                  <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#handlerBuscar" />
                </children>
             </HBox>
-            <TableView fx:id="tblEstancias" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="150.0" prefWidth="400.0" styleClass="tblExpParada" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
+            <TableView fx:id="tblEstancias" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="150.0" prefWidth="400.0" styleClass="tblV" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
               <columns>
                   <TableColumn fx:id="colIdEstancia" prefWidth="84.0" text="ESTANCIA" />
                 <TableColumn fx:id="colPeregrino" prefWidth="123.20001220703125" text="PEREGRINO" />

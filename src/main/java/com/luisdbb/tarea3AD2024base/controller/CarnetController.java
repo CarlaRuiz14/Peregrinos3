@@ -152,8 +152,7 @@ public class CarnetController implements Initializable {
 				super.updateItem(vip, empty);
 				if (empty || vip == null) {
 					setText(null);
-				} else {
-					System.out.println("VIP Value: " + vip);
+				} else {					
 					setText(vip ? "Sí" : "No");
 				}
 			}

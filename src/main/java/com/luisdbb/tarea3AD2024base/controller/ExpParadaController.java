@@ -70,7 +70,7 @@ public class ExpParadaController implements Initializable {
 
 	@FXML
 	private DatePicker dateFechaF;
-	
+
 	@FXML
 	private Button btnBuscar;
 
@@ -138,8 +138,7 @@ public class ExpParadaController implements Initializable {
 				super.updateItem(vip, empty);
 				if (empty || vip == null) {
 					setText(null);
-				} else {
-					System.out.println("VIP Value: " + vip);
+				} else {					
 					setText(vip ? "Sí" : "No");
 				}
 			}
@@ -156,6 +155,14 @@ public class ExpParadaController implements Initializable {
 				new Estancia(1, p1, LocalDate.of(1990, 9, 14), true));
 
 		tblEstancias.setItems(listEstancias);
+
+		// configuracion imagen boton Buscar
+		String rutaBuscar = resources.getString("btnBuscar.icon");
+		Image imgBuscar = new Image(getClass().getResourceAsStream(rutaBuscar));
+		ImageView viewBuscar = new ImageView(imgBuscar);
+		viewBuscar.setFitWidth(25);
+		viewBuscar.setFitHeight(25);
+		btnBuscar.setGraphic(viewBuscar);
 
 		// configuracion imagen boton Exportar
 		String rutaExportar = resources.getString("btnExportar.icon");
@@ -188,7 +195,7 @@ public class ExpParadaController implements Initializable {
 				event.consume();
 			}
 		});
-		
+
 		btnBuscar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.B) {
 				btnBuscar.fire();
@@ -237,7 +244,7 @@ public class ExpParadaController implements Initializable {
 	private void handlerBuscar(ActionEvent event) throws IOException {
 
 	}
-	
+
 	@FXML
 	private void handlerExportar(ActionEvent event) throws IOException {
 

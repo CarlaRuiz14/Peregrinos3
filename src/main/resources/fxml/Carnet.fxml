@@ -99,7 +99,7 @@
                         </HBox>
                         <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="420.0" spacing="20.0">
                            <children>
-                              <TableView fx:id="tblParadas" maxHeight="-Infinity" prefHeight="149.0" prefWidth="200.0">
+                              <TableView fx:id="tblParadas" maxHeight="-Infinity" prefHeight="149.0" prefWidth="200.0" styleClass="tblM">
                                 <columns>
                                   <TableColumn fx:id="colIdParada" prefWidth="20.0" text="ID" />
                                   <TableColumn fx:id="colNombreParada" prefWidth="85.0" text="NOMBRE" />
@@ -109,7 +109,7 @@
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
-                              <TableView fx:id="tblEstancias" maxHeight="-Infinity" prefHeight="149.0" prefWidth="200.0">
+                              <TableView fx:id="tblEstancias" maxHeight="-Infinity" prefHeight="149.0" prefWidth="200.0" styleClass="tblM">
                                 <columns>
                                   <TableColumn fx:id="colIdEstancia" prefWidth="20.0" text="ID" />
                                   <TableColumn fx:id="colFecha" prefWidth="85.0" text="FECHA" />

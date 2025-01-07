@@ -9,20 +9,29 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.StageManager;
+import com.luisdbb.tarea3AD2024base.modelo.Carnet;
+import com.luisdbb.tarea3AD2024base.modelo.Peregrino;
 import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.Tooltip;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 /**
  * @author Carla Ruiz
@@ -32,28 +41,34 @@ import javafx.scene.image.ImageView;
 public class SellarController implements Initializable {
 
 	@FXML
-	private Label lblLogin;
-	
-	@FXML
-	private ImageView imgUsuario;
+	private Hyperlink hpInfo;
 
 	@FXML
-	private TextField txtUsuario;	
+	private Label lblIdParada;
 
 	@FXML
-	private ImageView imgContraseña;
+	private Label lblNombre;
 
 	@FXML
-	private TextField txtContraseña;
+	private Label lblRegion;
 
 	@FXML
-	private Hyperlink hpContraseña;
+	private TableView<Peregrino> tblPeregrinos = new TableView<>();
 
 	@FXML
-	private Hyperlink hpRegistro;
+	private TableColumn<Peregrino, Long> colId;
 
 	@FXML
-	private Button btnLogin;
+	private TableColumn<Peregrino, String> colNombre;
+
+	@FXML
+	private TableColumn<Peregrino, String> colNacionalidad;
+
+	@FXML
+	private TableColumn<Peregrino, Long> colIdCarnet;
+
+	@FXML
+	private Button btnSellar;
 
 	@FXML
 	private Button btnVolver;
@@ -69,24 +84,47 @@ public class SellarController implements Initializable {
 	@Autowired
 	private StageManager stageManager;
 
-	public String getContraseña() {
-		return txtContraseña.getText();
-	}
-
-	public String getUsuario() {
-		return txtUsuario.getText();
-	}
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		// configuracion imagen boton Login
-		String rutaLogin = resources.getString("btnLogin.icon");
-		Image imgLogin = new Image(getClass().getResourceAsStream(rutaLogin));
-		ImageView viewLogin = new ImageView(imgLogin);
-		viewLogin.setFitWidth(60);
-		viewLogin.setFitHeight(30);
-		btnLogin.setGraphic(viewLogin);
+		// configuracion info
+		String rutaInfo = resources.getString("info.icon");
+		Image imagen = new Image(getClass().getResourceAsStream(rutaInfo));
+		ImageView imageView = new ImageView(imagen);
+		imageView.setFitWidth(30);
+		imageView.setFitHeight(30);
+		imageView.setPreserveRatio(true);
+		hpInfo.setGraphic(imageView);
+
+		// config tabla
+		colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+		colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+		colNacionalidad.setCellValueFactory(new PropertyValueFactory<>("nacionalidad"));
+		colIdCarnet.setCellValueFactory(cellData -> {
+			// Obtenemos el carnet asociado al peregrino
+			Carnet carnet = cellData.getValue().getCarnet();
+			// Retornamos el ID del carnet como una propiedad observable de tipo Long
+			return new SimpleObjectProperty<>(carnet != null ? carnet.getId() : null);
+		});
+
+		Carnet c1 = new Carnet(1);
+
+		// prueba:
+		ObservableList<Peregrino> listPeregrinos = FXCollections.observableArrayList(
+				new Peregrino(1, "Maria", "Española", c1), new Peregrino(1, "Maria", "Española", c1),
+				new Peregrino(1, "Maria", "Española", c1), new Peregrino(1, "Maria", "Española", c1),
+				new Peregrino(1, "Maria", "Española", c1), new Peregrino(1, "Maria", "Española", c1),
+				new Peregrino(1, "Maria", "Española", c1));
+
+		tblPeregrinos.setItems(listPeregrinos);
+
+		// configuracion imagen boton Sellar
+		String rutaSellar = resources.getString("btnSellar.icon");
+		Image imgSellar = new Image(getClass().getResourceAsStream(rutaSellar));
+		ImageView viewSellar = new ImageView(imgSellar);
+		viewSellar.setFitWidth(60);
+		viewSellar.setFitHeight(30);
+		btnSellar.setGraphic(viewSellar);
 
 		// configuracion imagen boton Volver
 		String rutaVolver = resources.getString("btnVolver.icon");
@@ -104,27 +142,52 @@ public class SellarController implements Initializable {
 		viewSalir.setFitHeight(20);
 		btnSalir.setGraphic(viewSalir);
 
-		// configuracion imagenes
-		String rutaUsu = resources.getString("usuario.icon");
-		imgUsuario.setImage(new Image(getClass().getResourceAsStream(rutaUsu)));
+		// mnenomicos
+		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.I) {
+				hpInfo.fire();
+				event.consume();
+			}
+		});		
 
-		String rutaCon = resources.getString("contraseña.icon");
-		imgContraseña.setImage(new Image(getClass().getResourceAsStream(rutaCon)));
+		btnSellar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.X) {
+				btnSellar.fire();
+				event.consume();
+			}
+		});
 
-		
+		btnVolver.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.V) {
+				btnVolver.fire();
+				event.consume();
+			}
+		});
+
+		btnSalir.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.S) {
+				btnSalir.fire();
+				event.consume();
+			}
+		});
+
+		// tooltips
+		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));		
+		btnSellar.setTooltip(new Tooltip("Sellar (Alt+X)"));
+		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
+		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
+
 	}
 
 	// handler botones
+	@FXML
+	private void handlerInfo(ActionEvent event) throws IOException {
+
+	}
 
 	@FXML
-	private void handlerLogin(ActionEvent event) throws IOException {
-		if (userService.authenticate(getUsuario(), getContraseña())) {
+	private void handlerSellar(ActionEvent event) throws IOException {
 
-			stageManager.switchScene(FxmlView.USER);
-
-		} else {
-			lblLogin.setText("Login Failed.");
-		}
 	}
 
 	@FXML

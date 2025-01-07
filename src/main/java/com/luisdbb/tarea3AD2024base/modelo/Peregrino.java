@@ -64,5 +64,70 @@ public class Peregrino {
 	
 	
 	
+	public Peregrino(long id, String nombre, String nacionalidad, Carnet carnet) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.nacionalidad = nacionalidad;
+		this.carnet = carnet;
+	}
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public String getApellidos() {
+		return apellidos;
+	}
+	public void setApellidos(String apellidos) {
+		this.apellidos = apellidos;
+	}
+	public LocalDate getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+	public void setFechaNacimiento(LocalDate fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
+	}
+	public String getGenero() {
+		return genero;
+	}
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+	public String getNacionalidad() {
+		return nacionalidad;
+	}
+	public void setNacionalidad(String nacionalidad) {
+		this.nacionalidad = nacionalidad;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public Usuario getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	public List<Estancia> getEstancias() {
+		return estancias;
+	}
+	public void setEstancias(List<Estancia> estancias) {
+		this.estancias = estancias;
+	}
+	public Carnet getCarnet() {
+		return carnet;
+	}
+	public void setCarnet(Carnet carnet) {
+		this.carnet = carnet;
+	}
+	
+	
+	
+	
 
 }

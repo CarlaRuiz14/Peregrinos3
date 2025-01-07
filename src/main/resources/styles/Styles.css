@@ -54,6 +54,7 @@ Label{
 .lblTitulo3{
 	-fx-font-size: 20px;
 	-fx-text-fill: #1F6A24;	
+	-fx-font-weight: bold;
 }
 
 /* Botones */
@@ -90,57 +91,110 @@ Button:hover {
     -fx-border-width:1px;
 }
 
-/* Tabla Carnet */
-.table-view {    
+
+
+/* Tabla Marrón */
+.tblM {    
     -fx-border-color: #008A09;
     -fx-border-width: 2;
 }
 
-.table-view .column-header {
+.tblM .table-cell {
+    -fx-alignment: CENTER;
+}
+.tblM .column-header {
 	-fx-background-color:#AF9400;             
 }
 
-.table-view .column-header .label{    
+.tblM .column-header .label{    
     -fx-text-fill: #FFEA77;         
     -fx-font-weight: bold;               
 }
 
-/* Alinear contenido celda al centro*/
-.table-cell {
-    -fx-alignment: CENTER;
-}
-
-.table-row-cell {
+.tblM .table-row-cell {
     -fx-background-color: #FFEA77 ;   
 }
 
-.table-view .table-row-cell .text {
+.tblM .table-row-cell .text {
     -fx-fill: #1F6A24; 
 }
 
-/* Tabla Exportar Parada */
 
-.tblExpParada {    
+
+/* Tabla Verde */
+
+.tblV {    
     -fx-border-color: #1F6A24;
     -fx-border-width: 2;
 }
 
-.tblExpParada .column-header {
+.tblV .table-cell {
+    -fx-alignment: CENTER;
+}
+
+.tblV .column-header {
 	-fx-background-color:#1F6A24;             
 }
 
-.tblExpParada .column-header .label{    
+.tblV .column-header .label{    
     -fx-text-fill: #FFD700;         
     -fx-font-weight: bold;               
 }
 
-.tblExpParada .table-row-cell {
+.tblV .table-row-cell {
     -fx-background-color: #6BE372;   
 }
 
-.tblExpParada .table-row-cell .text {
+.tblV .table-row-cell .text {
     -fx-fill: #1F6A24;
 }
 
+
+
+/* tabla verde con seleccion */
+.tblVS {    
+    -fx-border-color: #1F6A24;
+    -fx-border-width: 2;
+}
+
+.tblVS .table-cell {
+    -fx-alignment: CENTER;
+}
+
+.tblVS .column-header {
+	-fx-background-color:#1F6A24;             
+}
+
+.tblVS .column-header .label{    
+    -fx-text-fill: #FFEA77;         
+    -fx-font-weight: bold;               
+}
+
+.tblVS .table-row-cell {
+    -fx-background-color: #6BE372;   
+}
+
+.tblVS .table-row-cell .text {
+    -fx-fill: #1F6A24;
+}
+/* Celdas Hover*/
+.tblVS .table-row-cell:hover {
+    -fx-background-color: #008A09;
+   
+}
+
+.tblVS .table-row-cell:hover .text {
+    -fx-fill: #FFEA77; /* Cambia el color del texto al pasar el mouse */
+}
+
+/* Celdas Seleccion */
+.tblVS .table-row-cell:selected {
+    -fx-background-color: #1F6A24;
+   
+}
+
+.tblVS .table-row-cell:selected .text {
+    -fx-fill: #FFD700; /* Cambia el color del texto al seleccionar */
+}
 
 

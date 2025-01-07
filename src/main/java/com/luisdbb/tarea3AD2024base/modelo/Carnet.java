@@ -28,4 +28,50 @@ public class Carnet {
 	@JoinColumn(nullable = false, unique = true)
 	private Parada paradaInicial;
 	
+	
+	
+	
+	
+	
+	public Carnet(long id) {
+		super();
+		this.id = id;
+	}
+	
+	
+	
+	
+	
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public LocalDate getFechaExp() {
+		return fechaExp;
+	}
+	public void setFechaExp(LocalDate fechaExp) {
+		this.fechaExp = fechaExp;
+	}
+	public double getDistancia() {
+		return distancia;
+	}
+	public void setDistancia(double distancia) {
+		this.distancia = distancia;
+	}
+	public int getnVips() {
+		return nVips;
+	}
+	public void setnVips(int nVips) {
+		this.nVips = nVips;
+	}
+	public Parada getParadaInicial() {
+		return paradaInicial;
+	}
+	public void setParadaInicial(Parada paradaInicial) {
+		this.paradaInicial = paradaInicial;
+	}
+	
+	
 }
