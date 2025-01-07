@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
+import com.luisdbb.tarea3AD2024base.config.Alertas;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.Carnet;
 import com.luisdbb.tarea3AD2024base.modelo.Peregrino;
@@ -21,7 +22,9 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -142,13 +145,13 @@ public class SellarController implements Initializable {
 		viewSalir.setFitHeight(20);
 		btnSalir.setGraphic(viewSalir);
 
-		// mnenomicos
+		// mnemonicos
 		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.I) {
 				hpInfo.fire();
 				event.consume();
 			}
-		});		
+		});
 
 		btnSellar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.X) {
@@ -172,7 +175,7 @@ public class SellarController implements Initializable {
 		});
 
 		// tooltips
-		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));		
+		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
 		btnSellar.setTooltip(new Tooltip("Sellar (Alt+X)"));
 		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
 		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
@@ -187,8 +190,27 @@ public class SellarController implements Initializable {
 
 	@FXML
 	private void handlerSellar(ActionEvent event) throws IOException {
+	 
+	    Peregrino peregrinoSeleccionado = tblPeregrinos.getSelectionModel().getSelectedItem();
+	    
+	    if (peregrinoSeleccionado == null) {
+	        Alertas.alertaInformacion("Error", "Debe seleccionar un peregrino para sellar su carnet.");
+	        return;
+	    }	  
+	    
+	    //falta sacar usuarioActivo de login y completar informacion de parada
+	    String mensaje = "Peregrino: " + peregrinoSeleccionado.getNombre() +
+	                     "\nNacionalidad: " + peregrinoSeleccionado.getNacionalidad() +
+	                     "\nID Carnet: " + peregrinoSeleccionado.getCarnet().getId();	    
+	    boolean confirmar = Alertas.alertaConfirmacion("Confirmar datos", mensaje);
 
+	    if (confirmar) {	       
+	        stageManager.switchScene(FxmlView.ALOJAR);
+	    }else {
+	    	Alertas.alertaInformacion("Acción cancelada", "Por favor, seleccione un peregrino para sellar su carnet.");
+	    }
 	}
+
 
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {

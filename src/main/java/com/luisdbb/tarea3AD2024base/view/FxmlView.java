@@ -129,6 +129,28 @@ public enum FxmlView {
 			return "/fxml/Sellar.fxml";
 		}
 	},
+	ALOJAR {
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("alojar.title");
+		}
+
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/Alojar.fxml";
+		}
+	},
+	VIP {
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("vip.title");
+		}
+
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/Vip.fxml";
+		}
+	},
 	USER {
 		@Override
 		public String getTitle() {

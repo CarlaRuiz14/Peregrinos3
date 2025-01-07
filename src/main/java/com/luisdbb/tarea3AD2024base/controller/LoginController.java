@@ -59,6 +59,9 @@ public class LoginController implements Initializable {
 	private Button btnLogin;
 
 	@FXML
+	private Label lblFeed;
+	
+	@FXML
 	private Button btnVolver;
 
 	@FXML
