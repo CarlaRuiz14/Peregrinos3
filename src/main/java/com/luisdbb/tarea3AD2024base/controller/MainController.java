@@ -116,7 +116,7 @@ public class MainController implements Initializable {
 
 	@FXML
 	private void handlerAdmin(ActionEvent event) throws IOException {
-		stageManager.switchScene(FxmlView.LOGIN);
+		stageManager.switchScene(FxmlView.LOGINADMIN);
 	}
 
 	@FXML

@@ -135,7 +135,7 @@ public class ParadaController implements Initializable {
 
 	@FXML
 	private void handlerEditar(ActionEvent event) throws IOException {
-		
+		stageManager.switchScene(FxmlView.EDITARRESP);
 	}
 
 	@FXML

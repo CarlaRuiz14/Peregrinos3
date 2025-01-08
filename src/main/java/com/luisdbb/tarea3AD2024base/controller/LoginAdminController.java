@@ -16,7 +16,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -30,7 +29,7 @@ import javafx.scene.input.KeyEvent;
  * @since 28/12/2024
  */
 @Controller
-public class LoginController implements Initializable {
+public class LoginAdminController implements Initializable {
 	// corregir boton login
 
 	@FXML
@@ -46,17 +45,11 @@ public class LoginController implements Initializable {
 	private TextField txtContraseña;
 
 	@FXML
-	private Hyperlink hpContraseña;
-
-	@FXML
-	private Hyperlink hpRegistro;
-
-	@FXML
 	private Button btnLogin;
 
 	@FXML
 	private Label lblFeed;
-	
+
 	@FXML
 	private Button btnVolver;
 
@@ -110,18 +103,6 @@ public class LoginController implements Initializable {
 		imgContraseña.setImage(new Image(getClass().getResourceAsStream(rutaCon)));
 
 		// mnenomicos
-		hpContraseña.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.C) {
-				hpContraseña.fire();
-				event.consume();
-			}
-		});
-		hpRegistro.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.R) {
-				hpRegistro.fire();
-				event.consume();
-			}
-		});
 		btnLogin.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.L) {
 				btnLogin.fire();
@@ -144,8 +125,6 @@ public class LoginController implements Initializable {
 		});
 
 		// tooltips
-		hpContraseña.setTooltip(new Tooltip("Recuperar (Alt+C)"));
-		hpRegistro.setTooltip(new Tooltip("Registro (Alt+R)"));
 		btnLogin.setTooltip(new Tooltip("Login (Alt+L)"));
 		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
 		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
@@ -153,10 +132,9 @@ public class LoginController implements Initializable {
 	}
 
 	// handler botones
-
 	@FXML
 	private void handlerLogin(ActionEvent event) throws IOException {
-		
+
 	}
 
 	@FXML
@@ -167,17 +145,6 @@ public class LoginController implements Initializable {
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		Platform.exit();
-	}
-
-	// handler hipervinculos
-	@FXML
-	private void handlerHpContraseña(ActionEvent event) throws IOException {
-		stageManager.switchScene(FxmlView.RECUPERACION);
-	}
-
-	@FXML
-	private void handlerHpRegistro(ActionEvent event) throws IOException {
-		stageManager.switchScene(FxmlView.REGPEREGRINO);
 	}
 
 }

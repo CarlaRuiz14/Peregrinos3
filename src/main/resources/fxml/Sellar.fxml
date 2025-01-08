@@ -62,7 +62,7 @@
                   </HBox>
                </children>
                <GridPane.margin>
-                  <Insets left="100.0" right="100.0" />
+                  <Insets />
                </GridPane.margin>
             </VBox>
             <Label styleClass="lblTitulo3" text="PEREGRINO" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />

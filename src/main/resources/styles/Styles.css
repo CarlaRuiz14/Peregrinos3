@@ -1,11 +1,11 @@
 /* CSS for app */
 
 /* #FBFAF9-BLANCO // #AF9400-MOSTAZA // #FFD700-FLECHA // #FFEA77-CLARO // #877828-OSCURO */
-/* #C4C5C4-GRIS // #008A09-VERDE // #00C90D-PISTACHO // #6BE372-VCLARO // #1F6A24-NEGRO*/
+/* #C4C5C4-GRIS // #008A09-VERDE // #00C90D-PISTACHO // #6BE372-VCLARO // #1F6A24-VOSCURO*/
 
 
 .root {
-    -fx-background-color: #008A09;   
+    -fx-background-color: #1F6A24;   
 }
 
 /* Fondo Gridpane*/
@@ -59,7 +59,7 @@ Label{
 
 /* Botones */
 Button{
-	-fx-background-color:#008A09;
+	-fx-background-color:#1F6A24;
 	-fx-background-radius: 20;
 	-fx-text-fill: #FFD700;	
 }
@@ -82,6 +82,21 @@ Button:hover {
     -fx-text-fill:#1F6A24; 
 }
 
+/* Hyperlink */
+.hyperlink {
+    -fx-text-fill: #1F6A24;
+    -fx-underline: false;  
+}
+
+.hyperlink:hover {
+    -fx-text-fill: #1F6A24;
+	-fx-scale-x:1.1;
+	-fx-scale-y:1.1;
+}
+
+
+
+
 /* Tooltips */
 .tooltip {
     -fx-text-fill: #FFD700; 
@@ -95,7 +110,7 @@ Button:hover {
 
 /* Tabla Marrón */
 .tblM {    
-    -fx-border-color: #008A09;
+    -fx-border-color: #1F6A24;
     -fx-border-width: 2;
 }
 
@@ -184,7 +199,7 @@ Button:hover {
 }
 
 .tblVS .table-row-cell:hover .text {
-    -fx-fill: #FFEA77; /* Cambia el color del texto al pasar el mouse */
+    -fx-fill: #FFEA77;
 }
 
 /* Celdas Seleccion */
@@ -194,7 +209,7 @@ Button:hover {
 }
 
 .tblVS .table-row-cell:selected .text {
-    -fx-fill: #FFD700; /* Cambia el color del texto al seleccionar */
+    -fx-fill: #FFD700;
 }
 
 

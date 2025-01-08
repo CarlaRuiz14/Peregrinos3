@@ -101,12 +101,12 @@ public class AdminController implements Initializable {
 	// handler botones
 	@FXML
 	private void handlerParada(ActionEvent event) throws IOException {
-		
+		stageManager.switchScene(FxmlView.REGPARADA);
 	}
 
 	@FXML
 	private void handlerLogout(ActionEvent event) throws IOException {
-		stageManager.switchScene(FxmlView.LOGIN);
+		stageManager.switchScene(FxmlView.LOGINADMIN);
 	}
 
 	@FXML

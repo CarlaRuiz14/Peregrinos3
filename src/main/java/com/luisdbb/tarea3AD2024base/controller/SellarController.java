@@ -210,7 +210,7 @@ public class SellarController implements Initializable {
 
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
-		stageManager.switchScene(FxmlView.MAIN);
+		stageManager.switchScene(FxmlView.PARADA);
 	}
 
 	@FXML

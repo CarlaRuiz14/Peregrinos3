@@ -19,6 +19,17 @@ public enum FxmlView {
 			return "/fxml/Admin.fxml";
 		}
 	},
+	LOGINADMIN {
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("loginAdmin.title");
+		}
+
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/LoginAdmin.fxml";
+		}
+	},
 	CARNET {
 		@Override
 		public String getTitle() {
@@ -83,6 +94,28 @@ public enum FxmlView {
 		@Override
 		public String getFxmlFile() {
 			return "/fxml/Peregrino.fxml";
+		}
+	},
+	EDITARPEREGRINO {
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("editarPeregrino.title");
+		}
+
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/EditarPeregrino.fxml";
+		}
+	},
+	EDITARRESP {
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("editarResp.title");
+		}
+
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/EditarResp.fxml";
 		}
 	},
 	RECUPERACION {
