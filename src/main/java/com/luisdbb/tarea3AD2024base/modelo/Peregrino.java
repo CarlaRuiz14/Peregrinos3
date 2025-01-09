@@ -1,8 +1,8 @@
 package com.luisdbb.tarea3AD2024base.modelo;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -23,38 +23,35 @@ import jakarta.persistence.Table;
 @Table(name = "peregrinos")
 public class Peregrino {
 
-	// cascade = CascadeType.ALL
-
 	// atributos
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private String nombre;
 	private String apellidos;
+	@Column(name = "fecha_nacimiento")
 	private LocalDate fechaNacimiento;
 	private String genero;
 	private String nacionalidad;
-	@Column(unique = true)
-	private String email;
 
-	// relacion uno a uno con user
+	// relacion uno a uno con carnet bidireccional
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(nullable = false, unique = true) // Clave foránea a User, especificar unique y nullable, no implicito en
-													// FK
-	private Usuario usuario; // de User se saca la PK para la FK aqui y el nombre de la columna sera este
-
-	// relacion uno a muchos con estancias
-	@OneToMany(mappedBy = "peregrino", cascade = CascadeType.ALL) // Relación uno a muchos
-	private List<Estancia> estancias;
-
-	// relacion uno a uno con carnet
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(nullable = false, unique = true)
+	@JoinColumn(name = "id_carnet",nullable = false, unique = true)
 	private Carnet carnet;
 
+	// relacion uno a muchos con estancias
+	@OneToMany(mappedBy = "id", cascade = CascadeType.ALL) // Relación uno a muchos
+	private List<Estancia> estancias;
+
+	// relacion uno a uno con usuario unidireccional
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id_usuario", nullable = false, unique = true) // FK a User,especificar unique y nullable, no
+																		// implicito en FK
+	private Usuario usuario; // de User se saca la PK para la FK aqui y el nombre de la columna sera este
+
 	// relacion uno a muchos con las paradas de paradasperegrinos
-	@OneToMany(mappedBy = "peregrino")
-	private List<ParadasPeregrino> paradasPeregrino = new ArrayList<>();
+	@OneToMany(mappedBy = "peregrino", cascade = CascadeType.ALL)
+	private List<ParadasPeregrino> paradasPeregrino;
 
 	// constructores
 	public Peregrino() {
@@ -70,7 +67,7 @@ public class Peregrino {
 	}
 
 	public Peregrino(long id, String nombre, String apellidos, LocalDate fechaNacimiento, String genero,
-			String nacionalidad, String email, Usuario usuario, List<Estancia> estancias, Carnet carnet,
+			String nacionalidad, Usuario usuario, List<Estancia> estancias, Carnet carnet,
 			List<ParadasPeregrino> paradasPeregrino) {
 		super();
 		this.id = id;
@@ -79,7 +76,6 @@ public class Peregrino {
 		this.fechaNacimiento = fechaNacimiento;
 		this.genero = genero;
 		this.nacionalidad = nacionalidad;
-		this.email = email;
 		this.usuario = usuario;
 		this.estancias = estancias;
 		this.carnet = carnet;
@@ -135,14 +131,6 @@ public class Peregrino {
 		this.nacionalidad = nacionalidad;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
 	public Usuario getUsuario() {
 		return usuario;
 	}
@@ -173,6 +161,36 @@ public class Peregrino {
 
 	public void setParadasPeregrino(List<ParadasPeregrino> paradasPeregrino) {
 		this.paradasPeregrino = paradasPeregrino;
+	}
+
+	// métodos
+	@Override
+	public int hashCode() {
+		return Objects.hash(apellidos, carnet, estancias, fechaNacimiento, genero, id, nacionalidad, nombre,
+				paradasPeregrino, usuario);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Peregrino other = (Peregrino) obj;
+		return Objects.equals(apellidos, other.apellidos) && Objects.equals(carnet, other.carnet)
+				&& Objects.equals(estancias, other.estancias) && Objects.equals(fechaNacimiento, other.fechaNacimiento)
+				&& Objects.equals(genero, other.genero) && id == other.id
+				&& Objects.equals(nacionalidad, other.nacionalidad) && Objects.equals(nombre, other.nombre)
+				&& Objects.equals(paradasPeregrino, other.paradasPeregrino) && Objects.equals(usuario, other.usuario);
+	}
+
+	@Override
+	public String toString() {
+		return "Peregrino [id=" + id + ", nombre=" + nombre + ", apellidos=" + apellidos + ", fechaNacimiento="
+				+ fechaNacimiento + ", genero=" + genero + ", nacionalidad=" + nacionalidad + ", carnet=" + carnet
+				+ ", estancias=" + estancias + ", usuario=" + usuario + ", paradasPeregrino=" + paradasPeregrino + "]";
 	}
 
 }

@@ -1,9 +1,10 @@
 package com.luisdbb.tarea3AD2024base.modelo;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,20 +26,19 @@ public class Parada {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-
+	
+	@Column(nullable = false)
 	private String nombre;
 
+	@Column(nullable = false)
 	private Character region;
 
-	@OneToMany(mappedBy = "parada")
-	private List<ParadasPeregrino> paradasPeregrino = new ArrayList<>();
+	@OneToMany(mappedBy = "parada", cascade = CascadeType.ALL)
+	private List<ParadasPeregrino> paradasPeregrino;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(nullable = false, unique = true)
+	@JoinColumn(name = "id_usuario", nullable = false, unique = true)
 	private Usuario usuario;
-
-	@OneToMany(mappedBy = "parada")
-	private List<Estancia> estancias = new ArrayList<>();
 
 	// constructores
 	public Parada() {
@@ -52,15 +52,14 @@ public class Parada {
 		this.region = region;
 	}
 
-	public Parada(long id, String nombre, Character region, List<ParadasPeregrino> paradasPeregrino, Usuario usuario,
-			List<Estancia> estancias) {
+	public Parada(long id, String nombre, Character region, List<ParadasPeregrino> paradasPeregrino, Usuario usuario) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.region = region;
 		this.paradasPeregrino = paradasPeregrino;
 		this.usuario = usuario;
-		this.estancias = estancias;
+
 	}
 
 	// getters y setters
@@ -104,14 +103,30 @@ public class Parada {
 		this.usuario = usuario;
 	}
 
-	public List<Estancia> getEstancias() {
-		return estancias;
+	// métodos
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, nombre, paradasPeregrino, region, usuario);
 	}
 
-	public void setEstancias(List<Estancia> estancias) {
-		this.estancias = estancias;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Parada other = (Parada) obj;
+		return id == other.id && Objects.equals(nombre, other.nombre)
+				&& Objects.equals(paradasPeregrino, other.paradasPeregrino) && Objects.equals(region, other.region)
+				&& Objects.equals(usuario, other.usuario);
 	}
 
-	
+	@Override
+	public String toString() {
+		return "Parada [id=" + id + ", nombre=" + nombre + ", region=" + region + ", paradasPeregrino="
+				+ paradasPeregrino + ", usuario=" + usuario + "]";
+	}
 
 }

@@ -1,7 +1,10 @@
 package com.luisdbb.tarea3AD2024base.modelo;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,19 +21,27 @@ import jakarta.persistence.Table;
 @Table(name = "carnets")
 public class Carnet {
 
+	// sobra un constructor??
+
 	// atributos
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
+	@Column(name = "fecha_expedicion",nullable = false)
 	private LocalDate fechaExp;
 
 	private double distancia;
 
+	@Column(name = "numero_vips")
 	private int nVips;
 
-	@OneToOne
-	@JoinColumn(nullable = false, unique = true)
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id_peregrino",nullable = false, unique = true)
+	private Peregrino peregrino;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "parada_inicial", nullable = false, unique = true)
 	private Parada paradaInicial;
 
 	// contructores
@@ -96,15 +107,28 @@ public class Carnet {
 
 	// Métodos
 	@Override
-	public String toString() {
-	    return "Carnet{" +
-	            "id=" + id +
-	            ", fechaExp=" + fechaExp +
-	            ", distancia=" + distancia +
-	            ", nVips=" + nVips +
-	            ", paradaInicial="+paradaInicial.getNombre()  +
-	            '}';
+	public int hashCode() {
+		return Objects.hash(distancia, fechaExp, id, nVips, paradaInicial, peregrino);
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Carnet other = (Carnet) obj;
+		return Double.doubleToLongBits(distancia) == Double.doubleToLongBits(other.distancia)
+				&& Objects.equals(fechaExp, other.fechaExp) && id == other.id && nVips == other.nVips
+				&& Objects.equals(paradaInicial, other.paradaInicial) && Objects.equals(peregrino, other.peregrino);
+	}
+
+	@Override
+	public String toString() {
+		return "Carnet [id=" + id + ", fechaExp=" + fechaExp + ", distancia=" + distancia + ", nVips=" + nVips
+				+ ", peregrino=" + peregrino + ", paradaInicial=" + paradaInicial + "]";
+	}
 
 }

@@ -1,6 +1,7 @@
 package com.luisdbb.tarea3AD2024base.modelo;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,11 +29,11 @@ public class Estancia {
 	private Boolean vip;
 
 	@ManyToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn(name = "id_peregrino", nullable = false)
 	private Peregrino peregrino;
 
 	@ManyToOne
-	@JoinColumn(nullable = false)
+	@JoinColumn(name = "id_parada", nullable = false)
 	private Parada parada;
 
 	// constructores
@@ -103,6 +104,31 @@ public class Estancia {
 
 	public void setParada(Parada parada) {
 		this.parada = parada;
+	}
+
+	// métodos
+	@Override
+	public int hashCode() {
+		return Objects.hash(fecha, id, parada, peregrino, vip);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Estancia other = (Estancia) obj;
+		return Objects.equals(fecha, other.fecha) && id == other.id && Objects.equals(parada, other.parada)
+				&& Objects.equals(peregrino, other.peregrino) && Objects.equals(vip, other.vip);
+	}
+
+	@Override
+	public String toString() {
+		return "Estancia [id=" + id + ", fecha=" + fecha + ", vip=" + vip + ", peregrino=" + peregrino + ", parada="
+				+ parada + "]";
 	}
 
 }

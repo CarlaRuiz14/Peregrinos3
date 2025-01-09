@@ -1,7 +1,7 @@
 /* CSS for app */
 
-/* #FBFAF9-BLANCO // #AF9400-MOSTAZA // #FFD700-FLECHA // #FFEA77-CLARO // #877828-OSCURO */
-/* #C4C5C4-GRIS // #008A09-VERDE // #00C90D-PISTACHO // #6BE372-VCLARO // #1F6A24-VOSCURO*/
+/* #AF9400-MOSTAZA // #FFD700-FLECHA // #FFEA77-CLARO*/
+/* #A7F7AC-VCLARO // #1F6A24-VOSCURO*/
 
 
 .root {
@@ -10,7 +10,7 @@
 
 /* Fondo Gridpane*/
 .panel {
-    -fx-background-color:#6BE372;
+    -fx-background-color:#A7F7AC;
 }
 
 /* Paneles verde oscuro con opacidad 30*/
@@ -157,7 +157,7 @@ Button:hover {
 }
 
 .tblV .table-row-cell {
-    -fx-background-color: #6BE372;   
+    -fx-background-color: #A7F7AC;   
 }
 
 .tblV .table-row-cell .text {
@@ -186,7 +186,7 @@ Button:hover {
 }
 
 .tblVS .table-row-cell {
-    -fx-background-color: #6BE372;   
+    -fx-background-color: #A7F7AC;   
 }
 
 .tblVS .table-row-cell .text {

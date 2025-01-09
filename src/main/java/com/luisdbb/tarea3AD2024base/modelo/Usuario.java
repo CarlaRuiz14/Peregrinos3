@@ -1,5 +1,7 @@
 package com.luisdbb.tarea3AD2024base.modelo;
 
+import java.util.Objects;
+
 import com.luisdbb.tarea3AD2024base.config.Perfil;
 
 import jakarta.persistence.Column;
@@ -23,17 +25,19 @@ public class Usuario {
 	// atributos
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", updatable = false)
+	@Column(name = "id")
 	private long id;
 
-	@Column(unique = true)
+	@Column(name = "nombre_usuario", nullable = false,unique = true)
 	private String nombreUsuario;
-	
-	@Column(unique = true)
+
+	@Column(nullable = false)
 	private String email;
-	
+
+	@Column(nullable = false)
 	private String contraseña;
 
+	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private Perfil perfil;
 
@@ -51,7 +55,7 @@ public class Usuario {
 		this.perfil = perfil;
 	}
 
-	//getters y setters
+	// getters y setters
 	public long getId() {
 		return id;
 	}
@@ -91,5 +95,30 @@ public class Usuario {
 	public void setPerfil(Perfil perfil) {
 		this.perfil = perfil;
 	}
-	
+
+	// métodos
+	@Override
+	public int hashCode() {
+		return Objects.hash(contraseña, email, id, nombreUsuario, perfil);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usuario other = (Usuario) obj;
+		return Objects.equals(contraseña, other.contraseña) && Objects.equals(email, other.email) && id == other.id
+				&& Objects.equals(nombreUsuario, other.nombreUsuario) && perfil == other.perfil;
+	}
+
+	@Override
+	public String toString() {
+		return "Usuario [id=" + id + ", nombreUsuario=" + nombreUsuario + ", email=" + email + ", contraseña="
+				+ contraseña + ", perfil=" + perfil + "]";
+	}
+
 }
