@@ -2,7 +2,6 @@ package com.luisdbb.tarea3AD2024base.controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Properties;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,12 +64,12 @@ public class LoginAdminController implements Initializable {
 	@Autowired
 	private UsuarioService usuarioService;
 
+	@Autowired
+	private Sesion sesion;
+	
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
-
-	@Autowired
-	private Sesion sesion;
 
 	// valores de application.properties
 	@Value("${usuarioadmin}")
@@ -154,16 +153,18 @@ public class LoginAdminController implements Initializable {
 	// handler botones
 	@FXML
 	private void handlerLogin(ActionEvent event) throws IOException {
-		lblFeed.setText(" ");		
 		if (getUsuario() == null || getContraseña() == null || getUsuario().isEmpty() || getContraseña().isEmpty()) {
 			Alertas.alertaInformacion("Faltan datos", "Los campos usuario y contraseña son obligatorios");
 		} else {
 			if (getUsuario().equalsIgnoreCase(user) && getContraseña().equalsIgnoreCase(pass)) {
+
+				// sesion
 				sesion.setUsuarioActivo(usuarioService.findByUsuario(getUsuario()));
 				sesion.setPerfilActivo(Perfil.ADMINISTRADOR);
+
 				stageManager.switchScene(FxmlView.ADMIN);
 			} else {
-				lblFeed.setText("Datos no encontrados");
+				Alertas.alertaInformacion("Datos no encontrados", "Los datos introducidos no están registrados.");
 			}
 		}
 	}

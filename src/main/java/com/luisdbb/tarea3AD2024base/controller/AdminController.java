@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
+import com.luisdbb.tarea3AD2024base.config.Perfil;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
+import com.luisdbb.tarea3AD2024base.modelo.Sesion;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
@@ -29,7 +31,7 @@ import javafx.scene.input.KeyEvent;
  */
 
 @Controller
-public class AdminController implements Initializable {	
+public class AdminController implements Initializable {
 
 	@FXML
 	private Label lblTitulo;
@@ -41,7 +43,11 @@ public class AdminController implements Initializable {
 	private Button btnLogout;
 
 	@FXML
-	private Button btnSalir;	
+	private Button btnSalir;
+
+	// inyecciones
+	@Autowired
+	private Sesion sesion;
 
 	// controla el cambio de escenas
 	@Lazy // solo cuando sea necesario, no inmediatamente
@@ -51,7 +57,7 @@ public class AdminController implements Initializable {
 	// automaticamente cuando se carga el fxml asociado
 	// (ubicacion de fxml, recursos bundle)
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {	
+	public void initialize(URL location, ResourceBundle resources) {
 
 		// configuracion imagen boton Logout
 		String rutaLog = resources.getString("btnLogout.icon");
@@ -72,7 +78,7 @@ public class AdminController implements Initializable {
 		// mnenomicos
 		btnParada.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.N) {
-				btnParada.fire(); 
+				btnParada.fire();
 				event.consume();
 			}
 		});
@@ -106,6 +112,10 @@ public class AdminController implements Initializable {
 
 	@FXML
 	private void handlerLogout(ActionEvent event) throws IOException {
+		
+		// sesion cerrada
+		sesion.setUsuarioActivo(null);
+		sesion.setPerfilActivo(Perfil.INVITADO);
 		stageManager.switchScene(FxmlView.LOGINADMIN);
 	}
 

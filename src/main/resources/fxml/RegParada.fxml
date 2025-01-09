@@ -13,18 +13,18 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="540.0" prefWidth="390.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.luisdbb.tarea3AD2024base.controller.RegParadaController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="500.0" prefWidth="480.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.luisdbb.tarea3AD2024base.controller.RegParadaController">
    <children>
-      <GridPane alignment="CENTER" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="500.0" prefWidth="350.0" styleClass="panel" StackPane.alignment="CENTER">
+      <GridPane alignment="CENTER" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="460.0" prefWidth="440.0" styleClass="panel" StackPane.alignment="CENTER">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="200.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="200.0" />
         </columnConstraints>
         <rowConstraints>                
           <RowConstraints minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />           
-          <RowConstraints minHeight="10.0" prefHeight="150.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="140.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="90.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
@@ -37,34 +37,37 @@
                   <Insets />
                </GridPane.margin>
             </Hyperlink>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="70.0" styleClass="lblTitulo2" text="NUEVA PARADA" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Label alignment="CENTER" contentDisplay="CENTER" styleClass="lblTitulo2" text="NUEVA PARADA" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin></Label>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" styleClass="panelP" GridPane.rowIndex="1">
+            <VBox alignment="CENTER" spacing="10.0" styleClass="panelP" GridPane.rowIndex="1">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="120.0" styleClass="lblTitulo3" text="Responsable" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" styleClass="lblTitulo3" text="Responsable" />
                   <TextField fx:id="txtUsuario" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="120.0" promptText="Usuario" />
                   <TextField fx:id="txtEmail" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="120.0" promptText="Email" />
                </children>
+               <padding>
+                  <Insets bottom="20.0" top="20.0" />
+               </padding>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" styleClass="panelP" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <VBox alignment="CENTER" spacing="10.0" styleClass="panelP" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="25.0" prefWidth="120.0" styleClass="lblTitulo3" text="Parada" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" styleClass="lblTitulo3" text="Parada" />
                   <TextField fx:id="txtNombreP" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="120.0" promptText="Nombre" />
                   <TextField fx:id="txtRegionP" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="120.0" promptText="Región" />
                </children>
+               <padding>
+                  <Insets bottom="20.0" top="20.0" />
+               </padding>
             </VBox>
-            <VBox alignment="CENTER" spacing="10.0" styleClass="panelP" GridPane.columnSpan="2" GridPane.rowIndex="3">
+            <HBox alignment="CENTER" spacing="10.0" styleClass="panelP" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                <children>
                   <TextField fx:id="txtContraseña" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="170.0" promptText="Contraseña" />
                   <TextField fx:id="txtConfirmacion" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="170.0" promptText="Confirmación Contraseña" />
                </children>
-               <GridPane.margin>
-                  <Insets left="40.0" right="40.0" />
-               </GridPane.margin>
-            </VBox>
-            <HBox alignment="CENTER" spacing="30.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
+            </HBox>
+            <HBox alignment="CENTER" spacing="40.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
                <children>
                   <Button fx:id="btnLimpiar" mnemonicParsing="false" onAction="#handlerLimpiar" prefHeight="30.0" prefWidth="30.0" />
                   <Button fx:id="btnRegistrar" alignment="CENTER" onAction="#handlerRegistrar" prefHeight="30.0" prefWidth="60.0" styleClass="btnLogin" textAlignment="CENTER" />

@@ -173,17 +173,23 @@ public class LoginController implements Initializable {
 			Perfil perfilActivo = usuarioService.loguear(getUsuario(), getContraseña());
 			switch (perfilActivo) {
 			case PEREGRINO:
+				
+				//sesion
 				sesion.setUsuarioActivo(usuarioService.findByUsuario(getUsuario()));
 				sesion.setPerfilActivo(perfilActivo);
+				
 				stageManager.switchScene(FxmlView.PEREGRINO);
 				break;
 			case PARADA:
+				
+				//sesion
 				sesion.setUsuarioActivo(usuarioService.findByUsuario(getUsuario()));
 				sesion.setPerfilActivo(perfilActivo);
+				
 				stageManager.switchScene(FxmlView.PARADA);
 				break;
 			case null:
-				lblFeed.setText("Datos no encontrados");
+				Alertas.alertaInformacion("Datos no encontrados", "Los datos introducidos no están registrados.");
 				break;
 			default:
 				lblFeed.setText("Error al hacer login");

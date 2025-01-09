@@ -32,12 +32,6 @@ Label{
 	
 }
 
-.lblFeed{
-	-fx-text-fill: red;
-	-fx-font-size: 12px;
-	-fx-font-weight: bold;
-}
-
 .lblNegrita{
 	-fx-font-weight: bold;	
 	
@@ -197,15 +191,6 @@ Button:hover {
 
 .tblVS .table-row-cell .text {
     -fx-fill: #1F6A24;
-}
-/* Celdas Hover*/
-.tblVS .table-row-cell:hover {
-    -fx-background-color: #008A09;
-   
-}
-
-.tblVS .table-row-cell:hover .text {
-    -fx-fill: #FFEA77;
 }
 
 /* Celdas Seleccion */

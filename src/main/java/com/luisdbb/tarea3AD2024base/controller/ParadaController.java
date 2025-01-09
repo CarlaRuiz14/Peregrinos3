@@ -8,8 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
+import com.luisdbb.tarea3AD2024base.config.Perfil;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
-import com.luisdbb.tarea3AD2024base.services.MainService;
+import com.luisdbb.tarea3AD2024base.modelo.Sesion;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
@@ -49,7 +50,10 @@ public class ParadaController implements Initializable {
 
 	@FXML
 	private Button btnSalir;
-	
+
+	// inyecciones
+	@Autowired
+	private Sesion sesion;
 	// controla el cambio de escenas
 	@Lazy // solo cuando sea necesario, no inmediatamente
 	@Autowired
@@ -140,6 +144,9 @@ public class ParadaController implements Initializable {
 
 	@FXML
 	private void handlerLogout(ActionEvent event) throws IOException {
+		// sesion cerrada
+		sesion.setUsuarioActivo(null);
+		sesion.setPerfilActivo(Perfil.INVITADO);
 		stageManager.switchScene(FxmlView.LOGIN);
 	}
 
