@@ -38,6 +38,7 @@ import javafx.scene.input.KeyEvent;
  */
 @Controller
 public class EditarPeregrinoController implements Initializable {
+	//FALTA
 
 	@FXML
 	private Hyperlink hpInfo;

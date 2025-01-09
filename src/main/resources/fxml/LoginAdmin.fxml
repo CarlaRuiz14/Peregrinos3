@@ -54,7 +54,7 @@
                   <Insets right="20.0" />
                </GridPane.margin>
             </Button>
-            <Label fx:id="lblFeed" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
+            <Label fx:id="lblFeed" maxHeight="30.0" maxWidth="200.0" styleClass="lblFeed" wrapText="true" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="CENTER" />
             <Button fx:id="btnVolver" alignment="CENTER" onAction="#handlerVolver" prefHeight="20.0" prefWidth="20.0" GridPane.halignment="LEFT" GridPane.rowIndex="6" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets left="20.0" />

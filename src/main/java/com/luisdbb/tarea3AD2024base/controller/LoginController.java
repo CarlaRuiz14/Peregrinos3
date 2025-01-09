@@ -8,7 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
+import com.luisdbb.tarea3AD2024base.config.Alertas;
+import com.luisdbb.tarea3AD2024base.config.Perfil;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
+import com.luisdbb.tarea3AD2024base.modelo.Sesion;
+import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
@@ -31,7 +35,6 @@ import javafx.scene.input.KeyEvent;
  */
 @Controller
 public class LoginController implements Initializable {
-	// corregir boton login
 
 	@FXML
 	private ImageView imgUsuario;
@@ -56,17 +59,25 @@ public class LoginController implements Initializable {
 
 	@FXML
 	private Label lblFeed;
-	
+
 	@FXML
 	private Button btnVolver;
 
 	@FXML
 	private Button btnSalir;
 
+	// inyecciones
+	@Autowired
+	private UsuarioService usuarioService;
+	
+	@Autowired
+	private Sesion sesion;
+
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
 
+	// métodos
 	public String getContraseña() {
 		return txtContraseña.getText();
 	}
@@ -153,10 +164,31 @@ public class LoginController implements Initializable {
 	}
 
 	// handler botones
-
 	@FXML
 	private void handlerLogin(ActionEvent event) throws IOException {
-		
+		lblFeed.setText(" ");
+		if (getUsuario() == null || getContraseña() == null || getUsuario().isEmpty() || getContraseña().isEmpty()) {
+			Alertas.alertaInformacion("Faltan datos", "Los campos usuario y contraseña son obligatorios");
+		} else {
+			Perfil perfilActivo = usuarioService.loguear(getUsuario(), getContraseña());
+			switch (perfilActivo) {
+			case PEREGRINO:
+				sesion.setUsuarioActivo(usuarioService.findByUsuario(getUsuario()));
+				sesion.setPerfilActivo(perfilActivo);
+				stageManager.switchScene(FxmlView.PEREGRINO);
+				break;
+			case PARADA:
+				sesion.setUsuarioActivo(usuarioService.findByUsuario(getUsuario()));
+				sesion.setPerfilActivo(perfilActivo);
+				stageManager.switchScene(FxmlView.PARADA);
+				break;
+			case null:
+				lblFeed.setText("Datos no encontrados");
+				break;
+			default:
+				lblFeed.setText("Error al hacer login");
+			}
+		}
 	}
 
 	@FXML

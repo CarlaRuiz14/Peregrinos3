@@ -1,6 +1,11 @@
 package com.luisdbb.tarea3AD2024base.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.luisdbb.tarea3AD2024base.config.Perfil;
+import com.luisdbb.tarea3AD2024base.modelo.Usuario;
+import com.luisdbb.tarea3AD2024base.repositorios.UsuarioRepository;
 
 /**
  * @author Carla Ruiz
@@ -9,8 +14,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class UsuarioService {
 
-//	@Autowired
-//	private UsuarioRepository usuarioRepository;
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 //
 //	public Usuario save(Usuario entity) {
 //		return usuarioRepository.save(entity);
@@ -48,12 +53,23 @@ public class UsuarioService {
 //		}
 //	}
 //
-//	public Usuario findByUsuario(String usuario) {
-//		return usuarioRepository.findByUsuario(usuario);
-//	}
+	public Usuario findByUsuario(String usuario) {
+		return usuarioRepository.findByNombreUsuario(usuario);
+	}
 //
 //	public void deleteInBatch(List<Usuario> users) {
 //		usuarioRepository.deleteAll(users);
 //	}
+	
+	
+	public Perfil loguear(String usuario, String contraseña) {
+		Perfil perfil=null;;
+		Usuario user=this.findByUsuario(usuario);
+		if(user!=null && contraseña.equals(user.getContraseña())) {
+			perfil=user.getPerfil();
+		}		
+		return perfil;
+	}
+	
 
 }

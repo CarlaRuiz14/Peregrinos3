@@ -2,13 +2,19 @@ package com.luisdbb.tarea3AD2024base.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
+import com.luisdbb.tarea3AD2024base.config.Alertas;
+import com.luisdbb.tarea3AD2024base.config.Perfil;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
+import com.luisdbb.tarea3AD2024base.modelo.Sesion;
+import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
@@ -30,7 +36,6 @@ import javafx.scene.input.KeyEvent;
  */
 @Controller
 public class LoginAdminController implements Initializable {
-	// corregir boton login
 
 	@FXML
 	private ImageView imgUsuario;
@@ -56,10 +61,25 @@ public class LoginAdminController implements Initializable {
 	@FXML
 	private Button btnSalir;
 
+	// inyecciones
+	@Autowired
+	private UsuarioService usuarioService;
+
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
 
+	@Autowired
+	private Sesion sesion;
+
+	// valores de application.properties
+	@Value("${usuarioadmin}")
+	private String user;
+
+	@Value("${passadmin}")
+	private String pass;
+
+	// métodos
 	public String getContraseña() {
 		return txtContraseña.getText();
 	}
@@ -134,7 +154,18 @@ public class LoginAdminController implements Initializable {
 	// handler botones
 	@FXML
 	private void handlerLogin(ActionEvent event) throws IOException {
-
+		lblFeed.setText(" ");		
+		if (getUsuario() == null || getContraseña() == null || getUsuario().isEmpty() || getContraseña().isEmpty()) {
+			Alertas.alertaInformacion("Faltan datos", "Los campos usuario y contraseña son obligatorios");
+		} else {
+			if (getUsuario().equalsIgnoreCase(user) && getContraseña().equalsIgnoreCase(pass)) {
+				sesion.setUsuarioActivo(usuarioService.findByUsuario(getUsuario()));
+				sesion.setPerfilActivo(Perfil.ADMINISTRADOR);
+				stageManager.switchScene(FxmlView.ADMIN);
+			} else {
+				lblFeed.setText("Datos no encontrados");
+			}
+		}
 	}
 
 	@FXML

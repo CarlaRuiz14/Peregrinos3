@@ -32,6 +32,12 @@ Label{
 	
 }
 
+.lblFeed{
+	-fx-text-fill: red;
+	-fx-font-size: 12px;
+	-fx-font-weight: bold;
+}
+
 .lblNegrita{
 	-fx-font-weight: bold;	
 	
