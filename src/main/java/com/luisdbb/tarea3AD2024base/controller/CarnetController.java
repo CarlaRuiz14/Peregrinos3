@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.Estancia;
 import com.luisdbb.tarea3AD2024base.modelo.Parada;
-import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
@@ -40,8 +39,8 @@ import javafx.scene.input.KeyEvent;
  */
 @Controller
 public class CarnetController implements Initializable {
-	
-	//falta corregir columna region
+
+	// falta corregir columna region
 
 	@FXML
 	private Hyperlink hpInfo;
@@ -106,6 +105,7 @@ public class CarnetController implements Initializable {
 	@FXML
 	private Button btnSalir;
 
+	// inyecciones
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
@@ -113,7 +113,7 @@ public class CarnetController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		// configuracion info
+		// config info
 		String rutaInfo = resources.getString("info.icon");
 		Image imagen = new Image(getClass().getResourceAsStream(rutaInfo));
 		ImageView imageView = new ImageView(imagen);
@@ -122,11 +122,11 @@ public class CarnetController implements Initializable {
 		imageView.setPreserveRatio(true);
 		hpInfo.setGraphic(imageView);
 
-		// configuracion imagen concha
-		String rutaConcha = resources.getString("carnet.icon");
-		imgCarnet.setImage(new Image(getClass().getResourceAsStream(rutaConcha)));
+		// config img peregrino
+		String rutaPer = resources.getString("carnet.icon");
+		imgCarnet.setImage(new Image(getClass().getResourceAsStream(rutaPer)));
 
-		// Configuración de la tabla Paradas
+		// config de la tabla Paradas
 		colIdParada.setCellValueFactory(new PropertyValueFactory<>("id"));
 		colNombreParada.setCellValueFactory(new PropertyValueFactory<>("nombre"));
 		colRegion.setCellValueFactory(new PropertyValueFactory<>("region"));
@@ -137,7 +137,7 @@ public class CarnetController implements Initializable {
 
 		tblParadas.setItems(listParadas);
 
-		// configuracion tabla Estancias
+		// config tabla Estancias
 		colIdEstancia.setCellValueFactory(new PropertyValueFactory<>("id"));
 		colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
 		colVip.setCellValueFactory(new PropertyValueFactory<>("vip"));
@@ -148,7 +148,7 @@ public class CarnetController implements Initializable {
 				super.updateItem(vip, empty);
 				if (empty || vip == null) {
 					setText(null);
-				} else {					
+				} else {
 					setText(vip ? "Sí" : "No");
 				}
 			}
@@ -160,7 +160,7 @@ public class CarnetController implements Initializable {
 
 		tblEstancias.setItems(listEstancias);
 
-		// configuracion imagen boton Exportar
+		// config img btn Exportar
 		String rutaExportar = resources.getString("btnExportar.icon");
 		Image imgExp = new Image(getClass().getResourceAsStream(rutaExportar));
 		ImageView viewExp = new ImageView(imgExp);
@@ -168,7 +168,7 @@ public class CarnetController implements Initializable {
 		viewExp.setFitHeight(30);
 		btnExportar.setGraphic(viewExp);
 
-		// configuracion imagen boton Volver
+		// config img btn Volver
 		String rutaVolver = resources.getString("btnVolver.icon");
 		Image imgVolver = new Image(getClass().getResourceAsStream(rutaVolver));
 		ImageView viewVolver = new ImageView(imgVolver);
@@ -176,7 +176,7 @@ public class CarnetController implements Initializable {
 		viewVolver.setFitHeight(20);
 		btnVolver.setGraphic(viewVolver);
 
-		// configuracion imagen boton Salir
+		// config img btn Salir
 		String rutaSalir = resources.getString("btnSalir.icon");
 		Image imgSalir = new Image(getClass().getResourceAsStream(rutaSalir));
 		ImageView viewSalir = new ImageView(imgSalir);
@@ -184,7 +184,7 @@ public class CarnetController implements Initializable {
 		viewSalir.setFitHeight(20);
 		btnSalir.setGraphic(viewSalir);
 
-		// mnenomicos
+		// mnemónicos
 		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.I) {
 				hpInfo.fire();
@@ -222,7 +222,6 @@ public class CarnetController implements Initializable {
 	}
 
 	// handler botones
-
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 

@@ -66,7 +66,7 @@ public class LoginAdminController implements Initializable {
 
 	@Autowired
 	private Sesion sesion;
-	
+
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
@@ -90,7 +90,7 @@ public class LoginAdminController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		// configuracion imagen boton Login
+		// config img btn Login
 		String rutaLogin = resources.getString("btnLogin.icon");
 		Image imgLogin = new Image(getClass().getResourceAsStream(rutaLogin));
 		ImageView viewLogin = new ImageView(imgLogin);
@@ -98,7 +98,7 @@ public class LoginAdminController implements Initializable {
 		viewLogin.setFitHeight(30);
 		btnLogin.setGraphic(viewLogin);
 
-		// configuracion imagen boton Volver
+		// config img btn Volver
 		String rutaVolver = resources.getString("btnVolver.icon");
 		Image imgVolver = new Image(getClass().getResourceAsStream(rutaVolver));
 		ImageView viewVolver = new ImageView(imgVolver);
@@ -106,7 +106,7 @@ public class LoginAdminController implements Initializable {
 		viewVolver.setFitHeight(20);
 		btnVolver.setGraphic(viewVolver);
 
-		// configuracion imagen boton Salir
+		// config img btn Salir
 		String rutaSalir = resources.getString("btnSalir.icon");
 		Image imgSalir = new Image(getClass().getResourceAsStream(rutaSalir));
 		ImageView viewSalir = new ImageView(imgSalir);
@@ -114,14 +114,14 @@ public class LoginAdminController implements Initializable {
 		viewSalir.setFitHeight(20);
 		btnSalir.setGraphic(viewSalir);
 
-		// configuracion imagenes
+		// config imagenes
 		String rutaUsu = resources.getString("usuario.icon");
 		imgUsuario.setImage(new Image(getClass().getResourceAsStream(rutaUsu)));
 
 		String rutaCon = resources.getString("contraseña.icon");
 		imgContraseña.setImage(new Image(getClass().getResourceAsStream(rutaCon)));
 
-		// mnenomicos
+		// mnemónicos
 		btnLogin.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.L) {
 				btnLogin.fire();

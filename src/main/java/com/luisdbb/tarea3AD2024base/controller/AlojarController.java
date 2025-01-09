@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.Alertas;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
-import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
@@ -62,7 +61,7 @@ public class AlojarController implements Initializable {
 	private Button btnVolver;
 
 	@FXML
-	private Button btnSalir;	
+	private Button btnSalir;
 
 	@Lazy
 	@Autowired
@@ -71,7 +70,7 @@ public class AlojarController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		// configuracion info
+		// config info
 		String rutaInfo = resources.getString("info.icon");
 		Image imagen = new Image(getClass().getResourceAsStream(rutaInfo));
 		ImageView imageView = new ImageView(imagen);
@@ -81,11 +80,10 @@ public class AlojarController implements Initializable {
 		hpInfo.setGraphic(imageView);
 
 		// config toggle group
-
 		rbtnSi.setToggleGroup(respuesta);
 		rbtnNo.setToggleGroup(respuesta);
 
-		// configuracion imagen boton Alojar
+		// config img btn Alojar
 		String rutaAlojar = resources.getString("btnAlojar.icon");
 		Image imgAlojar = new Image(getClass().getResourceAsStream(rutaAlojar));
 		ImageView viewAlojar = new ImageView(imgAlojar);
@@ -93,7 +91,7 @@ public class AlojarController implements Initializable {
 		viewAlojar.setFitHeight(30);
 		btnAlojar.setGraphic(viewAlojar);
 
-		// configuracion imagen boton Volver
+		// config img btn Volver
 		String rutaVolver = resources.getString("btnVolver.icon");
 		Image imgVolver = new Image(getClass().getResourceAsStream(rutaVolver));
 		ImageView viewVolver = new ImageView(imgVolver);
@@ -101,7 +99,7 @@ public class AlojarController implements Initializable {
 		viewVolver.setFitHeight(20);
 		btnVolver.setGraphic(viewVolver);
 
-		// configuracion imagen boton Salir
+		// config img btn Salir
 		String rutaSalir = resources.getString("btnSalir.icon");
 		Image imgSalir = new Image(getClass().getResourceAsStream(rutaSalir));
 		ImageView viewSalir = new ImageView(imgSalir);
@@ -109,7 +107,7 @@ public class AlojarController implements Initializable {
 		viewSalir.setFitHeight(20);
 		btnSalir.setGraphic(viewSalir);
 
-		// mnenomicos
+		// mnemónicos
 		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.I) {
 				hpInfo.fire();
@@ -147,7 +145,6 @@ public class AlojarController implements Initializable {
 	}
 
 	// handler botones
-
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 
@@ -169,8 +166,9 @@ public class AlojarController implements Initializable {
 			stageManager.switchScene(FxmlView.VIP);
 
 		} else if (seleccion.equals(rbtnNo)) {
-			
-			Alertas.alertaInformacion("No alojar", "El peregrino no será alojado.\nDatos guardados.\nVolviendo a su Menú.");
+
+			Alertas.alertaInformacion("No alojar",
+					"El peregrino no será alojado.\nDatos guardados.\nVolviendo a su Menú.");
 			stageManager.switchScene(FxmlView.PARADA);
 		}
 	}

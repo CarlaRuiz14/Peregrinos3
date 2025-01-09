@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.StageManager;
-import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
@@ -38,22 +37,22 @@ public class RegParadaController implements Initializable {
 
 	@FXML
 	private TextField txtUsuario;
-	
+
 	@FXML
 	private TextField txtEmail;
-	
+
 	@FXML
 	private TextField txtContraseña;
-	
+
 	@FXML
 	private TextField txtConfirmacion;
 
 	@FXML
 	private TextField txtNombreP;
-	
+
 	@FXML
 	private TextField txtRegionP;
-	
+
 	@FXML
 	private Button btnLimpiar;
 
@@ -69,6 +68,7 @@ public class RegParadaController implements Initializable {
 	@FXML
 	private Button btnSalir;
 
+	// inyecciones
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
@@ -76,7 +76,7 @@ public class RegParadaController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		// configuracion info
+		// config info
 		String rutaInfo = resources.getString("info.icon");
 		Image imagen = new Image(getClass().getResourceAsStream(rutaInfo));
 		ImageView imageView = new ImageView(imagen);
@@ -85,7 +85,7 @@ public class RegParadaController implements Initializable {
 		imageView.setPreserveRatio(true);
 		hpInfo.setGraphic(imageView);
 
-		// configuracion imagen boton Limpiar
+		// config img btn Limpiar
 		String rutaLimp = resources.getString("btnLimpiar.icon");
 		Image imgLimp = new Image(getClass().getResourceAsStream(rutaLimp));
 		ImageView viewLimp = new ImageView(imgLimp);
@@ -93,7 +93,7 @@ public class RegParadaController implements Initializable {
 		viewLimp.setFitHeight(30);
 		btnLimpiar.setGraphic(viewLimp);
 
-		// configuracion imagen boton Registrar
+		// config img btn Registrar
 		String rutaReg = resources.getString("btnRegistrar.icon");
 		Image imgReg = new Image(getClass().getResourceAsStream(rutaReg));
 		ImageView viewReg = new ImageView(imgReg);
@@ -101,7 +101,7 @@ public class RegParadaController implements Initializable {
 		viewReg.setFitHeight(30);
 		btnRegistrar.setGraphic(viewReg);
 
-		// configuracion imagen boton Volver
+		// config img btn Volver
 		String rutaVolver = resources.getString("btnVolver.icon");
 		Image imgVolver = new Image(getClass().getResourceAsStream(rutaVolver));
 		ImageView viewVolver = new ImageView(imgVolver);
@@ -109,7 +109,7 @@ public class RegParadaController implements Initializable {
 		viewVolver.setFitHeight(20);
 		btnVolver.setGraphic(viewVolver);
 
-		// configuracion imagen boton Salir
+		// config img btn Salir
 		String rutaSalir = resources.getString("btnSalir.icon");
 		Image imgSalir = new Image(getClass().getResourceAsStream(rutaSalir));
 		ImageView viewSalir = new ImageView(imgSalir);
@@ -117,7 +117,7 @@ public class RegParadaController implements Initializable {
 		viewSalir.setFitHeight(20);
 		btnSalir.setGraphic(viewSalir);
 
-		// mnenomicos
+		// mnemónicos
 		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.I) {
 				hpInfo.fire();
@@ -163,7 +163,6 @@ public class RegParadaController implements Initializable {
 	}
 
 	// handler botones
-
 	@FXML
 	private void handlerRegistrar(ActionEvent event) throws IOException {
 
@@ -185,7 +184,6 @@ public class RegParadaController implements Initializable {
 	}
 
 	// handler info
-
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 

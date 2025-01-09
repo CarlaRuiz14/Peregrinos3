@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.StageManager;
-import com.luisdbb.tarea3AD2024base.services.MainService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
@@ -31,7 +30,8 @@ import javafx.scene.input.KeyEvent;
 
 @Controller
 public class MainController implements Initializable {
-	// Falta boton admin y alertas
+
+	// Falta botón admin y alertas
 
 	@FXML
 	private Label lblTitulo;
@@ -45,17 +45,15 @@ public class MainController implements Initializable {
 	@FXML
 	private Button btnSalir;
 
-	// controla el cambio de escenas
-	@Lazy // solo cuando sea necesario, no inmediatamente
+	// inyecciones
+	@Lazy
 	@Autowired
 	private StageManager stageManager;
 
-	// automaticamente cuando se carga el fxml asociado
-	// (ubicacion de fxml, recursos bundle)
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		// configuracion imagen boton flecha
+		// config img btn flecha
 		String rutaFlecha = resources.getString("btnFlecha.icon");
 		Image imgFlecha = new Image(getClass().getResourceAsStream(rutaFlecha));
 		ImageView viewFlecha = new ImageView(imgFlecha);
@@ -63,7 +61,7 @@ public class MainController implements Initializable {
 		viewFlecha.setFitHeight(40);
 		btnFlecha.setGraphic(viewFlecha);
 
-		// configuracion imagen boton Admin
+		// config img btn Admin
 		String rutaAdmin = resources.getString("btnAdmin.icon");
 		Image imgAdmin = new Image(getClass().getResourceAsStream(rutaAdmin));
 		ImageView viewAdmin = new ImageView(imgAdmin);
@@ -71,7 +69,7 @@ public class MainController implements Initializable {
 		viewAdmin.setFitHeight(20);
 		btnAdmin.setGraphic(viewAdmin);
 
-		// configuracion imagen boton Salir
+		// config img btn Salir
 		String rutaSalir = resources.getString("btnSalir.icon");
 		Image imgSalir = new Image(getClass().getResourceAsStream(rutaSalir));
 		ImageView viewSalir = new ImageView(imgSalir);
@@ -79,7 +77,7 @@ public class MainController implements Initializable {
 		viewSalir.setFitHeight(20);
 		btnSalir.setGraphic(viewSalir);
 
-		// mnenomicos
+		// mnemónicos
 		btnFlecha.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.E) {
 				btnFlecha.fire(); // Simula el clic en el botón
@@ -96,7 +94,7 @@ public class MainController implements Initializable {
 
 		btnSalir.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.S) {
-				btnSalir.fire(); 
+				btnSalir.fire();
 				event.consume();
 			}
 		});

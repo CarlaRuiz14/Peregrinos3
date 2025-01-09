@@ -52,17 +52,14 @@ public class PeregrinoController implements Initializable {
 	@Autowired
 	private Sesion sesion;
 
-	// controla el cambio de escenas
-	@Lazy // solo cuando sea necesario, no inmediatamente
+	@Lazy
 	@Autowired
 	private StageManager stageManager;
 
-	// automaticamente cuando se carga el fxml asociado
-	// (ubicacion de fxml, recursos bundle)
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		// configuracion imagen boton Logout
+		// config img btn Logout
 		String rutaLog = resources.getString("btnLogout.icon");
 		Image imgLogout = new Image(getClass().getResourceAsStream(rutaLog));
 		ImageView viewLog = new ImageView(imgLogout);
@@ -70,7 +67,7 @@ public class PeregrinoController implements Initializable {
 		viewLog.setFitHeight(20);
 		btnLogout.setGraphic(viewLog);
 
-		// configuracion imagen boton Salir
+		// config img btn Salir
 		String rutaSalir = resources.getString("btnSalir.icon");
 		Image imgSalir = new Image(getClass().getResourceAsStream(rutaSalir));
 		ImageView viewSalir = new ImageView(imgSalir);
@@ -78,7 +75,7 @@ public class PeregrinoController implements Initializable {
 		viewSalir.setFitHeight(20);
 		btnSalir.setGraphic(viewSalir);
 
-		// mnenomicos
+		// mnemónicos
 		btnExportar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.X) {
 				btnExportar.fire();

@@ -11,9 +11,7 @@ import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.Estancia;
-import com.luisdbb.tarea3AD2024base.modelo.Parada;
 import com.luisdbb.tarea3AD2024base.modelo.Peregrino;
-import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
@@ -99,8 +97,9 @@ public class ExpParadaController implements Initializable {
 	private Label lblFeed;
 
 	@FXML
-	private Button btnSalir;	
+	private Button btnSalir;
 
+	// inyecciones
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
@@ -108,7 +107,7 @@ public class ExpParadaController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		// configuracion info
+		// config info
 		String rutaInfo = resources.getString("info.icon");
 		Image imagen = new Image(getClass().getResourceAsStream(rutaInfo));
 		ImageView imageView = new ImageView(imagen);
@@ -117,13 +116,13 @@ public class ExpParadaController implements Initializable {
 		imageView.setPreserveRatio(true);
 		hpInfo.setGraphic(imageView);
 
-		// configuración tabla estancias
+		// config tabla estancias
 		colIdEstancia.setCellValueFactory(new PropertyValueFactory<>("id"));
 		colPeregrino.setCellValueFactory(cellData -> {
 			// Obtenemos el peregrino asociado a la estancia
 			Peregrino peregrino = cellData.getValue().getPeregrino();
 			// Retornamos el nombre como una propiedad observable
-			return new SimpleStringProperty(peregrino != null ? peregrino.getNombre() : ""); // Manejar nulos si aplica
+			return new SimpleStringProperty(peregrino != null ? peregrino.getNombre() : "");
 		});
 		colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
 		colVip.setCellValueFactory(new PropertyValueFactory<>("vip"));
@@ -134,7 +133,7 @@ public class ExpParadaController implements Initializable {
 				super.updateItem(vip, empty);
 				if (empty || vip == null) {
 					setText(null);
-				} else {					
+				} else {
 					setText(vip ? "Sí" : "No");
 				}
 			}
@@ -152,7 +151,7 @@ public class ExpParadaController implements Initializable {
 
 		tblEstancias.setItems(listEstancias);
 
-		// configuracion imagen boton Buscar
+		// config img btn Buscar
 		String rutaBuscar = resources.getString("btnBuscar.icon");
 		Image imgBuscar = new Image(getClass().getResourceAsStream(rutaBuscar));
 		ImageView viewBuscar = new ImageView(imgBuscar);
@@ -160,7 +159,7 @@ public class ExpParadaController implements Initializable {
 		viewBuscar.setFitHeight(25);
 		btnBuscar.setGraphic(viewBuscar);
 
-		// configuracion imagen boton Exportar
+		// config img btn Exportar
 		String rutaExportar = resources.getString("btnExportar.icon");
 		Image imgExp = new Image(getClass().getResourceAsStream(rutaExportar));
 		ImageView viewExp = new ImageView(imgExp);
@@ -168,7 +167,7 @@ public class ExpParadaController implements Initializable {
 		viewExp.setFitHeight(30);
 		btnExportar.setGraphic(viewExp);
 
-		// configuracion imagen boton Volver
+		// config img btn Volver
 		String rutaVolver = resources.getString("btnVolver.icon");
 		Image imgVolver = new Image(getClass().getResourceAsStream(rutaVolver));
 		ImageView viewVolver = new ImageView(imgVolver);
@@ -176,7 +175,7 @@ public class ExpParadaController implements Initializable {
 		viewVolver.setFitHeight(20);
 		btnVolver.setGraphic(viewVolver);
 
-		// configuracion imagen boton Salir
+		// config img btn Salir
 		String rutaSalir = resources.getString("btnSalir.icon");
 		Image imgSalir = new Image(getClass().getResourceAsStream(rutaSalir));
 		ImageView viewSalir = new ImageView(imgSalir);
@@ -184,7 +183,7 @@ public class ExpParadaController implements Initializable {
 		viewSalir.setFitHeight(20);
 		btnSalir.setGraphic(viewSalir);
 
-		// mnenomicos
+		// mnemónicos
 		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.I) {
 				hpInfo.fire();
@@ -230,7 +229,6 @@ public class ExpParadaController implements Initializable {
 	}
 
 	// handler botones
-
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 

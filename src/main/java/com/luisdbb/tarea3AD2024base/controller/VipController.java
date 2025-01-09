@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.Alertas;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
-import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
@@ -63,7 +62,7 @@ public class VipController implements Initializable {
 
 	@FXML
 	private Button btnSalir;
-	
+
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
@@ -71,7 +70,7 @@ public class VipController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		// configuracion info
+		// config info
 		String rutaInfo = resources.getString("info.icon");
 		Image imagen = new Image(getClass().getResourceAsStream(rutaInfo));
 		ImageView imageView = new ImageView(imagen);
@@ -81,11 +80,10 @@ public class VipController implements Initializable {
 		hpInfo.setGraphic(imageView);
 
 		// config toggle group
-
 		rbtnSi.setToggleGroup(respuesta);
 		rbtnNo.setToggleGroup(respuesta);
 
-		// configuracion imagen boton Vip
+		// config img btn Vip
 		String rutaVip = resources.getString("btnAlojar.icon");
 		Image imgVip = new Image(getClass().getResourceAsStream(rutaVip));
 		ImageView viewVip = new ImageView(imgVip);
@@ -93,7 +91,7 @@ public class VipController implements Initializable {
 		viewVip.setFitHeight(30);
 		btnVip.setGraphic(viewVip);
 
-		// configuracion imagen boton Volver
+		// config img btn Volver
 		String rutaVolver = resources.getString("btnVolver.icon");
 		Image imgVolver = new Image(getClass().getResourceAsStream(rutaVolver));
 		ImageView viewVolver = new ImageView(imgVolver);
@@ -101,7 +99,7 @@ public class VipController implements Initializable {
 		viewVolver.setFitHeight(20);
 		btnVolver.setGraphic(viewVolver);
 
-		// configuracion imagen boton Salir
+		// config img btn Salir
 		String rutaSalir = resources.getString("btnSalir.icon");
 		Image imgSalir = new Image(getClass().getResourceAsStream(rutaSalir));
 		ImageView viewSalir = new ImageView(imgSalir);
@@ -109,7 +107,7 @@ public class VipController implements Initializable {
 		viewSalir.setFitHeight(20);
 		btnSalir.setGraphic(viewSalir);
 
-		// mnenomicos
+		// mnemónicos
 		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.I) {
 				hpInfo.fire();
@@ -147,7 +145,6 @@ public class VipController implements Initializable {
 	}
 
 	// handler botones
-
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 
@@ -164,15 +161,17 @@ public class VipController implements Initializable {
 
 		if (seleccion.equals(rbtnSi)) {
 
-			Alertas.alertaInformacion("Estancia VIP", "El peregrino ha contratado estancia VIP.\nDatos guardados.\nVolviendo a su Menú.");
+			Alertas.alertaInformacion("Estancia VIP",
+					"El peregrino ha contratado estancia VIP.\nDatos guardados.\nVolviendo a su Menú.");
 			stageManager.switchScene(FxmlView.PARADA);
 
 		} else if (seleccion.equals(rbtnNo)) {
-			
-			Alertas.alertaInformacion("Estancia VIP", "El peregrino no ha contratado la estancia VIP.\nDatos guardados.\nVolviendo a su Menú.");
+
+			Alertas.alertaInformacion("Estancia VIP",
+					"El peregrino no ha contratado la estancia VIP.\nDatos guardados.\nVolviendo a su Menú.");
 			stageManager.switchScene(FxmlView.PARADA);
 		}
-	 
+
 	}
 
 	@FXML
