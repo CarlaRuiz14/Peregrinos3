@@ -28,12 +28,13 @@ public class Carnet {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column(name = "fecha_expedicion",nullable = false)
+	@Column(name = "fecha_expedicion", columnDefinition = "DATE DEFAULT CURRENT_DATE", nullable = false)
 	private LocalDate fechaExp;
 
+	@Column(name = "distancia", columnDefinition = "DOUBLE DEFAULT 0.0", nullable = false)
 	private double distancia;
 
-	@Column(name = "numero_vips")
+	@Column(name = "numero_vips",columnDefinition = "INT DEFAULT 0", nullable = false)
 	private int nVips;
 
 	@OneToOne(cascade = CascadeType.ALL)

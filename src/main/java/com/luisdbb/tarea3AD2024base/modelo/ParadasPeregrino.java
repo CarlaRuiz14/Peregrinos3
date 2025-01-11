@@ -20,6 +20,7 @@ public class ParadasPeregrino {
 
 	// atributos
 	// clave primaria definida en clase ParadasPeregrinosId
+
 	@Id
 	@ManyToOne
 	@JoinColumn(name = "id_peregrino", nullable = false)
@@ -33,11 +34,10 @@ public class ParadasPeregrino {
 	@Column(nullable = false)
 	private LocalDate fecha;
 
-	// Constructor por defecto
+	// Constructores
 	public ParadasPeregrino() {
 	}
 
-	// Constructor con parámetros
 	public ParadasPeregrino(Peregrino peregrino, Parada parada, LocalDate fecha) {
 		this.peregrino = peregrino;
 		this.parada = parada;

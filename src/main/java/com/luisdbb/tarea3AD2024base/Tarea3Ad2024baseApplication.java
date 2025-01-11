@@ -13,6 +13,8 @@ import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+
+
 /**
  * @author Carla Ruiz
  * @since 28/12/2024
@@ -58,7 +60,7 @@ public class Tarea3Ad2024baseApplication extends Application {
 	 * primera escena que se muestra al iniciar.
 	 */
 	protected void displayInitialScene() {
-		stageManager.switchScene(FxmlView.MAIN);
+		stageManager.switchScene(FxmlView.REGPARADA);
 	}
 
 	// CONFIGURA el contexto de Spring

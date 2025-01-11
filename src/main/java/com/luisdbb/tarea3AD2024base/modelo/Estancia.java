@@ -3,6 +3,7 @@ package com.luisdbb.tarea3AD2024base.modelo;
 import java.time.LocalDate;
 import java.util.Objects;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,7 +27,8 @@ public class Estancia {
 
 	private LocalDate fecha;
 
-	private Boolean vip;
+	@Column(name = "vip",columnDefinition = "BOOLEAN DEFAULT FALSE", nullable = false)
+	private boolean vip;
 
 	@ManyToOne
 	@JoinColumn(name = "id_peregrino", nullable = false)
@@ -41,14 +43,14 @@ public class Estancia {
 		super();
 	}
 
-	public Estancia(long id, LocalDate fecha, Boolean vip) {
+	public Estancia(long id, LocalDate fecha, boolean vip) {
 		super();
 		this.id = id;
 		this.fecha = fecha;
 		this.vip = vip;
 	}
 
-	public Estancia(long id, Peregrino peregrino, LocalDate fecha, Boolean vip) {
+	public Estancia(long id, Peregrino peregrino, LocalDate fecha, boolean vip) {
 		super();
 		this.id = id;
 		this.fecha = fecha;
@@ -56,7 +58,7 @@ public class Estancia {
 		this.peregrino = peregrino;
 	}
 
-	public Estancia(long id, LocalDate fecha, Boolean vip, Peregrino peregrino, Parada parada) {
+	public Estancia(long id, LocalDate fecha, boolean vip, Peregrino peregrino, Parada parada) {
 		super();
 		this.id = id;
 		this.fecha = fecha;
@@ -82,11 +84,11 @@ public class Estancia {
 		this.fecha = fecha;
 	}
 
-	public Boolean getVip() {
+	public boolean getVip() {
 		return vip;
 	}
 
-	public void setVip(Boolean vip) {
+	public void setVip(boolean vip) {
 		this.vip = vip;
 	}
 

@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.luisdbb.tarea3AD2024base.config.Perfil;
+import com.luisdbb.tarea3AD2024base.modelo.Parada;
 import com.luisdbb.tarea3AD2024base.modelo.Usuario;
 import com.luisdbb.tarea3AD2024base.repositorios.UsuarioRepository;
+
+import jakarta.transaction.Transactional;
 
 /**
  * @author Carla Ruiz
@@ -16,10 +19,13 @@ public class UsuarioService {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-//
-//	public Usuario save(Usuario entity) {
-//		return usuarioRepository.save(entity);
-//	}
+	
+	@Autowired
+	private ParadaService paradaService;
+
+	public Usuario save(Usuario entidad) {
+		return usuarioRepository.save(entidad);
+	}
 //
 //	public Usuario update(Usuario entity) {
 //		return usuarioRepository.save(entity);
@@ -41,18 +47,7 @@ public class UsuarioService {
 //		return usuarioRepository.findAll();
 //	}
 //
-//	public boolean authenticate(String usuario, String contraseña) {
-//		Usuario user = this.findByUsuario(usuario);
-//		if (user == null) {
-//			return false;
-//		} else {
-//			if (contraseña.equals(user.getContraseña()))
-//				return true;
-//			else
-//				return false;
-//		}
-//	}
-//
+
 	public Usuario findByUsuario(String usuario) {
 		return usuarioRepository.findByNombreUsuario(usuario);
 	}
@@ -69,6 +64,13 @@ public class UsuarioService {
 			perfil=user.getPerfil();
 		}		
 		return perfil;
+	}
+	
+	@Transactional
+	public void registrarUsuarioParada(Usuario usuario, Parada parada) {
+		this.save(usuario);
+		paradaService.save(parada);
+		
 	}
 	
 

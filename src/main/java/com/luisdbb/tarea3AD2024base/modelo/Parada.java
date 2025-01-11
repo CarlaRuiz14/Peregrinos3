@@ -31,7 +31,7 @@ public class Parada {
 	private String nombre;
 
 	@Column(nullable = false)
-	private Character region;
+	private char region;
 
 	@OneToMany(mappedBy = "parada", cascade = CascadeType.ALL)
 	private List<ParadasPeregrino> paradasPeregrino;
@@ -45,14 +45,14 @@ public class Parada {
 		super();
 	}
 
-	public Parada(long id, String nombre, Character region) {
+	public Parada(long id, String nombre, char region) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.region = region;
 	}
 
-	public Parada(long id, String nombre, Character region, List<ParadasPeregrino> paradasPeregrino, Usuario usuario) {
+	public Parada(long id, String nombre, char region, List<ParadasPeregrino> paradasPeregrino, Usuario usuario) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -79,11 +79,11 @@ public class Parada {
 		this.nombre = nombre;
 	}
 
-	public Character getRegion() {
+	public char getRegion() {
 		return region;
 	}
 
-	public void setRegion(Character region) {
+	public void setRegion(char region) {
 		this.region = region;
 	}
 

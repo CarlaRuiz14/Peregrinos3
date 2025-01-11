@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
@@ -79,9 +78,7 @@
             <HBox alignment="CENTER" prefHeight="30.0" prefWidth="240.0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7">
                <children>
                   <Button fx:id="btnVolver" alignment="CENTER" onAction="#handlerVolver" prefHeight="20.0" prefWidth="20.0" />
-                  <Region prefHeight="36.0" prefWidth="217.0" />
-                  <Label fx:id="lblFeed" prefHeight="19.0" prefWidth="200.0" />
-                  <Region prefHeight="36.0" prefWidth="206.0" />
+                  <Label fx:id="lblFeed" alignment="CENTER" contentDisplay="CENTER" maxWidth="-Infinity" prefHeight="19.0" prefWidth="360.0" />
                   <Button fx:id="btnSalir" onAction="#handlerSalir" prefHeight="20.0" prefWidth="20.0" />
                </children>
                <GridPane.margin>

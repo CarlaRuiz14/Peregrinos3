@@ -8,10 +8,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
+import com.luisdbb.tarea3AD2024base.config.Alertas;
+import com.luisdbb.tarea3AD2024base.config.Perfil;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
+import com.luisdbb.tarea3AD2024base.config.Validaciones;
+import com.luisdbb.tarea3AD2024base.modelo.Parada;
+import com.luisdbb.tarea3AD2024base.modelo.Usuario;
+import com.luisdbb.tarea3AD2024base.services.ParadaService;
+import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -68,13 +77,27 @@ public class RegParadaController implements Initializable {
 	@FXML
 	private Button btnSalir;
 
+	// propiedades
+	private final StringProperty usuarioProperty = new SimpleStringProperty();
+	private final StringProperty emailProperty = new SimpleStringProperty();
+	private final StringProperty regionPProperty = new SimpleStringProperty();
+	private final StringProperty contraseñaProperty = new SimpleStringProperty();
+
 	// inyecciones
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
 
+	@Autowired
+	private UsuarioService usuarioService;
+
+	@Autowired
+	private ParadaService paradaService;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+
+		validarEntradas();
 
 		// config info
 		String rutaInfo = resources.getString("info.icon");
@@ -162,31 +185,224 @@ public class RegParadaController implements Initializable {
 
 	}
 
-	// handler botones
+	/**
+	 * Handler del botón btnRegistrar. Método que registra un usuario y una parada y
+	 * muestra mensajes de alerta para exito o error.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerRegistrar(ActionEvent event) throws IOException {
 
+		try {
+			if (!validarRegistro()) {
+				return;
+			}
+
+			Usuario user = new Usuario();
+			user.setContraseña(txtContraseña.getText());
+			user.setEmail(txtEmail.getText());
+			user.setNombreUsuario(txtUsuario.getText());
+			user.setPerfil(Perfil.PARADA);
+
+			Parada parada = new Parada();
+			parada.setNombre(txtNombreP.getText());
+			parada.setRegion(txtRegionP.getText().charAt(0));
+			parada.setUsuario(user);
+
+			usuarioService.registrarUsuarioParada(user, parada);
+			Alertas.alertaInformacion("Registro exitoso",
+					"Se han registrado el usuario responsable de parada y la parada correctamente.");
+		} catch (Exception e) {
+			Alertas.alertaInformacion("Error",
+					"Hubo un problema al registrar los datos. Por favor, revise la información.");
+
+		}
+
 	}
 
+	/**
+	 * Handler para el botón btnLimpiar. Método que al pulsarlo limpia los campos
+	 * del formulario.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerLimpiar(ActionEvent event) throws IOException {
 
+		boolean confirmar = Alertas.alertaConfirmacion("Borado de formulario",
+				"Se borrarán los datos introducidos, ¿está de acuerdo?");
+
+		if (confirmar) {
+			txtUsuario.clear();
+			txtEmail.clear();
+			txtNombreP.clear();
+			txtRegionP.clear();
+			txtContraseña.clear();
+			txtConfirmacion.clear();
+		} else {
+			Alertas.alertaInformacion("Acción cancelada", "Por favor, rellene el formulario.");
+		}
+
 	}
 
+	/**
+	 * Handler para el botón btnVolver. Método que al pulsarlo vuelve a la ventana
+	 * de Administración.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.ADMIN);
 	}
 
+	/**
+	 * Handler para botón btnSalir. Método que sale de la aplicación al pulsarlo.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		Platform.exit();
 	}
 
-	// handler info
+	/**
+	 * Handler para el HyperLink hpInfo. Método que muestra el sistema de ayuda al
+	 * pulsarlo.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 
+	}
+
+	/**
+	 * Método que valida cada campo del formulario y muestra el error en lblFeed
+	 */
+	private void validarEntradas() {
+
+		lblFeed.setText(" ");
+
+		// asociación de fxml con properties
+		usuarioProperty.bind(txtUsuario.textProperty());
+		emailProperty.bind(txtEmail.textProperty());
+		regionPProperty.bind(txtRegionP.textProperty());
+		contraseñaProperty.bind(txtContraseña.textProperty());
+
+		usuarioProperty.addListener((observable, oldValue, newValue) -> {
+			if (!newValue.isEmpty()) {
+				if (!Validaciones.validarEspacios(newValue)) {
+					lblFeed.setText("Usuario sin espacios en blanco");
+				} else if (usuarioService.findByUsuario(newValue) != null) {
+					lblFeed.setText("El usuario ya existe");
+				} else {
+					lblFeed.setText("Usuario válido");
+				}
+			} else {
+				lblFeed.setText(" ");
+			}
+		});
+
+		emailProperty.addListener((observable, oldValue, newValue) -> {
+			if (!newValue.isEmpty()) {
+				if (!Validaciones.validarEspacios(newValue)) {
+					lblFeed.setText("Email sin espacios en blanco");
+				} else if (!Validaciones.validarEmail(newValue)) {
+					lblFeed.setText("Formato email no válido");
+				} else {
+					lblFeed.setText("Email válido");
+				}
+			} else {
+				lblFeed.setText(" ");
+			}
+		});
+
+		regionPProperty.addListener((observable, oldValue, newValue) -> {
+			if (!newValue.isEmpty()) {
+				if (newValue.length() != 1) {
+					lblFeed.setText("La región es un único caracter");
+				} else {
+					lblFeed.setText("Región válida");
+				}
+			} else {
+				lblFeed.setText(" ");
+			}
+		});
+
+		contraseñaProperty.addListener((observable, oldValue, newValue) -> {
+			if (!newValue.isEmpty()) {
+				if (!Validaciones.validarEspacios(newValue)) {
+					lblFeed.setText("Contraseña sin espacios en blanco");
+				} else if (!Validaciones.validarContraseña(newValue)) {
+					lblFeed.setText("Min 6 caracteres: mayúscula, nº y especial");
+				} else {
+					lblFeed.setText("Contraseña válida");
+				}
+			} else {
+				lblFeed.setText(" ");
+			}
+		});
+
+	}
+
+	/**
+	 * Método que valida los campos del formulario, que no sean null o estén vacíos,
+	 * que el nombre de la parada no exista ya en esa región y que las contraseñas
+	 * coincidan.
+	 * 
+	 * @return true si todos los campos estan rellenados, la parada no existe ya y
+	 *         las contraseñas coinciden
+	 */
+	private boolean validarRegistro() {
+		if (txtUsuario.getText() == null || txtUsuario.getText().isEmpty()) {
+			Alertas.alertaInformacion("Error de validación", "El nombre de usuario no puede estar vacío.");
+			return false;
+		}
+
+		if (txtEmail.getText() == null || txtEmail.getText().isEmpty()) {
+			Alertas.alertaInformacion("Error de validación", "El email no puede estar vacío.");
+			return false;
+		}
+
+		if (txtNombreP.getText() == null || txtNombreP.getText().isEmpty()) {
+			Alertas.alertaInformacion("Error de validación", "El nombre de la parada no puede estar vacío.");
+			return false;
+		}
+
+		if (txtRegionP.getText() == null || txtRegionP.getText().isEmpty()) {
+			Alertas.alertaInformacion("Error de validación", "La región de la parada no puede estar vacía.");
+			return false;
+		}
+
+		if (txtContraseña.getText() == null || txtContraseña.getText().isEmpty()) {
+			Alertas.alertaInformacion("Error de validación", "La contraseña no puede estar vacía.");
+			return false;
+		}
+
+		if (txtConfirmacion.getText() == null || txtConfirmacion.getText().isEmpty()) {
+			Alertas.alertaInformacion("Error de validación", "La confirmación de la contraseña es obligatoria.");
+			return false;
+		}
+
+		if (paradaService.existeParada(txtNombreP.getText(), txtRegionP.getText().charAt(0))) {
+			Alertas.alertaInformacion("Error en Parada", "El nombre de la parada ya existe en esa región.");
+			return false;
+		}
+
+		if (!txtConfirmacion.getText().equals(txtContraseña.getText())) {
+			Alertas.alertaInformacion("Error de contraseña",
+					"La confirmación de la contraseña no coincide con la contraseña ingresada.");
+			return false;
+		}
+
+		return true;
 	}
 
 }
