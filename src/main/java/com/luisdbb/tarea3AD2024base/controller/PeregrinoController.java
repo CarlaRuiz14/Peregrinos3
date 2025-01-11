@@ -120,7 +120,7 @@ public class PeregrinoController implements Initializable {
 
 	@FXML
 	private void handlerEditar(ActionEvent event) throws IOException {
-		stageManager.switchScene(FxmlView.EDITARPEREGRINO);
+		stageManager.switchScene(FxmlView.EDITARUSUARIO);
 	}
 
 	@FXML

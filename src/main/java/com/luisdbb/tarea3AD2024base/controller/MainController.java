@@ -40,9 +40,6 @@ public class MainController implements Initializable {
 	private Button btnFlecha;
 
 	@FXML
-	private Button btnAdmin;
-
-	@FXML
 	private Button btnSalir;
 
 	// inyecciones
@@ -61,14 +58,6 @@ public class MainController implements Initializable {
 		viewFlecha.setFitHeight(40);
 		btnFlecha.setGraphic(viewFlecha);
 
-		// config img btn Admin
-		String rutaAdmin = resources.getString("btnAdmin.icon");
-		Image imgAdmin = new Image(getClass().getResourceAsStream(rutaAdmin));
-		ImageView viewAdmin = new ImageView(imgAdmin);
-		viewAdmin.setFitWidth(20);
-		viewAdmin.setFitHeight(20);
-		btnAdmin.setGraphic(viewAdmin);
-
 		// config img btn Salir
 		String rutaSalir = resources.getString("btnSalir.icon");
 		Image imgSalir = new Image(getClass().getResourceAsStream(rutaSalir));
@@ -85,13 +74,6 @@ public class MainController implements Initializable {
 			}
 		});
 
-		btnAdmin.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.A) {
-				btnAdmin.fire();
-				event.consume();
-			}
-		});
-
 		btnSalir.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.S) {
 				btnSalir.fire();
@@ -101,7 +83,6 @@ public class MainController implements Initializable {
 
 		// tooltips
 		btnFlecha.setTooltip(new Tooltip("Intro (Alt+E)"));
-		btnAdmin.setTooltip(new Tooltip("Admin (Alt+A)"));
 		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
 
 	}
@@ -110,11 +91,6 @@ public class MainController implements Initializable {
 	@FXML
 	private void handlerFlecha(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.LOGIN);
-	}
-
-	@FXML
-	private void handlerAdmin(ActionEvent event) throws IOException {
-		stageManager.switchScene(FxmlView.LOGINADMIN);
 	}
 
 	@FXML

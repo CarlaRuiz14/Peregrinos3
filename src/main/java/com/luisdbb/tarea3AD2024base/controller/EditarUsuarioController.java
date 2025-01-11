@@ -9,23 +9,16 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.StageManager;
-import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -37,42 +30,17 @@ import javafx.scene.input.KeyEvent;
  * @since 28/12/2024
  */
 @Controller
-public class EditarPeregrinoController implements Initializable {
-	//FALTA
+public class EditarUsuarioController implements Initializable {
+	// FALTA
 
 	@FXML
 	private Hyperlink hpInfo;
 
 	@FXML
-	private ComboBox<String> cmbParada;
-
-	ObservableList<String> listaParadas = FXCollections.observableArrayList("Opción A", "Opción B", "Opción C");
-
-	@FXML
 	private TextField txtNombre;
 
 	@FXML
-	private TextField txtApellidos;
-
-	@FXML
-	private DatePicker dateFecha;
-
-	@FXML
-	private RadioButton rbMasc;
-
-	@FXML
-	private RadioButton rbFem;
-
-	@FXML
-	private ComboBox<String> cmbNacionalidad;
-
-	ObservableList<String> listaNac = FXCollections.observableArrayList("Opción A", "Opción B", "Opción C");
-
-	@FXML
 	private TextField txtEmail;
-
-	@FXML
-	private TextField txtUsuario;
 
 	@FXML
 	private TextField txtContraseña;
@@ -94,7 +62,7 @@ public class EditarPeregrinoController implements Initializable {
 
 	@FXML
 	private Button btnSalir;
-	
+
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
@@ -102,16 +70,7 @@ public class EditarPeregrinoController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		// combobox
-		cmbParada.setItems(listaParadas);
-		cmbNacionalidad.setItems(listaNac);
-
-		// toggle genero
-		ToggleGroup tgGenero = new ToggleGroup();
-		rbMasc.setToggleGroup(tgGenero);
-		rbFem.setToggleGroup(tgGenero);
-
-		// configuracion info
+		// config info
 		String rutaInfo = resources.getString("info.icon");
 		Image imagen = new Image(getClass().getResourceAsStream(rutaInfo));
 		ImageView imageView = new ImageView(imagen);
@@ -120,7 +79,7 @@ public class EditarPeregrinoController implements Initializable {
 		imageView.setPreserveRatio(true);
 		hpInfo.setGraphic(imageView);
 
-		// configuracion imagen boton Limpiar
+		// config img btn Limpiar
 		String rutaLimp = resources.getString("btnLimpiar.icon");
 		Image imgLimp = new Image(getClass().getResourceAsStream(rutaLimp));
 		ImageView viewLimp = new ImageView(imgLimp);
@@ -128,7 +87,7 @@ public class EditarPeregrinoController implements Initializable {
 		viewLimp.setFitHeight(30);
 		btnLimpiar.setGraphic(viewLimp);
 
-		// configuracion imagen boton Registrar
+		// config img btn Registrar
 		String rutaReg = resources.getString("btnRegistrar.icon");
 		Image imgReg = new Image(getClass().getResourceAsStream(rutaReg));
 		ImageView viewReg = new ImageView(imgReg);
@@ -136,7 +95,7 @@ public class EditarPeregrinoController implements Initializable {
 		viewReg.setFitHeight(30);
 		btnRegistrar.setGraphic(viewReg);
 
-		// configuracion imagen boton Volver
+		// config img btn Volver
 		String rutaVolver = resources.getString("btnVolver.icon");
 		Image imgVolver = new Image(getClass().getResourceAsStream(rutaVolver));
 		ImageView viewVolver = new ImageView(imgVolver);
@@ -144,7 +103,7 @@ public class EditarPeregrinoController implements Initializable {
 		viewVolver.setFitHeight(20);
 		btnVolver.setGraphic(viewVolver);
 
-		// configuracion imagen boton Salir
+		// config img btn Salir
 		String rutaSalir = resources.getString("btnSalir.icon");
 		Image imgSalir = new Image(getClass().getResourceAsStream(rutaSalir));
 		ImageView viewSalir = new ImageView(imgSalir);
@@ -152,7 +111,7 @@ public class EditarPeregrinoController implements Initializable {
 		viewSalir.setFitHeight(20);
 		btnSalir.setGraphic(viewSalir);
 
-		// mnenomicos
+		// mnemónicos
 		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.I) {
 				hpInfo.fire();
@@ -198,7 +157,6 @@ public class EditarPeregrinoController implements Initializable {
 	}
 
 	// handler botones
-
 	@FXML
 	private void handlerRegistrar(ActionEvent event) throws IOException {
 
@@ -220,7 +178,6 @@ public class EditarPeregrinoController implements Initializable {
 	}
 
 	// handler info
-
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 

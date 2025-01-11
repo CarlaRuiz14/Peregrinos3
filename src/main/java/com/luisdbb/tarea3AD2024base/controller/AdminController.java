@@ -114,7 +114,7 @@ public class AdminController implements Initializable {
 		sesion.setUsuarioActivo(null);
 		sesion.setPerfilActivo(Perfil.INVITADO);
 
-		stageManager.switchScene(FxmlView.LOGINADMIN);
+		stageManager.switchScene(FxmlView.LOGIN);
 	}
 
 	@FXML

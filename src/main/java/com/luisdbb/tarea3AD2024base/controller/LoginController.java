@@ -173,7 +173,6 @@ public class LoginController implements Initializable {
 			Perfil perfilActivo = usuarioService.loguear(getUsuario(), getContraseña());
 			switch (perfilActivo) {
 			case PEREGRINO:
-
 				// sesion
 				sesion.setUsuarioActivo(usuarioService.findByUsuario(getUsuario()));
 				sesion.setPerfilActivo(perfilActivo);
@@ -181,12 +180,18 @@ public class LoginController implements Initializable {
 				stageManager.switchScene(FxmlView.PEREGRINO);
 				break;
 			case PARADA:
-
 				// sesion
 				sesion.setUsuarioActivo(usuarioService.findByUsuario(getUsuario()));
 				sesion.setPerfilActivo(perfilActivo);
 
 				stageManager.switchScene(FxmlView.PARADA);
+				break;
+			case ADMINISTRADOR:
+				// sesion
+				sesion.setUsuarioActivo(usuarioService.findByUsuario(getUsuario()));
+				sesion.setPerfilActivo(perfilActivo);
+
+				stageManager.switchScene(FxmlView.ADMIN);
 				break;
 			case null:
 				Alertas.alertaInformacion("Datos no encontrados", "Los datos introducidos no están registrados.");
