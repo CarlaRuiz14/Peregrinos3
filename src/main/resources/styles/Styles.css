@@ -204,4 +204,35 @@ Button:hover {
     -fx-fill: #FFD700;
 }
 
+/* Alertas */
+.dialog-pane {
+    -fx-background-color: #A7F7AC; /* Cambia el fondo del diálogo */
+    -fx-border-color: #1F6A24; /* Cambia el borde */
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+}
+
+.dialog-pane .header-panel {
+    -fx-background-color: #1F6A24; /* Fondo del encabezado */
+    -fx-text-fill: #A7F7AC; /* Color del texto del encabezado */
+    -fx-padding: 10px;
+    -fx-font-size: 16px; /* Tamaño de fuente */
+    -fx-font-weight: bold;
+}
+
+.dialog-pane .content {
+    -fx-text-fill: #1F6A24; /* Color del texto del contenido */
+    -fx-font-size: 14px;
+    -fx-padding: 10px;
+}
+
+.dialog-pane .button-bar .button {
+    -fx-background-color: #1F6A24; /* Fondo de los botones */
+    -fx-text-fill: #A7F7AC; /* Color del texto del botón */
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-font-size: 12px;
+}
+
 
