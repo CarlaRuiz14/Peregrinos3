@@ -2,8 +2,6 @@ package com.luisdbb.tarea3AD2024base.modelo;
 
 import org.springframework.stereotype.Component;
 
-import com.luisdbb.tarea3AD2024base.config.Perfil;
-
 @Component
 // por defecto en spring usa singleton al llevar anotación component
 public class Sesion {

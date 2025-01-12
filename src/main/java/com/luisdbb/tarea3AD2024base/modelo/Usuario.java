@@ -2,8 +2,6 @@ package com.luisdbb.tarea3AD2024base.modelo;
 
 import java.util.Objects;
 
-import com.luisdbb.tarea3AD2024base.config.Perfil;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

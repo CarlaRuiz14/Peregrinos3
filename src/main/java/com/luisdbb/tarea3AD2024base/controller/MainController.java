@@ -31,8 +31,6 @@ import javafx.scene.input.KeyEvent;
 @Controller
 public class MainController implements Initializable {
 
-	// Falta botón admin y alertas
-
 	@FXML
 	private Label lblTitulo;
 
@@ -87,12 +85,21 @@ public class MainController implements Initializable {
 
 	}
 
-	// handler botones
+	
+	/**
+	 * Handler botón btnFlecha. Método que al pulsarlo cambia a la ventana de Login. 
+	 */
 	@FXML
 	private void handlerFlecha(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.LOGIN);
 	}
 
+	/**
+	 * Handler para botón btnSalir. Método que sale de la aplicación al pulsarlo.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		Platform.exit();

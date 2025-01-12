@@ -13,8 +13,6 @@ import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-
-
 /**
  * @author Carla Ruiz
  * @since 28/12/2024
@@ -34,6 +32,8 @@ public class Tarea3Ad2024baseApplication extends Application {
 	// lanza la app
 	public static void main(final String[] args) {
 		Application.launch(args);
+		//System.setProperty("java.awt.headless", "true");
+
 	}
 
 	// configura la ventana principal
@@ -50,7 +50,7 @@ public class Tarea3Ad2024baseApplication extends Application {
 		ResourceBundle bundle = ResourceBundle.getBundle("Bundle");
 		String iconPath = bundle.getString("app.icon");
 		primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(iconPath)));
-		
+
 		primaryStage.setResizable(false);
 
 	}
@@ -60,7 +60,7 @@ public class Tarea3Ad2024baseApplication extends Application {
 	 * primera escena que se muestra al iniciar.
 	 */
 	protected void displayInitialScene() {
-		stageManager.switchScene(FxmlView.REGPARADA);
+		stageManager.switchScene(FxmlView.ALOJAR);
 	}
 
 	// CONFIGURA el contexto de Spring

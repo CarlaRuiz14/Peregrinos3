@@ -9,10 +9,10 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.Alertas;
-import com.luisdbb.tarea3AD2024base.config.Perfil;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.config.Validaciones;
 import com.luisdbb.tarea3AD2024base.modelo.Parada;
+import com.luisdbb.tarea3AD2024base.modelo.Perfil;
 import com.luisdbb.tarea3AD2024base.modelo.Usuario;
 import com.luisdbb.tarea3AD2024base.services.ParadaService;
 import com.luisdbb.tarea3AD2024base.services.UsuarioService;

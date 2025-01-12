@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.scene.web.WebView;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,8 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -26,6 +30,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * @author Carla Ruiz
@@ -67,6 +73,7 @@ public class AlojarController implements Initializable {
 	@Autowired
 	private StageManager stageManager;
 
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -147,8 +154,42 @@ public class AlojarController implements Initializable {
 	// handler botones
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
+		 try {
+		        // Crear un WebView para mostrar la ayuda
+		        WebView webView = new WebView();
 
+		        // Cargar el archivo HTML desde los recursos
+		        String url = getClass().getResource("/help/help.html").toExternalForm();
+		        webView.getEngine().load(url);
+
+		        // Crear un nuevo Stage para la ventana de ayuda
+		        Stage helpStage = new Stage();
+		        helpStage.setTitle("Info");
+
+		        // Crear una Scene con el WebView
+		        Scene helpScene = new Scene(webView, 600, 600);
+
+		        // Configurar la ventana
+		        helpStage.setScene(helpScene);
+
+		        // Bloquear la ventana principal mientras se muestra la ayuda
+		        helpStage.initModality(Modality.APPLICATION_MODAL);
+		        helpStage.setResizable(true);
+
+		        // Mostrar la ventana de ayuda
+		        helpStage.show();
+		    } catch (NullPointerException e) {
+		        // Manejar el caso en que el archivo de ayuda no se encuentra
+		        Alert alert = new Alert(Alert.AlertType.ERROR);
+		        alert.setTitle("Error");
+		        alert.setHeaderText("Archivo de Ayuda no encontrado");
+		        alert.setContentText("Por favor, verifica que el archivo 'help.html' esté en la ruta '/ayuda' dentro de los recursos del proyecto.");
+		        alert.showAndWait();
+		    }
+		
 	}
+
+	
 
 	@FXML
 	private void handlerAlojar(ActionEvent event) {

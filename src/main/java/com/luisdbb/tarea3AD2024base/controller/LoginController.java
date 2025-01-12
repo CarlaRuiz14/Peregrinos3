@@ -9,8 +9,8 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.Alertas;
-import com.luisdbb.tarea3AD2024base.config.Perfil;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
+import com.luisdbb.tarea3AD2024base.modelo.Perfil;
 import com.luisdbb.tarea3AD2024base.modelo.Sesion;
 import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
@@ -76,15 +76,6 @@ public class LoginController implements Initializable {
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
-
-	// métodos
-	public String getContraseña() {
-		return txtContraseña.getText();
-	}
-
-	public String getUsuario() {
-		return txtUsuario.getText();
-	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -163,32 +154,46 @@ public class LoginController implements Initializable {
 
 	}
 
-	// handler botones
+	/**
+	 * Handler para el botón btnLogin. Método que al pulsarlo realiza las siguientes acciones:
+	 * - Comprueba que los campos de usuario y contraseña no estén vacíos o nulos.
+	 *   Si alguno de los campos está vacío, muestra un mensaje de alerta indicando que los datos son obligatorios.
+	 * - Si los datos están completos, intenta iniciar sesión utilizando el servicio `usuarioService`.
+	 * - Dependiendo del perfil del usuario (PEREGRINO, PARADA, ADMINISTRADOR), establece el perfil activo en la sesión
+	 *   y cambia la escena correspondiente mediante `stageManager.switchScene`.
+	 * - Si el usuario no se encuentra registrado, muestra un mensaje de alerta indicando que los datos no están registrados.
+	 * - Si ocurre un error inesperado, muestra un mensaje en el label `lblFeed` indicando un fallo en el inicio de sesión.
+	 * 
+	 * @param event El evento que dispara el método (clic en el botón).
+	 * @throws IOException Si ocurre un error al cambiar la escena o al acceder a recursos de E/S.
+	 */
+
 	@FXML
 	private void handlerLogin(ActionEvent event) throws IOException {
 		lblFeed.setText(" ");
-		if (getUsuario() == null || getContraseña() == null || getUsuario().isEmpty() || getContraseña().isEmpty()) {
+		if (txtUsuario.getText() == null || txtContraseña.getText() == null || txtUsuario.getText().isEmpty()
+				|| txtContraseña.getText().isEmpty()) {
 			Alertas.alertaInformacion("Faltan datos", "Los campos usuario y contraseña son obligatorios");
 		} else {
-			Perfil perfilActivo = usuarioService.loguear(getUsuario(), getContraseña());
+			Perfil perfilActivo = usuarioService.loguear(txtUsuario.getText(), txtContraseña.getText());
 			switch (perfilActivo) {
 			case PEREGRINO:
 				// sesion
-				sesion.setUsuarioActivo(usuarioService.findByUsuario(getUsuario()));
+				sesion.setUsuarioActivo(usuarioService.findByUsuario(txtUsuario.getText()));
 				sesion.setPerfilActivo(perfilActivo);
 
 				stageManager.switchScene(FxmlView.PEREGRINO);
 				break;
 			case PARADA:
 				// sesion
-				sesion.setUsuarioActivo(usuarioService.findByUsuario(getUsuario()));
+				sesion.setUsuarioActivo(usuarioService.findByUsuario(txtUsuario.getText()));
 				sesion.setPerfilActivo(perfilActivo);
 
 				stageManager.switchScene(FxmlView.PARADA);
 				break;
 			case ADMINISTRADOR:
 				// sesion
-				sesion.setUsuarioActivo(usuarioService.findByUsuario(getUsuario()));
+				sesion.setUsuarioActivo(usuarioService.findByUsuario(txtUsuario.getText()));
 				sesion.setPerfilActivo(perfilActivo);
 
 				stageManager.switchScene(FxmlView.ADMIN);
@@ -202,22 +207,47 @@ public class LoginController implements Initializable {
 		}
 	}
 
+	/**
+	 * Handler para el botón btnVolver. Método que al pulsarlo vuelve a la ventana principal.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.MAIN);
 	}
 
+	/**
+	 * Handler para botón btnSalir. Método que sale de la aplicación al pulsarlo.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		Platform.exit();
 	}
 
-	// handler hipervinculos
+	/**
+	 * Handler para el Hyperlink hpContraseña. Método que al pulsarlo cambia a la
+	 * ventana de recuperación de contraseña.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerHpContraseña(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.RECUPERACION);
 	}
 
+	/**
+	 * Handler para el Hyperlink hpRegistro. Método que al pulsarlo cambia a la
+	 * ventana de registro de peregrino.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerHpRegistro(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.REGPEREGRINO);

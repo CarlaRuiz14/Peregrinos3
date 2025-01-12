@@ -155,7 +155,22 @@ public class RecuperacionController implements Initializable {
 
 	}
 
-	// handler botones
+	/**
+	 * Handler para el botón `btnEnviar`. Este método se ejecuta al pulsar el botón para enviar la contraseña al correo electrónico del usuario.
+	 * 
+	 * Realiza las siguientes acciones:
+	 * - Verifica si el usuario existe en la base de datos mediante la variable `existeUsuario`:
+	 *   - Si el usuario existe:
+	 *     - Muestra una alerta de confirmación preguntando al usuario si desea enviar la contraseña al correo asociado.
+	 *     - Si el usuario confirma, muestra un mensaje de éxito indicando que se ha enviado el correo electrónico
+	 *       y cambia la escena al formulario de inicio de sesión (`FxmlView.LOGIN`) utilizando el `stageManager`.
+	 *     - Si el usuario cancela, muestra un mensaje de cancelación indicando que debe introducir un usuario registrado.
+	 *   - Si el usuario no existe, muestra un mensaje indicando que es necesario un usuario registrado para recuperar la contraseña.
+	 * 
+	 * @param event El evento que dispara el método (clic en el botón).
+	 * @throws IOException Si ocurre un error al cambiar la escena o al acceder a recursos de E/S.
+	 */
+
 	@FXML
 	private void handlerEnviar(ActionEvent event) throws IOException {
 		if (existeUsuario) {
@@ -174,17 +189,35 @@ public class RecuperacionController implements Initializable {
 		}
 	}
 
+	/**
+	 * Handler para el botón btnVolver. Método que al pulsarlo vuelve a la ventana de Login.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.LOGIN);
 	}
 
+	/**
+	 * Handler para botón btnSalir. Método que sale de la aplicación al pulsarlo.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		Platform.exit();
 	}
 
-	// handler info
+	/**
+	 * Handler para el HyperLink hpInfo. Método que muestra el sistema de ayuda al
+	 * pulsarlo.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 
