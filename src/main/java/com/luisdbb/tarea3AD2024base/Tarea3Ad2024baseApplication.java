@@ -60,7 +60,7 @@ public class Tarea3Ad2024baseApplication extends Application {
 	 * primera escena que se muestra al iniciar.
 	 */
 	protected void displayInitialScene() {
-		stageManager.switchScene(FxmlView.ALOJAR);
+		stageManager.switchScene(FxmlView.REGPEREGRINO);
 	}
 
 	// CONFIGURA el contexto de Spring

@@ -27,7 +27,7 @@ public class Estancia {
 
 	private LocalDate fecha;
 
-	@Column(name = "vip",columnDefinition = "BOOLEAN DEFAULT FALSE", nullable = false)
+	@Column(name = "vip",columnDefinition = "BOOLEAN DEFAULT FALSE")
 	private boolean vip;
 
 	@ManyToOne

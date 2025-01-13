@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -28,26 +29,37 @@ public class Carnet {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column(name = "fecha_expedicion", columnDefinition = "DATE DEFAULT CURRENT_DATE", nullable = false)
+	@Column(name = "fecha_expedicion", columnDefinition = "DATE DEFAULT CURRENT_DATE")
 	private LocalDate fechaExp;
 
-	@Column(name = "distancia", columnDefinition = "DOUBLE DEFAULT 0.0", nullable = false)
+	@Column(name = "distancia", columnDefinition = "DOUBLE DEFAULT 0.0")
 	private double distancia;
 
-	@Column(name = "numero_vips",columnDefinition = "INT DEFAULT 0", nullable = false)
+	@Column(name = "numero_vips", columnDefinition = "INT DEFAULT 0")
 	private int nVips;
-
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id_peregrino",nullable = false, unique = true)
+	
+	//relacion bidireccional con peregrino pero solo mapeada, sin columna
+	@OneToOne(mappedBy = "carnet", cascade = CascadeType.ALL)	
 	private Peregrino peregrino;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "parada_inicial", nullable = false, unique = true)
+	@ManyToOne //Una parada puede ser paradaInicial de varios carnets
+	@JoinColumn(name = "parada_inicial", nullable = false)
 	private Parada paradaInicial;
 
 	// contructores
 	public Carnet() {
 		super();
+	}
+
+	// para sellarController prueba, borrar 
+	public Carnet(long id) {
+		super();
+		this.id = id;
+	}
+
+	public Carnet(Parada paradaInicial) {
+		super();
+		this.paradaInicial = paradaInicial;
 	}
 
 	public Carnet(long id, LocalDate fechaExp, double distancia, int nVips, Parada paradaInicial) {
@@ -57,12 +69,6 @@ public class Carnet {
 		this.distancia = distancia;
 		this.nVips = nVips;
 		this.paradaInicial = paradaInicial;
-	}
-
-	// ??
-	public Carnet(long id) {
-		super();
-		this.id = id;
 	}
 
 	// getters y setters
@@ -105,6 +111,15 @@ public class Carnet {
 	public void setParadaInicial(Parada paradaInicial) {
 		this.paradaInicial = paradaInicial;
 	}
+	
+	public Peregrino getPeregrino() {
+		return peregrino;
+	}
+
+	public void setPeregrino(Peregrino peregrino) {
+		this.peregrino = peregrino;
+	}
+
 
 	// Métodos
 	@Override
@@ -132,4 +147,6 @@ public class Carnet {
 				+ ", peregrino=" + peregrino + ", paradaInicial=" + paradaInicial + "]";
 	}
 
+
+	
 }

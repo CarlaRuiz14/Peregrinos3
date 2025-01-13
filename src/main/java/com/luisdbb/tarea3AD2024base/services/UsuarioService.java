@@ -22,7 +22,8 @@ public class UsuarioService {
 	
 	@Autowired
 	private ParadaService paradaService;
-
+	
+	
 	public Usuario save(Usuario entidad) {
 		return usuarioRepository.save(entidad);
 	}
@@ -72,6 +73,8 @@ public class UsuarioService {
 		paradaService.save(parada);
 		
 	}
+	
+
 	
 
 }

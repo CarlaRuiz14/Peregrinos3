@@ -45,7 +45,6 @@ public class AdminController implements Initializable {
 	@FXML
 	private Button btnSalir;
 
-	// inyecciones
 	@Autowired
 	private Sesion sesion;
 
@@ -101,22 +100,40 @@ public class AdminController implements Initializable {
 
 	}
 
-	// handler botones
+	/**
+	 * Handler para botón btnParada. Método que cambia la escena a la ventana de
+	 * registrar nueva parada.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerParada(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.REGPARADA);
 	}
 
+	/**
+	 * Handler para botón Logout. Método que desactiva la sesión actual del
+	 * usuario. Establece usuarioActivo a null y el perfilActivo a INVITADO. Cambia
+	 * la escena a la ventana de Login.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerLogout(ActionEvent event) throws IOException {
-
-		// sesión cerrada
 		sesion.setUsuarioActivo(null);
 		sesion.setPerfilActivo(Perfil.INVITADO);
 
 		stageManager.switchScene(FxmlView.LOGIN);
 	}
 
+	/**
+	 * Handler para botón btnSalir. Método que sale de la aplicación al pulsarlo.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		Platform.exit();

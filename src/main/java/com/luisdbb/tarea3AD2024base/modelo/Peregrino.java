@@ -27,9 +27,10 @@ public class Peregrino {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	private String nombre;
+	@Column(nullable=false)
+	private String nombre;	
 	private String apellidos;
-	@Column(name = "fecha_nacimiento")
+	@Column(name = "fecha_nacimiento",nullable=false)
 	private LocalDate fechaNacimiento;
 	private String genero;
 	private String nacionalidad;
@@ -58,6 +59,7 @@ public class Peregrino {
 		super();
 	}
 
+	// constructor para prueba en sellarControler
 	public Peregrino(long id, String nombre, String nacionalidad, Carnet carnet) {
 		super();
 		this.id = id;
@@ -66,6 +68,20 @@ public class Peregrino {
 		this.carnet = carnet;
 	}
 
+	
+	public Peregrino(String nombre, String apellidos, LocalDate fechaNacimiento, String genero,
+			String nacionalidad, Usuario usuario, Carnet carnet) {
+		super();		
+		this.nombre = nombre;
+		this.apellidos = apellidos;
+		this.fechaNacimiento = fechaNacimiento;
+		this.genero = genero;
+		this.nacionalidad = nacionalidad;
+		this.usuario = usuario;		
+		this.carnet = carnet;
+		
+	}
+	
 	public Peregrino(long id, String nombre, String apellidos, LocalDate fechaNacimiento, String genero,
 			String nacionalidad, Usuario usuario, List<Estancia> estancias, Carnet carnet,
 			List<ParadasPeregrino> paradasPeregrino) {

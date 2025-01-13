@@ -26,7 +26,7 @@ public class Parada {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
+
 	@Column(nullable = false)
 	private String nombre;
 
@@ -50,6 +50,14 @@ public class Parada {
 		this.id = id;
 		this.nombre = nombre;
 		this.region = region;
+	}
+
+	public Parada(String nombre, char region, Usuario usuario) {
+		super();
+		this.nombre = nombre;
+		this.region = region;
+		this.usuario = usuario;
+
 	}
 
 	public Parada(long id, String nombre, char region, List<ParadasPeregrino> paradasPeregrino, Usuario usuario) {
@@ -125,8 +133,7 @@ public class Parada {
 
 	@Override
 	public String toString() {
-		return "Parada [id=" + id + ", nombre=" + nombre + ", region=" + region + ", paradasPeregrino="
-				+ paradasPeregrino + ", usuario=" + usuario + "]";
+		return nombre;
 	}
 
 }

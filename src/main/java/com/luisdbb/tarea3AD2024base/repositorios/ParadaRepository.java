@@ -6,4 +6,5 @@ import com.luisdbb.tarea3AD2024base.modelo.Parada;
 
 public interface ParadaRepository extends JpaRepository<Parada, Long>{
 	Parada findByNombre(String nombre);
+	
 }

@@ -29,6 +29,7 @@ public class Usuario {
 	@Column(name = "nombre_usuario", nullable = false,unique = true)
 	private String nombreUsuario;
 
+	@Column(nullable=false)
 	private String email;
 
 	@Column(nullable = false)
@@ -43,6 +44,15 @@ public class Usuario {
 		super();
 	}
 
+	public Usuario(String nombreUsuario, String email, String contraseña, Perfil perfil) {
+		super();	
+		this.nombreUsuario = nombreUsuario;
+		this.email = email;
+		this.contraseña = contraseña;
+		this.perfil = perfil;
+	}
+	
+	
 	public Usuario(long id, String nombreUsuario, String email, String contraseña, Perfil perfil) {
 		super();
 		this.id = id;

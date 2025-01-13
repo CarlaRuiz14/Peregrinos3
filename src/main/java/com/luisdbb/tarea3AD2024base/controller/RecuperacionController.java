@@ -20,6 +20,7 @@ import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -29,6 +30,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.web.WebView;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * @author Carla Ruiz
@@ -156,19 +160,50 @@ public class RecuperacionController implements Initializable {
 	}
 
 	/**
-	 * Handler para el botón `btnEnviar`. Este método se ejecuta al pulsar el botón para enviar la contraseña al correo electrónico del usuario.
+	 * Handler para el HyperLink hpInfo. Método que muestra el sistema de ayuda al
+	 * pulsarlo.
 	 * 
-	 * Realiza las siguientes acciones:
-	 * - Verifica si el usuario existe en la base de datos mediante la variable `existeUsuario`:
-	 *   - Si el usuario existe:
-	 *     - Muestra una alerta de confirmación preguntando al usuario si desea enviar la contraseña al correo asociado.
-	 *     - Si el usuario confirma, muestra un mensaje de éxito indicando que se ha enviado el correo electrónico
-	 *       y cambia la escena al formulario de inicio de sesión (`FxmlView.LOGIN`) utilizando el `stageManager`.
-	 *     - Si el usuario cancela, muestra un mensaje de cancelación indicando que debe introducir un usuario registrado.
-	 *   - Si el usuario no existe, muestra un mensaje indicando que es necesario un usuario registrado para recuperar la contraseña.
+	 * @param event
+	 * @throws IOException
+	 */
+	@FXML
+	private void handlerInfo(ActionEvent event) throws IOException {
+		WebView webView = new WebView();
+
+		String url = getClass().getResource("/help/help.html").toExternalForm();
+		webView.getEngine().load(url);
+
+		Stage helpStage = new Stage();
+		helpStage.setTitle("Info");
+
+		Scene helpScene = new Scene(webView, 600, 600);
+		helpStage.setScene(helpScene);
+
+		// Bloquear la ventana principal mientras se muestra la ayuda
+		helpStage.initModality(Modality.APPLICATION_MODAL);
+		helpStage.setResizable(false);
+
+		helpStage.show();
+	}
+
+	/**
+	 * Handler para el botón `btnEnviar`. Este método se ejecuta al pulsar el botón
+	 * para enviar la contraseña al correo electrónico del usuario.
+	 * 
+	 * Realiza las siguientes acciones: - Verifica si el usuario existe en la base
+	 * de datos mediante la variable `existeUsuario`: - Si el usuario existe: -
+	 * Muestra una alerta de confirmación preguntando al usuario si desea enviar la
+	 * contraseña al correo asociado. - Si el usuario confirma, muestra un mensaje
+	 * de éxito indicando que se ha enviado el correo electrónico y cambia la escena
+	 * al formulario de inicio de sesión (`FxmlView.LOGIN`) utilizando el
+	 * `stageManager`. - Si el usuario cancela, muestra un mensaje de cancelación
+	 * indicando que debe introducir un usuario registrado. - Si el usuario no
+	 * existe, muestra un mensaje indicando que es necesario un usuario registrado
+	 * para recuperar la contraseña.
 	 * 
 	 * @param event El evento que dispara el método (clic en el botón).
-	 * @throws IOException Si ocurre un error al cambiar la escena o al acceder a recursos de E/S.
+	 * @throws IOException Si ocurre un error al cambiar la escena o al acceder a
+	 *                     recursos de E/S.
 	 */
 
 	@FXML
@@ -190,7 +225,8 @@ public class RecuperacionController implements Initializable {
 	}
 
 	/**
-	 * Handler para el botón btnVolver. Método que al pulsarlo vuelve a la ventana de Login.
+	 * Handler para el botón btnVolver. Método que al pulsarlo vuelve a la ventana
+	 * de Login.
 	 * 
 	 * @param event
 	 * @throws IOException
@@ -209,18 +245,6 @@ public class RecuperacionController implements Initializable {
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		Platform.exit();
-	}
-
-	/**
-	 * Handler para el HyperLink hpInfo. Método que muestra el sistema de ayuda al
-	 * pulsarlo.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
-	@FXML
-	private void handlerInfo(ActionEvent event) throws IOException {
-
 	}
 
 }

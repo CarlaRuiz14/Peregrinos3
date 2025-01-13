@@ -8,7 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
+import com.luisdbb.tarea3AD2024base.config.Alertas;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
+import com.luisdbb.tarea3AD2024base.modelo.Carnet;
+import com.luisdbb.tarea3AD2024base.modelo.Parada;
+import com.luisdbb.tarea3AD2024base.modelo.Peregrino;
+import com.luisdbb.tarea3AD2024base.modelo.Perfil;
+import com.luisdbb.tarea3AD2024base.modelo.Usuario;
+import com.luisdbb.tarea3AD2024base.services.ParadaService;
+import com.luisdbb.tarea3AD2024base.services.PeregrinoService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
@@ -17,6 +25,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -30,6 +39,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.web.WebView;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * @author Carla Ruiz
@@ -42,9 +54,9 @@ public class RegPeregrinoController implements Initializable {
 	private Hyperlink hpInfo;
 
 	@FXML
-	private ComboBox<String> cmbParada;
+	private ComboBox<Parada> cmbParada;
 
-	ObservableList<String> listaParadas = FXCollections.observableArrayList("Opción A", "Opción B", "Opción C");
+	ObservableList<Parada> listaParadas;
 
 	@FXML
 	private TextField txtNombre;
@@ -60,6 +72,9 @@ public class RegPeregrinoController implements Initializable {
 
 	@FXML
 	private RadioButton rbFem;
+
+	@FXML
+	private ToggleGroup tgGenero;
 
 	@FXML
 	private ComboBox<String> cmbNacionalidad;
@@ -98,15 +113,23 @@ public class RegPeregrinoController implements Initializable {
 	@Autowired
 	private StageManager stageManager;
 
+	@Autowired
+	private ParadaService paradaService;
+
+	@Autowired
+	private PeregrinoService peregrinoService;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		// combobox
+		// combobox			
+		listaParadas= FXCollections.observableArrayList(paradaService.findAll());
 		cmbParada.setItems(listaParadas);
+		
 		cmbNacionalidad.setItems(listaNac);
 
 		// toggle genero
-		ToggleGroup tgGenero = new ToggleGroup();
+		tgGenero = new ToggleGroup();
 		rbMasc.setToggleGroup(tgGenero);
 		rbFem.setToggleGroup(tgGenero);
 
@@ -196,31 +219,176 @@ public class RegPeregrinoController implements Initializable {
 
 	}
 
-	// handler botones
+	/**
+	 * Handler del botón btnRegistrar. Método que registra un usuario, un carnet y
+	 * un peregrino y muestra mensajes de alerta para exito o error.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerRegistrar(ActionEvent event) throws IOException {
 
+		try {
+			if (!validarRegistro()) {
+				return;
+			}
+
+			Usuario usuario = new Usuario(txtUsuario.getText(), txtEmail.getText(), txtContraseña.getText(),
+					Perfil.PEREGRINO);
+
+			Parada paradaInicial =cmbParada.getSelectionModel().getSelectedItem();
+			Carnet carnet = new Carnet(paradaInicial);
+
+			RadioButton generoSeleccionado = (RadioButton) tgGenero.getSelectedToggle();
+			String genero = generoSeleccionado.getText();
+
+			Peregrino peregrino = new Peregrino(txtNombre.getText(), txtApellidos.getText(), dateFecha.getValue(),
+					genero, cmbNacionalidad.getSelectionModel().getSelectedItem(), usuario, carnet);
+
+			carnet.setPeregrino(peregrino);
+			
+			peregrinoService.save(peregrino);
+
+			Alertas.alertaInformacion("Registro exitoso",
+					"Se ha registrado como peregrino y se ha creado su carnet correctamente.");
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			Alertas.alertaInformacion("Error",
+					"Hubo un problema al registrar los datos. Por favor, revise la información.");
+
+		}
+
 	}
 
+	/**
+	 * Handler para el botón btnLimpiar. Método que al pulsarlo limpia los campos
+	 * del formulario.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerLimpiar(ActionEvent event) throws IOException {
 
+		boolean confirmar = Alertas.alertaConfirmacion("Borado de formulario",
+				"Se borrarán los datos introducidos, ¿está de acuerdo?");
+
+		if (confirmar) {
+			cmbParada.getSelectionModel().clearSelection();
+			txtNombre.clear();
+			txtApellidos.clear();
+			dateFecha.setValue(null);
+			tgGenero.selectToggle(null);
+			cmbNacionalidad.getSelectionModel().clearSelection();
+			txtEmail.clear();
+			txtUsuario.clear();
+			txtContraseña.clear();
+			txtConfirmacion.clear();
+		} else {
+			Alertas.alertaInformacion("Acción cancelada", "Por favor, rellene el formulario.");
+		}
+
 	}
 
+	/**
+	 * Handler para el botón btnVolver. Método que al pulsarlo vuelve a la ventana
+	 * de Login.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.LOGIN);
 	}
 
+	/**
+	 * Handler para botón btnSalir. Método que sale de la aplicación al pulsarlo.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		Platform.exit();
 	}
 
-	// handler info
+	/**
+	 * Handler para el HyperLink hpInfo. Método que muestra el sistema de ayuda al
+	 * pulsarlo.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
+		WebView webView = new WebView();
 
+		String url = getClass().getResource("/help/help.html").toExternalForm();
+		webView.getEngine().load(url);
+
+		Stage helpStage = new Stage();
+		helpStage.setTitle("Info");
+
+		Scene helpScene = new Scene(webView, 600, 600);
+		helpStage.setScene(helpScene);
+
+		// Bloquear la ventana principal mientras se muestra la ayuda
+		helpStage.initModality(Modality.APPLICATION_MODAL);
+		helpStage.setResizable(false);
+
+		helpStage.show();
+	}
+
+	/**
+	 * Método que valida que los campos obligatorios del formulartio no sean null o estén vacios.
+	 * Estos campos son parada inicial, nombre, email,usuario, contraseña y su confirmación.
+	 * Además, comprueba que la contraseña coincida con su confirmación.
+	 * 
+	 * @return true si todos los campos están rellenados y las contraseñas coinciden
+	 */
+	private boolean validarRegistro() {
+		
+		if(cmbParada.getSelectionModel().getSelectedItem()==null) {
+			Alertas.alertaInformacion("Error de validación", "La parada inicial no puede estar vacía.");
+			return false;
+		}
+		
+		if (txtNombre.getText() == null || txtNombre.getText().isEmpty()) {
+			Alertas.alertaInformacion("Error de validación", "El nombre de peregrino no puede estar vacío.");
+			return false;
+		}
+
+
+		if (txtEmail.getText() == null || txtEmail.getText().isEmpty()) {
+			Alertas.alertaInformacion("Error de validación", "El email no puede estar vacío.");
+			return false;
+		}
+
+		if (txtUsuario.getText() == null || txtUsuario.getText().isEmpty()) {
+			Alertas.alertaInformacion("Error de validación", "El nombre de usuario no puede estar vacío.");
+			return false;
+		}
+
+		if (txtContraseña.getText() == null || txtContraseña.getText().isEmpty()) {
+			Alertas.alertaInformacion("Error de validación", "La contraseña no puede estar vacía.");
+			return false;
+		}
+
+		if (txtConfirmacion.getText() == null || txtConfirmacion.getText().isEmpty()) {
+			Alertas.alertaInformacion("Error de validación", "La confirmación de la contraseña es obligatoria.");
+			return false;
+		}
+
+		if (!txtConfirmacion.getText().equals(txtContraseña.getText())) {
+			Alertas.alertaInformacion("Error de contraseña",
+					"La confirmación de la contraseña no coincide con la contraseña ingresada.");
+			return false;
+		}
+
+		return true;
 	}
 
 }

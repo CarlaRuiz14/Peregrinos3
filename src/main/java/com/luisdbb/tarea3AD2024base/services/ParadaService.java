@@ -1,5 +1,7 @@
 package com.luisdbb.tarea3AD2024base.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +14,7 @@ import com.luisdbb.tarea3AD2024base.repositorios.ParadaRepository;
  */
 @Service
 public class ParadaService {
-	
+
 	@Autowired
 	private ParadaRepository paradaRepository;
 
@@ -20,9 +22,21 @@ public class ParadaService {
 		return paradaRepository.save(entidad);
 	}
 
-	public boolean existeParada(String nombre,char region) {
-		Parada parada=paradaRepository.findByNombre(nombre);		
-		return parada.getRegion()==region;
+	public boolean existeParada(String nombre, char region) {
+
+		Parada parada = findByNombre(nombre);
+		if (parada == null) {
+			return false;
+		}
+
+		return parada.getRegion() == region;
 	}
 
+	public Parada findByNombre(String parada) {
+		return paradaRepository.findByNombre(parada);
+	}
+
+	public List<Parada> findAll() {
+		return paradaRepository.findAll();
+	}
 }

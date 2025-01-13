@@ -16,6 +16,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -26,6 +27,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.web.WebView;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 /**
  * @author Carla Ruiz
@@ -144,10 +148,31 @@ public class VipController implements Initializable {
 
 	}
 
-	// handler botones
+	/**
+	 * Handler para el HyperLink hpInfo. Método que muestra el sistema de ayuda al
+	 * pulsarlo.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
+		WebView webView = new WebView();
 
+		String url = getClass().getResource("/help/help.html").toExternalForm();
+		webView.getEngine().load(url);
+
+		Stage helpStage = new Stage();
+		helpStage.setTitle("Info");
+
+		Scene helpScene = new Scene(webView, 600, 600);
+		helpStage.setScene(helpScene);
+
+		// Bloquear la ventana principal mientras se muestra la ayuda
+		helpStage.initModality(Modality.APPLICATION_MODAL);
+		helpStage.setResizable(false);
+
+		helpStage.show();
 	}
 
 	@FXML
@@ -174,11 +199,24 @@ public class VipController implements Initializable {
 
 	}
 
+	/**
+	 * Handler para el botón btnVolver. Método que al pulsarlo vuelve a la ventana
+	 * de Login.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.ALOJAR);
 	}
 
+	/**
+	 * Handler para botón btnSalir. Método que sale de la aplicación al pulsarlo.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		Platform.exit();
