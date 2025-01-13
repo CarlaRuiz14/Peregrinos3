@@ -213,7 +213,7 @@ public class SellarController implements Initializable {
 		Peregrino peregrinoSeleccionado = tblPeregrinos.getSelectionModel().getSelectedItem();
 
 		if (peregrinoSeleccionado == null) {
-			Alertas.alertaInformacion("Error", "Debe seleccionar un peregrino para sellar su carnet.");
+			Alertas.alertaError("Error", "Debe seleccionar un peregrino para sellar su carnet.");
 			return;
 		}
 

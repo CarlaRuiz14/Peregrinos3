@@ -173,7 +173,7 @@ public class LoginController implements Initializable {
 		lblFeed.setText(" ");
 		if (txtUsuario.getText() == null || txtContraseña.getText() == null || txtUsuario.getText().isEmpty()
 				|| txtContraseña.getText().isEmpty()) {
-			Alertas.alertaInformacion("Faltan datos", "Los campos usuario y contraseña son obligatorios");
+			Alertas.alertaError("Faltan datos", "Los campos usuario y contraseña son obligatorios");
 		} else {
 			Perfil perfilActivo = usuarioService.loguear(txtUsuario.getText(), txtContraseña.getText());
 			switch (perfilActivo) {
@@ -199,9 +199,11 @@ public class LoginController implements Initializable {
 				stageManager.switchScene(FxmlView.ADMIN);
 				break;
 			case null:
-				Alertas.alertaInformacion("Datos no encontrados", "Los datos introducidos no están registrados.");
+				Alertas.alertaError("Datos no encontrados", "Los datos introducidos no están registrados.");
 				break;
 			default:
+				lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+				lblFeed.getStyleClass().add("lblFeedInvalido");
 				lblFeed.setText("Error al hacer login");
 			}
 		}

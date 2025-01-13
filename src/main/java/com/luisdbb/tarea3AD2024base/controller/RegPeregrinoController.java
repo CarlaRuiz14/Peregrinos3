@@ -2,6 +2,7 @@ package com.luisdbb.tarea3AD2024base.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.Alertas;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
+import com.luisdbb.tarea3AD2024base.config.Validaciones;
 import com.luisdbb.tarea3AD2024base.modelo.Carnet;
 import com.luisdbb.tarea3AD2024base.modelo.Parada;
 import com.luisdbb.tarea3AD2024base.modelo.Peregrino;
@@ -17,9 +19,13 @@ import com.luisdbb.tarea3AD2024base.modelo.Perfil;
 import com.luisdbb.tarea3AD2024base.modelo.Usuario;
 import com.luisdbb.tarea3AD2024base.services.ParadaService;
 import com.luisdbb.tarea3AD2024base.services.PeregrinoService;
+import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -108,6 +114,12 @@ public class RegPeregrinoController implements Initializable {
 	@FXML
 	private Button btnSalir;
 
+	// propiedades
+	
+	private final StringProperty emailProperty = new SimpleStringProperty();
+	private final StringProperty usuarioProperty = new SimpleStringProperty();
+	private final StringProperty contraseñaProperty = new SimpleStringProperty();
+
 	// inyecciones
 	@Lazy
 	@Autowired
@@ -119,13 +131,18 @@ public class RegPeregrinoController implements Initializable {
 	@Autowired
 	private PeregrinoService peregrinoService;
 
+	@Autowired
+	private UsuarioService usuarioService;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		// combobox			
-		listaParadas= FXCollections.observableArrayList(paradaService.findAll());
+		validarEntradas();
+
+		// combobox
+		listaParadas = FXCollections.observableArrayList(paradaService.findAll());
 		cmbParada.setItems(listaParadas);
-		
+
 		cmbNacionalidad.setItems(listaNac);
 
 		// toggle genero
@@ -237,7 +254,7 @@ public class RegPeregrinoController implements Initializable {
 			Usuario usuario = new Usuario(txtUsuario.getText(), txtEmail.getText(), txtContraseña.getText(),
 					Perfil.PEREGRINO);
 
-			Parada paradaInicial =cmbParada.getSelectionModel().getSelectedItem();
+			Parada paradaInicial = cmbParada.getSelectionModel().getSelectedItem();
 			Carnet carnet = new Carnet(paradaInicial);
 
 			RadioButton generoSeleccionado = (RadioButton) tgGenero.getSelectedToggle();
@@ -247,7 +264,7 @@ public class RegPeregrinoController implements Initializable {
 					genero, cmbNacionalidad.getSelectionModel().getSelectedItem(), usuario, carnet);
 
 			carnet.setPeregrino(peregrino);
-			
+
 			peregrinoService.save(peregrino);
 
 			Alertas.alertaInformacion("Registro exitoso",
@@ -255,7 +272,7 @@ public class RegPeregrinoController implements Initializable {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
-			Alertas.alertaInformacion("Error",
+			Alertas.alertaError("Error",
 					"Hubo un problema al registrar los datos. Por favor, revise la información.");
 
 		}
@@ -343,47 +360,139 @@ public class RegPeregrinoController implements Initializable {
 	}
 
 	/**
-	 * Método que valida que los campos obligatorios del formulartio no sean null o estén vacios.
-	 * Estos campos son parada inicial, nombre, email,usuario, contraseña y su confirmación.
-	 * Además, comprueba que la contraseña coincida con su confirmación.
+	 * Método que valida cada campo del formulario y muestra el error en lblFeed
+	 */
+	private void validarEntradas() {
+
+		lblFeed.setText(" ");
+
+		// asociación de property con fxml
+		ObjectProperty<LocalDate> fechaProperty = dateFecha.valueProperty();
+		emailProperty.bind(txtEmail.textProperty());
+		usuarioProperty.bind(txtUsuario.textProperty());
+		contraseñaProperty.bind(txtContraseña.textProperty());
+
+		fechaProperty.addListener((observable, oldValue, newValue) -> {
+			if (newValue != null) {
+				LocalDate hoy = LocalDate.now();
+				if (newValue.isAfter(hoy)) {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedInvalido");
+					lblFeed.setText("La fecha no puede ser posterior al día de hoy.");
+				} else {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedValido");
+					lblFeed.setText("Fecha válida.");
+				}
+			} else {
+				lblFeed.setText(" ");
+			}
+		});
+
+		emailProperty.addListener((observable, oldValue, newValue) -> {
+			if (!newValue.isEmpty()) {
+				if (!Validaciones.validarEspacios(newValue)) {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedInvalido");
+					lblFeed.setText("Email sin espacios en blanco");
+				} else if (!Validaciones.validarEmail(newValue)) {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedInvalido");
+					lblFeed.setText("Formato email no válido");
+				} else {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedValido");
+					lblFeed.setText("Email válido");
+				}
+			} else {
+				lblFeed.setText(" ");
+			}
+		});
+
+		usuarioProperty.addListener((observable, oldValue, newValue) -> {
+			if (!newValue.isEmpty()) {
+				if (!Validaciones.validarEspacios(newValue)) {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedInvalido");
+					lblFeed.setText("Usuario sin espacios en blanco");
+				} else if (usuarioService.findByUsuario(newValue) != null) {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedInvalido");
+					lblFeed.setText("El usuario ya existe");
+				} else {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedValido");
+					lblFeed.setText("Usuario válido");
+				}
+			} else {
+				lblFeed.setText(" ");
+			}
+		});
+
+		contraseñaProperty.addListener((observable, oldValue, newValue) -> {
+			if (!newValue.isEmpty()) {
+				if (!Validaciones.validarEspacios(newValue)) {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedInvalido");
+					lblFeed.setText("Contraseña sin espacios en blanco");
+				} else if (!Validaciones.validarContraseña(newValue)) {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedInvalido");
+					lblFeed.setText("Min 6 caracteres: mayúscula, nº y especial");
+				} else {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedValido");
+					lblFeed.setText("Contraseña válida");
+				}
+			} else {
+				lblFeed.setText(" ");
+			}
+		});
+
+	}
+
+	/**
+	 * Método que valida que los campos obligatorios del formulartio no sean null o
+	 * estén vacios. Estos campos son parada inicial, nombre, email,usuario,
+	 * contraseña y su confirmación. Además, comprueba que la contraseña coincida
+	 * con su confirmación.
 	 * 
 	 * @return true si todos los campos están rellenados y las contraseñas coinciden
 	 */
 	private boolean validarRegistro() {
-		
-		if(cmbParada.getSelectionModel().getSelectedItem()==null) {
-			Alertas.alertaInformacion("Error de validación", "La parada inicial no puede estar vacía.");
-			return false;
-		}
-		
-		if (txtNombre.getText() == null || txtNombre.getText().isEmpty()) {
-			Alertas.alertaInformacion("Error de validación", "El nombre de peregrino no puede estar vacío.");
+
+		if (cmbParada.getSelectionModel().getSelectedItem() == null) {
+			Alertas.alertaError("Error de validación", "La parada inicial no puede estar vacía.");
 			return false;
 		}
 
+		if (txtNombre.getText() == null || txtNombre.getText().isEmpty()) {
+			Alertas.alertaError("Error de validación", "El nombre de peregrino no puede estar vacío.");
+			return false;
+		}
 
 		if (txtEmail.getText() == null || txtEmail.getText().isEmpty()) {
-			Alertas.alertaInformacion("Error de validación", "El email no puede estar vacío.");
+			Alertas.alertaError("Error de validación", "El email no puede estar vacío.");
 			return false;
 		}
 
 		if (txtUsuario.getText() == null || txtUsuario.getText().isEmpty()) {
-			Alertas.alertaInformacion("Error de validación", "El nombre de usuario no puede estar vacío.");
+			Alertas.alertaError("Error de validación", "El nombre de usuario no puede estar vacío.");
 			return false;
 		}
 
 		if (txtContraseña.getText() == null || txtContraseña.getText().isEmpty()) {
-			Alertas.alertaInformacion("Error de validación", "La contraseña no puede estar vacía.");
+			Alertas.alertaError("Error de validación", "La contraseña no puede estar vacía.");
 			return false;
 		}
 
 		if (txtConfirmacion.getText() == null || txtConfirmacion.getText().isEmpty()) {
-			Alertas.alertaInformacion("Error de validación", "La confirmación de la contraseña es obligatoria.");
+			Alertas.alertaError("Error de validación", "La confirmación de la contraseña es obligatoria.");
 			return false;
 		}
 
 		if (!txtConfirmacion.getText().equals(txtContraseña.getText())) {
-			Alertas.alertaInformacion("Error de contraseña",
+			Alertas.alertaError("Error de contraseña",
 					"La confirmación de la contraseña no coincide con la contraseña ingresada.");
 			return false;
 		}

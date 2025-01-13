@@ -211,13 +211,13 @@ public class RegParadaController implements Initializable {
 
 			usuarioService.registrarUsuarioParada(user, parada);
 			Alertas.alertaInformacion("Registro exitoso",
-					"Se han registrado el usuario responsable de parada y la parada correctamente.");
+					"Se han registrado el usuario responsable de parada y la parada correctamente.\nVolviendo a menú de administrador.");
 			stageManager.switchScene(FxmlView.ADMIN);
 			
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
-			Alertas.alertaInformacion("Error",
+			Alertas.alertaError("Error",
 					"Hubo un problema al registrar los datos. Por favor, revise la información.");
 
 		}
@@ -316,10 +316,16 @@ public class RegParadaController implements Initializable {
 		usuarioProperty.addListener((observable, oldValue, newValue) -> {
 			if (!newValue.isEmpty()) {
 				if (!Validaciones.validarEspacios(newValue)) {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("Usuario sin espacios en blanco");
 				} else if (usuarioService.findByUsuario(newValue) != null) {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("El usuario ya existe");
 				} else {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedValido");
 					lblFeed.setText("Usuario válido");
 				}
 			} else {
@@ -330,10 +336,16 @@ public class RegParadaController implements Initializable {
 		emailProperty.addListener((observable, oldValue, newValue) -> {
 			if (!newValue.isEmpty()) {
 				if (!Validaciones.validarEspacios(newValue)) {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("Email sin espacios en blanco");
 				} else if (!Validaciones.validarEmail(newValue)) {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("Formato email no válido");
 				} else {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedValido");
 					lblFeed.setText("Email válido");
 				}
 			} else {
@@ -344,8 +356,12 @@ public class RegParadaController implements Initializable {
 		regionPProperty.addListener((observable, oldValue, newValue) -> {
 			if (!newValue.isEmpty()) {
 				if (newValue.length() != 1) {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("La región es un único caracter");
 				} else {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedValido");
 					lblFeed.setText("Región válida");
 				}
 			} else {
@@ -356,10 +372,16 @@ public class RegParadaController implements Initializable {
 		contraseñaProperty.addListener((observable, oldValue, newValue) -> {
 			if (!newValue.isEmpty()) {
 				if (!Validaciones.validarEspacios(newValue)) {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("Contraseña sin espacios en blanco");
 				} else if (!Validaciones.validarContraseña(newValue)) {
-					lblFeed.setText("Min 6 caracteres: mayúscula, nº y especial");
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedInvalido");
+					lblFeed.setText("Min 6 carac.: una mayúscula, un nº y un c. especial");
 				} else {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedValido");
 					lblFeed.setText("Contraseña válida");
 				}
 			} else {
@@ -379,42 +401,42 @@ public class RegParadaController implements Initializable {
 	 */
 	private boolean validarRegistro() {
 		if (txtUsuario.getText() == null || txtUsuario.getText().isEmpty()) {
-			Alertas.alertaInformacion("Error de validación", "El nombre de usuario no puede estar vacío.");
+			Alertas.alertaError("Error de validación", "El nombre de usuario no puede estar vacío.");
 			return false;
 		}
 
 		if (txtEmail.getText() == null || txtEmail.getText().isEmpty()) {
-			Alertas.alertaInformacion("Error de validación", "El email no puede estar vacío.");
+			Alertas.alertaError("Error de validación", "El email no puede estar vacío.");
 			return false;
 		}
 
 		if (txtNombreP.getText() == null || txtNombreP.getText().isEmpty()) {
-			Alertas.alertaInformacion("Error de validación", "El nombre de la parada no puede estar vacío.");
+			Alertas.alertaError("Error de validación", "El nombre de la parada no puede estar vacío.");
 			return false;
 		}
 
 		if (txtRegionP.getText() == null || txtRegionP.getText().isEmpty()) {
-			Alertas.alertaInformacion("Error de validación", "La región de la parada no puede estar vacía.");
+			Alertas.alertaError("Error de validación", "La región de la parada no puede estar vacía.");
 			return false;
 		}
 
 		if (txtContraseña.getText() == null || txtContraseña.getText().isEmpty()) {
-			Alertas.alertaInformacion("Error de validación", "La contraseña no puede estar vacía.");
+			Alertas.alertaError("Error de validación", "La contraseña no puede estar vacía.");
 			return false;
 		}
 
 		if (txtConfirmacion.getText() == null || txtConfirmacion.getText().isEmpty()) {
-			Alertas.alertaInformacion("Error de validación", "La confirmación de la contraseña es obligatoria.");
+			Alertas.alertaError("Error de validación", "La confirmación de la contraseña es obligatoria.");
 			return false;
 		}
 
 		if (paradaService.existeParada(txtNombreP.getText(), txtRegionP.getText().charAt(0))) {
-			Alertas.alertaInformacion("Error en Parada", "El nombre de la parada ya existe en esa región.");
+			Alertas.alertaError("Error en Parada", "El nombre de la parada ya existe en esa región.");
 			return false;
 		}
 
 		if (!txtConfirmacion.getText().equals(txtContraseña.getText())) {
-			Alertas.alertaInformacion("Error de contraseña",
+			Alertas.alertaError("Error de contraseña",
 					"La confirmación de la contraseña no coincide con la contraseña ingresada.");
 			return false;
 		}

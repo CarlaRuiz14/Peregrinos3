@@ -219,7 +219,7 @@ public class RecuperacionController implements Initializable {
 			}
 
 		} else {
-			Alertas.alertaInformacion("Falta usuario",
+			Alertas.alertaError("Falta usuario",
 					"Es necesario un usuario registrado para recuperar la contraseña");
 		}
 	}

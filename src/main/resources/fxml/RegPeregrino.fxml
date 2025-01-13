@@ -60,7 +60,7 @@
                   <Insets left="50.0" />
                </GridPane.margin>
             </Button>
-            <Label fx:id="lblFeed" prefHeight="19.0" prefWidth="191.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
+            <Label fx:id="lblFeed" alignment="CENTER" contentDisplay="CENTER" maxWidth="324.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
             <Button fx:id="btnSalir" onAction="#handlerSalir" prefHeight="20.0" prefWidth="20.0" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="9" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets />

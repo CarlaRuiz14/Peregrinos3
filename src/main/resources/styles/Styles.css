@@ -8,6 +8,18 @@
     -fx-background-color: #1F6A24;   
 }
 
+.lblFeedValido{
+	-fx-text-fill: #1F6A24;
+	-fx-font-weight: bold;
+	-fx-font-size: 12px;
+	
+}
+.lblFeedInvalido{
+	-fx-text-fill: red;
+	-fx-font-weight: bold;
+	-fx-font-size: 12px;	
+}
+
 /* Fondo Gridpane*/
 .panel {
     -fx-background-color:#A7F7AC;
