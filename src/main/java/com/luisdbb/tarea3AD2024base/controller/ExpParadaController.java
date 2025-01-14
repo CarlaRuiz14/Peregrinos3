@@ -3,15 +3,21 @@ package com.luisdbb.tarea3AD2024base.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
+import com.luisdbb.tarea3AD2024base.config.Alertas;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.Estancia;
+import com.luisdbb.tarea3AD2024base.modelo.Parada;
 import com.luisdbb.tarea3AD2024base.modelo.Peregrino;
+import com.luisdbb.tarea3AD2024base.modelo.Sesion;
+import com.luisdbb.tarea3AD2024base.services.EstanciaService;
+import com.luisdbb.tarea3AD2024base.services.ParadaService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
@@ -62,10 +68,10 @@ public class ExpParadaController implements Initializable {
 	private Label lblIdResp;
 
 	@FXML
-	private Label lblNombreResp;
+	private Label lblUsuario;
 
 	@FXML
-	private Label lblApellidosResp;
+	private Label lblEmail;
 
 	@FXML
 	private DatePicker dateFechaI;
@@ -77,7 +83,7 @@ public class ExpParadaController implements Initializable {
 	private Button btnBuscar;
 
 	@FXML
-	private TableView<Estancia> tblEstancias = new TableView<>();
+	private TableView<Estancia> tblEstancias;
 
 	@FXML
 	private TableColumn<Estancia, Long> colIdEstancia;
@@ -108,8 +114,32 @@ public class ExpParadaController implements Initializable {
 	@Autowired
 	private StageManager stageManager;
 
+	@Autowired
+	private Sesion sesion;
+
+	@Autowired
+	private ParadaService paradaService;
+
+	@Autowired
+	private EstanciaService estanciaService;
+
+	Parada parada;
+	LocalDate fechaInicio;
+	LocalDate fechaFin;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+
+		parada = paradaService.findById(sesion.getUsuarioActivo().getId());
+	
+
+		// cargar datos parada
+		lblIdPar.setText(String.valueOf(parada.getId()));
+		lblNombrePar.setText(parada.getNombre());
+		lblRegionPar.setText(String.valueOf(parada.getRegion()));
+		lblIdResp.setText(String.valueOf(sesion.getUsuarioActivo().getId()));
+		lblUsuario.setText(sesion.getUsuarioActivo().getNombreUsuario());
+		lblEmail.setText(sesion.getUsuarioActivo().getEmail());
 
 		// config info
 		String rutaInfo = resources.getString("info.icon");
@@ -142,18 +172,6 @@ public class ExpParadaController implements Initializable {
 				}
 			}
 		});
-
-		Peregrino p1 = new Peregrino();
-		// prueba:
-		ObservableList<Estancia> listEstancias = FXCollections.observableArrayList(
-				new Estancia(1, p1, LocalDate.of(1990, 9, 14), true),
-				new Estancia(1, p1, LocalDate.of(1990, 9, 14), true),
-				new Estancia(1, p1, LocalDate.of(1990, 9, 14), true),
-				new Estancia(1, p1, LocalDate.of(1990, 9, 14), true),
-				new Estancia(1, p1, LocalDate.of(1990, 9, 14), true),
-				new Estancia(1, p1, LocalDate.of(1990, 9, 14), true));
-
-		tblEstancias.setItems(listEstancias);
 
 		// config img btn Buscar
 		String rutaBuscar = resources.getString("btnBuscar.icon");
@@ -262,6 +280,49 @@ public class ExpParadaController implements Initializable {
 	@FXML
 	private void handlerBuscar(ActionEvent event) throws IOException {
 
+		if (!validarFechas()) {
+			return;
+		}
+
+		List<Estancia> estancias = estanciaService.findByIdParadaAndFechaBetween(parada.getId(), fechaInicio, fechaFin);
+
+		ObservableList<Estancia> listEstancias = FXCollections.observableArrayList(estancias);
+
+		tblEstancias.setItems(listEstancias);
+
+	}
+
+	private boolean validarFechas() {
+		LocalDate hoy = LocalDate.now();
+		fechaInicio = dateFechaI.getValue();
+		fechaFin = dateFechaF.getValue();
+		
+		 // Depuración
+	    System.out.println("Fecha de inicio: " + fechaInicio);
+	    System.out.println("Fecha de fin: " + fechaFin);
+		
+
+		if (fechaInicio == null || fechaFin == null) {
+			Alertas.alertaError("Error", "Debes seleccionar ambas fechas.");
+			return false;
+		}
+
+		if (fechaInicio.isAfter(hoy)) {
+			Alertas.alertaError("Error", "La fecha de inicio debe ser anterior al día de hoy.");
+			return false;
+		}
+
+		if (fechaFin.isAfter(hoy)) {
+			Alertas.alertaError("Error", "La fecha de fin debe ser anterior al día de hoy.");
+			return false;
+		}
+
+		if (fechaInicio.isAfter(fechaFin)) {
+			Alertas.alertaError("Error", "La fecha de inicio debe ser anterior a la fecha de fin.");
+			return false;
+		}
+
+		return true;
 	}
 
 	@FXML

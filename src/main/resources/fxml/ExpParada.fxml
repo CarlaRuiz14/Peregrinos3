@@ -63,8 +63,8 @@
             </HBox>
             <HBox alignment="CENTER" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
-                  <Label styleClass="lblNegrita" text="Nombre:" />
-                  <Label fx:id="lblNombreResp" text="xxxxx" />
+                  <Label styleClass="lblNegrita" text="Usuario:" />
+                  <Label fx:id="lblUsuario" text="xxxxx" />
                </children>
             </HBox>
             <HBox alignment="CENTER" layoutX="30.0" layoutY="100.0" spacing="10.0" GridPane.rowIndex="3">
@@ -75,8 +75,8 @@
             </HBox>
             <HBox alignment="CENTER" layoutX="30.0" layoutY="171.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                <children>
-                  <Label styleClass="lblNegrita" text="Apellidos:" />
-                  <Label fx:id="lblApellidosResp" text="xxxxx" />
+                  <Label styleClass="lblNegrita" text="Email:" />
+                  <Label fx:id="lblEmail" text="xxxxx" />
                </children>
             </HBox>
             <HBox alignment="CENTER" spacing="10.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
