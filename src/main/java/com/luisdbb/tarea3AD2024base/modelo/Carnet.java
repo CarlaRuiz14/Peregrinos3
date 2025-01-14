@@ -39,7 +39,8 @@ public class Carnet {
 	private int nVips;
 	
 	//relacion bidireccional con peregrino pero solo mapeada, sin columna
-	@OneToOne(mappedBy = "carnet", cascade = CascadeType.ALL)	
+	//cascada solo para persistir y actualizar no para borrar
+	@OneToOne(mappedBy = "carnet", cascade = {CascadeType.PERSIST, CascadeType.MERGE})	
 	private Peregrino peregrino;
 
 	@ManyToOne //Una parada puede ser paradaInicial de varios carnets
@@ -49,12 +50,6 @@ public class Carnet {
 	// contructores
 	public Carnet() {
 		super();
-	}
-
-	// para sellarController prueba, borrar 
-	public Carnet(long id) {
-		super();
-		this.id = id;
 	}
 
 	public Carnet(Parada paradaInicial) {

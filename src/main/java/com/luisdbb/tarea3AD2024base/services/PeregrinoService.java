@@ -1,5 +1,7 @@
 package com.luisdbb.tarea3AD2024base.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,10 @@ public class PeregrinoService {
 	
 	public Peregrino save(Peregrino entidad) {
 		return peregrinoRepository.save(entidad);
+	}
+	
+	public List<Peregrino> findAll() {
+		return peregrinoRepository.findAll();
 	}
 	
 	

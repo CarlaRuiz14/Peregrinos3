@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -124,7 +127,7 @@ public class RegPeregrinoController implements Initializable {
 	private Button btnSalir;
 
 	// propiedades
-	
+
 	private final StringProperty emailProperty = new SimpleStringProperty();
 	private final StringProperty usuarioProperty = new SimpleStringProperty();
 	private final StringProperty contraseñaProperty = new SimpleStringProperty();
@@ -152,8 +155,9 @@ public class RegPeregrinoController implements Initializable {
 		listaParadas = FXCollections.observableArrayList(paradaService.findAll());
 		cmbParada.setItems(listaParadas);
 
-		//listaNac=listaNacionalidades();
-		
+		// listaNac=listaNacionalidades();
+		List<String> listaValores = new ArrayList<>(mapaNacionalidades().values());
+		listaNac = FXCollections.observableArrayList(listaValores);
 		cmbNacionalidad.setItems(listaNac);
 
 		// toggle genero
@@ -272,7 +276,7 @@ public class RegPeregrinoController implements Initializable {
 			String genero = generoSeleccionado.getText();
 
 			Peregrino peregrino = new Peregrino(txtNombre.getText(), txtApellidos.getText(), dateFecha.getValue(),
-					genero, cmbNacionalidad.getSelectionModel().getSelectedItem(), usuario, carnet);
+					genero, buscarClavePorValor(mapaNacionalidades(),cmbNacionalidad.getSelectionModel().getSelectedItem()), usuario, carnet);
 
 			carnet.setPeregrino(peregrino);
 
@@ -284,8 +288,7 @@ public class RegPeregrinoController implements Initializable {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
-			Alertas.alertaError("Error",
-					"Hubo un problema al registrar los datos. Por favor, revise la información.");
+			Alertas.alertaError("Error", "Hubo un problema al registrar los datos. Por favor, revise la información.");
 
 		}
 
@@ -524,7 +527,7 @@ public class RegPeregrinoController implements Initializable {
 	 *                                      el archivo
 	 * 
 	 */
-	public static LinkedHashMap<String, String> listaNacionalidades() {
+	public static LinkedHashMap<String, String> mapaNacionalidades() {
 
 		LinkedHashMap<String, String> nacionalidades = new LinkedHashMap<>();
 
@@ -566,4 +569,13 @@ public class RegPeregrinoController implements Initializable {
 		return nacionalidades;
 	}
 	
+	private String buscarClavePorValor(LinkedHashMap<String, String> mapa, String valor) {
+        for (Map.Entry<String,String> entrada : mapa.entrySet()) {
+            if (entrada.getValue().equals(valor)) {
+                return entrada.getKey();
+            }
+        }
+        return null;
+    }
+
 }

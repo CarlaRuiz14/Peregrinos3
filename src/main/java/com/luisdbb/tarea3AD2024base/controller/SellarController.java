@@ -11,7 +11,11 @@ import org.springframework.stereotype.Controller;
 import com.luisdbb.tarea3AD2024base.config.Alertas;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.Carnet;
+import com.luisdbb.tarea3AD2024base.modelo.Parada;
 import com.luisdbb.tarea3AD2024base.modelo.Peregrino;
+import com.luisdbb.tarea3AD2024base.modelo.Sesion;
+import com.luisdbb.tarea3AD2024base.services.ParadaService;
+import com.luisdbb.tarea3AD2024base.services.PeregrinoService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
@@ -85,8 +89,26 @@ public class SellarController implements Initializable {
 	@Autowired
 	private StageManager stageManager;
 
+	@Autowired
+	private Sesion sesion;
+
+	@Autowired
+	private PeregrinoService peregrinoService;
+
+	@Autowired
+	private ParadaService paradaService;
+
+	Parada parada;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+
+		parada = paradaService.findById(sesion.getUsuarioActivo().getId());
+
+		// cargar datos parada
+		lblIdParada.setText(String.valueOf(parada.getId()));
+		lblNombre.setText(parada.getNombre());
+		lblRegion.setText(String.valueOf(parada.getRegion()));
 
 		// config info
 		String rutaInfo = resources.getString("info.icon");
@@ -108,14 +130,7 @@ public class SellarController implements Initializable {
 			return new SimpleObjectProperty<>(carnet != null ? carnet.getId() : null);
 		});
 
-		Carnet c1 = new Carnet(1);
-
-		// prueba:
-		ObservableList<Peregrino> listPeregrinos = FXCollections.observableArrayList(
-				new Peregrino(1, "Maria", "Española", c1), new Peregrino(1, "Maria", "Española", c1),
-				new Peregrino(1, "Maria", "Española", c1), new Peregrino(1, "Maria", "Española", c1),
-				new Peregrino(1, "Maria", "Española", c1), new Peregrino(1, "Maria", "Española", c1),
-				new Peregrino(1, "Maria", "Española", c1));
+		ObservableList<Peregrino> listPeregrinos = FXCollections.observableArrayList(peregrinoService.findAll());
 
 		tblPeregrinos.setItems(listPeregrinos);
 
@@ -217,15 +232,18 @@ public class SellarController implements Initializable {
 			return;
 		}
 
-		// falta sacar usuarioActivo de login y completar informacion de parada
-		String mensaje = "Peregrino: " + peregrinoSeleccionado.getNombre() + "\nNacionalidad: "
-				+ peregrinoSeleccionado.getNacionalidad() + "\nID Carnet: " + peregrinoSeleccionado.getCarnet().getId();
+		String mensaje = "Se va a sellar el carnet del peregrino: \n\tID: "+peregrinoSeleccionado.getId()+"\n\tPeregrino: " + peregrinoSeleccionado.getNombre()
+				+ "\n\tNacionalidad: " + peregrinoSeleccionado.getNacionalidad() + "\n\tID Carnet: "
+				+ peregrinoSeleccionado.getCarnet().getId() + "\nEn la parada:\n\tID Parada: " + parada.getNombre()
+				+ "\n\tNombre: " + parada.getNombre() + "\n\tRegión: " + parada.getRegion();
+
 		boolean confirmar = Alertas.alertaConfirmacion("Confirmar datos", mensaje);
 
 		if (confirmar) {
 			stageManager.switchScene(FxmlView.ALOJAR);
 		} else {
-			Alertas.alertaInformacion("Acción cancelada", "Por favor, seleccione un peregrino para sellar su carnet.");
+			Alertas.alertaInformacion("Acción cancelada",
+					"Por favor, seleccione un peregrino \npara sellar su carnet.");
 		}
 	}
 
