@@ -43,9 +43,6 @@ public class ParadaController implements Initializable {
 	private Button btnSellar;
 
 	@FXML
-	private Button btnEditar;
-
-	@FXML
 	private Button btnLogout;
 
 	@FXML
@@ -93,13 +90,6 @@ public class ParadaController implements Initializable {
 			}
 		});
 
-		btnEditar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.E) {
-				btnEditar.fire();
-				event.consume();
-			}
-		});
-
 		btnLogout.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.L) {
 				btnLogout.fire();
@@ -116,8 +106,7 @@ public class ParadaController implements Initializable {
 
 		// tooltips
 		btnExportar.setTooltip(new Tooltip("Exportar Carnet (Alt+X)"));
-		btnSellar.setTooltip(new Tooltip("Sellar/Alojar (Alt+A)"));
-		btnEditar.setTooltip(new Tooltip("Editar (Alt+E)"));
+		btnSellar.setTooltip(new Tooltip("Sellar/Alojar (Alt+A)"));	
 		btnLogout.setTooltip(new Tooltip("Logout (Alt+L)"));
 		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
 
@@ -135,11 +124,7 @@ public class ParadaController implements Initializable {
 		stageManager.switchScene(FxmlView.SELLAR);
 	}
 
-	@FXML
-	private void handlerEditar(ActionEvent event) throws IOException {
-		stageManager.switchScene(FxmlView.EDITARUSUARIO);
-	}
-
+	
 	/**
 	 * Handler para botón Logout. Método que sale desactiva la sesión actual del
 	 * usuario. Establece usuarioActivo a null y el perfilActivo a INVITADO. Cambia

@@ -96,15 +96,15 @@ public enum FxmlView {
 			return "/fxml/Peregrino.fxml";
 		}
 	},
-	EDITARUSUARIO {
+	EDITAR {
 		@Override
 		public String getTitle() {
-			return getStringFromResourceBundle("editarUsuario.title");
+			return getStringFromResourceBundle("editar.title");
 		}
 
 		@Override
 		public String getFxmlFile() {
-			return "/fxml/EditarUsuario.fxml";
+			return "/fxml/Editar.fxml";
 		}
 	},
 	RECUPERACION {
@@ -171,17 +171,6 @@ public enum FxmlView {
 		@Override
 		public String getFxmlFile() {
 			return "/fxml/Vip.fxml";
-		}
-	},
-	USER {
-		@Override
-		public String getTitle() {
-			return getStringFromResourceBundle("user.title");
-		}
-
-		@Override
-		public String getFxmlFile() {
-			return "/fxml/User.fxml";
 		}
 	};
 

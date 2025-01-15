@@ -22,6 +22,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -43,10 +44,13 @@ public class LoginController implements Initializable {
 	private TextField txtUsuario;
 
 	@FXML
-	private ImageView imgContraseña;
+	private Hyperlink hpVisible;
 
 	@FXML
 	private TextField txtContraseña;
+	
+	@FXML
+	private PasswordField passContraseña;
 
 	@FXML
 	private Hyperlink hpContraseña;
@@ -77,8 +81,22 @@ public class LoginController implements Initializable {
 	@Autowired
 	private StageManager stageManager;
 
+	// conf hpVisible
+	private boolean isPassVisible = false;
+	private Image mostrarIcon;
+    private Image ocultarIcon;
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
+		// config hpVisible inicial		
+        String mostrarPath = resources.getString("contraseñaC.icon");
+        String ocultarPath = resources.getString("contraseñaO.icon");
+
+        mostrarIcon = new Image(getClass().getResourceAsStream(mostrarPath));
+        ocultarIcon = new Image(getClass().getResourceAsStream(ocultarPath));
+        
+        hpVisible.setGraphic(createImageView(mostrarIcon));
 
 		// config img btn Login
 		String rutaLogin = resources.getString("btnLogin.icon");
@@ -104,14 +122,17 @@ public class LoginController implements Initializable {
 		viewSalir.setFitHeight(20);
 		btnSalir.setGraphic(viewSalir);
 
-		// config imagenes
+		// config imagen usuario
 		String rutaUsu = resources.getString("usuario.icon");
-		imgUsuario.setImage(new Image(getClass().getResourceAsStream(rutaUsu)));
+		imgUsuario.setImage(new Image(getClass().getResourceAsStream(rutaUsu)));	
 
-		String rutaCon = resources.getString("contraseña.icon");
-		imgContraseña.setImage(new Image(getClass().getResourceAsStream(rutaCon)));
-
-		// mnemónicos
+		// mnemónicos		
+		hpVisible.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.M) {
+				hpVisible.fire();
+				event.consume();
+			}
+		});		
 		hpContraseña.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.C) {
 				hpContraseña.fire();
@@ -146,6 +167,7 @@ public class LoginController implements Initializable {
 		});
 
 		// tooltips
+		hpVisible.setTooltip(new Tooltip("Mostrar (Alt+M)"));
 		hpContraseña.setTooltip(new Tooltip("Recuperar (Alt+C)"));
 		hpRegistro.setTooltip(new Tooltip("Registro (Alt+R)"));
 		btnLogin.setTooltip(new Tooltip("Login (Alt+L)"));
@@ -255,4 +277,33 @@ public class LoginController implements Initializable {
 		stageManager.switchScene(FxmlView.REGPEREGRINO);
 	}
 
+	@FXML
+    private void handlerVisible() {
+        isPassVisible = !isPassVisible;
+        if (isPassVisible) {
+            txtContraseña.setText(passContraseña.getText());
+            txtContraseña.setVisible(true);
+            passContraseña.setVisible(false);
+            hpVisible.setGraphic(createImageView(ocultarIcon)); 
+        } else {
+            passContraseña.setText(txtContraseña.getText());
+            txtContraseña.setVisible(false);
+            passContraseña.setVisible(true);
+            hpVisible.setGraphic(createImageView(mostrarIcon)); 
+        }
+    }
+	
+	  /**
+     * Crea un ImageView con un tamaño fijo de 30x30 píxeles.
+     *
+     * @param image La imagen que se asignará al ImageView.
+     * @return Un ImageView con las dimensiones ajustadas.
+     */
+    private ImageView createImageView(Image image) {
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(30);
+        imageView.setFitHeight(30); 
+        imageView.setPreserveRatio(true);
+        return imageView;
+    }
 }

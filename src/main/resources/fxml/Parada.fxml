@@ -28,7 +28,6 @@
                <children>
                   <Button fx:id="btnExportar" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerExportar" prefHeight="30.0" prefWidth="150.0" text="Exportar Parada" />
                   <Button fx:id="btnSellar" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerSellar" prefHeight="30.0" prefWidth="150.0" text="Sellar / Alojar" />
-                  <Button fx:id="btnEditar" alignment="CENTER" contentDisplay="CENTER" layoutX="85.0" layoutY="21.0" onAction="#handlerEditar" prefHeight="30.0" prefWidth="150.0" text="Editar Usuario" />
                </children>
             </VBox>
             <Button fx:id="btnSalir" onAction="#handlerSalir" prefHeight="20.0" prefWidth="20.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">

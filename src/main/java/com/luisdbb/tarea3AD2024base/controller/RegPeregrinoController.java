@@ -154,8 +154,7 @@ public class RegPeregrinoController implements Initializable {
 		// combobox
 		listaParadas = FXCollections.observableArrayList(paradaService.findAll());
 		cmbParada.setItems(listaParadas);
-
-		// listaNac=listaNacionalidades();
+		
 		List<String> listaValores = new ArrayList<>(mapaNacionalidades().values());
 		listaNac = FXCollections.observableArrayList(listaValores);
 		cmbNacionalidad.setItems(listaNac);

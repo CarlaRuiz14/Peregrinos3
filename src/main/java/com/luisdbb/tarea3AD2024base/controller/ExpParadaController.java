@@ -98,7 +98,7 @@ public class ExpParadaController implements Initializable {
 	private TableColumn<Estancia, Boolean> colVip;
 
 	@FXML
-	private Button btnExportar;
+	private Button btnInforme;
 
 	@FXML
 	private Button btnVolver;
@@ -181,13 +181,13 @@ public class ExpParadaController implements Initializable {
 		viewBuscar.setFitHeight(25);
 		btnBuscar.setGraphic(viewBuscar);
 
-		// config img btn Exportar
-		String rutaExportar = resources.getString("btnExportar.icon");
-		Image imgExp = new Image(getClass().getResourceAsStream(rutaExportar));
-		ImageView viewExp = new ImageView(imgExp);
-		viewExp.setFitWidth(60);
-		viewExp.setFitHeight(30);
-		btnExportar.setGraphic(viewExp);
+		// config img btn Informe
+		String rutaInforme = resources.getString("btnInforme.icon");
+		Image imgInforme = new Image(getClass().getResourceAsStream(rutaInforme));
+		ImageView viewInforme = new ImageView(imgInforme);
+		viewInforme.setFitWidth(50);
+		viewInforme.setFitHeight(50);
+		btnInforme.setGraphic(viewInforme);
 
 		// config img btn Volver
 		String rutaVolver = resources.getString("btnVolver.icon");
@@ -220,9 +220,9 @@ public class ExpParadaController implements Initializable {
 			}
 		});
 
-		btnExportar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+		btnInforme.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.X) {
-				btnExportar.fire();
+				btnInforme.fire();
 				event.consume();
 			}
 		});
@@ -244,7 +244,7 @@ public class ExpParadaController implements Initializable {
 		// tooltips
 		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
 		btnBuscar.setTooltip(new Tooltip("Buscar (Alt+B)"));
-		btnExportar.setTooltip(new Tooltip("Exportar (Alt+X)"));
+		btnInforme.setTooltip(new Tooltip("Informe (Alt+X)"));
 		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
 		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
 
@@ -326,7 +326,7 @@ public class ExpParadaController implements Initializable {
 	}
 
 	@FXML
-	private void handlerExportar(ActionEvent event) throws IOException {
+	private void handlerInforme(ActionEvent event) throws IOException {
 
 	}
 
