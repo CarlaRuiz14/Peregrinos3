@@ -130,7 +130,7 @@ public class ExpParadaController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		parada = paradaService.findById(sesion.getUsuarioActivo().getId());
+		parada = paradaService.findByUsuario(sesion.getUsuarioActivo().getId());
 	
 
 		// cargar datos parada

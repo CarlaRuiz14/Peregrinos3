@@ -268,6 +268,7 @@ public class RegPeregrinoController implements Initializable {
 
 			Usuario usuario = new Usuario(txtUsuario.getText(), txtEmail.getText(), txtContraseña.getText(),
 					Perfil.PEREGRINO);
+			usuario = usuarioService.save(usuario);
 
 			Parada paradaInicial = cmbParada.getSelectionModel().getSelectedItem();
 			Carnet carnet = new Carnet(paradaInicial);

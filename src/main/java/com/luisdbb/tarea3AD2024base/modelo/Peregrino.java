@@ -45,7 +45,8 @@ public class Peregrino {
 	private List<Estancia> estancias;
 
 	// relacion uno a uno con usuario unidireccional
-	@OneToOne(cascade = CascadeType.ALL)
+	// para save de usuario independiente de peregrino y poder encriptar contraseña
+	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
 	@JoinColumn(name = "id_usuario", nullable = false, unique = true) // FK a User,especificar unique y nullable, no
 																		// implicito en FK
 	private Usuario usuario; // de User se saca la PK para la FK aqui y el nombre de la columna sera este

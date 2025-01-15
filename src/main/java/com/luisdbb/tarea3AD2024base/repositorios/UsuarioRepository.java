@@ -13,4 +13,6 @@ import com.luisdbb.tarea3AD2024base.modelo.Usuario;
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
 	Usuario findByNombreUsuario(String nombreUsuario);
+	
+	boolean existsByNombreUsuario(String nombre);
 }

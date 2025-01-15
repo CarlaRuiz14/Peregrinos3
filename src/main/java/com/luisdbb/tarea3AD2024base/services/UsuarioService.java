@@ -19,12 +19,17 @@ public class UsuarioService {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
-	
+
 	@Autowired
 	private ParadaService paradaService;
-	
-	
+
+	@Autowired
+	private PasswordService passwordService;
+
+	// al crear el usuario automaticamente encripta la constraseña
 	public Usuario save(Usuario entidad) {
+		String passwordEncriptada = passwordService.encriptar(entidad.getContraseña());
+		entidad.setContraseña(passwordEncriptada);
 		return usuarioRepository.save(entidad);
 	}
 //
@@ -52,29 +57,47 @@ public class UsuarioService {
 	public Usuario findByUsuario(String usuario) {
 		return usuarioRepository.findByNombreUsuario(usuario);
 	}
+	
+	public boolean existsByNombreUsuario(String nombre) {
+        return usuarioRepository.existsByNombreUsuario(nombre);
+    }
+	
 //
 //	public void deleteInBatch(List<Usuario> users) {
 //		usuarioRepository.deleteAll(users);
 //	}
-	
-	
+
 	public Perfil loguear(String usuario, String contraseña) {
-		Perfil perfil=null;;
-		Usuario user=this.findByUsuario(usuario);
-		if(user!=null && contraseña.equals(user.getContraseña())) {
-			perfil=user.getPerfil();
-		}		
+		
+		Perfil perfil = null;
+
+		Usuario user = usuarioRepository.findByNombreUsuario(usuario);
+		
+		
+//		
+//		if (user == null) {
+//		    System.out.println("Usuario no encontrado: " + usuario);
+//		    return null; // Retorna null si no se encuentra el usuario
+//		} else {
+//		    System.out.println("Usuario encontrado: " + user.getNombreUsuario());
+//		    System.out.println("Contraseña almacenada (hash): " + user.getContraseña());
+//		}
+//	
+//		
+//		
+		
+		if (user != null && passwordService.verificar(contraseña, user.getContraseña())) {
+			perfil = user.getPerfil(); 
+		}
+
 		return perfil;
 	}
-	
+
 	@Transactional
 	public void registrarUsuarioParada(Usuario usuario, Parada parada) {
 		this.save(usuario);
 		paradaService.save(parada);
-		
-	}
-	
 
-	
+	}
 
 }
