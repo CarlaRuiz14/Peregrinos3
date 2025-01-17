@@ -28,6 +28,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -58,7 +59,16 @@ public class RegParadaController implements Initializable {
 	private TextField txtContraseña;
 
 	@FXML
+	private PasswordField passContraseña;
+
+	@FXML
+	private Hyperlink hpVisible;
+
+	@FXML
 	private TextField txtConfirmacion;
+
+	@FXML
+	private PasswordField passConfirmacion;
 
 	@FXML
 	private TextField txtNombreP;
@@ -98,10 +108,24 @@ public class RegParadaController implements Initializable {
 	@Autowired
 	private ParadaService paradaService;
 
+	// conf hpVisible
+	private boolean isPassVisible = false;
+	private Image mostrarIcon;
+	private Image ocultarIcon;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 		validarEntradas();
+
+		// config hpVisible inicial
+		String mostrarPath = resources.getString("contraseñaC.icon");
+		String ocultarPath = resources.getString("contraseñaO.icon");
+
+		mostrarIcon = new Image(getClass().getResourceAsStream(mostrarPath));
+		ocultarIcon = new Image(getClass().getResourceAsStream(ocultarPath));
+
+		hpVisible.setGraphic(createImageView(mostrarIcon));
 
 		// config info
 		String rutaInfo = resources.getString("info.icon");
@@ -151,6 +175,12 @@ public class RegParadaController implements Initializable {
 				event.consume();
 			}
 		});
+		hpVisible.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.M) {
+				hpVisible.fire();
+				event.consume();
+			}
+		});
 
 		btnLimpiar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.L) {
@@ -182,10 +212,36 @@ public class RegParadaController implements Initializable {
 
 		// tooltips
 		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
+		hpVisible.setTooltip(new Tooltip("Mostrar (Alt+M)"));
 		btnLimpiar.setTooltip(new Tooltip("Limpiar (Alt+L)"));
 		btnRegistrar.setTooltip(new Tooltip("Registrar (Alt+R)"));
 		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
 		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
+
+	}
+
+	@FXML
+	private void handlerVisible() {
+		isPassVisible = !isPassVisible;
+		if (isPassVisible) {
+			txtContraseña.setText(passContraseña.getText());
+			txtContraseña.setVisible(true);
+			passContraseña.setVisible(false);
+
+			txtConfirmacion.setText(passConfirmacion.getText());
+			txtConfirmacion.setVisible(true);
+			passConfirmacion.setVisible(false);
+			hpVisible.setGraphic(createImageView(ocultarIcon));
+		} else {
+			passContraseña.setText(txtContraseña.getText());
+			txtContraseña.setVisible(false);
+			passContraseña.setVisible(true);
+
+			passConfirmacion.setText(txtConfirmacion.getText());
+			txtConfirmacion.setVisible(false);
+			passConfirmacion.setVisible(true);
+			hpVisible.setGraphic(createImageView(mostrarIcon));
+		}
 
 	}
 
@@ -203,9 +259,10 @@ public class RegParadaController implements Initializable {
 			if (!validarRegistro()) {
 				return;
 			}
-			
-			Usuario user = new Usuario(txtUsuario.getText(), txtEmail.getText(), txtContraseña.getText(),
-					Perfil.PARADA);
+
+			String contraseña = passContraseña.isVisible() ? passContraseña.getText() : txtContraseña.getText();
+
+			Usuario user = new Usuario(txtUsuario.getText(), txtEmail.getText(), contraseña, Perfil.PARADA);
 
 			Parada parada = new Parada(txtNombreP.getText(), txtRegionP.getText().charAt(0), user);
 
@@ -213,12 +270,11 @@ public class RegParadaController implements Initializable {
 			Alertas.alertaInformacion("Registro exitoso",
 					"Se han registrado el usuario responsable de parada y la parada correctamente.\nVolviendo a menú de administrador.");
 			stageManager.switchScene(FxmlView.ADMIN);
-			
+
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
-			Alertas.alertaError("Error",
-					"Hubo un problema al registrar los datos. Por favor, revise la información.");
+			Alertas.alertaError("Error", "Hubo un problema al registrar los datos. Por favor, revise la información.");
 
 		}
 
@@ -244,6 +300,8 @@ public class RegParadaController implements Initializable {
 			txtRegionP.clear();
 			txtContraseña.clear();
 			txtConfirmacion.clear();
+			passContraseña.clear();
+			passConfirmacion.clear();
 		} else {
 			Alertas.alertaInformacion("Acción cancelada", "Por favor, rellene el formulario.");
 		}
@@ -311,7 +369,21 @@ public class RegParadaController implements Initializable {
 		usuarioProperty.bind(txtUsuario.textProperty());
 		emailProperty.bind(txtEmail.textProperty());
 		regionPProperty.bind(txtRegionP.textProperty());
-		contraseñaProperty.bind(txtContraseña.textProperty());
+
+		if (passContraseña.isVisible()) {
+			contraseñaProperty.bind(passContraseña.textProperty());
+		} else {
+			contraseñaProperty.bind(txtContraseña.textProperty());
+		}
+
+		passContraseña.visibleProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue) {
+				contraseñaProperty.unbind();
+				contraseñaProperty.bind(passContraseña.textProperty());
+			} else {
+				contraseñaProperty.bind(txtContraseña.textProperty());
+			}
+		});
 
 		usuarioProperty.addListener((observable, oldValue, newValue) -> {
 			if (!newValue.isEmpty()) {
@@ -420,14 +492,26 @@ public class RegParadaController implements Initializable {
 			return false;
 		}
 
-		if (txtContraseña.getText() == null || txtContraseña.getText().isEmpty()) {
-			Alertas.alertaError("Error de validación", "La contraseña no puede estar vacía.");
-			return false;
+		if (txtContraseña.isVisible()) {
+			if (txtContraseña.getText() == null || txtContraseña.getText().isEmpty()) {
+				Alertas.alertaError("Error de validación", "La contraseña no puede estar vacía.");
+				return false;
+			}
+			if (txtConfirmacion.getText() == null || txtConfirmacion.getText().isEmpty()) {
+				Alertas.alertaError("Error de validación", "La confirmación de la contraseña es obligatoria.");
+				return false;
+			}
 		}
 
-		if (txtConfirmacion.getText() == null || txtConfirmacion.getText().isEmpty()) {
-			Alertas.alertaError("Error de validación", "La confirmación de la contraseña es obligatoria.");
-			return false;
+		if (passContraseña.isVisible()) {
+			if (passContraseña.getText() == null || passContraseña.getText().isEmpty()) {
+				Alertas.alertaError("Error de validación", "La contraseña no puede estar vacía.");
+				return false;
+			}
+			if (passConfirmacion.getText() == null || passConfirmacion.getText().isEmpty()) {
+				Alertas.alertaError("Error de validación", "La confirmación de la contraseña es obligatoria.");
+				return false;
+			}
 		}
 
 		if (paradaService.existeParada(txtNombreP.getText(), txtRegionP.getText().charAt(0))) {
@@ -435,13 +519,38 @@ public class RegParadaController implements Initializable {
 			return false;
 		}
 
-		if (!txtConfirmacion.getText().equals(txtContraseña.getText())) {
-			Alertas.alertaError("Error de contraseña",
-					"La confirmación de la contraseña no coincide con la contraseña ingresada.");
-			return false;
+		if (txtConfirmacion.isVisible()) {
+			if (!txtConfirmacion.getText().equals(txtContraseña.getText())) {
+				Alertas.alertaError("Error de contraseña",
+						"La confirmación de la contraseña no coincide con la contraseña ingresada.");
+				return false;
+			}
+		}
+
+		if (passConfirmacion.isVisible()) {
+			if (!passConfirmacion.getText().equals(passContraseña.getText())) {
+				Alertas.alertaError("Error de contraseña",
+						"La confirmación de la contraseña no coincide con la contraseña ingresada.");
+				return false;
+
+			}
 		}
 
 		return true;
+	}
+
+	/**
+	 * Crea un ImageView con un tamaño fijo de 30x30 píxeles.
+	 *
+	 * @param image La imagen que se asignará al ImageView.
+	 * @return Un ImageView con las dimensiones ajustadas.
+	 */
+	private ImageView createImageView(Image image) {
+		ImageView imageView = new ImageView(image);
+		imageView.setFitWidth(30);
+		imageView.setFitHeight(30);
+		imageView.setPreserveRatio(true);
+		return imageView;
 	}
 
 }

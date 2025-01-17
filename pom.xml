@@ -27,7 +27,8 @@
         <java.version>23</java.version>
     </properties>
 
-    <dependencies>        
+    <dependencies>   
+         
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -67,19 +68,35 @@
             <version>23</version>
             <classifier>win</classifier>
         </dependency>
+        
         <dependency>
     		<groupId>org.springframework.security</groupId>
     		<artifactId>spring-security-core</artifactId>   
 		</dependency>
-        
+		
+		<dependency>
+    		<groupId>com.querydsl</groupId>
+    		<artifactId>querydsl-jpa</artifactId>
+    		<version>5.0.0</version>
+    		<classifier>jakarta</classifier>
+		</dependency>
+		<dependency>
+     		<groupId>com.querydsl</groupId>
+     		<artifactId>querydsl-apt</artifactId>
+     		<version>5.0.0</version>
+    		<classifier>jakarta</classifier>
+		</dependency>    
+		    
     </dependencies>
 
     <build>
-        <plugins>         
+        <plugins>      
+           
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>           
+            </plugin>  
+                     
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
@@ -90,6 +107,24 @@
                     <mainClass>com.luisdbb.tarea3AD2024base.Tarea3Ad2024baseApplication</mainClass>
                 </configuration>
             </plugin>
+            
+            <plugin>
+    			<groupId>com.mysema.maven</groupId>
+    			<artifactId>apt-maven-plugin</artifactId>
+    			<version>1.1.3</version>
+    			<executions>
+        			<execution>
+            			<phase>generate-sources</phase>
+            			<goals>
+                			<goal>process</goal>
+            			</goals>
+            		<configuration>
+                		<processor>com.querydsl.apt.jpa.JPAAnnotationProcessor</processor>
+            		</configuration>
+        			</execution>
+    			</executions>
+			</plugin>
+
         </plugins>
     </build>
 

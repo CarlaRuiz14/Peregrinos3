@@ -15,12 +15,12 @@ import com.luisdbb.tarea3AD2024base.repositorios.EstanciaRepository;
  */
 @Service
 public class EstanciaService {
-	
+
 	@Autowired
 	private EstanciaRepository estanciaRepository;
-	
-	public List<Estancia> findByIdParadaAndFechaBetween(Long id,LocalDate fechaI,LocalDate fechaF){
-		return estanciaRepository.findByIdParadaAndFechaBetween(id,fechaI,fechaF);
+
+	public List<Estancia> findByIdParadaAndFechaBetween(Long id, LocalDate fechaI, LocalDate fechaF) {
+		return estanciaRepository.findByIdParadaAndFechaBetween(id, fechaI, fechaF);
 	}
 
 }

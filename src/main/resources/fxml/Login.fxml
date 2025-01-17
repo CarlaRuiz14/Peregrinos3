@@ -33,7 +33,7 @@
                                 
         </rowConstraints>
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" styleClass="lblTitulo" text="LOGIN" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Label alignment="CENTER" contentDisplay="CENTER" styleClass="lblTitulo2" text="INICIAR SESION" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             <HBox alignment="CENTER" spacing="10.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <children>
                   <ImageView fx:id="imgUsuario" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" />
@@ -42,7 +42,7 @@
             </HBox>
             <HBox alignment="CENTER" spacing="6.0" GridPane.columnSpan="2" GridPane.rowIndex="2">
                <children>
-                  <Hyperlink fx:id="hpVisible" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#handlerVisible" prefHeight="30.0" prefWidth="36.0" />
+                  <Hyperlink fx:id="hpVisible" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#handlerVisible" prefHeight="30.0" prefWidth="36.0" />
                   <StackPane>
                      <children>
                         <TextField fx:id="txtContraseña" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="150.0" promptText="Contraseña" visible="false" />

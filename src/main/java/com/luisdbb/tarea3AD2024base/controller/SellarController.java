@@ -240,6 +240,16 @@ public class SellarController implements Initializable {
 		boolean confirmar = Alertas.alertaConfirmacion("Confirmar datos", mensaje);
 
 		if (confirmar) {
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			stageManager.switchScene(FxmlView.ALOJAR);
 		} else {
 			Alertas.alertaInformacion("Acción cancelada",

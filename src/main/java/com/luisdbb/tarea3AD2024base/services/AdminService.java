@@ -22,7 +22,7 @@ public class AdminService {
     public void crearAdminSiNoExiste() {
         String nombre = "admin";
         String email ="admin@admin.com";
-        String contraseña = "admin123";
+        String contraseña = "Admin_123";
         Perfil perfil = Perfil.ADMINISTRADOR;
 
         if (!usuarioService.existsByNombreUsuario(nombre)) {            

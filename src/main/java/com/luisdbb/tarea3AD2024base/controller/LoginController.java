@@ -48,7 +48,7 @@ public class LoginController implements Initializable {
 
 	@FXML
 	private TextField txtContraseña;
-	
+
 	@FXML
 	private PasswordField passContraseña;
 
@@ -84,19 +84,19 @@ public class LoginController implements Initializable {
 	// conf hpVisible
 	private boolean isPassVisible = false;
 	private Image mostrarIcon;
-    private Image ocultarIcon;
-	
+	private Image ocultarIcon;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
-		// config hpVisible inicial		
-        String mostrarPath = resources.getString("contraseñaC.icon");
-        String ocultarPath = resources.getString("contraseñaO.icon");
 
-        mostrarIcon = new Image(getClass().getResourceAsStream(mostrarPath));
-        ocultarIcon = new Image(getClass().getResourceAsStream(ocultarPath));
-        
-        hpVisible.setGraphic(createImageView(mostrarIcon));
+		// config hpVisible inicial
+		String mostrarPath = resources.getString("contraseñaC.icon");
+		String ocultarPath = resources.getString("contraseñaO.icon");
+
+		mostrarIcon = new Image(getClass().getResourceAsStream(mostrarPath));
+		ocultarIcon = new Image(getClass().getResourceAsStream(ocultarPath));
+
+		hpVisible.setGraphic(createImageView(mostrarIcon));
 
 		// config img btn Login
 		String rutaLogin = resources.getString("btnLogin.icon");
@@ -124,15 +124,15 @@ public class LoginController implements Initializable {
 
 		// config imagen usuario
 		String rutaUsu = resources.getString("usuario.icon");
-		imgUsuario.setImage(new Image(getClass().getResourceAsStream(rutaUsu)));	
+		imgUsuario.setImage(new Image(getClass().getResourceAsStream(rutaUsu)));
 
-		// mnemónicos		
+		// mnemónicos
 		hpVisible.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.M) {
 				hpVisible.fire();
 				event.consume();
 			}
-		});		
+		});
 		hpContraseña.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.C) {
 				hpContraseña.fire();
@@ -177,62 +177,75 @@ public class LoginController implements Initializable {
 	}
 
 	/**
-	 * Handler para el botón btnLogin. Método que al pulsarlo realiza las siguientes acciones:
-	 * - Comprueba que los campos de usuario y contraseña no estén vacíos o nulos.
-	 *   Si alguno de los campos está vacío, muestra un mensaje de alerta indicando que los datos son obligatorios.
-	 * - Si los datos están completos, intenta iniciar sesión utilizando el servicio `usuarioService`.
-	 * - Dependiendo del perfil del usuario (PEREGRINO, PARADA, ADMINISTRADOR), establece el perfil activo en la sesión
-	 *   y cambia la escena correspondiente mediante `stageManager.switchScene`.
-	 * - Si el usuario no se encuentra registrado, muestra un mensaje de alerta indicando que los datos no están registrados.
-	 * - Si ocurre un error inesperado, muestra un mensaje en el label `lblFeed` indicando un fallo en el inicio de sesión.
+	 * Handler para el botón btnLogin. Método que al pulsarlo realiza las siguientes
+	 * acciones: - Comprueba que los campos de usuario y contraseña no estén vacíos
+	 * o nulos. Si alguno de los campos está vacío, muestra un mensaje de alerta
+	 * indicando que los datos son obligatorios. - Si los datos están completos,
+	 * intenta iniciar sesión utilizando el servicio `usuarioService`. - Dependiendo
+	 * del perfil del usuario (PEREGRINO, PARADA, ADMINISTRADOR), establece el
+	 * perfil activo en la sesión y cambia la escena correspondiente mediante
+	 * `stageManager.switchScene`. - Si el usuario no se encuentra registrado,
+	 * muestra un mensaje de alerta indicando que los datos no están registrados. -
+	 * Si ocurre un error inesperado, muestra un mensaje en el label `lblFeed`
+	 * indicando un fallo en el inicio de sesión.
 	 * 
 	 * @param event El evento que dispara el método (clic en el botón).
-	 * @throws IOException Si ocurre un error al cambiar la escena o al acceder a recursos de E/S.
+	 * @throws IOException Si ocurre un error al cambiar la escena o al acceder a
+	 *                     recursos de E/S.
 	 */
 
 	@FXML
 	private void handlerLogin(ActionEvent event) throws IOException {
 		lblFeed.setText(" ");
-		if (txtUsuario.getText() == null || txtContraseña.getText() == null || txtUsuario.getText().isEmpty()
-				|| txtContraseña.getText().isEmpty()) {
-			Alertas.alertaError("Faltan datos", "Los campos usuario y contraseña son obligatorios");
-		} else {
-			Perfil perfilActivo = usuarioService.loguear(txtUsuario.getText(), txtContraseña.getText());
-			switch (perfilActivo) {
-			case PEREGRINO:
-				// sesion
-				sesion.setUsuarioActivo(usuarioService.findByUsuario(txtUsuario.getText()));
-				sesion.setPerfilActivo(perfilActivo);
+		if (txtUsuario.getText() == null || txtUsuario.getText().isEmpty()) {
+			Alertas.alertaError("Faltan datos", "El campo usuario es obligatorio");
+			return;
+		}
+		if ((txtContraseña.getText() == null || txtContraseña.getText().isEmpty())
+				&& ((passContraseña.getText() == null || passContraseña.getText().isEmpty()))) {
+			Alertas.alertaError("Faltan datos", "El campo contraseña es obligatorio");
+			return;
+		}
 
-				stageManager.switchScene(FxmlView.PEREGRINO);
-				break;
-			case PARADA:
-				// sesion
-				sesion.setUsuarioActivo(usuarioService.findByUsuario(txtUsuario.getText()));
-				sesion.setPerfilActivo(perfilActivo);
+		String contraseña = passContraseña.isVisible() ? passContraseña.getText() : txtContraseña.getText();
 
-				stageManager.switchScene(FxmlView.PARADA);
-				break;
-			case ADMINISTRADOR:
-				// sesion
-				sesion.setUsuarioActivo(usuarioService.findByUsuario(txtUsuario.getText()));
-				sesion.setPerfilActivo(perfilActivo);
+		Perfil perfilActivo = usuarioService.loguear(txtUsuario.getText(), contraseña);
+		switch (perfilActivo) {
+		case PEREGRINO:
+			// sesion
+			sesion.setUsuarioActivo(usuarioService.findByUsuario(txtUsuario.getText()));
+			sesion.setPerfilActivo(perfilActivo);
 
-				stageManager.switchScene(FxmlView.ADMIN);
-				break;
-			case null:
-				Alertas.alertaError("Datos no encontrados", "Los datos introducidos no están registrados.");
-				break;
-			default:
-				lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
-				lblFeed.getStyleClass().add("lblFeedInvalido");
-				lblFeed.setText("Error al hacer login");
-			}
+			stageManager.switchScene(FxmlView.PEREGRINO);
+			break;
+		case PARADA:
+			// sesion
+			sesion.setUsuarioActivo(usuarioService.findByUsuario(txtUsuario.getText()));
+			sesion.setPerfilActivo(perfilActivo);
+
+			stageManager.switchScene(FxmlView.PARADA);
+			break;
+		case ADMINISTRADOR:
+			// sesion
+			sesion.setUsuarioActivo(usuarioService.findByUsuario(txtUsuario.getText()));
+			sesion.setPerfilActivo(perfilActivo);
+
+			stageManager.switchScene(FxmlView.ADMIN);
+			break;
+		case null:
+			Alertas.alertaError("Datos no encontrados", "Los datos introducidos no están registrados.");
+			break;
+		default:
+			lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+			lblFeed.getStyleClass().add("lblFeedInvalido");
+			lblFeed.setText("Error al hacer login");
+
 		}
 	}
 
 	/**
-	 * Handler para el botón btnVolver. Método que al pulsarlo vuelve a la ventana principal.
+	 * Handler para el botón btnVolver. Método que al pulsarlo vuelve a la ventana
+	 * principal.
 	 * 
 	 * @param event
 	 * @throws IOException
@@ -278,32 +291,32 @@ public class LoginController implements Initializable {
 	}
 
 	@FXML
-    private void handlerVisible() {
-        isPassVisible = !isPassVisible;
-        if (isPassVisible) {
-            txtContraseña.setText(passContraseña.getText());
-            txtContraseña.setVisible(true);
-            passContraseña.setVisible(false);
-            hpVisible.setGraphic(createImageView(ocultarIcon)); 
-        } else {
-            passContraseña.setText(txtContraseña.getText());
-            txtContraseña.setVisible(false);
-            passContraseña.setVisible(true);
-            hpVisible.setGraphic(createImageView(mostrarIcon)); 
-        }
-    }
-	
-	  /**
-     * Crea un ImageView con un tamaño fijo de 30x30 píxeles.
-     *
-     * @param image La imagen que se asignará al ImageView.
-     * @return Un ImageView con las dimensiones ajustadas.
-     */
-    private ImageView createImageView(Image image) {
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(30);
-        imageView.setFitHeight(30); 
-        imageView.setPreserveRatio(true);
-        return imageView;
-    }
+	private void handlerVisible() {
+		isPassVisible = !isPassVisible;
+		if (isPassVisible) {
+			txtContraseña.setText(passContraseña.getText());
+			txtContraseña.setVisible(true);
+			passContraseña.setVisible(false);
+			hpVisible.setGraphic(createImageView(ocultarIcon));
+		} else {
+			passContraseña.setText(txtContraseña.getText());
+			txtContraseña.setVisible(false);
+			passContraseña.setVisible(true);
+			hpVisible.setGraphic(createImageView(mostrarIcon));
+		}
+	}
+
+	/**
+	 * Crea un ImageView con un tamaño fijo de 30x30 píxeles.
+	 *
+	 * @param image La imagen que se asignará al ImageView.
+	 * @return Un ImageView con las dimensiones ajustadas.
+	 */
+	private ImageView createImageView(Image image) {
+		ImageView imageView = new ImageView(image);
+		imageView.setFitWidth(30);
+		imageView.setFitHeight(30);
+		imageView.setPreserveRatio(true);
+		return imageView;
+	}
 }

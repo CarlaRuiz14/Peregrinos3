@@ -6,6 +6,7 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -88,8 +89,23 @@
             <TextField fx:id="txtApellidos" maxWidth="-Infinity" prefHeight="27.0" prefWidth="160.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="txtEmail" maxWidth="-Infinity" prefHeight="27.0" prefWidth="160.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
             <TextField fx:id="txtUsuario" maxWidth="-Infinity" prefHeight="27.0" prefWidth="160.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-            <TextField fx:id="txtContraseña" maxWidth="-Infinity" prefHeight="27.0" prefWidth="160.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-            <TextField fx:id="txtConfirmacion" maxWidth="-Infinity" prefHeight="27.0" prefWidth="160.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+            <HBox alignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="4">
+               <children>
+                  <StackPane>
+                     <children>
+                        <TextField fx:id="txtContraseña" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="150.0" visible="false" />
+                        <PasswordField fx:id="passContraseña" maxWidth="-Infinity" />
+                     </children>
+                  </StackPane>
+                  <Hyperlink fx:id="hpVisible" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" onAction="#handlerVisible" prefHeight="30.0" prefWidth="30.0" />
+               </children>
+            </HBox>
+            <StackPane maxWidth="-Infinity" prefWidth="122.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
+               <children>
+                  <TextField fx:id="txtConfirmacion" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="150.0" visible="false" />
+                  <PasswordField fx:id="passConfirmacion" maxWidth="-Infinity" />
+               </children>
+            </StackPane>
             <DatePicker fx:id="dateFecha" editable="false" maxWidth="-Infinity" prefHeight="27.0" prefWidth="160.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
          <StackPane.margin>

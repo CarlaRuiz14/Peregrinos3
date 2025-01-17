@@ -49,6 +49,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -109,7 +110,16 @@ public class RegPeregrinoController implements Initializable {
 	private TextField txtContraseña;
 
 	@FXML
+	private PasswordField passContraseña;
+
+	@FXML
+	private Hyperlink hpVisible;
+
+	@FXML
 	private TextField txtConfirmacion;
+
+	@FXML
+	private PasswordField passConfirmacion;	
 
 	@FXML
 	private Button btnLimpiar;
@@ -146,15 +156,29 @@ public class RegPeregrinoController implements Initializable {
 	@Autowired
 	private UsuarioService usuarioService;
 
+	// conf hpVisible
+	private boolean isPassVisible = false;	
+	private Image mostrarIcon;
+	private Image ocultarIcon;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 		validarEntradas();
 
+		// config hpVisible inicial
+		String mostrarPath = resources.getString("contraseñaC.icon");
+		String ocultarPath = resources.getString("contraseñaO.icon");
+
+		mostrarIcon = new Image(getClass().getResourceAsStream(mostrarPath));
+		ocultarIcon = new Image(getClass().getResourceAsStream(ocultarPath));
+
+		hpVisible.setGraphic(createImageView(mostrarIcon));		
+
 		// combobox
 		listaParadas = FXCollections.observableArrayList(paradaService.findAll());
 		cmbParada.setItems(listaParadas);
-		
+
 		List<String> listaValores = new ArrayList<>(mapaNacionalidades().values());
 		listaNac = FXCollections.observableArrayList(listaValores);
 		cmbNacionalidad.setItems(listaNac);
@@ -212,7 +236,13 @@ public class RegPeregrinoController implements Initializable {
 				event.consume();
 			}
 		});
-
+		hpVisible.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.M) {
+				hpVisible.fire();
+				event.consume();
+			}
+		});
+		
 		btnLimpiar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.L) {
 				btnLimpiar.fire();
@@ -243,12 +273,39 @@ public class RegPeregrinoController implements Initializable {
 
 		// tooltips
 		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
+		hpVisible.setTooltip(new Tooltip("Mostrar (Alt+M)"));	
 		btnLimpiar.setTooltip(new Tooltip("Limpiar (Alt+L)"));
 		btnRegistrar.setTooltip(new Tooltip("Registrar (Alt+R)"));
 		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
 		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
 
 	}
+
+	@FXML
+	private void handlerVisible() {
+		isPassVisible = !isPassVisible;
+		if (isPassVisible) {
+			txtContraseña.setText(passContraseña.getText());
+			txtContraseña.setVisible(true);
+			passContraseña.setVisible(false);
+
+			txtConfirmacion.setText(passConfirmacion.getText());
+			txtConfirmacion.setVisible(true);
+			passConfirmacion.setVisible(false);
+			hpVisible.setGraphic(createImageView(ocultarIcon));
+		} else {
+			passContraseña.setText(txtContraseña.getText());
+			txtContraseña.setVisible(false);
+			passContraseña.setVisible(true);
+
+			passConfirmacion.setText(txtConfirmacion.getText());
+			txtConfirmacion.setVisible(false);
+			passConfirmacion.setVisible(true);
+			hpVisible.setGraphic(createImageView(mostrarIcon));
+		}
+
+	}
+
 
 	/**
 	 * Handler del botón btnRegistrar. Método que registra un usuario, un carnet y
@@ -265,8 +322,9 @@ public class RegPeregrinoController implements Initializable {
 				return;
 			}
 
-			Usuario usuario = new Usuario(txtUsuario.getText(), txtEmail.getText(), txtContraseña.getText(),
-					Perfil.PEREGRINO);
+			String contraseña = passContraseña.isVisible() ? passContraseña.getText() : txtContraseña.getText();
+
+			Usuario usuario = new Usuario(txtUsuario.getText(), txtEmail.getText(), contraseña, Perfil.PEREGRINO);
 			usuario = usuarioService.save(usuario);
 
 			Parada paradaInicial = cmbParada.getSelectionModel().getSelectedItem();
@@ -276,7 +334,9 @@ public class RegPeregrinoController implements Initializable {
 			String genero = generoSeleccionado.getText();
 
 			Peregrino peregrino = new Peregrino(txtNombre.getText(), txtApellidos.getText(), dateFecha.getValue(),
-					genero, buscarClavePorValor(mapaNacionalidades(),cmbNacionalidad.getSelectionModel().getSelectedItem()), usuario, carnet);
+					genero,
+					buscarClavePorValor(mapaNacionalidades(), cmbNacionalidad.getSelectionModel().getSelectedItem()),
+					usuario, carnet);
 
 			carnet.setPeregrino(peregrino);
 
@@ -318,6 +378,8 @@ public class RegPeregrinoController implements Initializable {
 			txtUsuario.clear();
 			txtContraseña.clear();
 			txtConfirmacion.clear();
+			passContraseña.clear();
+			passConfirmacion.clear();
 		} else {
 			Alertas.alertaInformacion("Acción cancelada", "Por favor, rellene el formulario.");
 		}
@@ -496,20 +558,43 @@ public class RegPeregrinoController implements Initializable {
 			return false;
 		}
 
-		if (txtContraseña.getText() == null || txtContraseña.getText().isEmpty()) {
-			Alertas.alertaError("Error de validación", "La contraseña no puede estar vacía.");
-			return false;
+		if (txtContraseña.isVisible()) {
+			if (txtContraseña.getText() == null || txtContraseña.getText().isEmpty()) {
+				Alertas.alertaError("Error de validación", "La contraseña no puede estar vacía.");
+				return false;
+			}
+			if (txtConfirmacion.getText() == null || txtConfirmacion.getText().isEmpty()) {
+				Alertas.alertaError("Error de validación", "La confirmación de la contraseña es obligatoria.");
+				return false;
+			}
 		}
 
-		if (txtConfirmacion.getText() == null || txtConfirmacion.getText().isEmpty()) {
-			Alertas.alertaError("Error de validación", "La confirmación de la contraseña es obligatoria.");
-			return false;
+		if (passContraseña.isVisible()) {
+			if (passContraseña.getText() == null || passContraseña.getText().isEmpty()) {
+				Alertas.alertaError("Error de validación", "La contraseña no puede estar vacía.");
+				return false;
+			}
+			if (passConfirmacion.getText() == null || passConfirmacion.getText().isEmpty()) {
+				Alertas.alertaError("Error de validación", "La confirmación de la contraseña es obligatoria.");
+				return false;
+			}
 		}
 
-		if (!txtConfirmacion.getText().equals(txtContraseña.getText())) {
-			Alertas.alertaError("Error de contraseña",
-					"La confirmación de la contraseña no coincide con la contraseña ingresada.");
-			return false;
+		if (txtConfirmacion.isVisible()) {
+			if (!txtConfirmacion.getText().equals(txtContraseña.getText())) {
+				Alertas.alertaError("Error de contraseña",
+						"La confirmación de la contraseña no coincide con la contraseña ingresada.");
+				return false;
+			}
+		}
+
+		if (passConfirmacion.isVisible()) {
+			if (!passConfirmacion.getText().equals(passContraseña.getText())) {
+				Alertas.alertaError("Error de contraseña",
+						"La confirmación de la contraseña no coincide con la contraseña ingresada.");
+				return false;
+
+			}
 		}
 
 		return true;
@@ -568,14 +653,28 @@ public class RegPeregrinoController implements Initializable {
 		}
 		return nacionalidades;
 	}
-	
+
 	private String buscarClavePorValor(LinkedHashMap<String, String> mapa, String valor) {
-        for (Map.Entry<String,String> entrada : mapa.entrySet()) {
-            if (entrada.getValue().equals(valor)) {
-                return entrada.getKey();
-            }
-        }
-        return null;
-    }
+		for (Map.Entry<String, String> entrada : mapa.entrySet()) {
+			if (entrada.getValue().equals(valor)) {
+				return entrada.getKey();
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Crea un ImageView con un tamaño fijo de 30x30 píxeles.
+	 *
+	 * @param image La imagen que se asignará al ImageView.
+	 * @return Un ImageView con las dimensiones ajustadas.
+	 */
+	private ImageView createImageView(Image image) {
+		ImageView imageView = new ImageView(image);
+		imageView.setFitWidth(30);
+		imageView.setFitHeight(30);
+		imageView.setPreserveRatio(true);
+		return imageView;
+	}
 
 }
