@@ -2,11 +2,13 @@ package com.luisdbb.tarea3AD2024base.config;
 
 import java.io.IOException;
 import java.util.ResourceBundle;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 
 /**
  * Cargará FXML en el método load y registrará a Spring como la fábrica de

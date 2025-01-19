@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<StackPane prefHeight="340.0" prefWidth="340.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.luisdbb.tarea3AD2024base.controller.ParadaController">
+<StackPane prefHeight="540.0" prefWidth="540.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.luisdbb.tarea3AD2024base.controller.ParadaController">
    <children>
-      <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="300.0" styleClass="panel">
+      <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" styleClass="panel">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -24,25 +24,25 @@
         </rowConstraints>
          <children>
             <Label fx:id="lblTitulo" alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" styleClass="lblTitulo2" text="MI CUENTA" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <VBox alignment="CENTER" spacing="20.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+            <VBox alignment="CENTER" spacing="30.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
                <children>
-                  <Button fx:id="btnExportar" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerExportar" prefHeight="30.0" prefWidth="150.0" text="Exportar Parada" />
-                  <Button fx:id="btnSellar" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerSellar" prefHeight="30.0" prefWidth="150.0" text="Sellar / Alojar" />
+                  <Button fx:id="btnExportar" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerExportar" prefHeight="40.0" prefWidth="200.0" styleClass="btnFlecha" text="Exportar Parada" />
+                  <Button fx:id="btnSellar" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerSellar" prefHeight="40.0" prefWidth="200.0" styleClass="btnFlecha" text="Sellar / Alojar" />
                </children>
             </VBox>
-            <Button fx:id="btnSalir" onAction="#handlerSalir" prefHeight="20.0" prefWidth="20.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+            <Button fx:id="btnSalir" onAction="#handlerSalir" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                <GridPane.margin>
-                  <Insets right="20.0" />
+                  <Insets />
                </GridPane.margin>
             </Button>
-            <Button fx:id="btnLogout" alignment="CENTER" onAction="#handlerLogout" prefHeight="20.0" prefWidth="20.0" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+            <Button fx:id="btnLogout" alignment="CENTER" onAction="#handlerLogout" prefHeight="30.0" prefWidth="30.0" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
                <GridPane.margin>
-                  <Insets left="20.0" />
+                  <Insets />
                </GridPane.margin>
             </Button>
          </children>
          <padding>
-            <Insets bottom="20.0" />
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
          </padding>
       </GridPane>
    </children>

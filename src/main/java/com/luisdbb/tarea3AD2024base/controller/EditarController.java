@@ -10,35 +10,41 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
+import com.luisdbb.tarea3AD2024base.config.Alertas;
+import com.luisdbb.tarea3AD2024base.config.AyudaConfig;
+import com.luisdbb.tarea3AD2024base.config.BotonesConfig;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
+import com.luisdbb.tarea3AD2024base.config.Validaciones;
+import com.luisdbb.tarea3AD2024base.modelo.Peregrino;
+import com.luisdbb.tarea3AD2024base.modelo.Sesion;
+import com.luisdbb.tarea3AD2024base.modelo.Usuario;
 import com.luisdbb.tarea3AD2024base.services.NacionalidadService;
+import com.luisdbb.tarea3AD2024base.services.PeregrinoService;
+import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.web.WebView;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 /**
  * @author Carla Ruiz
  * @since 28/12/2024
  */
+
 @Controller
 public class EditarController implements Initializable {
 
@@ -46,13 +52,18 @@ public class EditarController implements Initializable {
 	private Hyperlink hpInfo;
 
 	@FXML
+	private Label lblTitulo;
+
+	@FXML
 	private TextField txtNombre;
 
 	@FXML
-	private TextField txtApellido;
+	private TextField txtApellidos;
 
 	@FXML
 	private TextField txtEmail;
+
+	private final StringProperty emailProperty = new SimpleStringProperty();
 
 	@FXML
 	private ComboBox<String> cmbNacionalidad;
@@ -63,7 +74,7 @@ public class EditarController implements Initializable {
 	private Button btnLimpiar;
 
 	@FXML
-	private Button btnRegistrar;
+	private Button btnEditar;
 
 	@FXML
 	private Button btnVolver;
@@ -74,60 +85,71 @@ public class EditarController implements Initializable {
 	@FXML
 	private Button btnSalir;
 
+	// inyecciones
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
+
+	@Autowired
+	private Alertas alertas;
+
+	@Autowired
+	private Validaciones validaciones;
+
+	@Autowired
+	private AyudaConfig ayuda;
+
 	@Autowired
 	private NacionalidadService nacionalidadService;
+
+	@Autowired
+	private Sesion sesion;
+
+	@Autowired
+	private PeregrinoService peregrinoService;
+
+	@Autowired
+	private UsuarioService usuarioService;
+
+	@Autowired
+	private BotonesConfig botones;
+
+	Usuario usuarioActivo;
+	Peregrino peregrinoActivo;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		// combobox
+		usuarioActivo = sesion.getUsuarioActivo();
+		peregrinoActivo = peregrinoService.findByUsuario(usuarioActivo.getId());
+
+		// cargar datos
+		txtNombre.setText(peregrinoActivo.getNombre());
+		txtApellidos.setText(peregrinoActivo.getApellidos());
+		txtEmail.setText(usuarioActivo.getEmail());
+		cmbNacionalidad.getSelectionModel().select(peregrinoActivo.getNacionalidad());
+
+		validarEntradas();
+
+		// combobox nacinalidades
 		List<String> listaValores = new ArrayList<>(nacionalidadService.mapaNacionalidades().values());
 		listaNac = FXCollections.observableArrayList(listaValores);
 		cmbNacionalidad.setItems(listaNac);
 
 		// config info
-		String rutaInfo = resources.getString("info.icon");
-		Image imagen = new Image(getClass().getResourceAsStream(rutaInfo));
-		ImageView imageView = new ImageView(imagen);
-		imageView.setFitWidth(30);
-		imageView.setFitHeight(30);
-		imageView.setPreserveRatio(true);
-		hpInfo.setGraphic(imageView);
+		ayuda.configImgInfo(hpInfo);
 
 		// config img btn Limpiar
-		String rutaLimp = resources.getString("btnLimpiar.icon");
-		Image imgLimp = new Image(getClass().getResourceAsStream(rutaLimp));
-		ImageView viewLimp = new ImageView(imgLimp);
-		viewLimp.setFitWidth(30);
-		viewLimp.setFitHeight(30);
-		btnLimpiar.setGraphic(viewLimp);
+		botones.configImgLimpiar(btnLimpiar);
 
-		// config img btn Registrar
-		String rutaReg = resources.getString("btnRegistrar.icon");
-		Image imgReg = new Image(getClass().getResourceAsStream(rutaReg));
-		ImageView viewReg = new ImageView(imgReg);
-		viewReg.setFitWidth(60);
-		viewReg.setFitHeight(30);
-		btnRegistrar.setGraphic(viewReg);
+		// config img btn Editar
+		botones.configImgFlecha(btnEditar);
 
 		// config img btn Volver
-		String rutaVolver = resources.getString("btnVolver.icon");
-		Image imgVolver = new Image(getClass().getResourceAsStream(rutaVolver));
-		ImageView viewVolver = new ImageView(imgVolver);
-		viewVolver.setFitWidth(20);
-		viewVolver.setFitHeight(20);
-		btnVolver.setGraphic(viewVolver);
+		botones.configImgVolver(btnVolver);
 
 		// config img btn Salir
-		String rutaSalir = resources.getString("btnSalir.icon");
-		Image imgSalir = new Image(getClass().getResourceAsStream(rutaSalir));
-		ImageView viewSalir = new ImageView(imgSalir);
-		viewSalir.setFitWidth(20);
-		viewSalir.setFitHeight(20);
-		btnSalir.setGraphic(viewSalir);
+		botones.configImgSalir(btnSalir);
 
 		// mnemónicos
 		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
@@ -144,10 +166,10 @@ public class EditarController implements Initializable {
 			}
 		});
 
-		btnRegistrar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.R) {
-				btnRegistrar.fire();
-				event.consume();
+		btnEditar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.E) {
+				btnEditar.fire(); // Simula el clic en el botón
+				event.consume(); // Detiene la propagación del evento
 			}
 		});
 
@@ -157,7 +179,6 @@ public class EditarController implements Initializable {
 				event.consume();
 			}
 		});
-
 		btnSalir.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.S) {
 				btnSalir.fire();
@@ -168,7 +189,7 @@ public class EditarController implements Initializable {
 		// tooltips
 		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
 		btnLimpiar.setTooltip(new Tooltip("Limpiar (Alt+L)"));
-		btnRegistrar.setTooltip(new Tooltip("Registrar (Alt+R)"));
+		btnEditar.setTooltip(new Tooltip("Editar (Alt+E)"));
 		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
 		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
 
@@ -183,37 +204,50 @@ public class EditarController implements Initializable {
 	 */
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
-		WebView webView = new WebView();
-
-		String url = getClass().getResource("/help/help.html").toExternalForm();
-		webView.getEngine().load(url);
-
-		Stage helpStage = new Stage();
-		helpStage.setTitle("Info");
-
-		Scene helpScene = new Scene(webView, 600, 600);
-		helpStage.setScene(helpScene);
-
-		// Bloquear la ventana principal mientras se muestra la ayuda
-		helpStage.initModality(Modality.APPLICATION_MODAL);
-		helpStage.setResizable(false);
-
-		helpStage.show();
-	}
-
-	@FXML
-	private void handlerRegistrar(ActionEvent event) throws IOException {
-
+		ayuda.configInfo("/help/help.html");
 	}
 
 	@FXML
 	private void handlerLimpiar(ActionEvent event) throws IOException {
 
+		boolean confirmar = alertas.alertaConfirmacion("Borrado de formulario",
+				"Se borrarán los datos introducidos, ¿está de acuerdo?");
+
+		if (confirmar) {
+			txtNombre.clear();
+			txtApellidos.clear();
+			txtEmail.clear();
+			cmbNacionalidad.getSelectionModel().clearSelection();
+
+		} else {
+			alertas.alertaInformacion("Acción cancelada", "Por favor, rellene el formulario.");
+		}
+
+	}
+
+	@FXML
+	private void handlerEditar(ActionEvent event) throws IOException {
+
+		if (!validarRegistro()) {
+			return;
+		}
+
+		peregrinoActivo.setNombre(txtNombre.getText());
+		peregrinoActivo.setApellidos(txtApellidos.getText());
+		usuarioActivo.setEmail(txtEmail.getText());
+		peregrinoActivo.setNacionalidad(cmbNacionalidad.getValue());
+
+		usuarioService.save(usuarioActivo);
+		peregrinoService.save(peregrinoActivo);
+
+		alertas.alertaInformacion("Actualización exitosa",
+				"Los datos han sido guardados correctamente.\n\nVolviendo al menú.");
+
 	}
 
 	/**
 	 * Handler para el botón btnVolver. Método que al pulsarlo vuelve a la ventana
-	 * de Login.
+	 * de Peregrino.
 	 * 
 	 * @param event
 	 * @throws IOException
@@ -234,5 +268,46 @@ public class EditarController implements Initializable {
 		Platform.exit();
 	}
 
-	
+	private void validarEntradas() {
+		lblFeed.setText(" ");
+
+		emailProperty.bind(txtEmail.textProperty());
+
+		emailProperty.addListener((observable, oldValue, newValue) -> {
+			if (!newValue.isEmpty()) {
+				if (!validaciones.validarEspacios(newValue)) {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedInvalido");
+					lblFeed.setText("Email sin espacios en blanco");
+				} else if (!validaciones.validarEmail(newValue)) {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedInvalido");
+					lblFeed.setText("Formato email no válido");
+				} else {
+					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
+					lblFeed.getStyleClass().add("lblFeedValido");
+					lblFeed.setText("Email válido");
+				}
+			} else {
+				lblFeed.setText(" ");
+			}
+		});
+	}
+
+	private boolean validarRegistro() {
+
+		if (txtNombre.getText() == null || txtNombre.getText().isEmpty()) {
+			alertas.alertaError("Error de validación", "El nombre de peregrino no puede estar vacío.");
+			return false;
+		}
+
+		if (txtEmail.getText() == null || txtEmail.getText().isEmpty()) {
+			alertas.alertaError("Error de validación", "El email no puede estar vacío.");
+			return false;
+		}
+
+		return true;
+
+	}
+
 }

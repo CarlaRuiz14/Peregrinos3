@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.Alertas;
+import com.luisdbb.tarea3AD2024base.config.BotonesConfig;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.config.Validaciones;
 import com.luisdbb.tarea3AD2024base.modelo.Perfil;
@@ -84,6 +85,9 @@ public class LoginController implements Initializable {
 	@Autowired
 	private Validaciones validaciones;
 
+	@Autowired
+	private BotonesConfig botones;
+
 	// conf hpVisible
 	private boolean isPassVisible = false;
 	private Image mostrarIcon;
@@ -102,28 +106,13 @@ public class LoginController implements Initializable {
 		hpVisible.setGraphic(createImageView(mostrarIcon));
 
 		// config img btn Login
-		String rutaLogin = resources.getString("btnLogin.icon");
-		Image imgLogin = new Image(getClass().getResourceAsStream(rutaLogin));
-		ImageView viewLogin = new ImageView(imgLogin);
-		viewLogin.setFitWidth(60);
-		viewLogin.setFitHeight(30);
-		btnLogin.setGraphic(viewLogin);
+		botones.configImgFlecha(btnLogin);
 
 		// config img btn Volver
-		String rutaVolver = resources.getString("btnVolver.icon");
-		Image imgVolver = new Image(getClass().getResourceAsStream(rutaVolver));
-		ImageView viewVolver = new ImageView(imgVolver);
-		viewVolver.setFitWidth(20);
-		viewVolver.setFitHeight(20);
-		btnVolver.setGraphic(viewVolver);
+		botones.configImgVolver(btnVolver);
 
 		// config img btn Salir
-		String rutaSalir = resources.getString("btnSalir.icon");
-		Image imgSalir = new Image(getClass().getResourceAsStream(rutaSalir));
-		ImageView viewSalir = new ImageView(imgSalir);
-		viewSalir.setFitWidth(20);
-		viewSalir.setFitHeight(20);
-		btnSalir.setGraphic(viewSalir);
+		botones.configImgSalir(btnSalir);
 
 		// config imagen usuario
 		String rutaUsu = resources.getString("usuario.icon");
@@ -304,8 +293,8 @@ public class LoginController implements Initializable {
 	 */
 	private ImageView createImageView(Image image) {
 		ImageView imageView = new ImageView(image);
-		imageView.setFitWidth(30);
-		imageView.setFitHeight(30);
+		imageView.setFitWidth(40);
+		imageView.setFitHeight(40);
 		imageView.setPreserveRatio(true);
 		return imageView;
 	}

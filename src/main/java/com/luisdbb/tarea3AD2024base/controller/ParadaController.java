@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
+import com.luisdbb.tarea3AD2024base.config.BotonesConfig;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.Perfil;
 import com.luisdbb.tarea3AD2024base.services.UsuarioService;
@@ -20,8 +21,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
@@ -53,26 +52,19 @@ public class ParadaController implements Initializable {
 	private StageManager stageManager;
 
 	@Autowired
+	private BotonesConfig botones;
+
+	@Autowired
 	private UsuarioService usuarioService;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 		// config img btn Logout
-		String rutaLog = resources.getString("btnLogout.icon");
-		Image imgLogout = new Image(getClass().getResourceAsStream(rutaLog));
-		ImageView viewLog = new ImageView(imgLogout);
-		viewLog.setFitWidth(20);
-		viewLog.setFitHeight(20);
-		btnLogout.setGraphic(viewLog);
+		botones.configImgLogout(btnLogout);
 
 		// config img btn Salir
-		String rutaSalir = resources.getString("btnSalir.icon");
-		Image imgSalir = new Image(getClass().getResourceAsStream(rutaSalir));
-		ImageView viewSalir = new ImageView(imgSalir);
-		viewSalir.setFitWidth(20);
-		viewSalir.setFitHeight(20);
-		btnSalir.setGraphic(viewSalir);
+		botones.configImgSalir(btnSalir);
 
 		// mnemónicos
 		btnExportar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {

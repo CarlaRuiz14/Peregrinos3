@@ -10,39 +10,38 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="575.0" prefWidth="480.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.luisdbb.tarea3AD2024base.controller.ExpParadaController">
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="540.0" prefWidth="540.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.luisdbb.tarea3AD2024base.controller.ExpParadaController">
    <children>
-      <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="535.0" prefWidth="440.0" styleClass="panel" StackPane.alignment="CENTER">
+      <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" styleClass="panel" StackPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="200.0" />
         </columnConstraints>
         <rowConstraints>            
           <RowConstraints minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />           
-          <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="150.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="130.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
                                 
         </rowConstraints>
          <children>
-            <Hyperlink fx:id="hpInfo" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerInfo" prefHeight="20.0" prefWidth="20.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+            <Hyperlink fx:id="hpInfo" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerInfo" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
             </Hyperlink>
-            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" styleClass="lblTitulo2" text="EXPORTAR PARADA" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" styleClass="lblTitulo4" text="EXPORTAR PARADA" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             <HBox alignment="CENTER" spacing="10.0" GridPane.rowIndex="1">
                <children>
                   <Label styleClass="lblNegrita" text="ID Parada:" />
@@ -85,25 +84,23 @@
                   <DatePicker fx:id="dateFechaI" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="27.0" prefWidth="120.0" promptText="Fecha Inicio" />
                   <Label text="a" />
                   <DatePicker fx:id="dateFechaF" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="27.0" prefWidth="120.0" promptText="Fecha Fin" />
-                  <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#handlerBuscar" />
+                  <Button fx:id="btnBuscar" mnemonicParsing="false" onAction="#handlerBuscar" prefHeight="30.0" prefWidth="30.0" />
                </children>
             </HBox>
             <TableView fx:id="tblEstancias" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="150.0" prefWidth="400.0" styleClass="tblV" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER">
               <columns>
-                  <TableColumn fx:id="colIdEstancia" prefWidth="84.0" text="ESTANCIA" />
-                <TableColumn fx:id="colPeregrino" prefWidth="123.20001220703125" text="PEREGRINO" />
-                <TableColumn fx:id="colFecha" prefWidth="96.0" text="FECHA" />
-                  <TableColumn fx:id="colVip" minWidth="0.0" prefWidth="69.60003662109375" text="VIP" />
+                  <TableColumn fx:id="colIdEstancia" prefWidth="100.0" text="ESTANCIA" />
+                <TableColumn fx:id="colPeregrino" prefWidth="120.0" text="PEREGRINO" />
+                <TableColumn fx:id="colFecha" prefWidth="95.0" text="FECHA" />
+                  <TableColumn fx:id="colVip" minWidth="0.0" prefWidth="62.0" text="VIP" />
               </columns>
             </TableView>
-            <Button fx:id="btnInforme" alignment="CENTER" onAction="#handlerInforme" prefHeight="50.0" prefWidth="50.0" styleClass="btnLogin" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
+            <Button fx:id="btnInforme" alignment="CENTER" onAction="#handlerInforme" prefHeight="40.0" prefWidth="40.0" styleClass="btnFlecha" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
             <HBox alignment="CENTER" prefHeight="30.0" prefWidth="240.0" GridPane.columnSpan="2" GridPane.rowIndex="11">
                <children>
-                  <Button fx:id="btnVolver" alignment="CENTER" onAction="#handlerVolver" prefHeight="20.0" prefWidth="20.0" />
-                  <Region prefHeight="36.0" prefWidth="217.0" />
-                  <Label fx:id="lblFeed" prefHeight="19.0" prefWidth="200.0" />
-                  <Region prefHeight="36.0" prefWidth="206.0" />
-                  <Button fx:id="btnSalir" onAction="#handlerSalir" prefHeight="20.0" prefWidth="20.0" />
+                  <Button fx:id="btnVolver" alignment="CENTER" onAction="#handlerVolver" prefHeight="30.0" prefWidth="30.0" />
+                  <Label fx:id="lblFeed" maxWidth="-Infinity" prefHeight="40.0" prefWidth="400.0" />
+                  <Button fx:id="btnSalir" onAction="#handlerSalir" prefHeight="30.0" prefWidth="30.0" />
                </children>
                <GridPane.margin>
                   <Insets />

@@ -37,27 +37,46 @@
 	-fx-background-color: #FFEA77;
 }
 
-/* Etiquetas de titulo*/
+
+TextField{
+	-fx-font-size: 18px;
+}
+
+PasswordField{
+	-fx-font-size: 18px;
+}
+
+ComboBox{
+	-fx-font-size: 18px;
+}
+
 Label{
 	-fx-text-fill: #1F6A24;
-	-fx-font-size: 16px;	
+	-fx-font-size: 18px;	
 	
 }
 
 .lblNegrita{
 	-fx-font-weight: bold;	
-	
 }
 
+/* Etiquetas de titulo*/
+.lblMain{
+	-fx-font-weight: bold;
+	-fx-font-size: 20px;
+	
+	
+}
 .lblTitulo{
-	-fx-font-size: 50px;
+	-fx-font-size: 60px;
 	-fx-text-fill: #1F6A24;
 	-fx-font-weight: bold;	
 }
 
-/* Titulos largos*/
+
+/* Titulos*/
 .lblTitulo2{
-	-fx-font-size: 30px;
+	-fx-font-size: 50px;
 	-fx-text-fill: #1F6A24;
 	-fx-font-weight: bold;
 }
@@ -69,11 +88,19 @@ Label{
 	-fx-font-weight: bold;
 }
 
+/* Titulos largos*/
+.lblTitulo4{
+	-fx-font-size: 30px;
+	-fx-text-fill: #1F6A24;
+	-fx-font-weight: bold;
+}
+
 /* Botones */
 Button{
 	-fx-background-color:#1F6A24;
 	-fx-background-radius: 20;
 	-fx-text-fill: #FFD700;	
+	-fx-font-size: 18px;
 }
 
 Button:hover {
@@ -92,6 +119,7 @@ Button:hover {
 
 .radio-button {
     -fx-text-fill:#1F6A24; 
+	-fx-font-size: 18px;
 }
 
 /* Hyperlink */
@@ -136,7 +164,8 @@ Button:hover {
 
 .tblM .column-header .label{    
     -fx-text-fill: #FFEA77;         
-    -fx-font-weight: bold;               
+    -fx-font-weight: bold;    
+	-fx-font-size: 14px;           
 }
 
 .tblM .table-row-cell {
@@ -160,12 +189,8 @@ Button:hover {
     -fx-alignment: CENTER;
 }
 
-.tblV .column-header {
-	-fx-background-color:#1F6A24;             
-}
-
 .tblV .column-header .label{    
-    -fx-text-fill: #FFD700;         
+    -fx-text-fill: #1F6A24;         
     -fx-font-weight: bold;               
 }
 
@@ -189,12 +214,9 @@ Button:hover {
     -fx-alignment: CENTER;
 }
 
-.tblVS .column-header {
-	-fx-background-color:#1F6A24;             
-}
 
 .tblVS .column-header .label{    
-    -fx-text-fill: #FFEA77;         
+    -fx-text-fill: #1F6A24;         
     -fx-font-weight: bold;               
 }
 

@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
+import com.luisdbb.tarea3AD2024base.config.AyudaConfig;
+import com.luisdbb.tarea3AD2024base.config.BotonesConfig;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.Estancia;
 import com.luisdbb.tarea3AD2024base.modelo.Parada;
@@ -20,7 +22,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -33,9 +34,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.web.WebView;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 
 /**
  * @author Carla Ruiz
@@ -115,17 +113,17 @@ public class CarnetController implements Initializable {
 	@Autowired
 	private StageManager stageManager;
 
+	@Autowired
+	private BotonesConfig botones;
+	
+	@Autowired
+	private AyudaConfig ayuda;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 		// config info
-		String rutaInfo = resources.getString("info.icon");
-		Image imagen = new Image(getClass().getResourceAsStream(rutaInfo));
-		ImageView imageView = new ImageView(imagen);
-		imageView.setFitWidth(30);
-		imageView.setFitHeight(30);
-		imageView.setPreserveRatio(true);
-		hpInfo.setGraphic(imageView);
+		ayuda.configImgInfo(hpInfo);
 
 		// config img peregrino
 		String rutaPer = resources.getString("carnet.icon");
@@ -166,28 +164,13 @@ public class CarnetController implements Initializable {
 		tblEstancias.setItems(listEstancias);
 
 		// config img btn Exportar
-		String rutaExportar = resources.getString("btnExportar.icon");
-		Image imgExp = new Image(getClass().getResourceAsStream(rutaExportar));
-		ImageView viewExp = new ImageView(imgExp);
-		viewExp.setFitWidth(60);
-		viewExp.setFitHeight(30);
-		btnExportar.setGraphic(viewExp);
+		botones.configImgFlecha(btnExportar);
 
 		// config img btn Volver
-		String rutaVolver = resources.getString("btnVolver.icon");
-		Image imgVolver = new Image(getClass().getResourceAsStream(rutaVolver));
-		ImageView viewVolver = new ImageView(imgVolver);
-		viewVolver.setFitWidth(20);
-		viewVolver.setFitHeight(20);
-		btnVolver.setGraphic(viewVolver);
+		botones.configImgVolver(btnVolver);
 
 		// config img btn Salir
-		String rutaSalir = resources.getString("btnSalir.icon");
-		Image imgSalir = new Image(getClass().getResourceAsStream(rutaSalir));
-		ImageView viewSalir = new ImageView(imgSalir);
-		viewSalir.setFitWidth(20);
-		viewSalir.setFitHeight(20);
-		btnSalir.setGraphic(viewSalir);
+		botones.configImgSalir(btnSalir);
 
 		// mnemónicos
 		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
@@ -235,22 +218,7 @@ public class CarnetController implements Initializable {
 	 */
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
-		WebView webView = new WebView();
-
-		String url = getClass().getResource("/help/help.html").toExternalForm();
-		webView.getEngine().load(url);
-
-		Stage helpStage = new Stage();
-		helpStage.setTitle("Info");
-
-		Scene helpScene = new Scene(webView, 600, 600);
-		helpStage.setScene(helpScene);
-
-		// Bloquear la ventana principal mientras se muestra la ayuda
-		helpStage.initModality(Modality.APPLICATION_MODAL);
-		helpStage.setResizable(false);
-
-		helpStage.show();
+		ayuda.configInfo("/help/help.html");
 	}
 
 	@FXML

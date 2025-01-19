@@ -27,11 +27,12 @@ public class PeregrinoService {
 	@Autowired
 	private UsuarioService usuarioService;
 
-	@Autowired
-	private PeregrinoService peregrinoService;
-
 	public Peregrino save(Peregrino entidad) {
 		return peregrinoRepository.save(entidad);
+	}
+	
+	public Peregrino findByUsuario(long id) {
+		return peregrinoRepository.findByUsuario_id(id);
 	}
 
 	public List<Peregrino> findAll() {
@@ -51,7 +52,7 @@ public class PeregrinoService {
 
 		carnet.setPeregrino(peregrino);
 
-		peregrinoService.save(peregrino);
+		peregrinoRepository.save(peregrino);
 
 	}
 

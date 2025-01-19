@@ -33,19 +33,19 @@
                                 
         </rowConstraints>
          <children>
-            <Hyperlink fx:id="hpInfo" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerInfo" prefHeight="20.0" prefWidth="20.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+            <Hyperlink fx:id="hpInfo" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerInfo" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
                <GridPane.margin>
                   <Insets right="20.0" />
                </GridPane.margin>
             </Hyperlink>
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" styleClass="lblTitulo2" text="MI CARNET" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             <Button fx:id="btnExportar" alignment="CENTER" onAction="#handlerExportar" prefHeight="30.0" prefWidth="60.0" styleClass="btnLogin" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-            <Button fx:id="btnSalir" onAction="#handlerSalir" prefHeight="20.0" prefWidth="20.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="BOTTOM">
+            <Button fx:id="btnSalir" onAction="#handlerSalir" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets right="20.0" />
                </GridPane.margin>
             </Button>
-            <Button fx:id="btnVolver" alignment="CENTER" onAction="#handlerVolver" prefHeight="20.0" prefWidth="20.0" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.valignment="BOTTOM">
+            <Button fx:id="btnVolver" alignment="CENTER" onAction="#handlerVolver" prefHeight="30.0" prefWidth="30.0" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets left="20.0" />
                </GridPane.margin>
