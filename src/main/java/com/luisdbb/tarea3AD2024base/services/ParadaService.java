@@ -38,7 +38,7 @@ public class ParadaService {
 
 	public Parada findById(Long id) {
 		return paradaRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("No se encontró la parada con ID: " + id));// para evitar optional
+				.orElseThrow(() -> new RuntimeException("No se encontró la parada con ID: " + id));
 
 	}
 	

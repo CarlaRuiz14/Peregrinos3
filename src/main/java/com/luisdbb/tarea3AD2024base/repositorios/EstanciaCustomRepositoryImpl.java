@@ -20,7 +20,7 @@ public class EstanciaCustomRepositoryImpl implements EstanciaCustomRepository {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	@Override // para errore tipograficos a la hora de llamar al metodo
+	@Override // para errores tipograficos a la hora de llamar al metodo
 	public List<Estancia> findByIdParadaAndFechaBetween(Long paradaId, LocalDate fechaInicio, LocalDate fechaFin) {
 
 		QEstancia estancia = QEstancia.estancia;

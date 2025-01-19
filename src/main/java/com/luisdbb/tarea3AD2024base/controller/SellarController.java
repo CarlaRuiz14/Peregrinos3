@@ -11,10 +11,12 @@ import org.springframework.stereotype.Controller;
 import com.luisdbb.tarea3AD2024base.config.Alertas;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.Carnet;
+import com.luisdbb.tarea3AD2024base.modelo.DatosSellado;
 import com.luisdbb.tarea3AD2024base.modelo.Parada;
 import com.luisdbb.tarea3AD2024base.modelo.Peregrino;
 import com.luisdbb.tarea3AD2024base.modelo.Sesion;
 import com.luisdbb.tarea3AD2024base.services.ParadaService;
+import com.luisdbb.tarea3AD2024base.services.ParadasPeregrinoService;
 import com.luisdbb.tarea3AD2024base.services.PeregrinoService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
@@ -93,17 +95,28 @@ public class SellarController implements Initializable {
 	private Sesion sesion;
 
 	@Autowired
+	private Alertas alertas;
+
+	@Autowired
+	private DatosSellado datosSellado;
+
+	@Autowired
 	private PeregrinoService peregrinoService;
 
 	@Autowired
 	private ParadaService paradaService;
 
+	@Autowired
+	private ParadasPeregrinoService paradasPeregrinoService;
+
 	Parada parada;
+	Carnet carnet;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		parada = paradaService.findById(sesion.getUsuarioActivo().getId());
+		parada = paradaService.findByUsuario(sesion.getUsuarioActivo().getId());
+		datosSellado.setParada(parada);
 
 		// cargar datos parada
 		lblIdParada.setText(String.valueOf(parada.getId()));
@@ -125,7 +138,7 @@ public class SellarController implements Initializable {
 		colNacionalidad.setCellValueFactory(new PropertyValueFactory<>("nacionalidad"));
 		colIdCarnet.setCellValueFactory(cellData -> {
 			// Obtenemos el carnet asociado al peregrino
-			Carnet carnet = cellData.getValue().getCarnet();
+			carnet = cellData.getValue().getCarnet();
 			// Retornamos el ID del carnet como una propiedad observable de tipo Long
 			return new SimpleObjectProperty<>(carnet != null ? carnet.getId() : null);
 		});
@@ -225,35 +238,47 @@ public class SellarController implements Initializable {
 	@FXML
 	private void handlerSellar(ActionEvent event) throws IOException {
 
-		Peregrino peregrinoSeleccionado = tblPeregrinos.getSelectionModel().getSelectedItem();
+		try {
 
-		if (peregrinoSeleccionado == null) {
-			Alertas.alertaError("Error", "Debe seleccionar un peregrino para sellar su carnet.");
-			return;
-		}
+			Peregrino peregrinoSeleccionado = tblPeregrinos.getSelectionModel().getSelectedItem();
+			if (peregrinoSeleccionado == null) {
+				alertas.alertaError("Error", "Debe seleccionar un peregrino para sellar su carnet.");
+				return;
+			}
 
-		String mensaje = "Se va a sellar el carnet del peregrino: \n\tID: "+peregrinoSeleccionado.getId()+"\n\tPeregrino: " + peregrinoSeleccionado.getNombre()
-				+ "\n\tNacionalidad: " + peregrinoSeleccionado.getNacionalidad() + "\n\tID Carnet: "
-				+ peregrinoSeleccionado.getCarnet().getId() + "\nEn la parada:\n\tID Parada: " + parada.getNombre()
-				+ "\n\tNombre: " + parada.getNombre() + "\n\tRegión: " + parada.getRegion();
+			if (paradasPeregrinoService.existeParada(parada, peregrinoSeleccionado)) {
+				alertas.alertaError("Error", "El peregrino " + peregrinoSeleccionado.getNombre()
+						+ " ya tiene registrada la parada " + parada.getNombre() + " para hoy.");
+				return;
+			}
 
-		boolean confirmar = Alertas.alertaConfirmacion("Confirmar datos", mensaje);
+			datosSellado.setPeregrino(peregrinoSeleccionado);
+			carnet = peregrinoSeleccionado.getCarnet();
 
-		if (confirmar) {
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			stageManager.switchScene(FxmlView.ALOJAR);
-		} else {
-			Alertas.alertaInformacion("Acción cancelada",
-					"Por favor, seleccione un peregrino \npara sellar su carnet.");
+			String mensaje = "Se va a sellar el carnet del peregrino: \n\tID: " + peregrinoSeleccionado.getId()
+					+ "\n\tPeregrino: " + peregrinoSeleccionado.getNombre() + "\n\tNacionalidad: "
+					+ peregrinoSeleccionado.getNacionalidad() + "\n\tID Carnet: " + carnet.getId()
+					+ "\nEn la parada:\n\tID Parada: " + parada.getId() + "\n\tNombre: " + parada.getNombre()
+					+ "\n\tRegión: " + parada.getRegion();
+
+			boolean confirmar = alertas.alertaConfirmacion("Confirmar datos", mensaje);
+
+			if (confirmar) {
+				paradasPeregrinoService.registrarParadaYSellarCarnet(carnet, parada, peregrinoSeleccionado);
+				String mensajeExito = "El carnet del peregrino " + peregrinoSeleccionado.getNombre()
+						+ " ha sido sellado correctamente.";
+				alertas.alertaInformacion("Sellado exitoso", mensajeExito);
+
+				stageManager.switchScene(FxmlView.ALOJAR);
+			} else {
+				alertas.alertaInformacion("Acción cancelada",
+						"Por favor, seleccione un peregrino \npara sellar su carnet.");
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			alertas.alertaError("Error de sellado",
+					"Hubo un error al intentar sellar el carnet del peregrino, revise la infomación. ");
 		}
 	}
 

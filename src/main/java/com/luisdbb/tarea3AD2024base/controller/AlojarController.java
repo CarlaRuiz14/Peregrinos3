@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.Alertas;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
+import com.luisdbb.tarea3AD2024base.modelo.DatosSellado;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
@@ -71,9 +72,19 @@ public class AlojarController implements Initializable {
 	@Autowired
 	private StageManager stageManager;
 
-	
+	@Autowired
+	private Alertas alertas;
+
+	@Autowired
+	private DatosSellado datosSellado;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+
+		// cargar datos
+		lblNombre.setText(datosSellado.getParada().getNombre());
+		lblRegion.setText(String.valueOf(datosSellado.getParada().getRegion()));
+		lblId.setText(String.valueOf(datosSellado.getParada().getId()));
 
 		// config info
 		String rutaInfo = resources.getString("info.icon");
@@ -157,32 +168,30 @@ public class AlojarController implements Initializable {
 	 * @throws IOException
 	 */
 	@FXML
-	private void handlerInfo(ActionEvent event) throws IOException {		       
-		        WebView webView = new WebView();
-		       
-		        String url = getClass().getResource("/help/help.html").toExternalForm();
-		        webView.getEngine().load(url);
-		       
-		        Stage helpStage = new Stage();
-		        helpStage.setTitle("Info");
-		     
-		        Scene helpScene = new Scene(webView, 600, 600);		       
-		        helpStage.setScene(helpScene);
+	private void handlerInfo(ActionEvent event) throws IOException {
+		WebView webView = new WebView();
 
-		        // Bloquear la ventana principal mientras se muestra la ayuda
-		        helpStage.initModality(Modality.APPLICATION_MODAL);
-		        helpStage.setResizable(false);
-		       
-		        helpStage.show();		
+		String url = getClass().getResource("/help/help.html").toExternalForm();
+		webView.getEngine().load(url);
+
+		Stage helpStage = new Stage();
+		helpStage.setTitle("Info");
+
+		Scene helpScene = new Scene(webView, 600, 600);
+		helpStage.setScene(helpScene);
+
+		// Bloquear la ventana principal mientras se muestra la ayuda
+		helpStage.initModality(Modality.APPLICATION_MODAL);
+		helpStage.setResizable(false);
+
+		helpStage.show();
 	}
-
-	
 
 	@FXML
 	private void handlerAlojar(ActionEvent event) {
 
 		if (respuesta.getSelectedToggle() == null) {
-			Alertas.alertaInformacion("Selección requerida", "Debe seleccionar una opción antes de continuar.");
+			alertas.alertaInformacion("Selección requerida", "Debe seleccionar una opción antes de continuar.");
 			return;
 		}
 
@@ -190,13 +199,13 @@ public class AlojarController implements Initializable {
 
 		if (seleccion.equals(rbtnSi)) {
 
-			Alertas.alertaInformacion("Alojar", "El peregrino será alojado.");
+			alertas.alertaInformacion("Alojar", "El peregrino será alojado.");
 			stageManager.switchScene(FxmlView.VIP);
 
 		} else if (seleccion.equals(rbtnNo)) {
 
-			Alertas.alertaInformacion("No alojar",
-					"El peregrino no será alojado.\nDatos guardados.\nVolviendo a su Menú.");
+			alertas.alertaInformacion("No alojar",
+					"El peregrino no será alojado.\nDatos guardados.\n\nVolviendo a su Menú.");
 			stageManager.switchScene(FxmlView.PARADA);
 		}
 	}

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.luisdbb.tarea3AD2024base.modelo.Parada;
 import com.luisdbb.tarea3AD2024base.modelo.Perfil;
+import com.luisdbb.tarea3AD2024base.modelo.Sesion;
 import com.luisdbb.tarea3AD2024base.modelo.Usuario;
 import com.luisdbb.tarea3AD2024base.repositorios.UsuarioRepository;
 
@@ -25,6 +26,9 @@ public class UsuarioService {
 
 	@Autowired
 	private PasswordService passwordService;
+	
+	@Autowired
+	private Sesion sesion;
 
 	// al crear el usuario automaticamente encripta la constraseña
 	public Usuario save(Usuario entidad) {
@@ -68,36 +72,38 @@ public class UsuarioService {
 //	}
 
 	public Perfil loguear(String usuario, String contraseña) {
-		
+				
 		Perfil perfil = null;
 
 		Usuario user = usuarioRepository.findByNombreUsuario(usuario);
-		
-		
-//		
-//		if (user == null) {
-//		    System.out.println("Usuario no encontrado: " + usuario);
-//		    return null; // Retorna null si no se encuentra el usuario
-//		} else {
-//		    System.out.println("Usuario encontrado: " + user.getNombreUsuario());
-//		    System.out.println("Contraseña almacenada (hash): " + user.getContraseña());
-//		}
-//	
-//		
-//		
-		
+				
 		if (user != null && passwordService.verificar(contraseña, user.getContraseña())) {
 			perfil = user.getPerfil(); 
 		}
 
 		return perfil;
 	}
+	
+	public void configurarSesion(String usuario, Perfil perfil) {
+	    sesion.setUsuarioActivo(findByUsuario(usuario));
+	    sesion.setPerfilActivo(perfil);
+	}
+
 
 	@Transactional
-	public void registrarUsuarioParada(Usuario usuario, Parada parada) {
-		this.save(usuario);
+	public void registrarUsuarioYParada(String usuario, String email, String contraseña,String nombreParada, char region) {
+		
+		Usuario user = new Usuario(usuario, email, contraseña, Perfil.PARADA);
+
+		Parada parada = new Parada(nombreParada, region, user);
+
+		
+		this.save(user);
 		paradaService.save(parada);
 
 	}
 
+	
+
+	
 }

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.Perfil;
-import com.luisdbb.tarea3AD2024base.modelo.Sesion;
+import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
@@ -48,13 +48,12 @@ public class ParadaController implements Initializable {
 	@FXML
 	private Button btnSalir;
 
-	// inyecciones
-	@Autowired
-	private Sesion sesion;
-
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
+
+	@Autowired
+	private UsuarioService usuarioService;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -106,7 +105,7 @@ public class ParadaController implements Initializable {
 
 		// tooltips
 		btnExportar.setTooltip(new Tooltip("Exportar Carnet (Alt+X)"));
-		btnSellar.setTooltip(new Tooltip("Sellar/Alojar (Alt+A)"));	
+		btnSellar.setTooltip(new Tooltip("Sellar/Alojar (Alt+A)"));
 		btnLogout.setTooltip(new Tooltip("Logout (Alt+L)"));
 		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
 
@@ -124,7 +123,6 @@ public class ParadaController implements Initializable {
 		stageManager.switchScene(FxmlView.SELLAR);
 	}
 
-	
 	/**
 	 * Handler para botón Logout. Método que sale desactiva la sesión actual del
 	 * usuario. Establece usuarioActivo a null y el perfilActivo a INVITADO. Cambia
@@ -134,9 +132,8 @@ public class ParadaController implements Initializable {
 	 * @throws IOException
 	 */
 	@FXML
-	private void handlerLogout(ActionEvent event) throws IOException {		
-		sesion.setUsuarioActivo(null);
-		sesion.setPerfilActivo(Perfil.INVITADO);
+	private void handlerLogout(ActionEvent event) throws IOException {
+		usuarioService.configurarSesion(null, Perfil.INVITADO);
 		stageManager.switchScene(FxmlView.LOGIN);
 	}
 

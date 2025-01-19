@@ -43,6 +43,7 @@ public class Estancia {
 		super();
 	}
 
+	// para pruebas CarnetController
 	public Estancia(long id, LocalDate fecha, boolean vip) {
 		super();
 		this.id = id;
@@ -50,14 +51,22 @@ public class Estancia {
 		this.vip = vip;
 	}
 
-	public Estancia(long id, Peregrino peregrino, LocalDate fecha, boolean vip) {
-		super();
-		this.id = id;
+//	public Estancia(long id, Peregrino peregrino, LocalDate fecha, boolean vip) {
+//		super();
+//		this.id = id;
+//		this.fecha = fecha;
+//		this.vip = vip;
+//		this.peregrino = peregrino;
+//	}
+
+	public Estancia( LocalDate fecha, boolean vip, Peregrino peregrino, Parada parada) {
+		super();		
 		this.fecha = fecha;
 		this.vip = vip;
 		this.peregrino = peregrino;
+		this.parada = parada;
 	}
-
+	
 	public Estancia(long id, LocalDate fecha, boolean vip, Peregrino peregrino, Parada parada) {
 		super();
 		this.id = id;
@@ -131,6 +140,10 @@ public class Estancia {
 	public String toString() {
 		return "Estancia [id=" + id + ", fecha=" + fecha + ", vip=" + vip + ", peregrino=" + peregrino + ", parada="
 				+ parada + "]";
+	}
+	
+	public String getNombrePeregrino() {
+	    return peregrino != null ? peregrino.getNombre() : "";
 	}
 
 }

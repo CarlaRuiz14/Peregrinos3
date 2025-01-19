@@ -45,6 +45,7 @@ import javafx.stage.Stage;
 public class CarnetController implements Initializable {
 
 	// falta corregir columna region
+	// cuando se pongan los datos en las tablas extraerlos a la service
 
 	@FXML
 	private Hyperlink hpInfo;

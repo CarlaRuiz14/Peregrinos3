@@ -66,15 +66,12 @@ public class RecuperacionController implements Initializable {
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
+	
+	@Autowired
+	private Alertas alertas;
 
 	@Autowired
 	private UsuarioService usuarioService;
-
-	// métodos
-	private boolean existe(String usuario) {
-		Usuario user = usuarioService.findByUsuario(usuario);
-		return user != null;
-	}
 
 	private boolean existeUsuario = false;
 
@@ -88,7 +85,7 @@ public class RecuperacionController implements Initializable {
 			if (txtUsuario.getText().isEmpty()) {
 				lblEmail.setText("Email");
 				existeUsuario = false;
-			} else if (!existe(newValue)) {
+			} else if (!usuarioService.existsByNombreUsuario(newValue)) {
 				lblEmail.setText("El usuario no existe");
 				existeUsuario = false;
 			} else {
@@ -209,17 +206,17 @@ public class RecuperacionController implements Initializable {
 	@FXML
 	private void handlerEnviar(ActionEvent event) throws IOException {
 		if (existeUsuario) {
-			boolean respuesta = Alertas.alertaConfirmacion("Confirmación email",
+			boolean respuesta = alertas.alertaConfirmacion("Confirmación email",
 					"Se le enviará su contraseña a este email.\n¿Es corecto?");
 			if (respuesta) {
-				Alertas.alertaInformacion("Email enviado", "Se le ha enviado el Email.\nVolviendo al menú.");
+				alertas.alertaInformacion("Email enviado", "Se le ha enviado el Email.\n\nVolviendo al menú.");
 				stageManager.switchScene(FxmlView.LOGIN);
 			} else {
-				Alertas.alertaInformacion("Acción cancelada", "Por favor, introduzca un usuario registrado.");
+				alertas.alertaInformacion("Acción cancelada", "Por favor, introduzca un usuario registrado.");
 			}
 
 		} else {
-			Alertas.alertaError("Falta usuario",
+			alertas.alertaError("Falta usuario",
 					"Es necesario un usuario registrado para recuperar la contraseña");
 		}
 	}

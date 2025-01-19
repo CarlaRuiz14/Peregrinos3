@@ -3,12 +3,15 @@ package com.luisdbb.tarea3AD2024base.config;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import org.springframework.stereotype.Component;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+@Component
 public class Alertas {
 
 	/**
@@ -17,7 +20,7 @@ public class Alertas {
 	 * @param titulo
 	 * @param mensaje
 	 */
-	public static void alertaInformacion(String titulo, String mensaje) {
+	public void alertaInformacion(String titulo, String mensaje) {
 		Alert alerta = new Alert(Alert.AlertType.INFORMATION);
 		alerta.setTitle(titulo);
 		alerta.setHeaderText(null);		
@@ -49,7 +52,7 @@ public class Alertas {
 	 * @param titulo
 	 * @param mensaje
 	 */
-	public static void alertaError(String titulo, String mensaje) {
+	public void alertaError(String titulo, String mensaje) {
 		Alert alerta = new Alert(Alert.AlertType.ERROR);
 		alerta.setTitle(titulo);
 		alerta.setHeaderText(null);
@@ -81,7 +84,7 @@ public class Alertas {
 	 * @param mensaje
 	 * @return true si hay respuesta y es true (Si)
 	 */
-	public static boolean alertaConfirmacion(String titulo, String mensaje) {
+	public boolean alertaConfirmacion(String titulo, String mensaje) {
 
 		Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
 		alerta.setTitle(titulo);

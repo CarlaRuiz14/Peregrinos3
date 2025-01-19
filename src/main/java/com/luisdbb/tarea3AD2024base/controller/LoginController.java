@@ -10,8 +10,8 @@ import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.Alertas;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
+import com.luisdbb.tarea3AD2024base.config.Validaciones;
 import com.luisdbb.tarea3AD2024base.modelo.Perfil;
-import com.luisdbb.tarea3AD2024base.modelo.Sesion;
 import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
@@ -75,11 +75,14 @@ public class LoginController implements Initializable {
 	private UsuarioService usuarioService;
 
 	@Autowired
-	private Sesion sesion;
+	private Alertas alertas;
 
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
+
+	@Autowired
+	private Validaciones validaciones;
 
 	// conf hpVisible
 	private boolean isPassVisible = false;
@@ -197,43 +200,30 @@ public class LoginController implements Initializable {
 	@FXML
 	private void handlerLogin(ActionEvent event) throws IOException {
 		lblFeed.setText(" ");
-		if (txtUsuario.getText() == null || txtUsuario.getText().isEmpty()) {
-			Alertas.alertaError("Faltan datos", "El campo usuario es obligatorio");
-			return;
-		}
-		if ((txtContraseña.getText() == null || txtContraseña.getText().isEmpty())
-				&& ((passContraseña.getText() == null || passContraseña.getText().isEmpty()))) {
-			Alertas.alertaError("Faltan datos", "El campo contraseña es obligatorio");
-			return;
-		}
 
 		String contraseña = passContraseña.isVisible() ? passContraseña.getText() : txtContraseña.getText();
 
+		if (!validaciones.validarCredenciales(txtUsuario.getText(), contraseña)) {
+			return;
+		}
+
 		Perfil perfilActivo = usuarioService.loguear(txtUsuario.getText(), contraseña);
+
 		switch (perfilActivo) {
 		case PEREGRINO:
-			// sesion
-			sesion.setUsuarioActivo(usuarioService.findByUsuario(txtUsuario.getText()));
-			sesion.setPerfilActivo(perfilActivo);
-
+			usuarioService.configurarSesion(txtUsuario.getText(), perfilActivo);
 			stageManager.switchScene(FxmlView.PEREGRINO);
 			break;
 		case PARADA:
-			// sesion
-			sesion.setUsuarioActivo(usuarioService.findByUsuario(txtUsuario.getText()));
-			sesion.setPerfilActivo(perfilActivo);
-
+			usuarioService.configurarSesion(txtUsuario.getText(), perfilActivo);
 			stageManager.switchScene(FxmlView.PARADA);
 			break;
 		case ADMINISTRADOR:
-			// sesion
-			sesion.setUsuarioActivo(usuarioService.findByUsuario(txtUsuario.getText()));
-			sesion.setPerfilActivo(perfilActivo);
-
+			usuarioService.configurarSesion(txtUsuario.getText(), perfilActivo);
 			stageManager.switchScene(FxmlView.ADMIN);
 			break;
 		case null:
-			Alertas.alertaError("Datos no encontrados", "Los datos introducidos no están registrados.");
+			alertas.alertaError("Datos no encontrados", "Los datos introducidos no están registrados.");
 			break;
 		default:
 			lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");

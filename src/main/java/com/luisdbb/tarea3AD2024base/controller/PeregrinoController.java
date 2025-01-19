@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.Perfil;
-import com.luisdbb.tarea3AD2024base.modelo.Sesion;
+import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
@@ -48,13 +48,12 @@ public class PeregrinoController implements Initializable {
 	@FXML
 	private Button btnSalir;
 
-	// inyecciones
-	@Autowired
-	private Sesion sesion;
-
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
+
+	@Autowired
+	private UsuarioService usuarioService;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -133,8 +132,7 @@ public class PeregrinoController implements Initializable {
 	 */
 	@FXML
 	private void handlerLogout(ActionEvent event) throws IOException {
-		sesion.setUsuarioActivo(null);
-		sesion.setPerfilActivo(Perfil.INVITADO);
+		usuarioService.configurarSesion(null, Perfil.INVITADO);
 		stageManager.switchScene(FxmlView.LOGIN);
 	}
 

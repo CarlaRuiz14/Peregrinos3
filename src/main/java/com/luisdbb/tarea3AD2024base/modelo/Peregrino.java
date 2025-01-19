@@ -1,6 +1,5 @@
 package com.luisdbb.tarea3AD2024base.modelo;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,18 +25,15 @@ public class Peregrino {
 	// atributos
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	@Column(nullable=false)
-	private String nombre;	
+	private Long id;
+	@Column(nullable = false)
+	private String nombre;
 	private String apellidos;
-	@Column(name = "fecha_nacimiento",nullable=false)
-	private LocalDate fechaNacimiento;
-	private String genero;
 	private String nacionalidad;
 
 	// relacion uno a uno con carnet bidireccional
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id_carnet",nullable = false, unique = true)
+	@JoinColumn(name = "id_carnet", nullable = false, unique = true)
 	private Carnet carnet;
 
 	// relacion uno a muchos con estancias
@@ -46,7 +42,7 @@ public class Peregrino {
 
 	// relacion uno a uno con usuario unidireccional
 	// para save de usuario independiente de peregrino y poder encriptar contraseña
-	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.REMOVE })
 	@JoinColumn(name = "id_usuario", nullable = false, unique = true) // FK a User,especificar unique y nullable, no
 																		// implicito en FK
 	private Usuario usuario; // de User se saca la PK para la FK aqui y el nombre de la columna sera este
@@ -69,29 +65,22 @@ public class Peregrino {
 		this.carnet = carnet;
 	}
 
-	
-	public Peregrino(String nombre, String apellidos, LocalDate fechaNacimiento, String genero,
-			String nacionalidad, Usuario usuario, Carnet carnet) {
-		super();		
+	public Peregrino(String nombre, String apellidos, String nacionalidad, Usuario usuario, Carnet carnet) {
+		super();
 		this.nombre = nombre;
 		this.apellidos = apellidos;
-		this.fechaNacimiento = fechaNacimiento;
-		this.genero = genero;
 		this.nacionalidad = nacionalidad;
-		this.usuario = usuario;		
+		this.usuario = usuario;
 		this.carnet = carnet;
-		
+
 	}
-	
-	public Peregrino(long id, String nombre, String apellidos, LocalDate fechaNacimiento, String genero,
-			String nacionalidad, Usuario usuario, List<Estancia> estancias, Carnet carnet,
-			List<ParadasPeregrino> paradasPeregrino) {
+
+	public Peregrino(long id, String nombre, String apellidos, String nacionalidad, Usuario usuario,
+			List<Estancia> estancias, Carnet carnet, List<ParadasPeregrino> paradasPeregrino) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
-		this.fechaNacimiento = fechaNacimiento;
-		this.genero = genero;
 		this.nacionalidad = nacionalidad;
 		this.usuario = usuario;
 		this.estancias = estancias;
@@ -122,22 +111,6 @@ public class Peregrino {
 
 	public void setApellidos(String apellidos) {
 		this.apellidos = apellidos;
-	}
-
-	public LocalDate getFechaNacimiento() {
-		return fechaNacimiento;
-	}
-
-	public void setFechaNacimiento(LocalDate fechaNacimiento) {
-		this.fechaNacimiento = fechaNacimiento;
-	}
-
-	public String getGenero() {
-		return genero;
-	}
-
-	public void setGenero(String genero) {
-		this.genero = genero;
 	}
 
 	public String getNacionalidad() {
@@ -183,8 +156,7 @@ public class Peregrino {
 	// métodos
 	@Override
 	public int hashCode() {
-		return Objects.hash(apellidos, carnet, estancias, fechaNacimiento, genero, id, nacionalidad, nombre,
-				paradasPeregrino, usuario);
+		return Objects.hash(apellidos, carnet, estancias, id, nacionalidad, nombre, paradasPeregrino, usuario);
 	}
 
 	@Override
@@ -197,17 +169,16 @@ public class Peregrino {
 			return false;
 		Peregrino other = (Peregrino) obj;
 		return Objects.equals(apellidos, other.apellidos) && Objects.equals(carnet, other.carnet)
-				&& Objects.equals(estancias, other.estancias) && Objects.equals(fechaNacimiento, other.fechaNacimiento)
-				&& Objects.equals(genero, other.genero) && id == other.id
+				&& Objects.equals(estancias, other.estancias) && id == other.id
 				&& Objects.equals(nacionalidad, other.nacionalidad) && Objects.equals(nombre, other.nombre)
 				&& Objects.equals(paradasPeregrino, other.paradasPeregrino) && Objects.equals(usuario, other.usuario);
 	}
 
 	@Override
 	public String toString() {
-		return "Peregrino [id=" + id + ", nombre=" + nombre + ", apellidos=" + apellidos + ", fechaNacimiento="
-				+ fechaNacimiento + ", genero=" + genero + ", nacionalidad=" + nacionalidad + ", carnet=" + carnet
-				+ ", estancias=" + estancias + ", usuario=" + usuario + ", paradasPeregrino=" + paradasPeregrino + "]";
+		return "Peregrino [id=" + id + ", nombre=" + nombre + ", apellidos=" + apellidos + ", nacionalidad="
+				+ nacionalidad + ", carnet=" + carnet + ", estancias=" + estancias + ", usuario=" + usuario
+				+ ", paradasPeregrino=" + paradasPeregrino + "]";
 	}
 
 }

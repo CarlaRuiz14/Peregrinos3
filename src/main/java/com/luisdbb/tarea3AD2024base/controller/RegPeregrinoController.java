@@ -1,41 +1,26 @@
 package com.luisdbb.tarea3AD2024base.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.ResourceBundle;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 import com.luisdbb.tarea3AD2024base.config.Alertas;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.config.Validaciones;
-import com.luisdbb.tarea3AD2024base.modelo.Carnet;
 import com.luisdbb.tarea3AD2024base.modelo.Parada;
-import com.luisdbb.tarea3AD2024base.modelo.Peregrino;
-import com.luisdbb.tarea3AD2024base.modelo.Perfil;
-import com.luisdbb.tarea3AD2024base.modelo.Usuario;
+import com.luisdbb.tarea3AD2024base.services.NacionalidadService;
 import com.luisdbb.tarea3AD2024base.services.ParadaService;
 import com.luisdbb.tarea3AD2024base.services.PeregrinoService;
 import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -46,13 +31,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -84,18 +66,6 @@ public class RegPeregrinoController implements Initializable {
 	private TextField txtApellidos;
 
 	@FXML
-	private DatePicker dateFecha;
-
-	@FXML
-	private RadioButton rbMasc;
-
-	@FXML
-	private RadioButton rbFem;
-
-	@FXML
-	private ToggleGroup tgGenero;
-
-	@FXML
 	private ComboBox<String> cmbNacionalidad;
 
 	ObservableList<String> listaNac;
@@ -119,7 +89,7 @@ public class RegPeregrinoController implements Initializable {
 	private TextField txtConfirmacion;
 
 	@FXML
-	private PasswordField passConfirmacion;	
+	private PasswordField passConfirmacion;
 
 	@FXML
 	private Button btnLimpiar;
@@ -146,6 +116,9 @@ public class RegPeregrinoController implements Initializable {
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
+	
+	@Autowired
+	private Alertas alertas;
 
 	@Autowired
 	private ParadaService paradaService;
@@ -156,8 +129,14 @@ public class RegPeregrinoController implements Initializable {
 	@Autowired
 	private UsuarioService usuarioService;
 
+	@Autowired
+	private Validaciones validaciones;
+
+	@Autowired
+	private NacionalidadService nacionalidadService;
+
 	// conf hpVisible
-	private boolean isPassVisible = false;	
+	private boolean isPassVisible = false;
 	private Image mostrarIcon;
 	private Image ocultarIcon;
 
@@ -173,20 +152,15 @@ public class RegPeregrinoController implements Initializable {
 		mostrarIcon = new Image(getClass().getResourceAsStream(mostrarPath));
 		ocultarIcon = new Image(getClass().getResourceAsStream(ocultarPath));
 
-		hpVisible.setGraphic(createImageView(mostrarIcon));		
+		hpVisible.setGraphic(createImageView(mostrarIcon));
 
 		// combobox
 		listaParadas = FXCollections.observableArrayList(paradaService.findAll());
 		cmbParada.setItems(listaParadas);
 
-		List<String> listaValores = new ArrayList<>(mapaNacionalidades().values());
+		List<String> listaValores = new ArrayList<>(nacionalidadService.mapaNacionalidades().values());
 		listaNac = FXCollections.observableArrayList(listaValores);
 		cmbNacionalidad.setItems(listaNac);
-
-		// toggle genero
-		tgGenero = new ToggleGroup();
-		rbMasc.setToggleGroup(tgGenero);
-		rbFem.setToggleGroup(tgGenero);
 
 		// config info
 		String rutaInfo = resources.getString("info.icon");
@@ -242,7 +216,7 @@ public class RegPeregrinoController implements Initializable {
 				event.consume();
 			}
 		});
-		
+
 		btnLimpiar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.L) {
 				btnLimpiar.fire();
@@ -273,7 +247,7 @@ public class RegPeregrinoController implements Initializable {
 
 		// tooltips
 		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
-		hpVisible.setTooltip(new Tooltip("Mostrar (Alt+M)"));	
+		hpVisible.setTooltip(new Tooltip("Mostrar (Alt+M)"));
 		btnLimpiar.setTooltip(new Tooltip("Limpiar (Alt+L)"));
 		btnRegistrar.setTooltip(new Tooltip("Registrar (Alt+R)"));
 		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
@@ -306,7 +280,6 @@ public class RegPeregrinoController implements Initializable {
 
 	}
 
-
 	/**
 	 * Handler del botón btnRegistrar. Método que registra un usuario, un carnet y
 	 * un peregrino y muestra mensajes de alerta para exito o error.
@@ -323,32 +296,19 @@ public class RegPeregrinoController implements Initializable {
 			}
 
 			String contraseña = passContraseña.isVisible() ? passContraseña.getText() : txtContraseña.getText();
-
-			Usuario usuario = new Usuario(txtUsuario.getText(), txtEmail.getText(), contraseña, Perfil.PEREGRINO);
-			usuario = usuarioService.save(usuario);
-
 			Parada paradaInicial = cmbParada.getSelectionModel().getSelectedItem();
-			Carnet carnet = new Carnet(paradaInicial);
+			String nacionalidad =nacionalidadService.obtenerNacionalidadSeleccionada(cmbNacionalidad.getSelectionModel().getSelectedItem());					
+				
+			peregrinoService.registrarUsuarioCarnetYPeregrino(txtUsuario.getText(), txtEmail.getText(), contraseña,
+					paradaInicial, txtNombre.getText(), txtApellidos.getText(), nacionalidad);
 
-			RadioButton generoSeleccionado = (RadioButton) tgGenero.getSelectedToggle();
-			String genero = generoSeleccionado.getText();
-
-			Peregrino peregrino = new Peregrino(txtNombre.getText(), txtApellidos.getText(), dateFecha.getValue(),
-					genero,
-					buscarClavePorValor(mapaNacionalidades(), cmbNacionalidad.getSelectionModel().getSelectedItem()),
-					usuario, carnet);
-
-			carnet.setPeregrino(peregrino);
-
-			peregrinoService.save(peregrino);
-
-			Alertas.alertaInformacion("Registro exitoso",
-					"Se ha registrado como peregrino y se ha creado su carnet correctamente.\nVolviendo al login.");
+			alertas.alertaInformacion("Registro exitoso",
+					"Se ha registrado como peregrino y se ha creado su carnet correctamente.\n\nVolviendo al login.");
 			stageManager.switchScene(FxmlView.LOGIN);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
-			Alertas.alertaError("Error", "Hubo un problema al registrar los datos. Por favor, revise la información.");
+			alertas.alertaError("Error", "Hubo un problema al registrar los datos. Por favor, revise la información.");
 
 		}
 
@@ -364,15 +324,13 @@ public class RegPeregrinoController implements Initializable {
 	@FXML
 	private void handlerLimpiar(ActionEvent event) throws IOException {
 
-		boolean confirmar = Alertas.alertaConfirmacion("Borado de formulario",
+		boolean confirmar = alertas.alertaConfirmacion("Borado de formulario",
 				"Se borrarán los datos introducidos, ¿está de acuerdo?");
 
 		if (confirmar) {
 			cmbParada.getSelectionModel().clearSelection();
 			txtNombre.clear();
 			txtApellidos.clear();
-			dateFecha.setValue(null);
-			tgGenero.selectToggle(null);
 			cmbNacionalidad.getSelectionModel().clearSelection();
 			txtEmail.clear();
 			txtUsuario.clear();
@@ -381,7 +339,7 @@ public class RegPeregrinoController implements Initializable {
 			passContraseña.clear();
 			passConfirmacion.clear();
 		} else {
-			Alertas.alertaInformacion("Acción cancelada", "Por favor, rellene el formulario.");
+			alertas.alertaInformacion("Acción cancelada", "Por favor, rellene el formulario.");
 		}
 
 	}
@@ -444,35 +402,17 @@ public class RegPeregrinoController implements Initializable {
 		lblFeed.setText(" ");
 
 		// asociación de property con fxml
-		ObjectProperty<LocalDate> fechaProperty = dateFecha.valueProperty();
 		emailProperty.bind(txtEmail.textProperty());
 		usuarioProperty.bind(txtUsuario.textProperty());
 		contraseñaProperty.bind(txtContraseña.textProperty());
 
-		fechaProperty.addListener((observable, oldValue, newValue) -> {
-			if (newValue != null) {
-				LocalDate hoy = LocalDate.now();
-				if (newValue.isAfter(hoy)) {
-					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
-					lblFeed.getStyleClass().add("lblFeedInvalido");
-					lblFeed.setText("La fecha no puede ser posterior al día de hoy.");
-				} else {
-					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
-					lblFeed.getStyleClass().add("lblFeedValido");
-					lblFeed.setText("Fecha válida.");
-				}
-			} else {
-				lblFeed.setText(" ");
-			}
-		});
-
 		emailProperty.addListener((observable, oldValue, newValue) -> {
 			if (!newValue.isEmpty()) {
-				if (!Validaciones.validarEspacios(newValue)) {
+				if (!validaciones.validarEspacios(newValue)) {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("Email sin espacios en blanco");
-				} else if (!Validaciones.validarEmail(newValue)) {
+				} else if (!validaciones.validarEmail(newValue)) {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("Formato email no válido");
@@ -488,7 +428,7 @@ public class RegPeregrinoController implements Initializable {
 
 		usuarioProperty.addListener((observable, oldValue, newValue) -> {
 			if (!newValue.isEmpty()) {
-				if (!Validaciones.validarEspacios(newValue)) {
+				if (!validaciones.validarEspacios(newValue)) {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("Usuario sin espacios en blanco");
@@ -508,11 +448,11 @@ public class RegPeregrinoController implements Initializable {
 
 		contraseñaProperty.addListener((observable, oldValue, newValue) -> {
 			if (!newValue.isEmpty()) {
-				if (!Validaciones.validarEspacios(newValue)) {
+				if (!validaciones.validarEspacios(newValue)) {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("Contraseña sin espacios en blanco");
-				} else if (!Validaciones.validarContraseña(newValue)) {
+				} else if (!validaciones.validarContraseña(newValue)) {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("Min 6 caracteres: mayúscula, nº y especial");
@@ -539,50 +479,50 @@ public class RegPeregrinoController implements Initializable {
 	private boolean validarRegistro() {
 
 		if (cmbParada.getSelectionModel().getSelectedItem() == null) {
-			Alertas.alertaError("Error de validación", "La parada inicial no puede estar vacía.");
+			alertas.alertaError("Error de validación", "La parada inicial no puede estar vacía.");
 			return false;
 		}
 
 		if (txtNombre.getText() == null || txtNombre.getText().isEmpty()) {
-			Alertas.alertaError("Error de validación", "El nombre de peregrino no puede estar vacío.");
+			alertas.alertaError("Error de validación", "El nombre de peregrino no puede estar vacío.");
 			return false;
 		}
 
 		if (txtEmail.getText() == null || txtEmail.getText().isEmpty()) {
-			Alertas.alertaError("Error de validación", "El email no puede estar vacío.");
+			alertas.alertaError("Error de validación", "El email no puede estar vacío.");
 			return false;
 		}
 
 		if (txtUsuario.getText() == null || txtUsuario.getText().isEmpty()) {
-			Alertas.alertaError("Error de validación", "El nombre de usuario no puede estar vacío.");
+			alertas.alertaError("Error de validación", "El nombre de usuario no puede estar vacío.");
 			return false;
 		}
 
 		if (txtContraseña.isVisible()) {
 			if (txtContraseña.getText() == null || txtContraseña.getText().isEmpty()) {
-				Alertas.alertaError("Error de validación", "La contraseña no puede estar vacía.");
+				alertas.alertaError("Error de validación", "La contraseña no puede estar vacía.");
 				return false;
 			}
 			if (txtConfirmacion.getText() == null || txtConfirmacion.getText().isEmpty()) {
-				Alertas.alertaError("Error de validación", "La confirmación de la contraseña es obligatoria.");
+				alertas.alertaError("Error de validación", "La confirmación de la contraseña es obligatoria.");
 				return false;
 			}
 		}
 
 		if (passContraseña.isVisible()) {
 			if (passContraseña.getText() == null || passContraseña.getText().isEmpty()) {
-				Alertas.alertaError("Error de validación", "La contraseña no puede estar vacía.");
+				alertas.alertaError("Error de validación", "La contraseña no puede estar vacía.");
 				return false;
 			}
 			if (passConfirmacion.getText() == null || passConfirmacion.getText().isEmpty()) {
-				Alertas.alertaError("Error de validación", "La confirmación de la contraseña es obligatoria.");
+				alertas.alertaError("Error de validación", "La confirmación de la contraseña es obligatoria.");
 				return false;
 			}
 		}
 
 		if (txtConfirmacion.isVisible()) {
 			if (!txtConfirmacion.getText().equals(txtContraseña.getText())) {
-				Alertas.alertaError("Error de contraseña",
+				alertas.alertaError("Error de contraseña",
 						"La confirmación de la contraseña no coincide con la contraseña ingresada.");
 				return false;
 			}
@@ -590,7 +530,7 @@ public class RegPeregrinoController implements Initializable {
 
 		if (passConfirmacion.isVisible()) {
 			if (!passConfirmacion.getText().equals(passContraseña.getText())) {
-				Alertas.alertaError("Error de contraseña",
+				alertas.alertaError("Error de contraseña",
 						"La confirmación de la contraseña no coincide con la contraseña ingresada.");
 				return false;
 
@@ -598,69 +538,6 @@ public class RegPeregrinoController implements Initializable {
 		}
 
 		return true;
-	}
-
-	/**
-	 * Método que SELECCIONA los paises de paises.xml
-	 * 
-	 * @return Map de clave-siglas,valor-nacionalidad
-	 * @throws ParserConfigurationException lanzdada si hay error de configuración
-	 *                                      del parser XML
-	 * @throws IOException                  lanzada si hay error al acceder al
-	 *                                      archivo
-	 * @throws Exception                    lanzada si hay error general al procesar
-	 *                                      el archivo
-	 * 
-	 */
-	public static LinkedHashMap<String, String> mapaNacionalidades() {
-
-		LinkedHashMap<String, String> nacionalidades = new LinkedHashMap<>();
-
-		try {
-			DocumentBuilderFactory fabricaConstructorDocumento = DocumentBuilderFactory.newInstance();
-			DocumentBuilder constructorDocumento = fabricaConstructorDocumento.newDocumentBuilder();
-
-			File fichero = new File("src/main/resources/paises.xml");
-			Document arbol = constructorDocumento.parse(fichero);
-
-			NodeList listaPaises = arbol.getElementsByTagName("paises");
-			int indicePaises = 0;
-
-			while (indicePaises < listaPaises.getLength()) {
-
-				Element paises = (Element) listaPaises.item(indicePaises);
-				NodeList listaPais = paises.getElementsByTagName("pais");
-
-				int indicePais = 0;
-
-				while (indicePais < listaPais.getLength()) {
-					Element pais = (Element) listaPais.item(indicePais);
-
-					String id = pais.getElementsByTagName("id").item(0).getTextContent();
-					String nombre = pais.getElementsByTagName("nombre").item(0).getTextContent();
-
-					nacionalidades.put(id, nombre);
-					indicePais++;
-				}
-				indicePaises++;
-			}
-		} catch (ParserConfigurationException e) {
-			System.out.println("Error de configuración del parser XML: " + e.getMessage());
-		} catch (IOException e) {
-			System.out.println("Error al acceder al archivo: " + e.getMessage());
-		} catch (Exception e) {
-			System.out.println("Error general al procesar el archivo: " + e.getMessage());
-		}
-		return nacionalidades;
-	}
-
-	private String buscarClavePorValor(LinkedHashMap<String, String> mapa, String valor) {
-		for (Map.Entry<String, String> entrada : mapa.entrySet()) {
-			if (entrada.getValue().equals(valor)) {
-				return entrada.getKey();
-			}
-		}
-		return null;
 	}
 
 	/**

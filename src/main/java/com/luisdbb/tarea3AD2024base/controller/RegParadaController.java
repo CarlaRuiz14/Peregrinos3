@@ -11,9 +11,6 @@ import org.springframework.stereotype.Controller;
 import com.luisdbb.tarea3AD2024base.config.Alertas;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.config.Validaciones;
-import com.luisdbb.tarea3AD2024base.modelo.Parada;
-import com.luisdbb.tarea3AD2024base.modelo.Perfil;
-import com.luisdbb.tarea3AD2024base.modelo.Usuario;
 import com.luisdbb.tarea3AD2024base.services.ParadaService;
 import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
@@ -101,12 +98,18 @@ public class RegParadaController implements Initializable {
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
+	
+	@Autowired
+	private Alertas alertas;
 
 	@Autowired
 	private UsuarioService usuarioService;
 
 	@Autowired
 	private ParadaService paradaService;
+	
+	@Autowired
+	private Validaciones validaciones;
 
 	// conf hpVisible
 	private boolean isPassVisible = false;
@@ -262,20 +265,19 @@ public class RegParadaController implements Initializable {
 
 			String contraseña = passContraseña.isVisible() ? passContraseña.getText() : txtContraseña.getText();
 
-			Usuario user = new Usuario(txtUsuario.getText(), txtEmail.getText(), contraseña, Perfil.PARADA);
-
-			Parada parada = new Parada(txtNombreP.getText(), txtRegionP.getText().charAt(0), user);
-
-			usuarioService.registrarUsuarioParada(user, parada);
-			Alertas.alertaInformacion("Registro exitoso",
-					"Se han registrado el usuario responsable de parada y la parada correctamente.\nVolviendo a menú de administrador.");
+			usuarioService.registrarUsuarioYParada(txtUsuario.getText(), txtEmail.getText(), contraseña,
+					txtNombreP.getText(), txtRegionP.getText().charAt(0));
+			
+			alertas.alertaInformacion("Registro exitoso",
+					"Se han registrado el usuario responsable de parada y la parada correctamente.\n"
+					+ "\nVolviendo a menú de administrador.");
+			
 			stageManager.switchScene(FxmlView.ADMIN);
 
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
-			Alertas.alertaError("Error", "Hubo un problema al registrar los datos. Por favor, revise la información.");
-
+			alertas.alertaError("Error", "Hubo un problema al registrar los datos. Por favor, revise la información.");
 		}
 
 	}
@@ -290,7 +292,7 @@ public class RegParadaController implements Initializable {
 	@FXML
 	private void handlerLimpiar(ActionEvent event) throws IOException {
 
-		boolean confirmar = Alertas.alertaConfirmacion("Borado de formulario",
+		boolean confirmar = alertas.alertaConfirmacion("Borado de formulario",
 				"Se borrarán los datos introducidos, ¿está de acuerdo?");
 
 		if (confirmar) {
@@ -303,7 +305,7 @@ public class RegParadaController implements Initializable {
 			passContraseña.clear();
 			passConfirmacion.clear();
 		} else {
-			Alertas.alertaInformacion("Acción cancelada", "Por favor, rellene el formulario.");
+			alertas.alertaInformacion("Acción cancelada", "Por favor, rellene el formulario.");
 		}
 
 	}
@@ -387,11 +389,11 @@ public class RegParadaController implements Initializable {
 
 		usuarioProperty.addListener((observable, oldValue, newValue) -> {
 			if (!newValue.isEmpty()) {
-				if (!Validaciones.validarEspacios(newValue)) {
+				if (!validaciones.validarEspacios(newValue)) {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("Usuario sin espacios en blanco");
-				} else if (usuarioService.findByUsuario(newValue) != null) {
+				} else if (usuarioService.existsByNombreUsuario(newValue)) {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("El usuario ya existe");
@@ -407,11 +409,11 @@ public class RegParadaController implements Initializable {
 
 		emailProperty.addListener((observable, oldValue, newValue) -> {
 			if (!newValue.isEmpty()) {
-				if (!Validaciones.validarEspacios(newValue)) {
+				if (!validaciones.validarEspacios(newValue)) {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("Email sin espacios en blanco");
-				} else if (!Validaciones.validarEmail(newValue)) {
+				} else if (!validaciones.validarEmail(newValue)) {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("Formato email no válido");
@@ -427,7 +429,7 @@ public class RegParadaController implements Initializable {
 
 		regionPProperty.addListener((observable, oldValue, newValue) -> {
 			if (!newValue.isEmpty()) {
-				if (newValue.length() != 1) {
+				if (validaciones.validarRegion(newValue)) {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("La región es un único caracter");
@@ -443,11 +445,11 @@ public class RegParadaController implements Initializable {
 
 		contraseñaProperty.addListener((observable, oldValue, newValue) -> {
 			if (!newValue.isEmpty()) {
-				if (!Validaciones.validarEspacios(newValue)) {
+				if (!validaciones.validarEspacios(newValue)) {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("Contraseña sin espacios en blanco");
-				} else if (!Validaciones.validarContraseña(newValue)) {
+				} else if (!validaciones.validarContraseña(newValue)) {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("Min 6 carac.: una mayúscula, un nº y un c. especial");
@@ -473,63 +475,63 @@ public class RegParadaController implements Initializable {
 	 */
 	private boolean validarRegistro() {
 		if (txtUsuario.getText() == null || txtUsuario.getText().isEmpty()) {
-			Alertas.alertaError("Error de validación", "El nombre de usuario no puede estar vacío.");
+			alertas.alertaError("Error de validación", "El nombre de usuario no puede estar vacío.");
 			return false;
 		}
 
 		if (txtEmail.getText() == null || txtEmail.getText().isEmpty()) {
-			Alertas.alertaError("Error de validación", "El email no puede estar vacío.");
+			alertas.alertaError("Error de validación", "El email no puede estar vacío.");
 			return false;
 		}
 
 		if (txtNombreP.getText() == null || txtNombreP.getText().isEmpty()) {
-			Alertas.alertaError("Error de validación", "El nombre de la parada no puede estar vacío.");
+			alertas.alertaError("Error de validación", "El nombre de la parada no puede estar vacío.");
 			return false;
 		}
 
 		if (txtRegionP.getText() == null || txtRegionP.getText().isEmpty()) {
-			Alertas.alertaError("Error de validación", "La región de la parada no puede estar vacía.");
+			alertas.alertaError("Error de validación", "La región de la parada no puede estar vacía.");
 			return false;
 		}
 
 		if (txtContraseña.isVisible()) {
 			if (txtContraseña.getText() == null || txtContraseña.getText().isEmpty()) {
-				Alertas.alertaError("Error de validación", "La contraseña no puede estar vacía.");
+				alertas.alertaError("Error de validación", "La contraseña no puede estar vacía.");
 				return false;
 			}
 			if (txtConfirmacion.getText() == null || txtConfirmacion.getText().isEmpty()) {
-				Alertas.alertaError("Error de validación", "La confirmación de la contraseña es obligatoria.");
+				alertas.alertaError("Error de validación", "La confirmación de la contraseña es obligatoria.");
 				return false;
 			}
 		}
 
 		if (passContraseña.isVisible()) {
 			if (passContraseña.getText() == null || passContraseña.getText().isEmpty()) {
-				Alertas.alertaError("Error de validación", "La contraseña no puede estar vacía.");
+				alertas.alertaError("Error de validación", "La contraseña no puede estar vacía.");
 				return false;
 			}
 			if (passConfirmacion.getText() == null || passConfirmacion.getText().isEmpty()) {
-				Alertas.alertaError("Error de validación", "La confirmación de la contraseña es obligatoria.");
+				alertas.alertaError("Error de validación", "La confirmación de la contraseña es obligatoria.");
 				return false;
 			}
 		}
 
 		if (paradaService.existeParada(txtNombreP.getText(), txtRegionP.getText().charAt(0))) {
-			Alertas.alertaError("Error en Parada", "El nombre de la parada ya existe en esa región.");
+			alertas.alertaError("Error en Parada", "El nombre de la parada ya existe en esa región.");
 			return false;
 		}
 
 		if (txtConfirmacion.isVisible()) {
-			if (!txtConfirmacion.getText().equals(txtContraseña.getText())) {
-				Alertas.alertaError("Error de contraseña",
+			if (!validaciones.validarContraseñas(txtContraseña.getText(), txtConfirmacion.getText())) {
+				alertas.alertaError("Error de contraseña",
 						"La confirmación de la contraseña no coincide con la contraseña ingresada.");
 				return false;
 			}
 		}
 
 		if (passConfirmacion.isVisible()) {
-			if (!passConfirmacion.getText().equals(passContraseña.getText())) {
-				Alertas.alertaError("Error de contraseña",
+			if (!validaciones.validarContraseñas(passContraseña.getText(), passConfirmacion.getText())) {
+				alertas.alertaError("Error de contraseña",
 						"La confirmación de la contraseña no coincide con la contraseña ingresada.");
 				return false;
 

@@ -14,14 +14,12 @@ import com.luisdbb.tarea3AD2024base.config.Alertas;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.Estancia;
 import com.luisdbb.tarea3AD2024base.modelo.Parada;
-import com.luisdbb.tarea3AD2024base.modelo.Peregrino;
 import com.luisdbb.tarea3AD2024base.modelo.Sesion;
 import com.luisdbb.tarea3AD2024base.services.EstanciaService;
 import com.luisdbb.tarea3AD2024base.services.ParadaService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -118,6 +116,9 @@ public class ExpParadaController implements Initializable {
 	private Sesion sesion;
 
 	@Autowired
+	private Alertas alertas;
+
+	@Autowired
 	private ParadaService paradaService;
 
 	@Autowired
@@ -131,7 +132,6 @@ public class ExpParadaController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		parada = paradaService.findByUsuario(sesion.getUsuarioActivo().getId());
-	
 
 		// cargar datos parada
 		lblIdPar.setText(String.valueOf(parada.getId()));
@@ -152,15 +152,9 @@ public class ExpParadaController implements Initializable {
 
 		// config tabla estancias
 		colIdEstancia.setCellValueFactory(new PropertyValueFactory<>("id"));
-		colPeregrino.setCellValueFactory(cellData -> {
-			// Obtenemos el peregrino asociado a la estancia
-			Peregrino peregrino = cellData.getValue().getPeregrino();
-			// Retornamos el nombre como una propiedad observable
-			return new SimpleStringProperty(peregrino != null ? peregrino.getNombre() : "");
-		});
+		colPeregrino.setCellValueFactory(new PropertyValueFactory<>("nombrePeregrino"));
 		colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
 		colVip.setCellValueFactory(new PropertyValueFactory<>("vip"));
-
 		colVip.setCellFactory(tc -> new TableCell<Estancia, Boolean>() {
 			@Override
 			protected void updateItem(Boolean vip, boolean empty) {
@@ -280,49 +274,20 @@ public class ExpParadaController implements Initializable {
 	@FXML
 	private void handlerBuscar(ActionEvent event) throws IOException {
 
-		if (!validarFechas()) {
+		fechaInicio = dateFechaI.getValue();
+		fechaFin = dateFechaF.getValue();
+
+		List<Estancia> estancias = estanciaService.getEstanciasForParada(parada.getId(), fechaInicio, fechaFin);
+
+		if (estancias.isEmpty()) {
+			alertas.alertaInformacion("Sin estancias",
+					"No se encontraron estancias registradas entre las fechas seleccionadas.");
 			return;
 		}
-
-		List<Estancia> estancias = estanciaService.findByIdParadaAndFechaBetween(parada.getId(), fechaInicio, fechaFin);
-
 		ObservableList<Estancia> listEstancias = FXCollections.observableArrayList(estancias);
 
 		tblEstancias.setItems(listEstancias);
 
-	}
-
-	private boolean validarFechas() {
-		LocalDate hoy = LocalDate.now();
-		fechaInicio = dateFechaI.getValue();
-		fechaFin = dateFechaF.getValue();
-		
-		 // Depuración
-	    System.out.println("Fecha de inicio: " + fechaInicio);
-	    System.out.println("Fecha de fin: " + fechaFin);
-		
-
-		if (fechaInicio == null || fechaFin == null) {
-			Alertas.alertaError("Error", "Debes seleccionar ambas fechas.");
-			return false;
-		}
-
-		if (fechaInicio.isAfter(hoy)) {
-			Alertas.alertaError("Error", "La fecha de inicio debe ser anterior al día de hoy.");
-			return false;
-		}
-
-		if (fechaFin.isAfter(hoy)) {
-			Alertas.alertaError("Error", "La fecha de fin debe ser anterior al día de hoy.");
-			return false;
-		}
-
-		if (fechaInicio.isAfter(fechaFin)) {
-			Alertas.alertaError("Error", "La fecha de inicio debe ser anterior a la fecha de fin.");
-			return false;
-		}
-
-		return true;
 	}
 
 	@FXML

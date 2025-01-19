@@ -3,11 +3,11 @@ package com.luisdbb.tarea3AD2024base.modelo;
 import java.time.LocalDate;
 import java.util.Objects;
 
-import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 /**
@@ -15,36 +15,43 @@ import jakarta.persistence.Table;
  * @since 28/12/2024
  */
 @Entity
-@Table(name = "paradasPeregrinos")
+@Table(name = "paradas_peregrinos")
+
 public class ParadasPeregrino {
 
 	// atributos
-	// clave primaria definida en clase ParadasPeregrinosId
+	@EmbeddedId
+	private ParadasPeregrinoId id;
 
-	@Id
 	@ManyToOne
+	@MapsId("idPeregrino")
 	@JoinColumn(name = "id_peregrino", nullable = false)
 	private Peregrino peregrino;
 
-	@Id
 	@ManyToOne
+	@MapsId("idParada")
 	@JoinColumn(name = "id_parada", nullable = false)
 	private Parada parada;
 
-	@Column(nullable = false)
-	private LocalDate fecha;
-
-	// Constructores
 	public ParadasPeregrino() {
+		super();
 	}
 
 	public ParadasPeregrino(Peregrino peregrino, Parada parada, LocalDate fecha) {
+		super();
+		this.id = new ParadasPeregrinoId(parada.getId(), peregrino.getId(), fecha);
 		this.peregrino = peregrino;
 		this.parada = parada;
-		this.fecha = fecha;
+
 	}
 
-	// getters y setters
+	public ParadasPeregrinoId getId() {
+		return id;
+	}
+
+	public void setId(ParadasPeregrinoId id) {
+		this.id = id;
+	}
 
 	public Peregrino getPeregrino() {
 		return peregrino;
@@ -63,17 +70,12 @@ public class ParadasPeregrino {
 	}
 
 	public LocalDate getFecha() {
-		return fecha;
+		return id.getFecha();
 	}
 
-	public void setFecha(LocalDate fecha) {
-		this.fecha = fecha;
-	}
-
-	// métodos
 	@Override
 	public int hashCode() {
-		return Objects.hash(fecha, parada, peregrino);
+		return Objects.hash(id, parada, peregrino);
 	}
 
 	@Override
@@ -85,13 +87,13 @@ public class ParadasPeregrino {
 		if (getClass() != obj.getClass())
 			return false;
 		ParadasPeregrino other = (ParadasPeregrino) obj;
-		return Objects.equals(fecha, other.fecha) && Objects.equals(parada, other.parada)
+		return Objects.equals(id, other.id) && Objects.equals(parada, other.parada)
 				&& Objects.equals(peregrino, other.peregrino);
 	}
 
 	@Override
 	public String toString() {
-		return "ParadasPeregrino [peregrino=" + peregrino + ", parada=" + parada + ", fecha=" + fecha + "]";
+		return "ParadasPeregrino [id=" + id + ", peregrino=" + peregrino + ", parada=" + parada + "]";
 	}
 
 }

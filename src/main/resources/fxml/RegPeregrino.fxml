@@ -3,11 +3,9 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Hyperlink?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -70,8 +68,6 @@
             <Label text="Parada Inicial : " GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
             <Label text="Nombre : " GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
             <Label text="Apellidos : " GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
-            <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" maxWidth="120.0" prefHeight="50.0" prefWidth="121.0" text="Fecha Nacimiento : " textAlignment="RIGHT" wrapText="true" GridPane.halignment="RIGHT" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
-            <Label text="Género : " GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
             <Label text="Nacionalidad : " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
             <Label text="Email : " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
             <Label text="Nombre Usuario : " GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
@@ -79,12 +75,6 @@
             <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" minHeight="45.0" prefHeight="50.0" text="Confirmación contraseña : " textAlignment="RIGHT" wrapText="true" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
             <ComboBox fx:id="cmbParada" maxWidth="-Infinity" prefHeight="27.0" prefWidth="160.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <ComboBox fx:id="cmbNacionalidad" maxWidth="-Infinity" prefHeight="27.0" prefWidth="160.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-            <HBox alignment="CENTER" spacing="20.0" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER">
-               <children>
-                  <RadioButton fx:id="rbMasc" mnemonicParsing="false" text="Masc" />
-                  <RadioButton fx:id="rbFem" mnemonicParsing="false" text="Fem" />
-               </children>
-            </HBox>
             <TextField fx:id="txtNombre" maxWidth="-Infinity" prefHeight="27.0" prefWidth="160.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <TextField fx:id="txtApellidos" maxWidth="-Infinity" prefHeight="27.0" prefWidth="160.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <TextField fx:id="txtEmail" maxWidth="-Infinity" prefHeight="27.0" prefWidth="160.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
@@ -106,7 +96,6 @@
                   <PasswordField fx:id="passConfirmacion" maxWidth="-Infinity" />
                </children>
             </StackPane>
-            <DatePicker fx:id="dateFecha" editable="false" maxWidth="-Infinity" prefHeight="27.0" prefWidth="160.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
          </children>
          <StackPane.margin>
             <Insets />

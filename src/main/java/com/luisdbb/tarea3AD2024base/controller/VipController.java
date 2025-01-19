@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.Alertas;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
+import com.luisdbb.tarea3AD2024base.modelo.DatosSellado;
+import com.luisdbb.tarea3AD2024base.services.EstanciaService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
@@ -71,8 +73,22 @@ public class VipController implements Initializable {
 	@Autowired
 	private StageManager stageManager;
 
+	@Autowired
+	private Alertas alertas;
+
+	@Autowired
+	private DatosSellado datosSellado;
+
+	@Autowired
+	private EstanciaService estanciaService;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+
+		// cargar datos
+		lblNombre.setText(datosSellado.getParada().getNombre());
+		lblRegion.setText(String.valueOf(datosSellado.getParada().getRegion()));
+		lblId.setText(String.valueOf(datosSellado.getParada().getId()));
 
 		// config info
 		String rutaInfo = resources.getString("info.icon");
@@ -178,7 +194,7 @@ public class VipController implements Initializable {
 	@FXML
 	private void handlerVip(ActionEvent event) {
 		if (respuesta.getSelectedToggle() == null) {
-			Alertas.alertaInformacion("Selección requerida", "Debe seleccionar una opción antes de continuar.");
+			alertas.alertaInformacion("Selección requerida", "Debe seleccionar una opción antes de continuar.");
 			return;
 		}
 
@@ -186,14 +202,18 @@ public class VipController implements Initializable {
 
 		if (seleccion.equals(rbtnSi)) {
 
-			Alertas.alertaInformacion("Estancia VIP",
-					"El peregrino ha contratado estancia VIP.\nDatos guardados.\nVolviendo a su Menú.");
+			estanciaService.registrarEstancia(true, datosSellado.getPeregrino(), datosSellado.getParada());
+
+			alertas.alertaInformacion("Estancia VIP",
+					"El peregrino ha contratado estancia VIP.\nDatos guardados.\n\nVolviendo a su Menú.");
 			stageManager.switchScene(FxmlView.PARADA);
 
 		} else if (seleccion.equals(rbtnNo)) {
 
-			Alertas.alertaInformacion("Estancia VIP",
-					"El peregrino no ha contratado la estancia VIP.\nDatos guardados.\nVolviendo a su Menú.");
+			estanciaService.registrarEstancia(false, datosSellado.getPeregrino(), datosSellado.getParada());
+
+			alertas.alertaInformacion("Estancia VIP",
+					"El peregrino no ha contratado la estancia VIP.\nDatos guardados.\n\nVolviendo a su Menú.");
 			stageManager.switchScene(FxmlView.PARADA);
 		}
 
