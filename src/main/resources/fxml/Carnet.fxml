@@ -25,11 +25,11 @@
         </columnConstraints>
         <rowConstraints>            
           <RowConstraints minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />           
-          <RowConstraints minHeight="10.0" prefHeight="305.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="265.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
                                 
         </rowConstraints>
          <children>
@@ -39,7 +39,7 @@
                </GridPane.margin>
             </Hyperlink>
             <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" styleClass="lblTitulo2" text="MI CARNET" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <Button fx:id="btnExportar" alignment="CENTER" onAction="#handlerExportar" prefHeight="30.0" prefWidth="60.0" styleClass="btnLogin" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
+            <Button fx:id="btnExportar" alignment="CENTER" onAction="#handlerExportar" prefHeight="40.0" prefWidth="80.0" styleClass="btnLogin" textAlignment="CENTER" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER" />
             <Button fx:id="btnSalir" onAction="#handlerSalir" prefHeight="30.0" prefWidth="30.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets right="20.0" />
@@ -50,12 +50,12 @@
                   <Insets left="20.0" />
                </GridPane.margin>
             </Button>
-            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="305.0" prefWidth="470.0" styleClass="panelB" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="265.0" prefWidth="470.0" styleClass="panelB" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
                <children>
-                  <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="295.0" prefWidth="460.0" styleClass="panelC">
+                  <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="255.0" prefWidth="460.0" styleClass="panelC">
                      <children>
                         <FlowPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="420.0">
                            <children>
@@ -75,6 +75,7 @@
                               <Label fx:id="lblIdPeregrino" text="XXXX" />
                               <Region maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="20.0" />
                               <Label fx:id="lblNombre" text="Carla" />
+                              <Label text=" " />
                               <Label fx:id="lblApellidos" text=" Ruiz Lopez" />
                               <Region maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="35.0" prefWidth="20.0" />
                               <Label fx:id="lblNacionalidad" text="Española" />
@@ -97,9 +98,9 @@
                               </HBox>
                            </children>
                         </HBox>
-                        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="420.0" spacing="20.0">
+                        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="120.0" prefWidth="420.0" spacing="20.0">
                            <children>
-                              <TableView fx:id="tblParadas" maxHeight="-Infinity" prefHeight="149.0" prefWidth="200.0" styleClass="tblM">
+                              <TableView fx:id="tblParadas" maxHeight="-Infinity" prefHeight="120.0" prefWidth="200.0" styleClass="tblM">
                                 <columns>
                                   <TableColumn fx:id="colIdParada" prefWidth="20.0" text="ID" />
                                   <TableColumn fx:id="colNombreParada" prefWidth="85.0" text="NOMBRE" />
@@ -109,7 +110,7 @@
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                  </columnResizePolicy>
                               </TableView>
-                              <TableView fx:id="tblEstancias" maxHeight="-Infinity" prefHeight="149.0" prefWidth="200.0" styleClass="tblM">
+                              <TableView fx:id="tblEstancias" maxHeight="-Infinity" prefHeight="120.0" prefWidth="200.0" styleClass="tblM">
                                 <columns>
                                   <TableColumn fx:id="colIdEstancia" prefWidth="20.0" text="ID" />
                                   <TableColumn fx:id="colFecha" prefWidth="85.0" text="FECHA" />
@@ -123,7 +124,7 @@
                         </HBox>
                      </children>
                      <padding>
-                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
                      </padding>
                   </VBox>
                </children>

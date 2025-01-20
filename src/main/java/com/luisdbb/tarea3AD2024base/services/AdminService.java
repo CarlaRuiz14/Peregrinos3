@@ -27,7 +27,7 @@ public class AdminService {
 
         if (!usuarioService.existsByNombreUsuario(nombre)) {            
             Usuario admin = new Usuario(nombre,email,contraseña,perfil);            
-            usuarioService.save(admin);
+            usuarioService.saveConPassword(admin);
             System.out.println("Administrador creado.");
         } else {
             System.out.println("El administrador ya existe.");

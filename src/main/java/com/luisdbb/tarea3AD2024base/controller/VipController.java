@@ -159,28 +159,38 @@ public class VipController implements Initializable {
 
 	@FXML
 	private void handlerVip(ActionEvent event) {
-		if (respuesta.getSelectedToggle() == null) {
-			alertas.alertaInformacion("Selección requerida", "Debe seleccionar una opción antes de continuar.");
-			return;
-		}
 
-		RadioButton seleccion = (RadioButton) respuesta.getSelectedToggle();
+		try {
+			if (respuesta.getSelectedToggle() == null) {
+				alertas.alertaInformacion("Selección requerida", "Debe seleccionar una opción antes de continuar.");
+				return;
+			}
 
-		if (seleccion.equals(rbtnSi)) {
+			RadioButton seleccion = (RadioButton) respuesta.getSelectedToggle();
 
-			estanciaService.registrarEstancia(true, datosSellado.getPeregrino(), datosSellado.getParada());
+			if (seleccion.equals(rbtnSi)) {
 
-			alertas.alertaInformacion("Estancia VIP",
-					"El peregrino ha contratado estancia VIP.\nDatos guardados.\n\nVolviendo a su Menú.");
-			stageManager.switchScene(FxmlView.PARADA);
+				estanciaService.registrarEstancia(true, datosSellado.getPeregrino(), datosSellado.getParada(),
+						datosSellado.getCarnet());
 
-		} else if (seleccion.equals(rbtnNo)) {
+				alertas.alertaInformacion("Estancia VIP",
+						"El peregrino ha contratado estancia VIP.\nDatos guardados.\n\nVolviendo a su Menú.");
+				stageManager.switchScene(FxmlView.PARADA);
 
-			estanciaService.registrarEstancia(false, datosSellado.getPeregrino(), datosSellado.getParada());
+			} else if (seleccion.equals(rbtnNo)) {
 
-			alertas.alertaInformacion("Estancia VIP",
-					"El peregrino no ha contratado la estancia VIP.\nDatos guardados.\n\nVolviendo a su Menú.");
-			stageManager.switchScene(FxmlView.PARADA);
+				estanciaService.registrarEstancia(false, datosSellado.getPeregrino(), datosSellado.getParada(),
+						datosSellado.getCarnet());
+
+				alertas.alertaInformacion("Estancia VIP",
+						"El peregrino no ha contratado la estancia VIP.\nDatos guardados.\n\nVolviendo a su Menú.");
+				stageManager.switchScene(FxmlView.PARADA);
+			}
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+			alertas.alertaError("Error", "Hubo un problema al registrar los datos. Por favor, revise la información.");
+
 		}
 
 	}

@@ -30,7 +30,7 @@ public class PeregrinoService {
 	public Peregrino save(Peregrino entidad) {
 		return peregrinoRepository.save(entidad);
 	}
-	
+
 	public Peregrino findByUsuario(long id) {
 		return peregrinoRepository.findByUsuario_id(id);
 	}
@@ -44,7 +44,7 @@ public class PeregrinoService {
 			String nombrePer, String apellidos, String nacionalidad) {
 
 		Usuario user = new Usuario(usuario, email, contraseña, Perfil.PEREGRINO);
-		usuarioService.save(user);
+		usuarioService.saveConPassword(user);
 
 		Carnet carnet = new Carnet(paradaInicial);
 
@@ -54,6 +54,11 @@ public class PeregrinoService {
 
 		peregrinoRepository.save(peregrino);
 
+	}
+
+	public void actualizarDatosPeregrino(Peregrino peregrinoActivo) {
+		
+		save(peregrinoActivo);
 	}
 
 }

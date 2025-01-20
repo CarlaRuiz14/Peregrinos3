@@ -22,20 +22,18 @@ import jakarta.persistence.Table;
 @Table(name = "carnets")
 public class Carnet {
 
-	// sobra un constructor??
-
 	// atributos
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 
-	@Column(name = "fecha_expedicion", columnDefinition = "DATE DEFAULT CURRENT_DATE")
+	@Column(name = "fecha_expedicion")
 	private LocalDate fechaExp;
 
-	@Column(name = "distancia", columnDefinition = "DOUBLE DEFAULT 0.0")
+	@Column(name = "distancia")
 	private double distancia;
 
-	@Column(name = "numero_vips", columnDefinition = "INT DEFAULT 0")
+	@Column(name = "numero_vips")
 	private int nVips;
 	
 	//relacion bidireccional con peregrino pero solo mapeada, sin columna
@@ -54,6 +52,9 @@ public class Carnet {
 
 	public Carnet(Parada paradaInicial) {
 		super();
+		this.fechaExp = LocalDate.now();
+		this.distancia = 0.0;
+		this.nVips = 0;
 		this.paradaInicial = paradaInicial;
 	}
 

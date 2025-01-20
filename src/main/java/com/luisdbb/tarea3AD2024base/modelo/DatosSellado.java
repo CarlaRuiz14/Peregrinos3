@@ -7,15 +7,17 @@ public class DatosSellado {
 
 	private Peregrino peregrino;
 	private Parada parada;
+	private Carnet carnet;
 
 	public DatosSellado() {
 		super();
 	}
 
-	public DatosSellado(Peregrino peregrino, Parada parada) {
+	public DatosSellado(Peregrino peregrino, Parada parada, Carnet carnet) {
 		super();
 		this.peregrino = peregrino;
 		this.parada = parada;
+		this.carnet = carnet;
 	}
 
 	public Peregrino getPeregrino() {
@@ -32,6 +34,14 @@ public class DatosSellado {
 
 	public void setParada(Parada parada) {
 		this.parada = parada;
+	}
+
+	public Carnet getCarnet() {
+		return carnet;
+	}
+
+	public void setCarnet(Carnet carnet) {
+		this.carnet = carnet;
 	}
 
 }

@@ -89,7 +89,7 @@ public class EditarController implements Initializable {
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
-
+	
 	@Autowired
 	private Alertas alertas;
 
@@ -110,9 +110,10 @@ public class EditarController implements Initializable {
 
 	@Autowired
 	private UsuarioService usuarioService;
-
+	
 	@Autowired
 	private BotonesConfig botones;
+
 
 	Usuario usuarioActivo;
 	Peregrino peregrinoActivo;
@@ -233,15 +234,17 @@ public class EditarController implements Initializable {
 		}
 
 		peregrinoActivo.setNombre(txtNombre.getText());
-		peregrinoActivo.setApellidos(txtApellidos.getText());
-		usuarioActivo.setEmail(txtEmail.getText());
+		peregrinoActivo.setApellidos(txtApellidos.getText());		
 		peregrinoActivo.setNacionalidad(cmbNacionalidad.getValue());
-
-		usuarioService.save(usuarioActivo);
-		peregrinoService.save(peregrinoActivo);
-
+		peregrinoService.actualizarDatosPeregrino(peregrinoActivo);
+		
+		usuarioActivo.setEmail(txtEmail.getText());
+		usuarioService.actualizarDatosUsuario(usuarioActivo);
+		
+		
 		alertas.alertaInformacion("Actualización exitosa",
 				"Los datos han sido guardados correctamente.\n\nVolviendo al menú.");
+		stageManager.switchScene(FxmlView.PEREGRINO);
 
 	}
 

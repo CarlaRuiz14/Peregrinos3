@@ -29,7 +29,7 @@ public class ParadaService {
 			return false;
 		}
 
-		return parada.getRegion() == region;
+		return Character.toLowerCase(parada.getRegion()) == Character.toLowerCase(region);
 	}
 
 	public Parada findByNombre(String parada) {
@@ -39,16 +39,18 @@ public class ParadaService {
 	public Parada findById(Long id) {
 		return paradaRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("No se encontró la parada con ID: " + id));
-
 	}
-	
+
 	public Parada findByUsuario(Long id) {
 		return paradaRepository.findByIdUsuario(id);
-				
+
 	}
-	
 
 	public List<Parada> findAll() {
 		return paradaRepository.findAll();
+	}
+
+	public List<Parada> obtenerParadasPorPeregrino(Long peregrinoId) {
+		return paradaRepository.findParadasByPeregrinoId(peregrinoId);
 	}
 }

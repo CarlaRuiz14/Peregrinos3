@@ -17,6 +17,7 @@ import com.luisdbb.tarea3AD2024base.modelo.DatosSellado;
 import com.luisdbb.tarea3AD2024base.modelo.Parada;
 import com.luisdbb.tarea3AD2024base.modelo.Peregrino;
 import com.luisdbb.tarea3AD2024base.modelo.Sesion;
+import com.luisdbb.tarea3AD2024base.services.NacionalidadService;
 import com.luisdbb.tarea3AD2024base.services.ParadaService;
 import com.luisdbb.tarea3AD2024base.services.ParadasPeregrinoService;
 import com.luisdbb.tarea3AD2024base.services.PeregrinoService;
@@ -110,6 +111,9 @@ public class SellarController implements Initializable {
 
 	@Autowired
 	private ParadasPeregrinoService paradasPeregrinoService;
+	
+	@Autowired
+	private NacionalidadService nacionalidadService;
 
 	Parada parada;
 	Carnet carnet;
@@ -137,7 +141,7 @@ public class SellarController implements Initializable {
 			carnet = cellData.getValue().getCarnet();
 			// Retornamos el ID del carnet como una propiedad observable de tipo Long
 			return new SimpleObjectProperty<>(carnet != null ? carnet.getId() : null);
-		});
+		});		
 
 		ObservableList<Peregrino> listPeregrinos = FXCollections.observableArrayList(peregrinoService.findAll());
 
@@ -220,10 +224,11 @@ public class SellarController implements Initializable {
 
 			datosSellado.setPeregrino(peregrinoSeleccionado);
 			carnet = peregrinoSeleccionado.getCarnet();
+			datosSellado.setCarnet(carnet);
 
 			String mensaje = "Se va a sellar el carnet del peregrino: \n\tID: " + peregrinoSeleccionado.getId()
 					+ "\n\tPeregrino: " + peregrinoSeleccionado.getNombre() + "\n\tNacionalidad: "
-					+ peregrinoSeleccionado.getNacionalidad() + "\n\tID Carnet: " + carnet.getId()
+					+ nacionalidadService.mapaNacionalidades().get(peregrinoSeleccionado.getNacionalidad()) + "\n\tID Carnet: " + carnet.getId()
 					+ "\nEn la parada:\n\tID Parada: " + parada.getId() + "\n\tNombre: " + parada.getNombre()
 					+ "\n\tRegión: " + parada.getRegion();
 

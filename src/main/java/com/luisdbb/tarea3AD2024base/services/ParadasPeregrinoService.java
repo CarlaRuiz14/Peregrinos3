@@ -33,18 +33,13 @@ public class ParadasPeregrinoService {
 		return paradasPeregrinoRepository.save(entidad);
 	}
 
-	
-	
-	
 	public boolean existeParada(Parada parada, Peregrino peregrino) {
-	    ParadasPeregrinoId id = new ParadasPeregrinoId(peregrino.getId(), parada.getId(), LocalDate.now());
-	    return paradasPeregrinoRepository.existsById(id);
+		ParadasPeregrinoId id = new ParadasPeregrinoId(peregrino.getId(), parada.getId(), LocalDate.now());
+		return paradasPeregrinoRepository.existsById(id);
 	}
 
-	
-	
 	@Transactional
-	public void registrarParadaYSellarCarnet(Carnet carnet, Parada parada, Peregrino peregrino) {		
+	public void registrarParadaYSellarCarnet(Carnet carnet, Parada parada, Peregrino peregrino) {
 
 		LocalDate hoy = LocalDate.now();
 

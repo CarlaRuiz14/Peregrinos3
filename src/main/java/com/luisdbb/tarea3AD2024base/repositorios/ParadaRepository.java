@@ -9,5 +9,8 @@ public interface ParadaRepository
 		extends JpaRepository<Parada, Long>, ParadaCustomRepository, ListQuerydslPredicateExecutor<Parada> {
 
 	Parada findByNombre(String nombre);
+	
+
+
 
 }

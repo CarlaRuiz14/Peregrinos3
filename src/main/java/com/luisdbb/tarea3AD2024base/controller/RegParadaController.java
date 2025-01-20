@@ -392,7 +392,7 @@ public class RegParadaController implements Initializable {
 
 		regionPProperty.addListener((observable, oldValue, newValue) -> {
 			if (!newValue.isEmpty()) {
-				if (validaciones.validarRegion(newValue)) {
+				if (!validaciones.validarRegion(newValue)) {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("La región es un único caracter");

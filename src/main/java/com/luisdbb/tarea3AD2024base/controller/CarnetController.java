@@ -3,17 +3,28 @@ package com.luisdbb.tarea3AD2024base.controller;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
+import com.luisdbb.tarea3AD2024base.config.Alertas;
 import com.luisdbb.tarea3AD2024base.config.AyudaConfig;
 import com.luisdbb.tarea3AD2024base.config.BotonesConfig;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
+import com.luisdbb.tarea3AD2024base.modelo.Carnet;
 import com.luisdbb.tarea3AD2024base.modelo.Estancia;
 import com.luisdbb.tarea3AD2024base.modelo.Parada;
+import com.luisdbb.tarea3AD2024base.modelo.Peregrino;
+import com.luisdbb.tarea3AD2024base.modelo.Sesion;
+import com.luisdbb.tarea3AD2024base.modelo.Usuario;
+import com.luisdbb.tarea3AD2024base.services.CarnetService;
+import com.luisdbb.tarea3AD2024base.services.EstanciaService;
+import com.luisdbb.tarea3AD2024base.services.NacionalidadService;
+import com.luisdbb.tarea3AD2024base.services.ParadaService;
+import com.luisdbb.tarea3AD2024base.services.PeregrinoService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Platform;
@@ -41,9 +52,6 @@ import javafx.scene.input.KeyEvent;
  */
 @Controller
 public class CarnetController implements Initializable {
-
-	// falta corregir columna region
-	// cuando se pongan los datos en las tablas extraerlos a la service
 
 	@FXML
 	private Hyperlink hpInfo;
@@ -115,12 +123,57 @@ public class CarnetController implements Initializable {
 
 	@Autowired
 	private BotonesConfig botones;
-	
+
 	@Autowired
 	private AyudaConfig ayuda;
 
+	@Autowired
+	private Sesion sesion;
+
+	@Autowired
+	private Alertas alertas;
+
+	@Autowired
+	private PeregrinoService peregrinoService;
+
+	@Autowired
+	private ParadaService paradaService;
+
+	@Autowired
+	private CarnetService carnetService;
+
+	@Autowired
+	private EstanciaService estanciaService;
+
+	@Autowired
+	private NacionalidadService nacionalidadService;
+
+	Usuario usuarioActivo;
+	Peregrino peregrinoActivo;
+	Carnet carnetActivo;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+
+		// sesion activa
+		usuarioActivo = sesion.getUsuarioActivo();
+		peregrinoActivo = peregrinoService.findByUsuario(usuarioActivo.getId());
+		carnetActivo = carnetService.findById(peregrinoActivo.getCarnet().getId());
+
+		// cargar datos
+		lblIdCarnet.setText(String.valueOf(carnetActivo.getId()));
+		lblExpedicion.setText(String.valueOf(carnetActivo.getFechaExp()));
+		lblIdPeregrino.setText(String.valueOf(peregrinoActivo.getId()));
+		lblNombre.setText(peregrinoActivo.getNombre());
+		lblApellidos.setText(peregrinoActivo.getApellidos() != null ? peregrinoActivo.getApellidos() : "Sin apellidos");
+
+		String claveNac = peregrinoActivo.getNacionalidad();
+		String valorNac = nacionalidadService.mapaNacionalidades().get(claveNac);
+
+		lblNacionalidad.setText(valorNac != null ? valorNac : "Sin nacionalidad");
+
+		lblDistancia.setText(String.valueOf(carnetActivo.getDistancia()));
+		lblVips.setText(String.valueOf(carnetActivo.getnVips()));
 
 		// config info
 		ayuda.configImgInfo(hpInfo);
@@ -134,10 +187,8 @@ public class CarnetController implements Initializable {
 		colNombreParada.setCellValueFactory(new PropertyValueFactory<>("nombre"));
 		colRegion.setCellValueFactory(new PropertyValueFactory<>("region"));
 
-		ObservableList<Parada> listParadas = FXCollections.observableArrayList(new Parada(1, "Pruebaa", 'P'),
-				new Parada(1, "Pruebaa", 'P'), new Parada(1, "Pruebaa", 'P'), new Parada(1, "Pruebaa", 'P'),
-				new Parada(1, "Pruebaa", 'P'), new Parada(1, "Pruebaa", 'P'));
-
+		List<Parada> lista = paradaService.obtenerParadasPorPeregrino(peregrinoActivo.getId());
+		ObservableList<Parada> listParadas = FXCollections.observableArrayList(lista);
 		tblParadas.setItems(listParadas);
 
 		// config tabla Estancias
@@ -156,10 +207,8 @@ public class CarnetController implements Initializable {
 				}
 			}
 		});
-		// prueba:
-		ObservableList<Estancia> listEstancias = FXCollections.observableArrayList(
-				new Estancia(1, LocalDate.of(1990, 9, 14), true), new Estancia(1, LocalDate.of(1990, 9, 14), true),
-				new Estancia(1, LocalDate.of(1990, 9, 14), true));
+		List<Estancia> listaE = estanciaService.findByPeregrinoId(peregrinoActivo.getId());
+		ObservableList<Estancia> listEstancias = FXCollections.observableArrayList(listaE);
 
 		tblEstancias.setItems(listEstancias);
 
@@ -223,6 +272,11 @@ public class CarnetController implements Initializable {
 
 	@FXML
 	private void handlerExportar(ActionEvent event) throws IOException {
+
+		carnetService.exportarCarnet(peregrinoActivo);
+		alertas.alertaInformacion("Carnet exportado",
+				"Su carnet ha sido exportado correctamente en formato xml.\n\nVolviendo al menú. ");
+		stageManager.switchScene(FxmlView.PEREGRINO);
 
 	}
 
