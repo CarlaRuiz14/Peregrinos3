@@ -11,15 +11,34 @@ import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 /**
+ * Representa la relación entre un peregrino y una parada, permitiendo registrar
+ * las visitas a paradas.
+ * 
+ * Atributos:
+ * <ul>
+ * <li><b>id:</b> Identificador compuesto que incluye el peregrino, la parada y
+ * la fecha de la visita.</li>
+ * <li><b>peregrino:</b> Referencia al peregrino que realizó la visita.</li>
+ * <li><b>parada:</b> Referencia a la parada visitada.</li>
+ * </ul>
+ * 
+ * Relaciones:
+ * <ul>
+ * <li><b>EmbeddedId:</b> ParadasPeregrinoId, que encapsula las claves de
+ * peregrino, parada y fecha.</li>
+ * <li><b>ManyToOne:</b> Relación con Peregrino.</li>
+ * <li><b>ManyToOne:</b> Relación con Parada.</li>
+ * </ul>
+ * 
  * @author Carla Ruiz
  * @since 28/12/2024
  */
+
 @Entity
 @Table(name = "paradas_peregrinos")
 
 public class ParadasPeregrino {
 
-	// atributos
 	@EmbeddedId
 	private ParadasPeregrinoId id;
 
@@ -42,7 +61,6 @@ public class ParadasPeregrino {
 		this.id = new ParadasPeregrinoId(parada.getId(), peregrino.getId(), fecha);
 		this.peregrino = peregrino;
 		this.parada = parada;
-
 	}
 
 	public ParadasPeregrinoId getId() {
@@ -95,5 +113,4 @@ public class ParadasPeregrino {
 	public String toString() {
 		return "ParadasPeregrino [id=" + id + ", peregrino=" + peregrino + ", parada=" + parada + "]";
 	}
-
 }

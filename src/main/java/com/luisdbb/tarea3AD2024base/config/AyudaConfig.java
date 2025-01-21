@@ -13,9 +13,21 @@ import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+/**
+ * Configuración de ayuda e información en la aplicación.
+ * 
+ * <b>Funciones principales:</b>
+ * <ul>
+ * <li>Configurar imágenes para componentes de ayuda.</li>
+ * <li>Abrir ventanas modales con información en formato web.</li>
+ * </ul>
+ * 
+ * @author Carla Ruiz
+ * @since 28/12/2024
+ */
 @Component
 public class AyudaConfig {
-	
+
 	@Autowired
 	ResourceBundle resources;
 
@@ -28,9 +40,7 @@ public class AyudaConfig {
 		imageView.setPreserveRatio(true);
 		hp.setGraphic(imageView);
 	}
-	
-	
-	
+
 	public void configInfo(String ruta) {
 		WebView webView = new WebView();
 
@@ -43,11 +53,9 @@ public class AyudaConfig {
 		Scene helpScene = new Scene(webView, 600, 600);
 		helpStage.setScene(helpScene);
 
-		// Bloquear la ventana principal mientras se muestra la ayuda
 		helpStage.initModality(Modality.APPLICATION_MODAL);
 		helpStage.setResizable(false);
 
 		helpStage.show();
 	}
-	
 }

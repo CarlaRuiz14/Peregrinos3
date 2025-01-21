@@ -15,9 +15,29 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 /**
+ * Representa el carnet de un peregrino, incluyendo su fecha de expedición,
+ * distancia recorrida, estancias VIP y parada inicial.
+ * 
+ * Atributos:
+ * <ul>
+ * <li><b>id:</b> Identificador único.</li>
+ * <li><b>fechaExp:</b> Fecha de expedición.</li>
+ * <li><b>distancia:</b> Distancia total recorrida.</li>
+ * <li><b>nVips:</b> Número de estancias VIP.</li>
+ * <li><b>peregrino:</b> Relación con Peregrino.</li>
+ * <li><b>paradaInicial:</b> Parada de inicio (relación ManyToOne).</li>
+ * </ul>
+ * 
+ * Relaciones:
+ * <ul>
+ * <li><b>OneToOne:</b> Peregrino (cascada PERSIST, MERGE).</li>
+ * <li><b>ManyToOne:</b> Parada inicial (obligatoria).</li>
+ * </ul>
+ * 
  * @author Carla Ruiz
  * @since 28/12/2024
  */
+
 @Entity
 @Table(name = "carnets")
 public class Carnet {
@@ -35,17 +55,14 @@ public class Carnet {
 
 	@Column(name = "numero_vips")
 	private int nVips;
-	
-	//relacion bidireccional con peregrino pero solo mapeada, sin columna
-	//cascada solo para persistir y actualizar no para borrar
-	@OneToOne(mappedBy = "carnet", cascade = {CascadeType.PERSIST, CascadeType.MERGE})	
+
+	@OneToOne(mappedBy = "carnet", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	private Peregrino peregrino;
 
-	@ManyToOne //Una parada puede ser paradaInicial de varios carnets
+	@ManyToOne
 	@JoinColumn(name = "parada_inicial", nullable = false)
 	private Parada paradaInicial;
 
-	// contructores
 	public Carnet() {
 		super();
 	}
@@ -66,8 +83,7 @@ public class Carnet {
 		this.nVips = nVips;
 		this.paradaInicial = paradaInicial;
 	}
-
-	// getters y setters
+	
 	public long getId() {
 		return id;
 	}
@@ -107,7 +123,7 @@ public class Carnet {
 	public void setParadaInicial(Parada paradaInicial) {
 		this.paradaInicial = paradaInicial;
 	}
-	
+
 	public Peregrino getPeregrino() {
 		return peregrino;
 	}
@@ -115,9 +131,7 @@ public class Carnet {
 	public void setPeregrino(Peregrino peregrino) {
 		this.peregrino = peregrino;
 	}
-
-
-	// Métodos
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(distancia, fechaExp, id, nVips, paradaInicial, peregrino);
@@ -142,7 +156,4 @@ public class Carnet {
 		return "Carnet [id=" + id + ", fechaExp=" + fechaExp + ", distancia=" + distancia + ", nVips=" + nVips
 				+ ", peregrino=" + peregrino + ", paradaInicial=" + paradaInicial + "]";
 	}
-
-
-	
 }

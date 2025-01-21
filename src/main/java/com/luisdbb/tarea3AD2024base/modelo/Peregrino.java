@@ -15,14 +15,39 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 /**
+ * Representa a un peregrino y sus datos asociados, como nombre, apellidos,
+ * nacionalidad, usuario, carnet, estancias y paradas visitadas.
+ * 
+ * Atributos:
+ * <ul>
+ * <li><b>id:</b> Identificador único del peregrino.</li>
+ * <li><b>nombre:</b> Nombre del peregrino.</li>
+ * <li><b>apellidos:</b> Apellidos del peregrino.</li>
+ * <li><b>nacionalidad:</b> Nacionalidad del peregrino.</li>
+ * <li><b>usuario:</b> Usuario asociado al peregrino.</li>
+ * <li><b>carnet:</b> Carnet asociado al peregrino.</li>
+ * <li><b>estancias:</b> Lista de estancias realizadas por el peregrino.</li>
+ * <li><b>paradasPeregrino:</b> Lista de paradas visitadas por el
+ * peregrino.</li>
+ * </ul>
+ * 
+ * Relaciones:
+ * <ul>
+ * <li><b>OneToOne:</b> Relación bidireccional con Carnet (cascada ALL).</li>
+ * <li><b>OneToOne:</b> Relación unidireccional con Usuario (cascada MERGE,
+ * REMOVE).</li>
+ * <li><b>OneToMany:</b> Relación con Estancias (cascada ALL).</li>
+ * <li><b>OneToMany:</b> Relación con ParadasPeregrino (cascada ALL).</li>
+ * </ul>
+ * 
  * @author Carla Ruiz
  * @since 28/12/2024
  */
+
 @Entity
 @Table(name = "peregrinos")
 public class Peregrino {
 
-	// atributos
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -31,39 +56,23 @@ public class Peregrino {
 	private String apellidos;
 	private String nacionalidad;
 
-	// relacion uno a uno con carnet bidireccional
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_carnet", nullable = false, unique = true)
 	private Carnet carnet;
 
-	// relacion uno a muchos con estancias
-	@OneToMany(mappedBy = "id", cascade = CascadeType.ALL) // Relación uno a muchos
+	@OneToMany(mappedBy = "id", cascade = CascadeType.ALL)
 	private List<Estancia> estancias;
 
-	// relacion uno a uno con usuario unidireccional
 	// para save de usuario independiente de peregrino y poder encriptar contraseña
-	//@OneToOne(cascade = { CascadeType.MERGE, CascadeType.REMOVE })
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id_usuario", nullable = false, unique = true) // FK a User,especificar unique y nullable, no
-																		// implicito en FK
-	private Usuario usuario; // de User se saca la PK para la FK aqui y el nombre de la columna sera este
+	@OneToOne(cascade = { CascadeType.MERGE, CascadeType.REMOVE })
+	@JoinColumn(name = "id_usuario", nullable = false, unique = true)
+	private Usuario usuario;
 
-	// relacion uno a muchos con las paradas de paradasperegrinos
 	@OneToMany(mappedBy = "peregrino", cascade = CascadeType.ALL)
 	private List<ParadasPeregrino> paradasPeregrino;
 
-	// constructores
 	public Peregrino() {
 		super();
-	}
-
-	// constructor para prueba en sellarControler
-	public Peregrino(long id, String nombre, String nacionalidad, Carnet carnet) {
-		super();
-		this.id = id;
-		this.nombre = nombre;
-		this.nacionalidad = nacionalidad;
-		this.carnet = carnet;
 	}
 
 	public Peregrino(String nombre, String apellidos, String nacionalidad, Usuario usuario, Carnet carnet) {
@@ -73,7 +82,6 @@ public class Peregrino {
 		this.nacionalidad = nacionalidad;
 		this.usuario = usuario;
 		this.carnet = carnet;
-
 	}
 
 	public Peregrino(long id, String nombre, String apellidos, String nacionalidad, Usuario usuario,
@@ -89,7 +97,6 @@ public class Peregrino {
 		this.paradasPeregrino = paradasPeregrino;
 	}
 
-	// getters y setters
 	public long getId() {
 		return id;
 	}
@@ -154,7 +161,6 @@ public class Peregrino {
 		this.paradasPeregrino = paradasPeregrino;
 	}
 
-	// métodos
 	@Override
 	public int hashCode() {
 		return Objects.hash(apellidos, carnet, estancias, id, nacionalidad, nombre, paradasPeregrino, usuario);
@@ -181,5 +187,4 @@ public class Peregrino {
 				+ nacionalidad + ", carnet=" + carnet + ", estancias=" + estancias + ", usuario=" + usuario
 				+ ", paradasPeregrino=" + paradasPeregrino + "]";
 	}
-
 }

@@ -71,7 +71,6 @@ public class LoginController implements Initializable {
 	@FXML
 	private Button btnSalir;
 
-	// inyecciones
 	@Autowired
 	private UsuarioService usuarioService;
 
@@ -87,8 +86,7 @@ public class LoginController implements Initializable {
 
 	@Autowired
 	private BotonesConfig botones;
-
-	// conf hpVisible
+	
 	private boolean isPassVisible = false;
 	private Image mostrarIcon;
 	private Image ocultarIcon;
@@ -103,7 +101,7 @@ public class LoginController implements Initializable {
 		mostrarIcon = new Image(getClass().getResourceAsStream(mostrarPath));
 		ocultarIcon = new Image(getClass().getResourceAsStream(ocultarPath));
 
-		hpVisible.setGraphic(createImageView(mostrarIcon));
+		hpVisible.setGraphic(botones.createImageView(mostrarIcon));
 
 		// config img btn Login
 		botones.configImgFlecha(btnLogin);
@@ -168,24 +166,6 @@ public class LoginController implements Initializable {
 
 	}
 
-	/**
-	 * Handler para el botón btnLogin. Método que al pulsarlo realiza las siguientes
-	 * acciones: - Comprueba que los campos de usuario y contraseña no estén vacíos
-	 * o nulos. Si alguno de los campos está vacío, muestra un mensaje de alerta
-	 * indicando que los datos son obligatorios. - Si los datos están completos,
-	 * intenta iniciar sesión utilizando el servicio `usuarioService`. - Dependiendo
-	 * del perfil del usuario (PEREGRINO, PARADA, ADMINISTRADOR), establece el
-	 * perfil activo en la sesión y cambia la escena correspondiente mediante
-	 * `stageManager.switchScene`. - Si el usuario no se encuentra registrado,
-	 * muestra un mensaje de alerta indicando que los datos no están registrados. -
-	 * Si ocurre un error inesperado, muestra un mensaje en el label `lblFeed`
-	 * indicando un fallo en el inicio de sesión.
-	 * 
-	 * @param event El evento que dispara el método (clic en el botón).
-	 * @throws IOException Si ocurre un error al cambiar la escena o al acceder a
-	 *                     recursos de E/S.
-	 */
-
 	@FXML
 	private void handlerLogin(ActionEvent event) throws IOException {
 		lblFeed.setText(" ");
@@ -222,48 +202,21 @@ public class LoginController implements Initializable {
 		}
 	}
 
-	/**
-	 * Handler para el botón btnVolver. Método que al pulsarlo vuelve a la ventana
-	 * principal.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.MAIN);
 	}
 
-	/**
-	 * Handler para botón btnSalir. Método que sale de la aplicación al pulsarlo.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		Platform.exit();
 	}
 
-	/**
-	 * Handler para el Hyperlink hpContraseña. Método que al pulsarlo cambia a la
-	 * ventana de recuperación de contraseña.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerHpContraseña(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.RECUPERACION);
 	}
 
-	/**
-	 * Handler para el Hyperlink hpRegistro. Método que al pulsarlo cambia a la
-	 * ventana de registro de peregrino.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerHpRegistro(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.REGPEREGRINO);
@@ -276,26 +229,14 @@ public class LoginController implements Initializable {
 			txtContraseña.setText(passContraseña.getText());
 			txtContraseña.setVisible(true);
 			passContraseña.setVisible(false);
-			hpVisible.setGraphic(createImageView(ocultarIcon));
+			hpVisible.setGraphic(botones.createImageView(ocultarIcon));
 		} else {
 			passContraseña.setText(txtContraseña.getText());
 			txtContraseña.setVisible(false);
 			passContraseña.setVisible(true);
-			hpVisible.setGraphic(createImageView(mostrarIcon));
+			hpVisible.setGraphic(botones.createImageView(mostrarIcon));
 		}
 	}
 
-	/**
-	 * Crea un ImageView con un tamaño fijo de 30x30 píxeles.
-	 *
-	 * @param image La imagen que se asignará al ImageView.
-	 * @return Un ImageView con las dimensiones ajustadas.
-	 */
-	private ImageView createImageView(Image image) {
-		ImageView imageView = new ImageView(image);
-		imageView.setFitWidth(40);
-		imageView.setFitHeight(40);
-		imageView.setPreserveRatio(true);
-		return imageView;
-	}
+
 }

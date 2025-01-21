@@ -38,8 +38,7 @@ public class MainController implements Initializable {
 
 	@FXML
 	private Button btnSalir;
-
-	// inyecciones
+	
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
@@ -76,24 +75,14 @@ public class MainController implements Initializable {
 		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
 
 	}
-
-	/**
-	 * Handler botón btnFlecha. Método que al pulsarlo cambia a la ventana de Login.
-	 */
+	
 	@FXML
 	private void handlerFlecha(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.LOGIN);
 	}
 
-	/**
-	 * Handler para botón btnSalir. Método que sale de la aplicación al pulsarlo.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		Platform.exit();
 	}
-
 }

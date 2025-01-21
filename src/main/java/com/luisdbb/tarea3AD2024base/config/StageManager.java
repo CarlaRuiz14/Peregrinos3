@@ -14,7 +14,17 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * Manages switching Scenes on the Primary Stag
+ * Clase para gestionar el cambio de escenas en la ventana principal de la
+ * aplicación.
+ * 
+ * <b>Responsabilidades principales:</b>
+ * <ul>
+ * <li>Cargar vistas desde archivos FXML utilizando un cargador de Spring.</li>
+ * <li>Configurar y mostrar escenas en la ventana principal
+ * (<code>Stage</code>).</li>
+ * <li>Registrar errores y finalizar la aplicación si ocurre un fallo
+ * crítico.</li>
+ * </ul>
  * 
  * @author Carla Ruiz
  * @since 28/12/2024
@@ -37,9 +47,7 @@ public class StageManager {
 
 	private void show(final Parent rootnode, String title) {
 		Scene scene = prepareScene(rootnode);
-		// scene.getStylesheets().add("/styles/Styles.css");
 
-		// primaryStage.initStyle(StageStyle.TRANSPARENT);
 		primaryStage.setTitle(title);
 		primaryStage.setScene(scene);
 		primaryStage.sizeToScene();
@@ -62,12 +70,6 @@ public class StageManager {
 		return scene;
 	}
 
-	/**
-	 * Loads the object hierarchy from a FXML document and returns to root node of
-	 * that hierarchy.
-	 *
-	 * @return Parent root node of the FXML document hierarchy
-	 */
 	private Parent loadViewNodeHierarchy(String fxmlFilePath) {
 		Parent rootNode = null;
 		try {
@@ -83,5 +85,4 @@ public class StageManager {
 		LOG.error(errorMsg, exception, exception.getCause());
 		Platform.exit();
 	}
-
 }

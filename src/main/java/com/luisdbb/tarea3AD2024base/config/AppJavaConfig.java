@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package com.luisdbb.tarea3AD2024base.config;
 
 import java.io.IOException;
@@ -16,34 +12,30 @@ import org.springframework.context.annotation.Lazy;
 import javafx.stage.Stage;
 
 /**
+ * Clase de configuración principal de la aplicación.
+ * <ul>
+ * <li>Proporciona configuraciones para el manejo del contexto de Spring.</li>
+ * <li>Define Beans esenciales como el <b>ResourceBundle</b> y el
+ * <b>StageManager</b>.</li>
+ * </ul>
+ * 
  * @author Carla Ruiz
  * @since 28/12/2024
  */
 @Configuration
 public class AppJavaConfig {
-	
-    @Autowired 
-    SpringFXMLLoader springFXMLLoader;
 
-//    /**
-//     * Useful when dumping stack trace to a string for logging.
-//     * @return ExceptionWriter contains logging utility methods
-//     */
-//    @Bean
-//    @Scope("prototype")
-//    public ExceptionWriter exceptionWriter() {
-//        return new ExceptionWriter(new StringWriter());
-//    }
+	@Autowired
+	SpringFXMLLoader springFXMLLoader;
 
-    @Bean
-    public ResourceBundle resourceBundle() {
-        return ResourceBundle.getBundle("Bundle");
-    }
-    
-    @Bean
-    @Lazy(value = true) //Stage only created after Spring context bootstap
-    public StageManager stageManager(Stage stage) throws IOException {
-        return new StageManager(springFXMLLoader, stage);
-    }
+	@Bean
+	public ResourceBundle resourceBundle() {
+		return ResourceBundle.getBundle("Bundle");
+	}
 
+	@Bean
+	@Lazy(value = true)
+	public StageManager stageManager(Stage stage) throws IOException {
+		return new StageManager(springFXMLLoader, stage);
+	}
 }

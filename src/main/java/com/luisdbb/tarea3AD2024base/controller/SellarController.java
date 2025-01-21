@@ -83,7 +83,6 @@ public class SellarController implements Initializable {
 	@FXML
 	private Button btnSalir;
 
-	// inyecciones
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
@@ -111,7 +110,7 @@ public class SellarController implements Initializable {
 
 	@Autowired
 	private ParadasPeregrinoService paradasPeregrinoService;
-	
+
 	@Autowired
 	private NacionalidadService nacionalidadService;
 
@@ -121,6 +120,7 @@ public class SellarController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
+		// entidades a sellar
 		parada = paradaService.findByUsuario(sesion.getUsuarioActivo().getId());
 		datosSellado.setParada(parada);
 
@@ -141,7 +141,7 @@ public class SellarController implements Initializable {
 			carnet = cellData.getValue().getCarnet();
 			// Retornamos el ID del carnet como una propiedad observable de tipo Long
 			return new SimpleObjectProperty<>(carnet != null ? carnet.getId() : null);
-		});		
+		});
 
 		ObservableList<Peregrino> listPeregrinos = FXCollections.observableArrayList(peregrinoService.findAll());
 
@@ -190,16 +190,8 @@ public class SellarController implements Initializable {
 		btnSellar.setTooltip(new Tooltip("Sellar (Alt+X)"));
 		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
 		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
-
 	}
 
-	/**
-	 * Handler para el HyperLink hpInfo. Método que muestra el sistema de ayuda al
-	 * pulsarlo.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		ayuda.configInfo("/help/help.html");
@@ -228,9 +220,9 @@ public class SellarController implements Initializable {
 
 			String mensaje = "Se va a sellar el carnet del peregrino: \n\tID: " + peregrinoSeleccionado.getId()
 					+ "\n\tPeregrino: " + peregrinoSeleccionado.getNombre() + "\n\tNacionalidad: "
-					+ nacionalidadService.mapaNacionalidades().get(peregrinoSeleccionado.getNacionalidad()) + "\n\tID Carnet: " + carnet.getId()
-					+ "\nEn la parada:\n\tID Parada: " + parada.getId() + "\n\tNombre: " + parada.getNombre()
-					+ "\n\tRegión: " + parada.getRegion();
+					+ nacionalidadService.mapaNacionalidades().get(peregrinoSeleccionado.getNacionalidad())
+					+ "\n\tID Carnet: " + carnet.getId() + "\nEn la parada:\n\tID Parada: " + parada.getId()
+					+ "\n\tNombre: " + parada.getNombre() + "\n\tRegión: " + parada.getRegion();
 
 			boolean confirmar = alertas.alertaConfirmacion("Confirmar datos", mensaje);
 
@@ -253,27 +245,13 @@ public class SellarController implements Initializable {
 		}
 	}
 
-	/**
-	 * Handler para el botón btnVolver. Método que al pulsarlo vuelve a la ventana
-	 * de Login.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.PARADA);
 	}
 
-	/**
-	 * Handler para botón btnSalir. Método que sale de la aplicación al pulsarlo.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		Platform.exit();
 	}
-
 }

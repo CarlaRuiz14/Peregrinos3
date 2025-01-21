@@ -92,12 +92,12 @@ public class VipController implements Initializable {
 		lblRegion.setText(String.valueOf(datosSellado.getParada().getRegion()));
 		lblId.setText(String.valueOf(datosSellado.getParada().getId()));
 
-		// config info
-		ayuda.configImgInfo(hpInfo);
-
 		// config toggle group
 		rbtnSi.setToggleGroup(respuesta);
 		rbtnNo.setToggleGroup(respuesta);
+
+		// config info
+		ayuda.configImgInfo(hpInfo);
 
 		// config img btn Vip
 		botones.configImgFlecha(btnVip);
@@ -145,13 +145,6 @@ public class VipController implements Initializable {
 
 	}
 
-	/**
-	 * Handler para el HyperLink hpInfo. Método que muestra el sistema de ayuda al
-	 * pulsarlo.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		ayuda.configInfo("/help/help.html");
@@ -190,32 +183,16 @@ public class VipController implements Initializable {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 			alertas.alertaError("Error", "Hubo un problema al registrar los datos. Por favor, revise la información.");
-
 		}
-
 	}
 
-	/**
-	 * Handler para el botón btnVolver. Método que al pulsarlo vuelve a la ventana
-	 * de Login.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.ALOJAR);
 	}
 
-	/**
-	 * Handler para botón btnSalir. Método que sale de la aplicación al pulsarlo.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		Platform.exit();
 	}
-
 }

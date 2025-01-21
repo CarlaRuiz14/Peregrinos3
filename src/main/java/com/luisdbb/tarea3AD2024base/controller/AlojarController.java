@@ -88,12 +88,12 @@ public class AlojarController implements Initializable {
 		lblRegion.setText(String.valueOf(datosSellado.getParada().getRegion()));
 		lblId.setText(String.valueOf(datosSellado.getParada().getId()));
 
-		// config info
-		ayuda.configImgInfo(hpInfo);
-
 		// config toggle group
 		rbtnSi.setToggleGroup(respuesta);
 		rbtnNo.setToggleGroup(respuesta);
+
+		// config info
+		ayuda.configImgInfo(hpInfo);
 
 		// config img btn Alojar
 		botones.configImgFlecha(btnAlojar);
@@ -140,14 +140,7 @@ public class AlojarController implements Initializable {
 		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
 
 	}
-
-	/**
-	 * Handler para el HyperLink hpInfo. Método que muestra el sistema de ayuda al
-	 * pulsarlo.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
+	
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		ayuda.configInfo("/help/help.html");
@@ -164,39 +157,22 @@ public class AlojarController implements Initializable {
 		RadioButton seleccion = (RadioButton) respuesta.getSelectedToggle();
 
 		if (seleccion.equals(rbtnSi)) {
-
 			alertas.alertaInformacion("Alojar", "El peregrino será alojado.");
 			stageManager.switchScene(FxmlView.VIP);
-
 		} else if (seleccion.equals(rbtnNo)) {
-
 			alertas.alertaInformacion("No alojar",
 					"El peregrino no será alojado.\nDatos guardados.\n\nVolviendo a su Menú.");
 			stageManager.switchScene(FxmlView.PARADA);
 		}
 	}
-
-	/**
-	 * Handler para el botón btnVolver. Método que al pulsarlo vuelve a la ventana
-	 * de Login.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
+	
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.SELLAR);
 	}
 
-	/**
-	 * Handler para botón btnSalir. Método que sale de la aplicación al pulsarlo.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		Platform.exit();
 	}
-
 }

@@ -116,7 +116,6 @@ public class CarnetController implements Initializable {
 	@FXML
 	private Button btnSalir;
 
-	// inyecciones
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
@@ -175,14 +174,7 @@ public class CarnetController implements Initializable {
 		lblDistancia.setText(String.valueOf(carnetActivo.getDistancia()));
 		lblVips.setText(String.valueOf(carnetActivo.getnVips()));
 
-		// config info
-		ayuda.configImgInfo(hpInfo);
-
-		// config img peregrino
-		String rutaPer = resources.getString("carnet.icon");
-		imgCarnet.setImage(new Image(getClass().getResourceAsStream(rutaPer)));
-
-		// config de la tabla Paradas
+		// config tabla Paradas
 		colIdParada.setCellValueFactory(new PropertyValueFactory<>("id"));
 		colNombreParada.setCellValueFactory(new PropertyValueFactory<>("nombre"));
 		colRegion.setCellValueFactory(new PropertyValueFactory<>("region"));
@@ -211,6 +203,13 @@ public class CarnetController implements Initializable {
 		ObservableList<Estancia> listEstancias = FXCollections.observableArrayList(listaE);
 
 		tblEstancias.setItems(listEstancias);
+
+		// config info
+		ayuda.configImgInfo(hpInfo);
+
+		// config img peregrino
+		String rutaPer = resources.getString("carnet.icon");
+		imgCarnet.setImage(new Image(getClass().getResourceAsStream(rutaPer)));
 
 		// config img btn Exportar
 		botones.configImgFlecha(btnExportar);
@@ -255,16 +254,8 @@ public class CarnetController implements Initializable {
 		btnExportar.setTooltip(new Tooltip("Exportar (Alt+X)"));
 		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
 		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
-
 	}
 
-	/**
-	 * Handler para el HyperLink hpInfo. Método que muestra el sistema de ayuda al
-	 * pulsarlo.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		ayuda.configInfo("/help/help.html");
@@ -272,35 +263,19 @@ public class CarnetController implements Initializable {
 
 	@FXML
 	private void handlerExportar(ActionEvent event) throws IOException {
-
 		carnetService.exportarCarnet(peregrinoActivo);
 		alertas.alertaInformacion("Carnet exportado",
 				"Su carnet ha sido exportado correctamente en formato xml.\n\nVolviendo al menú. ");
 		stageManager.switchScene(FxmlView.PEREGRINO);
-
 	}
 
-	/**
-	 * Handler para el botón btnVolver. Método que al pulsarlo vuelve a la ventana
-	 * de Login.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.PEREGRINO);
 	}
 
-	/**
-	 * Handler para botón btnSalir. Método que sale de la aplicación al pulsarlo.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		Platform.exit();
 	}
-
 }

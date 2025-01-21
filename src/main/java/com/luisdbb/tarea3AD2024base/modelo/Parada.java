@@ -15,14 +15,34 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 /**
+ * Representa una parada, asociada a un usuario y a peregrinos que la visitan.
+ * 
+ * Atributos:
+ * <ul>
+ * <li><b>id:</b> Identificador único de la parada.</li>
+ * <li><b>nombre:</b> Nombre de la parada.</li>
+ * <li><b>region:</b> Región a la que pertenece la parada.</li>
+ * <li><b>paradasPeregrino:</b> Relación con los peregrinos que han pasado por
+ * esta parada.</li>
+ * <li><b>usuario:</b> Usuario responsable de la parada.</li>
+ * </ul>
+ * 
+ * Relaciones:
+ * <ul>
+ * <li><b>OneToMany:</b> ParadasPeregrino (relación con registros de peregrinos
+ * que visitan la parada).</li>
+ * <li><b>OneToOne:</b> Usuario (relación obligatoria y única con el responsable
+ * de la parada).</li>
+ * </ul>
+ * 
  * @author Carla Ruiz
  * @since 28/12/2024
  */
+
 @Entity
 @Table(name = "paradas")
 public class Parada {
 
-	// atributos
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -40,7 +60,6 @@ public class Parada {
 	@JoinColumn(name = "id_usuario", nullable = false, unique = true)
 	private Usuario usuario;
 
-	// constructores
 	public Parada() {
 		super();
 	}
@@ -57,7 +76,6 @@ public class Parada {
 		this.nombre = nombre;
 		this.region = region;
 		this.usuario = usuario;
-
 	}
 
 	public Parada(long id, String nombre, char region, List<ParadasPeregrino> paradasPeregrino, Usuario usuario) {
@@ -67,10 +85,8 @@ public class Parada {
 		this.region = region;
 		this.paradasPeregrino = paradasPeregrino;
 		this.usuario = usuario;
-
 	}
 
-	// getters y setters
 	public long getId() {
 		return id;
 	}
@@ -111,7 +127,6 @@ public class Parada {
 		this.usuario = usuario;
 	}
 
-	// métodos
 	@Override
 	public int hashCode() {
 		return Objects.hash(id, nombre, paradasPeregrino, region, usuario);
@@ -135,5 +150,4 @@ public class Parada {
 	public String toString() {
 		return nombre;
 	}
-
 }

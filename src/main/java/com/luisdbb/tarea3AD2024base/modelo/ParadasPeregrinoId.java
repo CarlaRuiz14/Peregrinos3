@@ -6,6 +6,21 @@ import java.util.Objects;
 
 import jakarta.persistence.Embeddable;
 
+/**
+ * Representa la clave primaria compuesta para la relación entre peregrinos y
+ * paradas.
+ * 
+ * Atributos:
+ * <ul>
+ * <li><b>idPeregrino:</b> Identificador del peregrino.</li>
+ * <li><b>idParada:</b> Identificador de la parada.</li>
+ * <li><b>fecha:</b> Fecha de la visita.</li>
+ * </ul>
+ * 
+ * @author Carla Ruiz
+ * @since 28/12/2024
+ */
+
 @Embeddable
 public class ParadasPeregrinoId implements Serializable {
 
@@ -71,5 +86,4 @@ public class ParadasPeregrinoId implements Serializable {
 		return Objects.equals(fecha, other.fecha) && Objects.equals(idParada, other.idParada)
 				&& Objects.equals(idPeregrino, other.idPeregrino);
 	}
-
 }

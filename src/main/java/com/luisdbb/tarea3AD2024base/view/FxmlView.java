@@ -3,11 +3,38 @@ package com.luisdbb.tarea3AD2024base.view;
 import java.util.ResourceBundle;
 
 /**
+ * Enumeración que representa las vistas disponibles en la aplicación.
+ * 
+ * <h2>Responsabilidades principales:</h2>
+ * <ul>
+ * <li>Proveer el título de la vista desde el archivo `Bundle.properties`.</li>
+ * <li>Proveer la ruta del archivo FXML correspondiente a cada vista.</li>
+ * </ul>
+ * 
+ * <h2>Constantes:</h2>
+ * <ul>
+ * <li><b>ADMIN:</b> Vista para la administración general.</li> *
+ * <li><b>CARNET:</b> Vista para la gestión del carnet.</li>
+ * <li><b>EXPPARADA:</b> Vista para exportar información de una parada.</li>
+ * <li><b>LOGIN:</b> Vista para el inicio de sesión.</li>
+ * <li><b>MAIN:</b> Vista principal de la aplicación.</li>
+ * <li><b>PARADA:</b> Vista para gestionar paradas.</li>
+ * <li><b>PEREGRINO:</b> Vista para gestionar peregrinos.</li>
+ * <li><b>EDITAR:</b> Vista para editar información de usuario.</li>
+ * <li><b>RECUPERACION:</b> Vista para recuperación de contraseñas.</li>
+ * <li><b>REGPARADA:</b> Vista para registrar paradas.</li>
+ * <li><b>REGPEREGRINO:</b> Vista para registrar peregrinos.</li>
+ * <li><b>SELLAR:</b> Vista para sellar un carnet.</li>
+ * <li><b>ALOJAR:</b> Vista para gestionar el alojamiento.</li>
+ * <li><b>VIP:</b> Vista para gestionar estancias VIP.</li>
+ * </ul>
+ * 
  * @author Carla Ruiz
  * @since 28/12/2024
  */
+
 public enum FxmlView {
-	
+
 	ADMIN {
 		@Override
 		public String getTitle() {
@@ -17,17 +44,6 @@ public enum FxmlView {
 		@Override
 		public String getFxmlFile() {
 			return "/fxml/Admin.fxml";
-		}
-	},
-	LOGINADMIN {
-		@Override
-		public String getTitle() {
-			return getStringFromResourceBundle("loginAdmin.title");
-		}
-
-		@Override
-		public String getFxmlFile() {
-			return "/fxml/LoginAdmin.fxml";
 		}
 	},
 	CARNET {
@@ -73,7 +89,7 @@ public enum FxmlView {
 		public String getFxmlFile() {
 			return "/fxml/Main.fxml";
 		}
-	},	
+	},
 	PARADA {
 		@Override
 		public String getTitle() {

@@ -114,29 +114,14 @@ public class PeregrinoController implements Initializable {
 		stageManager.switchScene(FxmlView.EDITAR);
 	}
 
-	/**
-	 * Handler para botón Logout. Método que sale desactiva la sesión actual del
-	 * usuario. Establece usuarioActivo a null y el perfilActivo a INVITADO. Cambia
-	 * la escena a la ventana de Login.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerLogout(ActionEvent event) throws IOException {
 		usuarioService.configurarSesion(null, Perfil.INVITADO);
 		stageManager.switchScene(FxmlView.LOGIN);
 	}
 
-	/**
-	 * Handler para botón btnSalir. Método que sale de la aplicación al pulsarlo.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		Platform.exit();
 	}
-
 }

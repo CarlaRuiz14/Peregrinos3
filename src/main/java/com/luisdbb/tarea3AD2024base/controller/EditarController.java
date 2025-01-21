@@ -85,7 +85,6 @@ public class EditarController implements Initializable {
 	@FXML
 	private Button btnSalir;
 
-	// inyecciones
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
@@ -114,13 +113,13 @@ public class EditarController implements Initializable {
 	@Autowired
 	private BotonesConfig botones;
 
-
 	Usuario usuarioActivo;
 	Peregrino peregrinoActivo;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
+		// entidades a editar
 		usuarioActivo = sesion.getUsuarioActivo();
 		peregrinoActivo = peregrinoService.findByUsuario(usuarioActivo.getId());
 
@@ -195,14 +194,7 @@ public class EditarController implements Initializable {
 		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
 
 	}
-
-	/**
-	 * Handler para el HyperLink hpInfo. Método que muestra el sistema de ayuda al
-	 * pulsarlo.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
+	
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		ayuda.configInfo("/help/help.html");
@@ -223,7 +215,6 @@ public class EditarController implements Initializable {
 		} else {
 			alertas.alertaInformacion("Acción cancelada", "Por favor, rellene el formulario.");
 		}
-
 	}
 
 	@FXML
@@ -239,33 +230,18 @@ public class EditarController implements Initializable {
 		peregrinoService.actualizarDatosPeregrino(peregrinoActivo);
 		
 		usuarioActivo.setEmail(txtEmail.getText());
-		usuarioService.actualizarDatosUsuario(usuarioActivo);
-		
+		usuarioService.actualizarDatosUsuario(usuarioActivo);		
 		
 		alertas.alertaInformacion("Actualización exitosa",
 				"Los datos han sido guardados correctamente.\n\nVolviendo al menú.");
 		stageManager.switchScene(FxmlView.PEREGRINO);
-
 	}
 
-	/**
-	 * Handler para el botón btnVolver. Método que al pulsarlo vuelve a la ventana
-	 * de Peregrino.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.PEREGRINO);
 	}
-
-	/**
-	 * Handler para botón btnSalir. Método que sale de la aplicación al pulsarlo.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
+	
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		Platform.exit();

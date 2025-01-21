@@ -9,12 +9,25 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+/**
+ * Clase para configurar iconos de botones en la interfaz gráfica.
+ * 
+ * <b>Funciones principales:</b>
+ * <ul>
+ * <li>Asignar imágenes a botones según su función.</li>
+ * <li>Crear objetos <code>ImageView</code> reutilizables con un tamaño
+ * uniforme.</li>
+ * </ul>
+ * 
+ * @author Carla Ruiz
+ * @since 28/12/2024
+ */
 @Component
 public class BotonesConfig {
 
 	@Autowired
 	ResourceBundle resources;
-	
+
 	public void configImgFlecha(Button button) {
 		String rutaFlecha = resources.getString("btnFlecha.icon");
 		Image imgFlecha = new Image(getClass().getResourceAsStream(rutaFlecha));
@@ -22,7 +35,6 @@ public class BotonesConfig {
 		viewFlecha.setFitWidth(80);
 		viewFlecha.setFitHeight(40);
 		button.setGraphic(viewFlecha);
-		
 	}
 
 	public void configImgSalir(Button button) {
@@ -51,7 +63,7 @@ public class BotonesConfig {
 		viewVolver.setFitHeight(30);
 		button.setGraphic(viewVolver);
 	}
-	
+
 	public void configImgLimpiar(Button button) {
 		String rutaLimp = resources.getString("btnLimpiar.icon");
 		Image imgLimp = new Image(getClass().getResourceAsStream(rutaLimp));
@@ -60,6 +72,12 @@ public class BotonesConfig {
 		viewLimp.setFitHeight(30);
 		button.setGraphic(viewLimp);
 	}
-	
 
+	public ImageView createImageView(Image image) {
+		ImageView imageView = new ImageView(image);
+		imageView.setFitWidth(40);
+		imageView.setFitHeight(40);
+		imageView.setPreserveRatio(true);
+		return imageView;
+	}
 }

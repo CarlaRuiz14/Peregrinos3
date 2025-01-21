@@ -105,7 +105,6 @@ public class ExpParadaController implements Initializable {
 	@FXML
 	private Button btnSalir;
 
-	// inyecciones
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
@@ -115,7 +114,7 @@ public class ExpParadaController implements Initializable {
 
 	@Autowired
 	private Alertas alertas;
-	
+
 	@Autowired
 	private AyudaConfig ayuda;
 
@@ -145,9 +144,6 @@ public class ExpParadaController implements Initializable {
 		lblUsuario.setText(sesion.getUsuarioActivo().getNombreUsuario());
 		lblEmail.setText(sesion.getUsuarioActivo().getEmail());
 
-		// config info
-		ayuda.configImgInfo(hpInfo);
-
 		// config tabla estancias
 		colIdEstancia.setCellValueFactory(new PropertyValueFactory<>("id"));
 		colPeregrino.setCellValueFactory(new PropertyValueFactory<>("nombrePeregrino"));
@@ -165,6 +161,9 @@ public class ExpParadaController implements Initializable {
 			}
 		});
 
+		// config img info
+		ayuda.configImgInfo(hpInfo);
+
 		// config img btn Buscar
 		String rutaBuscar = resources.getString("btnBuscar.icon");
 		Image imgBuscar = new Image(getClass().getResourceAsStream(rutaBuscar));
@@ -176,10 +175,7 @@ public class ExpParadaController implements Initializable {
 		// config img btn Informe
 		String rutaInforme = resources.getString("btnInforme.icon");
 		Image imgInforme = new Image(getClass().getResourceAsStream(rutaInforme));
-		ImageView viewInforme = new ImageView(imgInforme);
-		viewInforme.setFitWidth(40);
-		viewInforme.setFitHeight(40);
-		btnInforme.setGraphic(viewInforme);
+		btnInforme.setGraphic(botones.createImageView(imgInforme));
 
 		// config img btn Volver
 		botones.configImgVolver(btnVolver);
@@ -229,16 +225,8 @@ public class ExpParadaController implements Initializable {
 		btnInforme.setTooltip(new Tooltip("Informe (Alt+X)"));
 		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
 		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
-
 	}
 
-	/**
-	 * Handler para el HyperLink hpInfo. Método que muestra el sistema de ayuda al
-	 * pulsarlo.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		ayuda.configInfo("/help/help.html");
@@ -268,27 +256,13 @@ public class ExpParadaController implements Initializable {
 
 	}
 
-	/**
-	 * Handler para el botón btnVolver. Método que al pulsarlo vuelve a la ventana
-	 * de Login.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.PARADA);
 	}
 
-	/**
-	 * Handler para botón btnSalir. Método que sale de la aplicación al pulsarlo.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		Platform.exit();
 	}
-
 }

@@ -38,7 +38,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
@@ -104,12 +103,6 @@ public class RegPeregrinoController implements Initializable {
 	@FXML
 	private Button btnSalir;
 
-	// propiedades
-
-	private final StringProperty emailProperty = new SimpleStringProperty();
-	private final StringProperty usuarioProperty = new SimpleStringProperty();
-	private final StringProperty contraseñaProperty = new SimpleStringProperty();
-
 	// inyecciones
 	@Lazy
 	@Autowired
@@ -120,7 +113,7 @@ public class RegPeregrinoController implements Initializable {
 
 	@Autowired
 	private BotonesConfig botones;
-	
+
 	@Autowired
 	private AyudaConfig ayuda;
 
@@ -139,7 +132,10 @@ public class RegPeregrinoController implements Initializable {
 	@Autowired
 	private NacionalidadService nacionalidadService;
 
-	// conf hpVisible
+	private final StringProperty emailProperty = new SimpleStringProperty();
+	private final StringProperty usuarioProperty = new SimpleStringProperty();
+	private final StringProperty contraseñaProperty = new SimpleStringProperty();
+
 	private boolean isPassVisible = false;
 	private Image mostrarIcon;
 	private Image ocultarIcon;
@@ -156,7 +152,7 @@ public class RegPeregrinoController implements Initializable {
 		mostrarIcon = new Image(getClass().getResourceAsStream(mostrarPath));
 		ocultarIcon = new Image(getClass().getResourceAsStream(ocultarPath));
 
-		hpVisible.setGraphic(createImageView(mostrarIcon));
+		hpVisible.setGraphic(botones.createImageView(mostrarIcon));
 
 		// combobox
 		listaParadas = FXCollections.observableArrayList(paradaService.findAll());
@@ -230,7 +226,11 @@ public class RegPeregrinoController implements Initializable {
 		btnRegistrar.setTooltip(new Tooltip("Registrar (Alt+R)"));
 		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
 		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
-
+	}
+	
+	@FXML
+	private void handlerInfo(ActionEvent event) throws IOException {
+		ayuda.configInfo("/help/help.html");
 	}
 
 	@FXML
@@ -244,7 +244,7 @@ public class RegPeregrinoController implements Initializable {
 			txtConfirmacion.setText(passConfirmacion.getText());
 			txtConfirmacion.setVisible(true);
 			passConfirmacion.setVisible(false);
-			hpVisible.setGraphic(createImageView(ocultarIcon));
+			hpVisible.setGraphic(botones.createImageView(ocultarIcon));
 		} else {
 			passContraseña.setText(txtContraseña.getText());
 			txtContraseña.setVisible(false);
@@ -253,18 +253,10 @@ public class RegPeregrinoController implements Initializable {
 			passConfirmacion.setText(txtConfirmacion.getText());
 			txtConfirmacion.setVisible(false);
 			passConfirmacion.setVisible(true);
-			hpVisible.setGraphic(createImageView(mostrarIcon));
+			hpVisible.setGraphic(botones.createImageView(mostrarIcon));
 		}
-
 	}
 
-	/**
-	 * Handler del botón btnRegistrar. Método que registra un usuario, un carnet y
-	 * un peregrino y muestra mensajes de alerta para exito o error.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerRegistrar(ActionEvent event) throws IOException {
 
@@ -290,16 +282,8 @@ public class RegPeregrinoController implements Initializable {
 			alertas.alertaError("Error", "Hubo un problema al registrar los datos. Por favor, revise la información.");
 
 		}
-
 	}
 
-	/**
-	 * Handler para el botón btnLimpiar. Método que al pulsarlo limpia los campos
-	 * del formulario.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerLimpiar(ActionEvent event) throws IOException {
 
@@ -320,52 +304,22 @@ public class RegPeregrinoController implements Initializable {
 		} else {
 			alertas.alertaInformacion("Acción cancelada", "Por favor, rellene el formulario.");
 		}
-
 	}
 
-	/**
-	 * Handler para el botón btnVolver. Método que al pulsarlo vuelve a la ventana
-	 * de Login.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.LOGIN);
 	}
 
-	/**
-	 * Handler para botón btnSalir. Método que sale de la aplicación al pulsarlo.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		Platform.exit();
 	}
 
-	/**
-	 * Handler para el HyperLink hpInfo. Método que muestra el sistema de ayuda al
-	 * pulsarlo.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
-	@FXML
-	private void handlerInfo(ActionEvent event) throws IOException {
-		ayuda.configInfo("/help/help.html");
-	}
-
-	/**
-	 * Método que valida cada campo del formulario y muestra el error en lblFeed
-	 */
 	private void validarEntradas() {
 
 		lblFeed.setText(" ");
 
-		// asociación de property con fxml
 		emailProperty.bind(txtEmail.textProperty());
 		usuarioProperty.bind(txtUsuario.textProperty());
 		contraseñaProperty.bind(txtContraseña.textProperty());
@@ -432,14 +386,6 @@ public class RegPeregrinoController implements Initializable {
 
 	}
 
-	/**
-	 * Método que valida que los campos obligatorios del formulartio no sean null o
-	 * estén vacios. Estos campos son parada inicial, nombre, email,usuario,
-	 * contraseña y su confirmación. Además, comprueba que la contraseña coincida
-	 * con su confirmación.
-	 * 
-	 * @return true si todos los campos están rellenados y las contraseñas coinciden
-	 */
 	private boolean validarRegistro() {
 
 		if (cmbParada.getSelectionModel().getSelectedItem() == null) {
@@ -500,22 +446,6 @@ public class RegPeregrinoController implements Initializable {
 
 			}
 		}
-
 		return true;
 	}
-
-	/**
-	 * Crea un ImageView con un tamaño fijo de 30x30 píxeles.
-	 *
-	 * @param image La imagen que se asignará al ImageView.
-	 * @return Un ImageView con las dimensiones ajustadas.
-	 */
-	private ImageView createImageView(Image image) {
-		ImageView imageView = new ImageView(image);
-		imageView.setFitWidth(30);
-		imageView.setFitHeight(30);
-		imageView.setPreserveRatio(true);
-		return imageView;
-	}
-
 }

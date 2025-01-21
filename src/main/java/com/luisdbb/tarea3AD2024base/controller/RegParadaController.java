@@ -30,7 +30,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
@@ -86,13 +85,6 @@ public class RegParadaController implements Initializable {
 	@FXML
 	private Button btnSalir;
 
-	// propiedades
-	private final StringProperty usuarioProperty = new SimpleStringProperty();
-	private final StringProperty emailProperty = new SimpleStringProperty();
-	private final StringProperty regionPProperty = new SimpleStringProperty();
-	private final StringProperty contraseñaProperty = new SimpleStringProperty();
-
-	// inyecciones
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
@@ -115,7 +107,11 @@ public class RegParadaController implements Initializable {
 	@Autowired
 	private Validaciones validaciones;
 
-	// conf hpVisible
+	private final StringProperty usuarioProperty = new SimpleStringProperty();
+	private final StringProperty emailProperty = new SimpleStringProperty();
+	private final StringProperty regionPProperty = new SimpleStringProperty();
+	private final StringProperty contraseñaProperty = new SimpleStringProperty();
+
 	private boolean isPassVisible = false;
 	private Image mostrarIcon;
 	private Image ocultarIcon;
@@ -132,7 +128,7 @@ public class RegParadaController implements Initializable {
 		mostrarIcon = new Image(getClass().getResourceAsStream(mostrarPath));
 		ocultarIcon = new Image(getClass().getResourceAsStream(ocultarPath));
 
-		hpVisible.setGraphic(createImageView(mostrarIcon));
+		hpVisible.setGraphic(botones.createImageView(mostrarIcon));
 
 		// config info
 		ayuda.configImgInfo(hpInfo);
@@ -198,7 +194,6 @@ public class RegParadaController implements Initializable {
 		btnRegistrar.setTooltip(new Tooltip("Registrar (Alt+R)"));
 		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
 		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
-
 	}
 
 	@FXML
@@ -212,7 +207,7 @@ public class RegParadaController implements Initializable {
 			txtConfirmacion.setText(passConfirmacion.getText());
 			txtConfirmacion.setVisible(true);
 			passConfirmacion.setVisible(false);
-			hpVisible.setGraphic(createImageView(ocultarIcon));
+			hpVisible.setGraphic(botones.createImageView(ocultarIcon));
 		} else {
 			passContraseña.setText(txtContraseña.getText());
 			txtContraseña.setVisible(false);
@@ -221,18 +216,11 @@ public class RegParadaController implements Initializable {
 			passConfirmacion.setText(txtConfirmacion.getText());
 			txtConfirmacion.setVisible(false);
 			passConfirmacion.setVisible(true);
-			hpVisible.setGraphic(createImageView(mostrarIcon));
+			hpVisible.setGraphic(botones.createImageView(mostrarIcon));
 		}
 
 	}
 
-	/**
-	 * Handler del botón btnRegistrar. Método que registra un usuario y una parada y
-	 * muestra mensajes de alerta para exito o error.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerRegistrar(ActionEvent event) throws IOException {
 
@@ -260,13 +248,6 @@ public class RegParadaController implements Initializable {
 
 	}
 
-	/**
-	 * Handler para el botón btnLimpiar. Método que al pulsarlo limpia los campos
-	 * del formulario.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerLimpiar(ActionEvent event) throws IOException {
 
@@ -285,52 +266,27 @@ public class RegParadaController implements Initializable {
 		} else {
 			alertas.alertaInformacion("Acción cancelada", "Por favor, rellene el formulario.");
 		}
-
 	}
 
-	/**
-	 * Handler para el botón btnVolver. Método que al pulsarlo vuelve a la ventana
-	 * de Administración.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.ADMIN);
 	}
 
-	/**
-	 * Handler para botón btnSalir. Método que sale de la aplicación al pulsarlo.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		Platform.exit();
 	}
 
-	/**
-	 * Handler para el HyperLink hpInfo. Método que muestra el sistema de ayuda al
-	 * pulsarlo.
-	 * 
-	 * @param event
-	 * @throws IOException
-	 */
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		ayuda.configInfo("/help/help.html");
 	}
 
-	/**
-	 * Método que valida cada campo del formulario y muestra el error en lblFeed
-	 */
 	private void validarEntradas() {
 
 		lblFeed.setText(" ");
 
-		// asociación de fxml con properties
 		usuarioProperty.bind(txtUsuario.textProperty());
 		emailProperty.bind(txtEmail.textProperty());
 		regionPProperty.bind(txtRegionP.textProperty());
@@ -428,14 +384,6 @@ public class RegParadaController implements Initializable {
 
 	}
 
-	/**
-	 * Método que valida los campos del formulario, que no sean null o estén vacíos,
-	 * que el nombre de la parada no exista ya en esa región y que la contraseña
-	 * coincida con su confirmación.
-	 * 
-	 * @return true si todos los campos están rellenados, la parada no existe ya y
-	 *         las contraseñas coinciden
-	 */
 	private boolean validarRegistro() {
 		if (txtUsuario.getText() == null || txtUsuario.getText().isEmpty()) {
 			alertas.alertaError("Error de validación", "El nombre de usuario no puede estar vacío.");
@@ -500,22 +448,6 @@ public class RegParadaController implements Initializable {
 
 			}
 		}
-
 		return true;
 	}
-
-	/**
-	 * Crea un ImageView con un tamaño fijo de 30x30 píxeles.
-	 *
-	 * @param image La imagen que se asignará al ImageView.
-	 * @return Un ImageView con las dimensiones ajustadas.
-	 */
-	private ImageView createImageView(Image image) {
-		ImageView imageView = new ImageView(image);
-		imageView.setFitWidth(30);
-		imageView.setFitHeight(30);
-		imageView.setPreserveRatio(true);
-		return imageView;
-	}
-
 }

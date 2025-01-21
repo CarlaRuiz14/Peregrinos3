@@ -12,6 +12,19 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 /**
+ * Representa un usuario del sistema con sus datos de acceso y perfil asociado.
+ * 
+ * Atributos:
+ * <ul>
+ * <li><b>id:</b> Identificador único del usuario (generado
+ * automáticamente).</li>
+ * <li><b>nombreUsuario:</b> Nombre de usuario único y obligatorio.</li>
+ * <li><b>email:</b> Dirección de correo electrónico obligatoria.</li>
+ * <li><b>contraseña:</b> Contraseña del usuario.</li>
+ * <li><b>perfil:</b> Perfil del usuario definido en el enum Perfil
+ * (obligatorio).</li>
+ * </ul>
+ * 
  * @author Carla Ruiz
  * @since 28/12/2024
  */
@@ -20,16 +33,15 @@ import jakarta.persistence.Table;
 @Table(name = "Usuarios")
 public class Usuario {
 
-	// atributos
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private long id;
 
-	@Column(name = "nombre_usuario", nullable = false,unique = true)
+	@Column(name = "nombre_usuario", nullable = false, unique = true)
 	private String nombreUsuario;
 
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private String email;
 
 	@Column(nullable = false)
@@ -39,20 +51,18 @@ public class Usuario {
 	@Enumerated(EnumType.STRING)
 	private Perfil perfil;
 
-	// constructores
 	public Usuario() {
 		super();
 	}
 
 	public Usuario(String nombreUsuario, String email, String contraseña, Perfil perfil) {
-		super();	
+		super();
 		this.nombreUsuario = nombreUsuario;
 		this.email = email;
 		this.contraseña = contraseña;
 		this.perfil = perfil;
 	}
-	
-	
+
 	public Usuario(long id, String nombreUsuario, String email, String contraseña, Perfil perfil) {
 		super();
 		this.id = id;
@@ -62,7 +72,6 @@ public class Usuario {
 		this.perfil = perfil;
 	}
 
-	// getters y setters
 	public long getId() {
 		return id;
 	}
@@ -103,7 +112,6 @@ public class Usuario {
 		this.perfil = perfil;
 	}
 
-	// métodos
 	@Override
 	public int hashCode() {
 		return Objects.hash(contraseña, email, id, nombreUsuario, perfil);
@@ -127,5 +135,4 @@ public class Usuario {
 		return "Usuario [id=" + id + ", nombreUsuario=" + nombreUsuario + ", email=" + email + ", contraseña="
 				+ contraseña + ", perfil=" + perfil + "]";
 	}
-
 }

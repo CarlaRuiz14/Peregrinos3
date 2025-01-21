@@ -11,20 +11,29 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+/**
+ * Clase encargada de gestionar y mostrar diferentes tipos de alertas en la
+ * aplicación.
+ * 
+ * Funcionalidades:
+ * <ul>
+ * <li>Alerta de información: Muestra un mensaje informativo al usuario.</li>
+ * <li>Alerta de error: Notifica al usuario sobre un error ocurrido.</li>
+ * <li>Alerta de confirmación: Solicita al usuario confirmar una acción mediante
+ * botones de "Sí" o "No".</li>
+ * </ul>
+ * 
+ * @author Carla Ruiz
+ * @since 28/12/2024
+ */
 @Component
 public class Alertas {
 
-	/**
-	 * Método que contiene alerta de información
-	 * 
-	 * @param titulo
-	 * @param mensaje
-	 */
 	public void alertaInformacion(String titulo, String mensaje) {
 		Alert alerta = new Alert(Alert.AlertType.INFORMATION);
 		alerta.setTitle(titulo);
-		alerta.setHeaderText(null);		
-		
+		alerta.setHeaderText(null);
+
 		alerta.setContentText(mensaje);
 
 		ResourceBundle bundle = ResourceBundle.getBundle("Bundle");
@@ -45,13 +54,7 @@ public class Alertas {
 
 		alerta.showAndWait();
 	}
-	
-	/**
-	 * Método que contiene alerta de error
-	 * 
-	 * @param titulo
-	 * @param mensaje
-	 */
+
 	public void alertaError(String titulo, String mensaje) {
 		Alert alerta = new Alert(Alert.AlertType.ERROR);
 		alerta.setTitle(titulo);
@@ -77,13 +80,6 @@ public class Alertas {
 		alerta.showAndWait();
 	}
 
-	/**
-	 * Método que contiene alerta de confirmación con botones de si o no.
-	 * 
-	 * @param titulo
-	 * @param mensaje
-	 * @return true si hay respuesta y es true (Si)
-	 */
 	public boolean alertaConfirmacion(String titulo, String mensaje) {
 
 		Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
@@ -99,7 +95,7 @@ public class Alertas {
 			icono.setFitHeight(48);
 			alerta.getDialogPane().setGraphic(icono);
 		}
-		
+
 		String iconoVentana = bundle.getString("alertConf.icon");
 		if (iconoVentana != null && !iconoVentana.isEmpty()) {
 			Stage stage = (Stage) alerta.getDialogPane().getScene().getWindow();
@@ -112,9 +108,7 @@ public class Alertas {
 
 		alerta.getDialogPane().getStylesheets().add(Alertas.class.getResource("/styles/Styles.css").toExternalForm());
 
-		
 		Optional<ButtonType> respuesta = alerta.showAndWait();
 		return respuesta.isPresent() && respuesta.get() == botonSi;
 	}
-
 }

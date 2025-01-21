@@ -22,11 +22,9 @@ import javafx.scene.Parent;
 public class SpringFXMLLoader {
 
 	private final ResourceBundle resourceBundle;
-
-	// contexto Spring contiene todos los beans y permite acceder a ellos
+	
 	private final ApplicationContext context;
-
-	// automaticamente este constructor
+	
 	@Autowired
 	public SpringFXMLLoader(ApplicationContext context, ResourceBundle resourceBundle) {
 		this.resourceBundle = resourceBundle;
@@ -35,7 +33,7 @@ public class SpringFXMLLoader {
 
 	public Parent load(String fxmlPath) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
-		loader.setControllerFactory(context::getBean); // Spring now FXML Controller Factory
+		loader.setControllerFactory(context::getBean);
 		loader.setResources(resourceBundle);
 		loader.setLocation(getClass().getResource(fxmlPath));
 		return loader.load();
