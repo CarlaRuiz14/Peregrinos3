@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.luisdbb.tarea3AD2024base.modelo.Estancia;
 import com.luisdbb.tarea3AD2024base.modelo.QEstancia;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQuery;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -20,19 +20,23 @@ public class EstanciaCustomRepositoryImpl implements EstanciaCustomRepository {
 	@PersistenceContext
 	private EntityManager entityManager;
 
+	JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+
 	@Override // para errores tipograficos a la hora de llamar al metodo
 	public List<Estancia> findByIdParadaAndFechaBetween(Long paradaId, LocalDate fechaInicio, LocalDate fechaFin) {
 
 		QEstancia estancia = QEstancia.estancia;
-
-		JPAQuery<Estancia> query = new JPAQuery<>(entityManager);
 
 		// condicion lógica para query
 		BooleanExpression condicion = estancia.parada.id.eq(paradaId)
 				.and(estancia.fecha.between(fechaInicio, fechaFin));
 
 		// devolver construccion y ejecucion (fecth) de consulta
-		return query.select(estancia).from(estancia).where(condicion).fetch();
+		return queryFactory
+				.select(estancia)
+				.from(estancia)
+				.where(condicion)
+				.fetch();
 	}
 
 }

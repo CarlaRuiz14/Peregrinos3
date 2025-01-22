@@ -116,6 +116,9 @@ public class EditarController implements Initializable {
 	Usuario usuarioActivo;
 	Peregrino peregrinoActivo;
 
+	private boolean emailCheck=false;
+	
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -219,6 +222,10 @@ public class EditarController implements Initializable {
 
 	@FXML
 	private void handlerEditar(ActionEvent event) throws IOException {
+		
+		if(!emailCheck) {
+			alertas.alertaError("Error", "El email no es válido.");
+		}
 
 		if (!validarRegistro()) {
 			return;
@@ -258,17 +265,22 @@ public class EditarController implements Initializable {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("Email sin espacios en blanco");
+					emailCheck=false;
 				} else if (!validaciones.validarEmail(newValue)) {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("Formato email no válido");
+					emailCheck=false;
 				} else {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedValido");
 					lblFeed.setText("Email válido");
+					emailCheck=true;
 				}
 			} else {
 				lblFeed.setText(" ");
+				emailCheck=true;
+
 			}
 		});
 	}

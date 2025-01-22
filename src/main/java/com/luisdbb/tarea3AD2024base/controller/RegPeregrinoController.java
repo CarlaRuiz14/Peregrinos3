@@ -139,6 +139,10 @@ public class RegPeregrinoController implements Initializable {
 	private boolean isPassVisible = false;
 	private Image mostrarIcon;
 	private Image ocultarIcon;
+	
+	private boolean emailCheck=false;
+	private boolean usuarioCheck=false;
+	private boolean contraseñaCheck=false;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -261,6 +265,22 @@ public class RegPeregrinoController implements Initializable {
 	private void handlerRegistrar(ActionEvent event) throws IOException {
 
 		try {
+			
+			if(!emailCheck) {
+				alertas.alertaError("Error", "El email no es válido.");
+				return;
+			}
+			
+			if(!usuarioCheck) {
+				alertas.alertaError("Error", "El usuario no es válido.");
+				return;
+			}
+			
+			if(!contraseñaCheck) {
+				alertas.alertaError("Error", "La contraseña no es válida.");
+				return;
+			}
+			
 			if (!validarRegistro()) {
 				return;
 			}
@@ -330,17 +350,21 @@ public class RegPeregrinoController implements Initializable {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("Email sin espacios en blanco");
+					emailCheck=false;
 				} else if (!validaciones.validarEmail(newValue)) {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("Formato email no válido");
+					emailCheck=false;
 				} else {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedValido");
 					lblFeed.setText("Email válido");
+					emailCheck=true;
 				}
 			} else {
 				lblFeed.setText(" ");
+				emailCheck=true;
 			}
 		});
 
@@ -350,17 +374,22 @@ public class RegPeregrinoController implements Initializable {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("Usuario sin espacios en blanco");
+					usuarioCheck=false;
 				} else if (usuarioService.findByUsuario(newValue) != null) {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("El usuario ya existe");
+					usuarioCheck=false;
+
 				} else {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedValido");
 					lblFeed.setText("Usuario válido");
+					usuarioCheck=true;
 				}
 			} else {
 				lblFeed.setText(" ");
+				usuarioCheck=true;
 			}
 		});
 
@@ -370,17 +399,21 @@ public class RegPeregrinoController implements Initializable {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("Contraseña sin espacios en blanco");
+					contraseñaCheck=false;
 				} else if (!validaciones.validarContraseña(newValue)) {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
 					lblFeed.setText("Min 6 caracteres: mayúscula, nº y especial");
+					contraseñaCheck=false;
 				} else {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedValido");
 					lblFeed.setText("Contraseña válida");
+					contraseñaCheck=true;
 				}
 			} else {
 				lblFeed.setText(" ");
+				contraseñaCheck=true;
 			}
 		});
 
