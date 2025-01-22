@@ -108,6 +108,9 @@ public class CarnetController implements Initializable {
 	private TableColumn<Estancia, Boolean> colVip;
 
 	@FXML
+	private Button btnInforme;
+
+	@FXML
 	private Button btnExportar;
 
 	@FXML
@@ -211,6 +214,11 @@ public class CarnetController implements Initializable {
 		String rutaPer = resources.getString("carnet.icon");
 		imgCarnet.setImage(new Image(getClass().getResourceAsStream(rutaPer)));
 
+		// config img btn Informe
+		String rutaInforme = resources.getString("btnInforme.icon");
+		Image imgInforme = new Image(getClass().getResourceAsStream(rutaInforme));
+		btnInforme.setGraphic(botones.createImageView(imgInforme));
+
 		// config img btn Exportar
 		botones.configImgFlecha(btnExportar);
 
@@ -224,6 +232,13 @@ public class CarnetController implements Initializable {
 		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.I) {
 				hpInfo.fire();
+				event.consume();
+			}
+		});
+		
+		btnInforme.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.X) {
+				btnInforme.fire();
 				event.consume();
 			}
 		});
@@ -251,6 +266,7 @@ public class CarnetController implements Initializable {
 
 		// tooltips
 		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
+		btnInforme.setTooltip(new Tooltip("Informe (Alt+N)"));
 		btnExportar.setTooltip(new Tooltip("Exportar (Alt+X)"));
 		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
 		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
@@ -259,6 +275,11 @@ public class CarnetController implements Initializable {
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		ayuda.configInfo("/help/help.html");
+	}
+
+	@FXML
+	private void handlerInforme(ActionEvent event) throws IOException {
+
 	}
 
 	@FXML

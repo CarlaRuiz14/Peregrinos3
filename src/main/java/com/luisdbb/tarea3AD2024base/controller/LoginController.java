@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.Alertas;
+import com.luisdbb.tarea3AD2024base.config.AyudaConfig;
 import com.luisdbb.tarea3AD2024base.config.BotonesConfig;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.config.Validaciones;
@@ -37,6 +38,9 @@ import javafx.scene.input.KeyEvent;
  */
 @Controller
 public class LoginController implements Initializable {
+	
+	@FXML
+	private Hyperlink hpInfo;
 
 	@FXML
 	private ImageView imgUsuario;
@@ -73,6 +77,9 @@ public class LoginController implements Initializable {
 
 	@Autowired
 	private UsuarioService usuarioService;
+	
+	@Autowired
+	private AyudaConfig ayuda;
 
 	@Autowired
 	private Alertas alertas;
@@ -102,6 +109,9 @@ public class LoginController implements Initializable {
 		ocultarIcon = new Image(getClass().getResourceAsStream(ocultarPath));
 
 		hpVisible.setGraphic(botones.createImageView(mostrarIcon));
+		
+		// config img info
+				ayuda.configImgInfo(hpInfo);
 
 		// config img btn Login
 		botones.configImgFlecha(btnLogin);
@@ -116,7 +126,13 @@ public class LoginController implements Initializable {
 		String rutaUsu = resources.getString("usuario.icon");
 		imgUsuario.setImage(new Image(getClass().getResourceAsStream(rutaUsu)));
 
-		// mnemónicos
+		// mnemónicos		
+		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.I) {
+				hpInfo.fire();
+				event.consume();
+			}
+		});		
 		hpVisible.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.M) {
 				hpVisible.fire();
@@ -157,6 +173,7 @@ public class LoginController implements Initializable {
 		});
 
 		// tooltips
+		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
 		hpVisible.setTooltip(new Tooltip("Mostrar (Alt+M)"));
 		hpContraseña.setTooltip(new Tooltip("Recuperar (Alt+C)"));
 		hpRegistro.setTooltip(new Tooltip("Registro (Alt+R)"));
@@ -166,6 +183,11 @@ public class LoginController implements Initializable {
 
 	}
 
+	@FXML
+	private void handlerInfo(ActionEvent event) throws IOException {
+		ayuda.configInfo("/help/help.html");
+	}
+	
 	@FXML
 	private void handlerLogin(ActionEvent event) throws IOException {
 		lblFeed.setText(" ");

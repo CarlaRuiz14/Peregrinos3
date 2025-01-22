@@ -226,7 +226,7 @@ public class EditarController implements Initializable {
 
 		peregrinoActivo.setNombre(txtNombre.getText());
 		peregrinoActivo.setApellidos(txtApellidos.getText());		
-		peregrinoActivo.setNacionalidad(cmbNacionalidad.getValue());
+		peregrinoActivo.setNacionalidad(nacionalidadService.obtenerNacionalidadSeleccionada(cmbNacionalidad.getValue()));
 		peregrinoService.actualizarDatosPeregrino(peregrinoActivo);
 		
 		usuarioActivo.setEmail(txtEmail.getText());

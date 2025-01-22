@@ -222,7 +222,7 @@ public class ExpParadaController implements Initializable {
 		// tooltips
 		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
 		btnBuscar.setTooltip(new Tooltip("Buscar (Alt+B)"));
-		btnInforme.setTooltip(new Tooltip("Informe (Alt+X)"));
+		btnInforme.setTooltip(new Tooltip("Informe (Alt+N)"));
 		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
 		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
 	}

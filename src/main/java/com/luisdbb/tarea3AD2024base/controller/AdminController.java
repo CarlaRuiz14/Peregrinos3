@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
+import com.luisdbb.tarea3AD2024base.config.AyudaConfig;
 import com.luisdbb.tarea3AD2024base.config.BotonesConfig;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.Perfil;
@@ -19,6 +20,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
@@ -32,6 +34,9 @@ import javafx.scene.input.KeyEvent;
 @Controller
 public class AdminController implements Initializable {
 
+	@FXML
+	private Hyperlink hpInfo;
+	
 	@FXML
 	private Label lblTitulo;
 
@@ -49,6 +54,9 @@ public class AdminController implements Initializable {
 	private StageManager stageManager;
 
 	@Autowired
+	private AyudaConfig ayuda;
+	
+	@Autowired
 	private BotonesConfig botones;
 
 	@Autowired
@@ -57,13 +65,23 @@ public class AdminController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
+		// config info
+				ayuda.configImgInfo(hpInfo);
+		
 		// config img btn Logout
 		botones.configImgLogout(btnLogout);
 
 		// config img btn Salir
 		botones.configImgSalir(btnSalir);
 
-		// mnemónicos
+		// mnemónicos		
+		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.I) {
+				hpInfo.fire();
+				event.consume();
+			}
+		});
+		
 		btnParada.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.N) {
 				btnParada.fire();
@@ -86,9 +104,15 @@ public class AdminController implements Initializable {
 		});
 
 		// tooltips
+		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
 		btnParada.setTooltip(new Tooltip("Nueva Parada (Alt+N)"));
 		btnLogout.setTooltip(new Tooltip("Logout (Alt+L)"));
 		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
+	}
+	
+	@FXML
+	private void handlerInfo(ActionEvent event) throws IOException {
+		ayuda.configInfo("/help/help.html");
 	}
 
 	@FXML

@@ -11,13 +11,13 @@
 .lblFeedValido{
 	-fx-text-fill: #1F6A24;
 	-fx-font-weight: bold;
-	-fx-font-size: 12px;
+	-fx-font-size: 14px;
 	
 }
 .lblFeedInvalido{
 	-fx-text-fill: red;
 	-fx-font-weight: bold;
-	-fx-font-size: 12px;	
+	-fx-font-size: 14px;	
 }
 
 /* Fondo Gridpane*/
@@ -74,7 +74,7 @@ Label{
 }
 
 
-/* Titulos*/
+/* Titulos largos*/
 .lblTitulo2{
 	-fx-font-size: 50px;
 	-fx-text-fill: #1F6A24;
@@ -151,7 +151,7 @@ Button:hover {
 
 /* Tabla Marrón */
 .tblM {    
-    -fx-border-color: #1F6A24;
+    -fx-border-color: #AF9400;
     -fx-border-width: 2;
 }
 
@@ -159,11 +159,11 @@ Button:hover {
     -fx-alignment: CENTER;
 }
 .tblM .column-header {
-	-fx-background-color:#AF9400;             
+	-fx-background-color:#FFEA77;             
 }
 
 .tblM .column-header .label{    
-    -fx-text-fill: #FFEA77;         
+    -fx-text-fill: #1F6A24;         
     -fx-font-weight: bold;    
 	-fx-font-size: 14px;           
 }
@@ -240,30 +240,30 @@ Button:hover {
 
 /* Alertas */
 .dialog-pane {
-    -fx-background-color: #A7F7AC; /* Cambia el fondo del diálogo */
-    -fx-border-color: #1F6A24; /* Cambia el borde */
+    -fx-background-color: #A7F7AC; 
+    -fx-border-color: #1F6A24;
     -fx-border-width: 2px;
     -fx-border-radius: 8px;
     -fx-background-radius: 8px;
 }
 
 .dialog-pane .header-panel {
-    -fx-background-color: #1F6A24; /* Fondo del encabezado */
-    -fx-text-fill: #A7F7AC; /* Color del texto del encabezado */
+    -fx-background-color: #1F6A24; 
+    -fx-text-fill: #A7F7AC;
     -fx-padding: 10px;
-    -fx-font-size: 16px; /* Tamaño de fuente */
+    -fx-font-size: 16px;
     -fx-font-weight: bold;
 }
 
 .dialog-pane .content {
-    -fx-text-fill: #1F6A24; /* Color del texto del contenido */
+    -fx-text-fill: #1F6A24; 
     -fx-font-size: 14px;
     -fx-padding: 10px;
 }
 
 .dialog-pane .button-bar .button {
-    -fx-background-color: #1F6A24; /* Fondo de los botones */
-    -fx-text-fill: #A7F7AC; /* Color del texto del botón */
+    -fx-background-color: #1F6A24;
+    -fx-text-fill: #A7F7AC; 
     -fx-border-radius: 4px;
     -fx-background-radius: 4px;
     -fx-font-size: 12px;

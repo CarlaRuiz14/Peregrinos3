@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
+import com.luisdbb.tarea3AD2024base.config.AyudaConfig;
 import com.luisdbb.tarea3AD2024base.config.BotonesConfig;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.Perfil;
@@ -19,6 +20,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
@@ -31,6 +33,9 @@ import javafx.scene.input.KeyEvent;
 
 @Controller
 public class PeregrinoController implements Initializable {
+	
+	@FXML
+	private Hyperlink hpInfo;
 
 	@FXML
 	private Label lblTitulo;
@@ -50,6 +55,9 @@ public class PeregrinoController implements Initializable {
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
+	
+	@Autowired
+	private AyudaConfig ayuda;
 
 	@Autowired
 	private BotonesConfig botones;
@@ -59,6 +67,9 @@ public class PeregrinoController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
+		// config img info
+				ayuda.configImgInfo(hpInfo);
 
 		// config img btn Logout
 		botones.configImgLogout(btnLogout);
@@ -67,6 +78,12 @@ public class PeregrinoController implements Initializable {
 		botones.configImgSalir(btnSalir);
 
 		// mnemónicos
+		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+			if (event.isAltDown() && event.getCode() == KeyCode.I) {
+				hpInfo.fire();
+				event.consume();
+			}
+		});
 		btnExportar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.X) {
 				btnExportar.fire();
@@ -96,14 +113,19 @@ public class PeregrinoController implements Initializable {
 		});
 
 		// tooltips
+		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
 		btnExportar.setTooltip(new Tooltip("Exportar Carnet (Alt+X)"));
 		btnEditar.setTooltip(new Tooltip("Editar (Alt+E)"));
 		btnLogout.setTooltip(new Tooltip("Logout (Alt+L)"));
 		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
 
 	}
-
-	// handler botones
+	
+	@FXML
+	private void handlerInfo(ActionEvent event) throws IOException {
+		ayuda.configInfo("/help/help.html");
+	}
+	
 	@FXML
 	private void handlerExportar(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.CARNET);
