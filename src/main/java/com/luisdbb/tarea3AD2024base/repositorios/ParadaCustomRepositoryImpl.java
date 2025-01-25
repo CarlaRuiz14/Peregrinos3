@@ -22,7 +22,9 @@ public class ParadaCustomRepositoryImpl implements ParadaCustomRepository {
 
 	@Override
 	public Parada findByIdUsuario(Long id) {
+		JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
 
+		
 		QParada parada = QParada.parada;
 
 		// devolver construccion y ejecucion (fecthOne - devuelve 1) de consulta
@@ -35,6 +37,8 @@ public class ParadaCustomRepositoryImpl implements ParadaCustomRepository {
 
 	@Override
 	public List<Parada> findParadasByPeregrinoId(Long peregrinoId) {
+		JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+
 
 		QParada parada = QParada.parada;
 		QParadasPeregrino paradasPeregrino = QParadasPeregrino.paradasPeregrino;

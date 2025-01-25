@@ -10,9 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
-import com.luisdbb.tarea3AD2024base.config.Alertas;
-import com.luisdbb.tarea3AD2024base.config.AyudaConfig;
-import com.luisdbb.tarea3AD2024base.config.BotonesConfig;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.Carnet;
 import com.luisdbb.tarea3AD2024base.modelo.Estancia;
@@ -124,10 +121,10 @@ public class CarnetController implements Initializable {
 	private StageManager stageManager;
 
 	@Autowired
-	private BotonesConfig botones;
+	private Botones botones;
 
 	@Autowired
-	private AyudaConfig ayuda;
+	private Ayuda ayuda;
 
 	@Autowired
 	private Sesion sesion;
@@ -149,6 +146,12 @@ public class CarnetController implements Initializable {
 
 	@Autowired
 	private NacionalidadService nacionalidadService;
+	
+	@Autowired
+	private Mnemonic mnemonicConfig;
+	
+	@Autowired
+	private Tooltips tooltipConfig;
 
 	Usuario usuarioActivo;
 	Peregrino peregrinoActivo;
@@ -220,28 +223,18 @@ public class CarnetController implements Initializable {
 		btnInforme.setGraphic(botones.createImageView(imgInforme));
 
 		// config img btn Exportar
-		botones.configImgFlecha(btnExportar);
+		botones.imgFlecha(btnExportar);
 
 		// config img btn Volver
-		botones.configImgVolver(btnVolver);
+		botones.imgVolver(btnVolver);
 
 		// config img btn Salir
-		botones.configImgSalir(btnSalir);
+		botones.imgSalir(btnSalir);
 
 		// mnemónicos
-		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.I) {
-				hpInfo.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.infoMnemonic(hpInfo);
 		
-		btnInforme.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.X) {
-				btnInforme.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.informeMnemonic(btnInforme);
 
 		btnExportar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.X) {
@@ -250,26 +243,18 @@ public class CarnetController implements Initializable {
 			}
 		});
 
-		btnVolver.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.V) {
-				btnVolver.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.volverMnemonic(btnVolver);
 
-		btnSalir.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.S) {
-				btnSalir.fire();
-				event.consume();
-			}
-		});
+
+		mnemonicConfig.salirMnemonic(btnSalir);
+
 
 		// tooltips
-		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
-		btnInforme.setTooltip(new Tooltip("Informe (Alt+N)"));
+		tooltipConfig.infoTooltip(hpInfo);
+		tooltipConfig.informeTooltip(btnInforme);
 		btnExportar.setTooltip(new Tooltip("Exportar (Alt+X)"));
-		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
-		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
+		tooltipConfig.volverTooltip(btnVolver);
+		tooltipConfig.salirTooltip(btnSalir);
 	}
 
 	@FXML

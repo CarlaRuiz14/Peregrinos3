@@ -1,4 +1,4 @@
-package com.luisdbb.tarea3AD2024base.config;
+package com.luisdbb.tarea3AD2024base.controller;
 
 import java.util.ResourceBundle;
 
@@ -26,7 +26,7 @@ import javafx.stage.Stage;
  * @since 28/12/2024
  */
 @Component
-public class AyudaConfig {
+public class Ayuda {
 
 	@Autowired
 	ResourceBundle resources;
@@ -49,6 +49,10 @@ public class AyudaConfig {
 
 		Stage helpStage = new Stage();
 		helpStage.setTitle("Info");
+
+		String iconPath =ResourceBundle.getBundle("Bundle").getString("info.icon");
+		Image icon = new Image(getClass().getResource(iconPath).toExternalForm());
+		helpStage.getIcons().add(icon);
 
 		Scene helpScene = new Scene(webView, 600, 600);
 		helpStage.setScene(helpScene);

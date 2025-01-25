@@ -8,11 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
-import com.luisdbb.tarea3AD2024base.config.Alertas;
-import com.luisdbb.tarea3AD2024base.config.AyudaConfig;
-import com.luisdbb.tarea3AD2024base.config.BotonesConfig;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
-import com.luisdbb.tarea3AD2024base.config.Validaciones;
 import com.luisdbb.tarea3AD2024base.services.ParadaService;
 import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
@@ -93,10 +89,10 @@ public class RegParadaController implements Initializable {
 	private Alertas alertas;
 
 	@Autowired
-	private BotonesConfig botones;
+	private Botones botones;
 
 	@Autowired
-	private AyudaConfig ayuda;
+	private Ayuda ayuda;
 
 	@Autowired
 	private UsuarioService usuarioService;
@@ -106,6 +102,12 @@ public class RegParadaController implements Initializable {
 
 	@Autowired
 	private Validaciones validaciones;
+	
+	@Autowired
+	private Mnemonic mnemonicConfig;
+	
+	@Autowired
+	private Tooltips tooltipConfig;
 
 	private final StringProperty usuarioProperty = new SimpleStringProperty();
 	private final StringProperty emailProperty = new SimpleStringProperty();
@@ -139,66 +141,46 @@ public class RegParadaController implements Initializable {
 		ayuda.configImgInfo(hpInfo);
 
 		// config img btn Limpiar
-		botones.configImgLimpiar(btnLimpiar);
+		botones.imgLimpiar(btnLimpiar);
 
 		// config img btn Registrar
-		botones.configImgFlecha(btnRegistrar);
+		botones.imgFlecha(btnRegistrar);
 
 		// config img btn Volver
-		botones.configImgVolver(btnVolver);
+		botones.imgVolver(btnVolver);
 
 		// config img btn Salir
-		botones.configImgSalir(btnSalir);
+		botones.imgSalir(btnSalir);
 
 		// mnemónicos
-		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.I) {
-				hpInfo.fire();
-				event.consume();
-			}
-		});
-		hpVisible.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.M) {
-				hpVisible.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.infoMnemonic(hpInfo);
+		
+		mnemonicConfig.visibleMnemonic(hpVisible);
 
-		btnLimpiar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.L) {
-				btnLimpiar.fire();
-				event.consume();
-			}
-		});
+
+		mnemonicConfig.limpiarMnemonic(btnLimpiar);
+
 
 		btnRegistrar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.R) {
+			if (event.isAltDown() && event.getCode() == KeyCode.ENTER) {
 				btnRegistrar.fire();
 				event.consume();
 			}
 		});
 
-		btnVolver.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.V) {
-				btnVolver.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.volverMnemonic(btnVolver);
 
-		btnSalir.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.S) {
-				btnSalir.fire();
-				event.consume();
-			}
-		});
+
+		mnemonicConfig.salirMnemonic(btnSalir);
+
 
 		// tooltips
-		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
-		hpVisible.setTooltip(new Tooltip("Mostrar (Alt+M)"));
-		btnLimpiar.setTooltip(new Tooltip("Limpiar (Alt+L)"));
-		btnRegistrar.setTooltip(new Tooltip("Registrar (Alt+R)"));
-		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
-		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
+		tooltipConfig.salirTooltip(btnSalir);
+		tooltipConfig.visibleTooltip(hpVisible);
+		tooltipConfig.limpiarTooltip(btnLimpiar);
+		btnRegistrar.setTooltip(new Tooltip("Registrar (Alt+Enter)"));
+		tooltipConfig.volverTooltip(btnVolver);
+		tooltipConfig.salirTooltip(btnSalir);
 	}
 
 	@FXML
@@ -232,22 +214,22 @@ public class RegParadaController implements Initializable {
 		try {			
 			
 			if(!usuarioCheck) {
-				alertas.alertaError("Error", "El usuario no es válido");
+				alertas.alertaError("Error", "El usuario no es válido.");
 				return;
 			}
 			
 			if(!emailCheck) {
-				alertas.alertaError("Error", "El email no es válido");
+				alertas.alertaError("Error", "El email no es válido.");
 				return;
 			}
 			
 			if(!regionCheck) {
-				alertas.alertaError("Error", "La región no es válida");
+				alertas.alertaError("Error", "La región no es válida.");
 				return;
 			}
 			
 			if(!contraseñaCheck) {
-				alertas.alertaError("Error", "La contraseña no es válida");
+				alertas.alertaError("Error", "La contraseña no es válida.");
 				return;
 			}			
 			
@@ -368,7 +350,7 @@ public class RegParadaController implements Initializable {
 				} else if (!validaciones.validarEmail(newValue)) {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
-					lblFeed.setText("Formato email no válido");
+					lblFeed.setText("Formato email no válido, __@__.__");
 					emailCheck=false;
 				} else {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
@@ -387,7 +369,7 @@ public class RegParadaController implements Initializable {
 				if (!validaciones.validarRegion(newValue)) {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
-					lblFeed.setText("La región es un único caracter");
+					lblFeed.setText("La región es una única letra.");
 					regionCheck=false;
 				} else {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
@@ -411,7 +393,7 @@ public class RegParadaController implements Initializable {
 				} else if (!validaciones.validarContraseña(newValue)) {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
-					lblFeed.setText("Min 6 carac.: una mayúscula, un nº y un c. especial");
+					lblFeed.setText("Min 6 carac. (1 mayúscula, 1 nº y 1 carac. especial)");
 					contraseñaCheck=false;
 				} else {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");

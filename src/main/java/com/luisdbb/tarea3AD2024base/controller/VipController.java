@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
-import com.luisdbb.tarea3AD2024base.config.Alertas;
-import com.luisdbb.tarea3AD2024base.config.AyudaConfig;
-import com.luisdbb.tarea3AD2024base.config.BotonesConfig;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.DatosSellado;
 import com.luisdbb.tarea3AD2024base.services.EstanciaService;
@@ -73,16 +70,22 @@ public class VipController implements Initializable {
 	private Alertas alertas;
 
 	@Autowired
-	private BotonesConfig botones;
+	private Botones botones;
 
 	@Autowired
-	private AyudaConfig ayuda;
+	private Ayuda ayuda;
 
 	@Autowired
 	private DatosSellado datosSellado;
 
 	@Autowired
 	private EstanciaService estanciaService;
+	
+	@Autowired
+	private Mnemonic mnemonicConfig;
+	
+	@Autowired
+	private Tooltips tooltipConfig;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -100,48 +103,35 @@ public class VipController implements Initializable {
 		ayuda.configImgInfo(hpInfo);
 
 		// config img btn Vip
-		botones.configImgFlecha(btnVip);
+		botones.imgFlecha(btnVip);
 
 		// config img btn Volver
-		botones.configImgVolver(btnVolver);
+		botones.imgVolver(btnVolver);
 
 		// config img btn Salir
-		botones.configImgSalir(btnSalir);
+		botones.imgSalir(btnSalir);
 
 		// mnemónicos
-		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.I) {
-				hpInfo.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.infoMnemonic(hpInfo);
 
 		btnVip.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.X) {
+			if (event.isAltDown() && event.getCode() == KeyCode.ENTER) {
 				btnVip.fire();
 				event.consume();
 			}
 		});
 
-		btnVolver.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.V) {
-				btnVolver.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.volverMnemonic(btnVolver);
 
-		btnSalir.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.S) {
-				btnSalir.fire();
-				event.consume();
-			}
-		});
+
+		mnemonicConfig.salirMnemonic(btnSalir);
+
 
 		// tooltips
-		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
-		btnVip.setTooltip(new Tooltip("Vip (Alt+X)"));
-		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
-		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
+		tooltipConfig.salirTooltip(btnSalir);
+		btnVip.setTooltip(new Tooltip("Vip (Alt+Enter)"));
+		tooltipConfig.volverTooltip(btnVolver);
+		tooltipConfig.salirTooltip(btnSalir);
 
 	}
 

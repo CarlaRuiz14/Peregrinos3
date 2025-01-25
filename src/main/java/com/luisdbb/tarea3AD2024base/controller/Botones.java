@@ -1,10 +1,11 @@
-package com.luisdbb.tarea3AD2024base.config;
+package com.luisdbb.tarea3AD2024base.controller;
 
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,12 +24,15 @@ import javafx.scene.image.ImageView;
  * @since 28/12/2024
  */
 @Component
-public class BotonesConfig {
+public class Botones {
 
 	@Autowired
 	ResourceBundle resources;
 
-	public void configImgFlecha(Button button) {
+	@Autowired
+	private Alertas alertas;
+	
+	public void imgFlecha(Button button) {
 		String rutaFlecha = resources.getString("btnFlecha.icon");
 		Image imgFlecha = new Image(getClass().getResourceAsStream(rutaFlecha));
 		ImageView viewFlecha = new ImageView(imgFlecha);
@@ -37,7 +41,7 @@ public class BotonesConfig {
 		button.setGraphic(viewFlecha);
 	}
 
-	public void configImgSalir(Button button) {
+	public void imgSalir(Button button) {
 		String rutaSalir = resources.getString("btnSalir.icon");
 		Image imgSalir = new Image(getClass().getResourceAsStream(rutaSalir));
 		ImageView viewSalir = new ImageView(imgSalir);
@@ -46,7 +50,7 @@ public class BotonesConfig {
 		button.setGraphic(viewSalir);
 	}
 
-	public void configImgLogout(Button button) {
+	public void imgLogout(Button button) {
 		String rutaLog = resources.getString("btnLogout.icon");
 		Image imgLogout = new Image(getClass().getResourceAsStream(rutaLog));
 		ImageView viewLog = new ImageView(imgLogout);
@@ -55,7 +59,7 @@ public class BotonesConfig {
 		button.setGraphic(viewLog);
 	}
 
-	public void configImgVolver(Button button) {
+	public void imgVolver(Button button) {
 		String rutaVolver = resources.getString("btnVolver.icon");
 		Image imgVolver = new Image(getClass().getResourceAsStream(rutaVolver));
 		ImageView viewVolver = new ImageView(imgVolver);
@@ -64,7 +68,7 @@ public class BotonesConfig {
 		button.setGraphic(viewVolver);
 	}
 
-	public void configImgLimpiar(Button button) {
+	public void imgLimpiar(Button button) {
 		String rutaLimp = resources.getString("btnLimpiar.icon");
 		Image imgLimp = new Image(getClass().getResourceAsStream(rutaLimp));
 		ImageView viewLimp = new ImageView(imgLimp);
@@ -79,5 +83,17 @@ public class BotonesConfig {
 		imageView.setFitHeight(40);
 		imageView.setPreserveRatio(true);
 		return imageView;
+	}
+	
+	public void salirConfig() {
+		boolean respuesta=alertas.alertaConfirmacion("Salir", "Va a cerrar la apliación, ¿está seguro?");
+		
+		if(respuesta) {
+			alertas.alertaInformacion("Salir", "Saliendo de la apliación.");
+			Platform.exit();
+		}else {
+			alertas.alertaInformacion("Salir", "Acción cancelada. \nVolviendo.");
+		}
+		
 	}
 }

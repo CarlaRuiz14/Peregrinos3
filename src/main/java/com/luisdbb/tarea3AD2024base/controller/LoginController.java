@@ -8,11 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
-import com.luisdbb.tarea3AD2024base.config.Alertas;
-import com.luisdbb.tarea3AD2024base.config.AyudaConfig;
-import com.luisdbb.tarea3AD2024base.config.BotonesConfig;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
-import com.luisdbb.tarea3AD2024base.config.Validaciones;
 import com.luisdbb.tarea3AD2024base.modelo.Perfil;
 import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
@@ -23,7 +19,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -67,9 +62,6 @@ public class LoginController implements Initializable {
 	private Button btnLogin;
 
 	@FXML
-	private Label lblFeed;
-
-	@FXML
 	private Button btnVolver;
 
 	@FXML
@@ -79,7 +71,7 @@ public class LoginController implements Initializable {
 	private UsuarioService usuarioService;
 	
 	@Autowired
-	private AyudaConfig ayuda;
+	private Ayuda ayuda;
 
 	@Autowired
 	private Alertas alertas;
@@ -92,7 +84,13 @@ public class LoginController implements Initializable {
 	private Validaciones validaciones;
 
 	@Autowired
-	private BotonesConfig botones;
+	private Botones botones;
+	
+	@Autowired
+	private Mnemonic mnemonicConfig;
+	
+	@Autowired
+	private Tooltips tooltipConfig;
 	
 	private boolean isPassVisible = false;
 	private Image mostrarIcon;
@@ -114,72 +112,52 @@ public class LoginController implements Initializable {
 				ayuda.configImgInfo(hpInfo);
 
 		// config img btn Login
-		botones.configImgFlecha(btnLogin);
+		botones.imgFlecha(btnLogin);
 
 		// config img btn Volver
-		botones.configImgVolver(btnVolver);
+		botones.imgVolver(btnVolver);
 
 		// config img btn Salir
-		botones.configImgSalir(btnSalir);
+		botones.imgSalir(btnSalir);
 
 		// config imagen usuario
 		String rutaUsu = resources.getString("usuario.icon");
 		imgUsuario.setImage(new Image(getClass().getResourceAsStream(rutaUsu)));
 
 		// mnemónicos		
-		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.I) {
-				hpInfo.fire();
-				event.consume();
-			}
-		});		
-		hpVisible.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.M) {
-				hpVisible.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.infoMnemonic(hpInfo);
+		
+		mnemonicConfig.visibleMnemonic(hpVisible);
+
 		hpContraseña.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.C) {
 				hpContraseña.fire();
 				event.consume();
 			}
 		});
+		
 		hpRegistro.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.R) {
 				hpRegistro.fire();
 				event.consume();
 			}
 		});
-		btnLogin.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.L) {
-				btnLogin.fire();
-				event.consume();
-			}
-		});
+		
 
-		btnVolver.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.V) {
-				btnVolver.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.volverMnemonic(btnVolver);
 
-		btnSalir.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.S) {
-				btnSalir.fire();
-				event.consume();
-			}
-		});
+
+		mnemonicConfig.salirMnemonic(btnSalir);
+
 
 		// tooltips
-		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
-		hpVisible.setTooltip(new Tooltip("Mostrar (Alt+M)"));
+		tooltipConfig.infoTooltip(hpInfo);
+		tooltipConfig.visibleTooltip(hpVisible);
 		hpContraseña.setTooltip(new Tooltip("Recuperar (Alt+C)"));
 		hpRegistro.setTooltip(new Tooltip("Registro (Alt+R)"));
 		btnLogin.setTooltip(new Tooltip("Login (Alt+L)"));
-		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
-		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
+		tooltipConfig.volverTooltip(btnVolver);
+		tooltipConfig.salirTooltip(btnSalir);
 
 	}
 
@@ -189,8 +167,7 @@ public class LoginController implements Initializable {
 	}
 	
 	@FXML
-	private void handlerLogin(ActionEvent event) throws IOException {
-		lblFeed.setText(" ");
+	private void handlerLogin(ActionEvent event) throws IOException {		
 
 		String contraseña = passContraseña.isVisible() ? passContraseña.getText() : txtContraseña.getText();
 
@@ -217,9 +194,7 @@ public class LoginController implements Initializable {
 			alertas.alertaError("Datos no encontrados", "Los datos introducidos no están registrados.");
 			break;
 		default:
-			lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
-			lblFeed.getStyleClass().add("lblFeedInvalido");
-			lblFeed.setText("Error al hacer login");
+			alertas.alertaError("Error", "No se ha podido iniciar sesión.");
 
 		}
 	}

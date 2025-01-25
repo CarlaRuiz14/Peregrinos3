@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
-import com.luisdbb.tarea3AD2024base.config.AyudaConfig;
-import com.luisdbb.tarea3AD2024base.config.BotonesConfig;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.Perfil;
 import com.luisdbb.tarea3AD2024base.services.UsuarioService;
@@ -36,7 +34,7 @@ public class AdminController implements Initializable {
 
 	@FXML
 	private Hyperlink hpInfo;
-	
+
 	@FXML
 	private Label lblTitulo;
 
@@ -54,34 +52,35 @@ public class AdminController implements Initializable {
 	private StageManager stageManager;
 
 	@Autowired
-	private AyudaConfig ayuda;
-	
+	private Ayuda ayuda;
+
 	@Autowired
-	private BotonesConfig botones;
+	private Botones botones;
 
 	@Autowired
 	private UsuarioService usuarioService;
+	
+	@Autowired
+	private Mnemonic mnemonicConfig;
+	
+	@Autowired
+	private Tooltips tooltipConfig;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 		// config info
-				ayuda.configImgInfo(hpInfo);
-		
+		ayuda.configImgInfo(hpInfo);
+
 		// config img btn Logout
-		botones.configImgLogout(btnLogout);
+		botones.imgLogout(btnLogout);
 
 		// config img btn Salir
-		botones.configImgSalir(btnSalir);
+		botones.imgSalir(btnSalir);
 
-		// mnemónicos		
-		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.I) {
-				hpInfo.fire();
-				event.consume();
-			}
-		});
-		
+		// mnemónicos
+		mnemonicConfig.infoMnemonic(hpInfo);
+
 		btnParada.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.N) {
 				btnParada.fire();
@@ -89,27 +88,18 @@ public class AdminController implements Initializable {
 			}
 		});
 
-		btnLogout.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.L) {
-				btnLogout.fire();
-				event.consume();
-			}
-		});
-
-		btnSalir.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.S) {
-				btnSalir.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.logoutMnemonic(btnLogout);
+		
+		mnemonicConfig.salirMnemonic(btnSalir);
+		
 
 		// tooltips
-		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
+		tooltipConfig.infoTooltip(hpInfo);
 		btnParada.setTooltip(new Tooltip("Nueva Parada (Alt+N)"));
-		btnLogout.setTooltip(new Tooltip("Logout (Alt+L)"));
-		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
+		tooltipConfig.logoutTooltip(btnLogout);
+		tooltipConfig.salirTooltip(btnSalir);
 	}
-	
+
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		ayuda.configInfo("/help/help.html");

@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
-import com.luisdbb.tarea3AD2024base.config.AyudaConfig;
-import com.luisdbb.tarea3AD2024base.config.BotonesConfig;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.Perfil;
 import com.luisdbb.tarea3AD2024base.services.UsuarioService;
@@ -57,14 +55,20 @@ public class PeregrinoController implements Initializable {
 	private StageManager stageManager;
 	
 	@Autowired
-	private AyudaConfig ayuda;
+	private Ayuda ayuda;
 
 	@Autowired
-	private BotonesConfig botones;
+	private Botones botones;
 
 	@Autowired
 	private UsuarioService usuarioService;
 
+	@Autowired
+	private Mnemonic mnemonicConfig;
+	
+	@Autowired
+	private Tooltips tooltipConfig;
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
@@ -72,18 +76,14 @@ public class PeregrinoController implements Initializable {
 				ayuda.configImgInfo(hpInfo);
 
 		// config img btn Logout
-		botones.configImgLogout(btnLogout);
+		botones.imgLogout(btnLogout);
 
 		// config img btn Salir
-		botones.configImgSalir(btnSalir);
+		botones.imgSalir(btnSalir);
 
 		// mnemónicos
-		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.I) {
-				hpInfo.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.infoMnemonic(hpInfo);
+		
 		btnExportar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.X) {
 				btnExportar.fire();
@@ -98,26 +98,17 @@ public class PeregrinoController implements Initializable {
 			}
 		});
 
-		btnLogout.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.L) {
-				btnLogout.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.logoutMnemonic(btnLogout);
+		
+		mnemonicConfig.salirMnemonic(btnSalir);
 
-		btnSalir.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.S) {
-				btnSalir.fire();
-				event.consume();
-			}
-		});
 
 		// tooltips
-		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
+		tooltipConfig.salirTooltip(btnSalir);
 		btnExportar.setTooltip(new Tooltip("Exportar Carnet (Alt+X)"));
 		btnEditar.setTooltip(new Tooltip("Editar (Alt+E)"));
-		btnLogout.setTooltip(new Tooltip("Logout (Alt+L)"));
-		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
+		tooltipConfig.logoutTooltip(btnLogout);
+		tooltipConfig.salirTooltip(btnSalir);
 
 	}
 	

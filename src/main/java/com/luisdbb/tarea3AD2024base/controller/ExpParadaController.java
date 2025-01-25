@@ -10,9 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
-import com.luisdbb.tarea3AD2024base.config.Alertas;
-import com.luisdbb.tarea3AD2024base.config.AyudaConfig;
-import com.luisdbb.tarea3AD2024base.config.BotonesConfig;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.Estancia;
 import com.luisdbb.tarea3AD2024base.modelo.Parada;
@@ -21,7 +18,6 @@ import com.luisdbb.tarea3AD2024base.services.EstanciaService;
 import com.luisdbb.tarea3AD2024base.services.ParadaService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -100,9 +96,6 @@ public class ExpParadaController implements Initializable {
 	private Button btnVolver;
 
 	@FXML
-	private Label lblFeed;
-
-	@FXML
 	private Button btnSalir;
 
 	@Lazy
@@ -116,16 +109,22 @@ public class ExpParadaController implements Initializable {
 	private Alertas alertas;
 
 	@Autowired
-	private AyudaConfig ayuda;
+	private Ayuda ayuda;
 
 	@Autowired
-	private BotonesConfig botones;
+	private Botones botones;
 
 	@Autowired
 	private ParadaService paradaService;
 
 	@Autowired
 	private EstanciaService estanciaService;
+	
+	@Autowired
+	private Mnemonic mnemonicConfig;
+	
+	@Autowired
+	private Tooltips tooltipConfig;	
 
 	Parada parada;
 	LocalDate fechaInicio;
@@ -178,53 +177,36 @@ public class ExpParadaController implements Initializable {
 		btnInforme.setGraphic(botones.createImageView(imgInforme));
 
 		// config img btn Volver
-		botones.configImgVolver(btnVolver);
+		botones.imgVolver(btnVolver);
 
 		// config img btn Salir
-		botones.configImgSalir(btnSalir);
+		botones.imgSalir(btnSalir);
 
 		// mnemónicos
-		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.I) {
-				hpInfo.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.infoMnemonic(hpInfo);
 
 		btnBuscar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.B) {
+			if (event.isAltDown() && event.getCode() == KeyCode.ENTER) {
 				btnBuscar.fire();
 				event.consume();
 			}
 		});
 
-		btnInforme.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.X) {
-				btnInforme.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.informeMnemonic(btnInforme);
 
-		btnVolver.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.V) {
-				btnVolver.fire();
-				event.consume();
-			}
-		});
 
-		btnSalir.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.S) {
-				btnSalir.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.volverMnemonic(btnVolver);
+
+
+		mnemonicConfig.salirMnemonic(btnSalir);
+
 
 		// tooltips
-		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
+		tooltipConfig.infoTooltip(hpInfo);
 		btnBuscar.setTooltip(new Tooltip("Buscar (Alt+B)"));
-		btnInforme.setTooltip(new Tooltip("Informe (Alt+N)"));
-		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
-		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
+		tooltipConfig.informeTooltip(btnInforme);
+		tooltipConfig.volverTooltip(btnVolver);
+		tooltipConfig.salirTooltip(btnSalir);
 	}
 
 	@FXML
@@ -240,11 +222,18 @@ public class ExpParadaController implements Initializable {
 
 		List<Estancia> estancias = estanciaService.getEstanciasForParada(parada.getId(), fechaInicio, fechaFin);
 
+		if(estancias==null) {
+			return;
+		}
+		
+		
 		if (estancias.isEmpty()) {
 			alertas.alertaInformacion("Sin estancias",
 					"No se encontraron estancias registradas entre las fechas seleccionadas.");
+			tblEstancias.setItems(null);
 			return;
 		}
+		
 		ObservableList<Estancia> listEstancias = FXCollections.observableArrayList(estancias);
 
 		tblEstancias.setItems(listEstancias);
@@ -263,6 +252,10 @@ public class ExpParadaController implements Initializable {
 
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
-		Platform.exit();
+		botones.salirConfig();
+		
+		
+		
+		
 	}
 }

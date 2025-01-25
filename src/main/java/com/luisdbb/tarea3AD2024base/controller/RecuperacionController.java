@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
-import com.luisdbb.tarea3AD2024base.config.Alertas;
-import com.luisdbb.tarea3AD2024base.config.AyudaConfig;
-import com.luisdbb.tarea3AD2024base.config.BotonesConfig;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.Usuario;
 import com.luisdbb.tarea3AD2024base.services.UsuarioService;
@@ -42,7 +39,7 @@ public class RecuperacionController implements Initializable {
 
 	@FXML
 	private TextField txtUsuario;
-	
+
 	private final StringProperty usuarioProperty = new SimpleStringProperty();
 
 	@FXML
@@ -56,22 +53,28 @@ public class RecuperacionController implements Initializable {
 
 	@FXML
 	private Button btnSalir;
-	
+
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
 
 	@Autowired
 	private Alertas alertas;
-	
-	@Autowired
-	private AyudaConfig ayuda;
 
 	@Autowired
-	private BotonesConfig botones;
+	private Ayuda ayuda;
+
+	@Autowired
+	private Botones botones;
 
 	@Autowired
 	private UsuarioService usuarioService;
+	
+	@Autowired
+	private Mnemonic mnemonicConfig;
+	
+	@Autowired
+	private Tooltips tooltipConfig;
 
 	private boolean existeUsuario = false;
 
@@ -94,49 +97,39 @@ public class RecuperacionController implements Initializable {
 			}
 		});
 
+		// config img btn flecha
+		botones.imgFlecha(btnEnviar);
+
 		// config img btn Volver
-		botones.configImgVolver(btnVolver);
+		botones.imgVolver(btnVolver);
 
 		// config img btn Salir
-		botones.configImgSalir(btnSalir);
+		botones.imgSalir(btnSalir);
 
 		// config img info
 		ayuda.configImgInfo(hpInfo);
-		
+
 		// mnemónicos
-		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.I) {
-				hpInfo.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.infoMnemonic(hpInfo);
 
 		btnEnviar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.E) {
+			if (event.isAltDown() && event.getCode() == KeyCode.ENTER) {
 				btnEnviar.fire();
 				event.consume();
 			}
 		});
 
-		btnVolver.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.V) {
-				btnVolver.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.volverMnemonic(btnVolver);
 
-		btnSalir.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.S) {
-				btnSalir.fire();
-				event.consume();
-			}
-		});
+
+		mnemonicConfig.salirMnemonic(btnSalir);
+
 
 		// tooltips
-		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
-		btnEnviar.setTooltip(new Tooltip("Enviar (Alt+E)"));
-		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
-		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
+		tooltipConfig.salirTooltip(btnSalir);
+		btnEnviar.setTooltip(new Tooltip("Enviar (Alt+Enter)"));
+		tooltipConfig.volverTooltip(btnVolver);
+		tooltipConfig.salirTooltip(btnSalir);
 
 	}
 
@@ -149,7 +142,7 @@ public class RecuperacionController implements Initializable {
 	private void handlerEnviar(ActionEvent event) throws IOException {
 		if (existeUsuario) {
 			boolean respuesta = alertas.alertaConfirmacion("Confirmación email",
-					"Se le enviará su contraseña a este email.\n¿Es corecto?");
+					"Se le enviará su contraseña al email "+ lblEmail.getText() +".\n¿Es corecto?");
 			if (respuesta) {
 				alertas.alertaInformacion("Email enviado", "Se le ha enviado el Email.\n\nVolviendo al menú.");
 				stageManager.switchScene(FxmlView.LOGIN);

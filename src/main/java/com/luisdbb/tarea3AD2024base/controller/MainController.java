@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
-import com.luisdbb.tarea3AD2024base.config.AyudaConfig;
-import com.luisdbb.tarea3AD2024base.config.BotonesConfig;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
@@ -31,7 +29,7 @@ import javafx.scene.input.KeyEvent;
 
 @Controller
 public class MainController implements Initializable {
-	
+
 	@FXML
 	private Hyperlink hpInfo;
 
@@ -43,62 +41,61 @@ public class MainController implements Initializable {
 
 	@FXML
 	private Button btnSalir;
-	
+
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
-	
-	@Autowired
-	private AyudaConfig ayuda;
 
 	@Autowired
-	private BotonesConfig botones;
+	private Ayuda ayuda;
+
+	@Autowired
+	private Botones botones;
+	
+	@Autowired
+	private Mnemonic mnemonicConfig;
+	
+	@Autowired
+	private Tooltips tooltipConfig;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+
 		// config img info
-				ayuda.configImgInfo(hpInfo);
+		ayuda.configImgInfo(hpInfo);
 
 		// config img btn flecha
-		botones.configImgFlecha(btnFlecha);
+		botones.imgFlecha(btnFlecha);
 
 		// config img btn Salir
-		botones.configImgSalir(btnSalir);
+		botones.imgSalir(btnSalir);
 
-		// mnemónicos
-		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.I) {
-				hpInfo.fire();
-				event.consume();
-			}
-		});
+		// mnemónicos		
+		mnemonicConfig.infoMnemonic(hpInfo);
+		
 		btnFlecha.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.E) {
-				btnFlecha.fire(); // Simula el clic en el botón
-				event.consume(); // Detiene la propagación del evento
+			if (event.isAltDown() && event.getCode() == KeyCode.ENTER) {
+				btnFlecha.fire(); 
+				event.consume(); 
 			}
 		});
 
-		btnSalir.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.S) {
-				btnSalir.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.salirMnemonic(btnSalir);
+
 
 		// tooltips
-		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
-		btnFlecha.setTooltip(new Tooltip("Intro (Alt+E)"));
-		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
+		tooltipConfig.infoTooltip(hpInfo);
+		btnFlecha.setTooltip(new Tooltip("Intro (Alt+Enter)"));
+		tooltipConfig.salirTooltip(btnSalir);
 
+		
 	}
-	
+
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		ayuda.configInfo("/help/help.html");
 	}
-	
+
 	@FXML
 	private void handlerFlecha(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.LOGIN);

@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
-import com.luisdbb.tarea3AD2024base.config.Alertas;
-import com.luisdbb.tarea3AD2024base.config.AyudaConfig;
-import com.luisdbb.tarea3AD2024base.config.BotonesConfig;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.DatosSellado;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
@@ -72,13 +69,19 @@ public class AlojarController implements Initializable {
 	private Alertas alertas;
 
 	@Autowired
-	private AyudaConfig ayuda;
+	private Ayuda ayuda;
 
 	@Autowired
-	private BotonesConfig botones;
+	private Botones botones;
 
 	@Autowired
 	private DatosSellado datosSellado;
+	
+	@Autowired
+	private Mnemonic mnemonicConfig;
+	
+	@Autowired
+	private Tooltips tooltipConfig;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -96,48 +99,35 @@ public class AlojarController implements Initializable {
 		ayuda.configImgInfo(hpInfo);
 
 		// config img btn Alojar
-		botones.configImgFlecha(btnAlojar);
+		botones.imgFlecha(btnAlojar);
 
 		// config img btn Volver
-		botones.configImgVolver(btnVolver);
+		botones.imgVolver(btnVolver);
 
 		// config img btn Salir
-		botones.configImgSalir(btnSalir);
+		botones.imgSalir(btnSalir);
 
 		// mnemónicos
-		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.I) {
-				hpInfo.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.infoMnemonic(hpInfo);
 
 		btnAlojar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.A) {
+			if (event.isAltDown() && event.getCode() == KeyCode.ENTER) {
 				btnAlojar.fire();
 				event.consume();
 			}
 		});
 
-		btnVolver.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.V) {
-				btnVolver.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.volverMnemonic(btnVolver);
 
-		btnSalir.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.S) {
-				btnSalir.fire();
-				event.consume();
-			}
-		});
+
+		mnemonicConfig.salirMnemonic(btnSalir);
+
 
 		// tooltips
-		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
-		btnAlojar.setTooltip(new Tooltip("Alojar (Alt+A)"));
-		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
-		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
+		tooltipConfig.infoTooltip(hpInfo);
+		btnAlojar.setTooltip(new Tooltip("Alojar (Alt+Enter)"));
+		tooltipConfig.volverTooltip(btnVolver);
+		tooltipConfig.salirTooltip(btnSalir);
 
 	}
 	
@@ -157,11 +147,11 @@ public class AlojarController implements Initializable {
 		RadioButton seleccion = (RadioButton) respuesta.getSelectedToggle();
 
 		if (seleccion.equals(rbtnSi)) {
-			alertas.alertaInformacion("Alojar", "El peregrino será alojado.");
+			alertas.alertaInformacion("Alojar", "El peregrino "+datosSellado.getPeregrino().getNombre()+" será alojado.");
 			stageManager.switchScene(FxmlView.VIP);
 		} else if (seleccion.equals(rbtnNo)) {
 			alertas.alertaInformacion("No alojar",
-					"El peregrino no será alojado.\nDatos guardados.\n\nVolviendo a su Menú.");
+					"El peregrino "+datosSellado.getPeregrino().getNombre()+" no será alojado.\nDatos guardados.\n\nVolviendo a su Menú.");
 			stageManager.switchScene(FxmlView.PARADA);
 		}
 	}

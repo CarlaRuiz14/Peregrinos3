@@ -10,11 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
-import com.luisdbb.tarea3AD2024base.config.Alertas;
-import com.luisdbb.tarea3AD2024base.config.AyudaConfig;
-import com.luisdbb.tarea3AD2024base.config.BotonesConfig;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
-import com.luisdbb.tarea3AD2024base.config.Validaciones;
 import com.luisdbb.tarea3AD2024base.modelo.Parada;
 import com.luisdbb.tarea3AD2024base.services.NacionalidadService;
 import com.luisdbb.tarea3AD2024base.services.ParadaService;
@@ -112,10 +108,10 @@ public class RegPeregrinoController implements Initializable {
 	private Alertas alertas;
 
 	@Autowired
-	private BotonesConfig botones;
+	private Botones botones;
 
 	@Autowired
-	private AyudaConfig ayuda;
+	private Ayuda ayuda;
 
 	@Autowired
 	private ParadaService paradaService;
@@ -131,6 +127,12 @@ public class RegPeregrinoController implements Initializable {
 
 	@Autowired
 	private NacionalidadService nacionalidadService;
+	
+	@Autowired
+	private Mnemonic mnemonicConfig;
+	
+	@Autowired
+	private Tooltips tooltipConfig;
 
 	private final StringProperty emailProperty = new SimpleStringProperty();
 	private final StringProperty usuarioProperty = new SimpleStringProperty();
@@ -170,66 +172,45 @@ public class RegPeregrinoController implements Initializable {
 		ayuda.configImgInfo(hpInfo);
 
 		// config img btn Limpiar
-		botones.configImgLimpiar(btnLimpiar);
+		botones.imgLimpiar(btnLimpiar);
 
 		// config img btn Registrar
-		botones.configImgFlecha(btnRegistrar);
+		botones.imgFlecha(btnRegistrar);
 
 		// config img btn Volver
-		botones.configImgVolver(btnVolver);
+		botones.imgVolver(btnVolver);
 
 		// config img btn Salir
-		botones.configImgSalir(btnSalir);
+		botones.imgSalir(btnSalir);
 
 		// mnemónicos
-		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.I) {
-				hpInfo.fire();
-				event.consume();
-			}
-		});
-		hpVisible.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.M) {
-				hpVisible.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.infoMnemonic(hpInfo);
+		
+		mnemonicConfig.visibleMnemonic(hpVisible);
 
-		btnLimpiar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.L) {
-				btnLimpiar.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.limpiarMnemonic(btnLimpiar);
+
 
 		btnRegistrar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.R) {
+			if (event.isAltDown() && event.getCode() == KeyCode.ENTER) {
 				btnRegistrar.fire();
 				event.consume();
 			}
 		});
 
-		btnVolver.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.V) {
-				btnVolver.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.volverMnemonic(btnVolver);
 
-		btnSalir.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.S) {
-				btnSalir.fire();
-				event.consume();
-			}
-		});
+
+		mnemonicConfig.salirMnemonic(btnSalir);
+
 
 		// tooltips
-		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
-		hpVisible.setTooltip(new Tooltip("Mostrar (Alt+M)"));
-		btnLimpiar.setTooltip(new Tooltip("Limpiar (Alt+L)"));
-		btnRegistrar.setTooltip(new Tooltip("Registrar (Alt+R)"));
-		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
-		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
+		tooltipConfig.salirTooltip(btnSalir);
+		tooltipConfig.visibleTooltip(hpVisible);
+		tooltipConfig.limpiarTooltip(btnLimpiar);
+		btnRegistrar.setTooltip(new Tooltip("Registrar (Alt+Enter)"));
+		tooltipConfig.volverTooltip(btnVolver);
+		tooltipConfig.salirTooltip(btnSalir);
 	}
 	
 	@FXML
@@ -294,7 +275,7 @@ public class RegPeregrinoController implements Initializable {
 					paradaInicial, txtNombre.getText(), txtApellidos.getText(), nacionalidad);
 
 			alertas.alertaInformacion("Registro exitoso",
-					"Se ha registrado como peregrino y se ha creado su carnet correctamente.\n\nVolviendo al login.");
+					"Se ha registrado como peregrino y se ha creado su carnet correctamente.\n\nVolviendo al menú de inicio de sesión.");
 			stageManager.switchScene(FxmlView.LOGIN);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -342,7 +323,21 @@ public class RegPeregrinoController implements Initializable {
 
 		emailProperty.bind(txtEmail.textProperty());
 		usuarioProperty.bind(txtUsuario.textProperty());
-		contraseñaProperty.bind(txtContraseña.textProperty());
+		
+		if (passContraseña.isVisible()) {
+			contraseñaProperty.bind(passContraseña.textProperty());
+		} else {
+			contraseñaProperty.bind(txtContraseña.textProperty());
+		}
+
+		passContraseña.visibleProperty().addListener((observable, oldValue, newValue) -> {
+			if (newValue) {
+				contraseñaProperty.unbind();
+				contraseñaProperty.bind(passContraseña.textProperty());
+			} else {
+				contraseñaProperty.bind(txtContraseña.textProperty());
+			}
+		});
 
 		emailProperty.addListener((observable, oldValue, newValue) -> {
 			if (!newValue.isEmpty()) {
@@ -354,7 +349,7 @@ public class RegPeregrinoController implements Initializable {
 				} else if (!validaciones.validarEmail(newValue)) {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
-					lblFeed.setText("Formato email no válido");
+					lblFeed.setText("Formato email no válido, __@__.__");
 					emailCheck=false;
 				} else {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
@@ -403,7 +398,7 @@ public class RegPeregrinoController implements Initializable {
 				} else if (!validaciones.validarContraseña(newValue)) {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
-					lblFeed.setText("Min 6 caracteres: mayúscula, nº y especial");
+					lblFeed.setText("Min 6 carac. (1 mayúscula, 1 nº y 1 carac. especial)");
 					contraseñaCheck=false;
 				} else {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");

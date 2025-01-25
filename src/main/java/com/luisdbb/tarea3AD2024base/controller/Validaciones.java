@@ -1,4 +1,4 @@
-package com.luisdbb.tarea3AD2024base.config;
+package com.luisdbb.tarea3AD2024base.controller;
 
 import java.time.LocalDate;
 
@@ -95,7 +95,8 @@ public class Validaciones {
 		return contraseña.equals(confirmacion);
 	}
 
-	public boolean validarRegion(String region) {
-		return region.length() == 1;
+	public boolean validarRegion(String region) {	   
+	    return region.length() == 1 && Character.isLetter(region.charAt(0));
 	}
+
 }

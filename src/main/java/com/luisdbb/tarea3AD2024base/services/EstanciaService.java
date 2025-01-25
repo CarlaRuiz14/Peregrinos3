@@ -1,13 +1,12 @@
 package com.luisdbb.tarea3AD2024base.services;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.luisdbb.tarea3AD2024base.config.Validaciones;
+import com.luisdbb.tarea3AD2024base.controller.Validaciones;
 import com.luisdbb.tarea3AD2024base.modelo.Carnet;
 import com.luisdbb.tarea3AD2024base.modelo.Estancia;
 import com.luisdbb.tarea3AD2024base.modelo.Parada;
@@ -35,9 +34,9 @@ public class EstanciaService {
 	public List<Estancia> getEstanciasForParada(Long idParada, LocalDate fechaInicio, LocalDate fechaFin) {
 
 		if (!validaciones.validarFechas(fechaInicio, fechaFin)) {
-			return Collections.emptyList();
+			return null;
 		}
-
+		
 		return estanciaRepository.findByIdParadaAndFechaBetween(idParada, fechaInicio, fechaFin);
 
 	}

@@ -10,11 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
-import com.luisdbb.tarea3AD2024base.config.Alertas;
-import com.luisdbb.tarea3AD2024base.config.AyudaConfig;
-import com.luisdbb.tarea3AD2024base.config.BotonesConfig;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
-import com.luisdbb.tarea3AD2024base.config.Validaciones;
 import com.luisdbb.tarea3AD2024base.modelo.Peregrino;
 import com.luisdbb.tarea3AD2024base.modelo.Sesion;
 import com.luisdbb.tarea3AD2024base.modelo.Usuario;
@@ -96,7 +92,7 @@ public class EditarController implements Initializable {
 	private Validaciones validaciones;
 
 	@Autowired
-	private AyudaConfig ayuda;
+	private Ayuda ayuda;
 
 	@Autowired
 	private NacionalidadService nacionalidadService;
@@ -111,7 +107,13 @@ public class EditarController implements Initializable {
 	private UsuarioService usuarioService;
 	
 	@Autowired
-	private BotonesConfig botones;
+	private Botones botones;
+	
+	@Autowired
+	private Mnemonic mnemonicConfig;
+	
+	@Autowired
+	private Tooltips tooltipConfig;
 
 	Usuario usuarioActivo;
 	Peregrino peregrinoActivo;
@@ -143,58 +145,41 @@ public class EditarController implements Initializable {
 		ayuda.configImgInfo(hpInfo);
 
 		// config img btn Limpiar
-		botones.configImgLimpiar(btnLimpiar);
+		botones.imgLimpiar(btnLimpiar);
 
 		// config img btn Editar
-		botones.configImgFlecha(btnEditar);
+		botones.imgFlecha(btnEditar);
 
 		// config img btn Volver
-		botones.configImgVolver(btnVolver);
+		botones.imgVolver(btnVolver);
 
 		// config img btn Salir
-		botones.configImgSalir(btnSalir);
+		botones.imgSalir(btnSalir);
 
 		// mnemónicos
-		hpInfo.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.I) {
-				hpInfo.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.infoMnemonic(hpInfo);
 
-		btnLimpiar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.L) {
-				btnLimpiar.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.limpiarMnemonic(btnLimpiar);
 
 		btnEditar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.E) {
+			if (event.isAltDown() && event.getCode() == KeyCode.ENTER) {
 				btnEditar.fire(); // Simula el clic en el botón
 				event.consume(); // Detiene la propagación del evento
 			}
 		});
 
-		btnVolver.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.V) {
-				btnVolver.fire();
-				event.consume();
-			}
-		});
-		btnSalir.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-			if (event.isAltDown() && event.getCode() == KeyCode.S) {
-				btnSalir.fire();
-				event.consume();
-			}
-		});
+		mnemonicConfig.volverMnemonic(btnVolver);
+
+		
+		mnemonicConfig.salirMnemonic(btnSalir);
+
 
 		// tooltips
-		hpInfo.setTooltip(new Tooltip("Info (Alt+I)"));
-		btnLimpiar.setTooltip(new Tooltip("Limpiar (Alt+L)"));
-		btnEditar.setTooltip(new Tooltip("Editar (Alt+E)"));
-		btnVolver.setTooltip(new Tooltip("Volver (Alt+V)"));
-		btnSalir.setTooltip(new Tooltip("Salir (Alt+S)"));
+		tooltipConfig.infoTooltip(hpInfo);
+		tooltipConfig.limpiarTooltip(btnLimpiar);
+		btnEditar.setTooltip(new Tooltip("Editar (Alt+Enter)"));
+		tooltipConfig.volverTooltip(btnVolver);
+		tooltipConfig.salirTooltip(btnSalir);
 
 	}
 	
@@ -225,6 +210,7 @@ public class EditarController implements Initializable {
 		
 		if(!emailCheck) {
 			alertas.alertaError("Error", "El email no es válido.");
+			return;
 		}
 
 		if (!validarRegistro()) {
@@ -269,7 +255,7 @@ public class EditarController implements Initializable {
 				} else if (!validaciones.validarEmail(newValue)) {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
 					lblFeed.getStyleClass().add("lblFeedInvalido");
-					lblFeed.setText("Formato email no válido");
+					lblFeed.setText("Formato email no válido, __@__.__");
 					emailCheck=false;
 				} else {
 					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");

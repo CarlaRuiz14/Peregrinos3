@@ -20,12 +20,14 @@ public class EstanciaCustomRepositoryImpl implements EstanciaCustomRepository {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
 
 	@Override // para errores tipograficos a la hora de llamar al metodo
 	public List<Estancia> findByIdParadaAndFechaBetween(Long paradaId, LocalDate fechaInicio, LocalDate fechaFin) {
 
 		QEstancia estancia = QEstancia.estancia;
+		
+		JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+
 
 		// condicion lógica para query
 		BooleanExpression condicion = estancia.parada.id.eq(paradaId)

@@ -55,14 +55,14 @@
                <children>
                   <StackPane>
                      <children>
-                        <TextField fx:id="txtContraseña" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="150.0" promptText="Contraseña" visible="false" />
+                        <TextField fx:id="txtContraseña" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="200.0" promptText="Contraseña" visible="false" />
                         <PasswordField fx:id="passContraseña" alignment="CENTER" prefWidth="200.0" promptText="Contraseña" />
                      </children>
                   </StackPane>
                   <Hyperlink fx:id="hpVisible" alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" onAction="#handlerVisible" prefHeight="30.0" prefWidth="36.0" />
                   <StackPane>
                      <children>
-                        <TextField fx:id="txtConfirmacion" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="150.0" promptText="Confirmación" visible="false" />
+                        <TextField fx:id="txtConfirmacion" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="200.0" promptText="Confirmación" visible="false" />
                         <PasswordField fx:id="passConfirmacion" alignment="CENTER" prefWidth="200.0" promptText="Confirmación" />
                      </children>
                   </StackPane>
@@ -90,10 +90,15 @@
             <HBox alignment="CENTER" prefHeight="30.0" prefWidth="240.0" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="6">
                <children>
                   <Button fx:id="btnVolver" alignment="CENTER" onAction="#handlerVolver" prefHeight="30.0" prefWidth="30.0" />
-                  <Label fx:id="lblFeed" alignment="CENTER" contentDisplay="CENTER" maxWidth="-Infinity" prefHeight="40.0" prefWidth="400.0" wrapText="true">
-                     <font>
-                        <Font size="12.0" />
-                     </font></Label>
+                  <HBox alignment="BOTTOM_CENTER">
+                     <children>
+                        <Label fx:id="lblFeed" alignment="CENTER" contentDisplay="CENTER" maxWidth="-Infinity" prefWidth="400.0" wrapText="true">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
                   <Button fx:id="btnSalir" onAction="#handlerSalir" prefHeight="30.0" prefWidth="30.0" />
                </children>
                <GridPane.margin>

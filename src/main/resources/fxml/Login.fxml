@@ -71,7 +71,6 @@
                   <Insets />
                </GridPane.margin>
             </Button>
-            <Label fx:id="lblFeed" alignment="CENTER" contentDisplay="CENTER" maxHeight="30.0" maxWidth="200.0" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
             <Button fx:id="btnVolver" alignment="CENTER" onAction="#handlerVolver" prefHeight="40.0" prefWidth="40.0" wrapText="true" GridPane.halignment="LEFT" GridPane.rowIndex="8" GridPane.valignment="BOTTOM">
                <GridPane.margin>
                   <Insets />

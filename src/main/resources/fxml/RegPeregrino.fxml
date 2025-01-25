@@ -75,7 +75,11 @@
             <HBox alignment="CENTER" GridPane.columnSpan="2" GridPane.rowIndex="8">
                <children>
                   <Button fx:id="btnVolver" alignment="CENTER" onAction="#handlerVolver" prefHeight="40.0" prefWidth="40.0" />
-                  <Label fx:id="lblFeed" alignment="CENTER" contentDisplay="CENTER" maxWidth="380.0" prefWidth="380.0" />
+                  <HBox alignment="BOTTOM_CENTER">
+                     <children>
+                        <Label fx:id="lblFeed" alignment="CENTER" contentDisplay="CENTER" maxWidth="-Infinity" prefWidth="400.0" />
+                     </children>
+                  </HBox>
                   <Button fx:id="btnSalir" onAction="#handlerSalir" prefHeight="40.0" prefWidth="40.0" />
                </children>
             </HBox>
