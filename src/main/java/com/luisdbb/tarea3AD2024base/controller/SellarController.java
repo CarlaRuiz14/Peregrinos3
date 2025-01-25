@@ -20,7 +20,6 @@ import com.luisdbb.tarea3AD2024base.services.ParadasPeregrinoService;
 import com.luisdbb.tarea3AD2024base.services.PeregrinoService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
-import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -110,10 +109,10 @@ public class SellarController implements Initializable {
 
 	@Autowired
 	private NacionalidadService nacionalidadService;
-	
+
 	@Autowired
 	private Mnemonic mnemonicConfig;
-	
+
 	@Autowired
 	private Tooltips tooltipConfig;
 
@@ -149,6 +148,8 @@ public class SellarController implements Initializable {
 		ObservableList<Peregrino> listPeregrinos = FXCollections.observableArrayList(peregrinoService.findAll());
 
 		tblPeregrinos.setItems(listPeregrinos);
+		tblPeregrinos.setPlaceholder(new Label("Sin peregrinos registrados"));
+
 
 		// config img btn Sellar
 		botones.imgFlecha(btnSellar);
@@ -171,9 +172,7 @@ public class SellarController implements Initializable {
 
 		mnemonicConfig.volverMnemonic(btnVolver);
 
-
 		mnemonicConfig.salirMnemonic(btnSalir);
-
 
 		// tooltips
 		tooltipConfig.salirTooltip(btnSalir);
@@ -191,7 +190,6 @@ public class SellarController implements Initializable {
 	private void handlerSellar(ActionEvent event) throws IOException {
 
 		try {
-
 			Peregrino peregrinoSeleccionado = tblPeregrinos.getSelectionModel().getSelectedItem();
 			if (peregrinoSeleccionado == null) {
 				alertas.alertaError("Error", "Debe seleccionar un peregrino para sellar su carnet.");
@@ -242,6 +240,6 @@ public class SellarController implements Initializable {
 
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
-		Platform.exit();
+		botones.salirConfig();
 	}
 }

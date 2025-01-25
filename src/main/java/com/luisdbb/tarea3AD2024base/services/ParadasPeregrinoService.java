@@ -22,6 +22,7 @@ import jakarta.transaction.Transactional;
 public class ParadasPeregrinoService {
 
 	private static final double distanciaParadas = 15.0;
+	private static LocalDate hoy = LocalDate.now();
 
 	@Autowired
 	private ParadasPeregrinoRepository paradasPeregrinoRepository;
@@ -29,8 +30,14 @@ public class ParadasPeregrinoService {
 	@Autowired
 	private CarnetService carnetService;
 
-	public ParadasPeregrino save(ParadasPeregrino entidad) {
-		return paradasPeregrinoRepository.save(entidad);
+	@Autowired
+	private PeregrinoService peregrinoService;
+
+	@Transactional
+	public void registrarParadaInicial(String nombreUsuario, Parada parada) {
+		Peregrino peregrino = peregrinoService.findByNameUsuario(nombreUsuario);
+		ParadasPeregrino paradaPeregrino = new ParadasPeregrino(peregrino, parada, hoy);
+		paradasPeregrinoRepository.save(paradaPeregrino);
 	}
 
 	public boolean existeParada(Parada parada, Peregrino peregrino) {
@@ -40,8 +47,6 @@ public class ParadasPeregrinoService {
 
 	@Transactional
 	public void registrarParadaYSellarCarnet(Carnet carnet, Parada parada, Peregrino peregrino) {
-
-		LocalDate hoy = LocalDate.now();
 
 		carnet.setDistancia(carnet.getDistancia() + distanciaParadas);
 		carnetService.save(carnet);

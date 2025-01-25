@@ -11,9 +11,9 @@ import org.springframework.stereotype.Controller;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.services.ParadaService;
 import com.luisdbb.tarea3AD2024base.services.UsuarioService;
+import com.luisdbb.tarea3AD2024base.services.Validaciones;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
@@ -102,12 +102,15 @@ public class RegParadaController implements Initializable {
 
 	@Autowired
 	private Validaciones validaciones;
-	
+
 	@Autowired
 	private Mnemonic mnemonicConfig;
-	
+
 	@Autowired
 	private Tooltips tooltipConfig;
+
+	@Autowired
+	private LabelFeed label;
 
 	private final StringProperty usuarioProperty = new SimpleStringProperty();
 	private final StringProperty emailProperty = new SimpleStringProperty();
@@ -117,11 +120,11 @@ public class RegParadaController implements Initializable {
 	private boolean isPassVisible = false;
 	private Image mostrarIcon;
 	private Image ocultarIcon;
-	
-	private boolean usuarioCheck=false;
-	private boolean emailCheck=false;
-	private boolean regionCheck=false;
-	private boolean contraseñaCheck=false;
+
+	private boolean usuarioCheck = false;
+	private boolean emailCheck = false;
+	private boolean regionCheck = false;
+	private boolean contraseñaCheck = false;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -154,12 +157,10 @@ public class RegParadaController implements Initializable {
 
 		// mnemónicos
 		mnemonicConfig.infoMnemonic(hpInfo);
-		
+
 		mnemonicConfig.visibleMnemonic(hpVisible);
 
-
 		mnemonicConfig.limpiarMnemonic(btnLimpiar);
-
 
 		btnRegistrar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.ENTER) {
@@ -170,9 +171,7 @@ public class RegParadaController implements Initializable {
 
 		mnemonicConfig.volverMnemonic(btnVolver);
 
-
 		mnemonicConfig.salirMnemonic(btnSalir);
-
 
 		// tooltips
 		tooltipConfig.salirTooltip(btnSalir);
@@ -209,30 +208,30 @@ public class RegParadaController implements Initializable {
 	}
 
 	@FXML
-	private void handlerRegistrar(ActionEvent event) throws IOException {		
+	private void handlerRegistrar(ActionEvent event) throws IOException {
 
-		try {			
-			
-			if(!usuarioCheck) {
+		try {
+
+			if (!usuarioCheck) {
 				alertas.alertaError("Error", "El usuario no es válido.");
 				return;
 			}
-			
-			if(!emailCheck) {
+
+			if (!emailCheck) {
 				alertas.alertaError("Error", "El email no es válido.");
 				return;
 			}
-			
-			if(!regionCheck) {
+
+			if (!regionCheck) {
 				alertas.alertaError("Error", "La región no es válida.");
 				return;
 			}
-			
-			if(!contraseñaCheck) {
+
+			if (!contraseñaCheck) {
 				alertas.alertaError("Error", "La contraseña no es válida.");
 				return;
-			}			
-			
+			}
+
 			if (!validarRegistro()) {
 				return;
 			}
@@ -283,7 +282,7 @@ public class RegParadaController implements Initializable {
 
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
-		Platform.exit();
+		botones.salirConfig();
 	}
 
 	@FXML
@@ -317,93 +316,69 @@ public class RegParadaController implements Initializable {
 		usuarioProperty.addListener((observable, oldValue, newValue) -> {
 			if (!newValue.isEmpty()) {
 				if (!validaciones.validarEspacios(newValue)) {
-					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
-					lblFeed.getStyleClass().add("lblFeedInvalido");
-					lblFeed.setText("Usuario sin espacios en blanco");
-					usuarioCheck=false;
-					
+					label.mostrarTxtInvalido(lblFeed, "Usuario sin espacios en blanco");
+					usuarioCheck = false;
 				} else if (usuarioService.existsByNombreUsuario(newValue)) {
-					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
-					lblFeed.getStyleClass().add("lblFeedInvalido");
-					lblFeed.setText("El usuario ya existe");
-					usuarioCheck=false;
-										
+					label.mostrarTxtInvalido(lblFeed, "El usuario ya existe");
+					usuarioCheck = false;
 				} else {
-					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
-					lblFeed.getStyleClass().add("lblFeedValido");
-					lblFeed.setText("Usuario válido");	
-					usuarioCheck=true;
+					label.mostrarTxtValido(lblFeed, "Usuario válido");
+					usuarioCheck = true;
 				}
 			} else {
 				lblFeed.setText(" ");
-				usuarioCheck=true;
-			}			
+				usuarioCheck = true;
+			}
 		});
 
 		emailProperty.addListener((observable, oldValue, newValue) -> {
 			if (!newValue.isEmpty()) {
 				if (!validaciones.validarEspacios(newValue)) {
-					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
-					lblFeed.getStyleClass().add("lblFeedInvalido");
-					lblFeed.setText("Email sin espacios en blanco");
-					emailCheck=false;
+					label.mostrarTxtInvalido(lblFeed, "Email sin espacios en blanco");
+					emailCheck = false;
 				} else if (!validaciones.validarEmail(newValue)) {
-					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
-					lblFeed.getStyleClass().add("lblFeedInvalido");
-					lblFeed.setText("Formato email no válido, __@__.__");
-					emailCheck=false;
+					label.mostrarTxtInvalido(lblFeed, "Formato no válido. Formato email: __@__.__");
+					emailCheck = false;
 				} else {
-					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
-					lblFeed.getStyleClass().add("lblFeedValido");
-					lblFeed.setText("Email válido");
-					emailCheck=true;
+					label.mostrarTxtValido(lblFeed, "Email válido.");
+					emailCheck = true;
 				}
 			} else {
 				lblFeed.setText(" ");
-				emailCheck=true;
+				emailCheck = true;
 			}
 		});
 
 		regionPProperty.addListener((observable, oldValue, newValue) -> {
 			if (!newValue.isEmpty()) {
 				if (!validaciones.validarRegion(newValue)) {
-					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
-					lblFeed.getStyleClass().add("lblFeedInvalido");
-					lblFeed.setText("La región es una única letra.");
-					regionCheck=false;
+					label.mostrarTxtInvalido(lblFeed, "La región es una única letra.");
+					regionCheck = false;
 				} else {
-					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
-					lblFeed.getStyleClass().add("lblFeedValido");
-					lblFeed.setText("Región válida");
-					regionCheck=true;
+					label.mostrarTxtValido(lblFeed, "Región válida");
+					regionCheck = true;
 				}
 			} else {
 				lblFeed.setText(" ");
-				regionCheck=true;
+				regionCheck = true;
 			}
 		});
 
 		contraseñaProperty.addListener((observable, oldValue, newValue) -> {
 			if (!newValue.isEmpty()) {
 				if (!validaciones.validarEspacios(newValue)) {
-					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
-					lblFeed.getStyleClass().add("lblFeedInvalido");
-					lblFeed.setText("Contraseña sin espacios en blanco");
-					contraseñaCheck=false;
+					label.mostrarTxtInvalido(lblFeed, "Contraseña sin espacios en blanco");
+					contraseñaCheck = false;
 				} else if (!validaciones.validarContraseña(newValue)) {
-					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
-					lblFeed.getStyleClass().add("lblFeedInvalido");
-					lblFeed.setText("Min 6 carac. (1 mayúscula, 1 nº y 1 carac. especial)");
-					contraseñaCheck=false;
+					label.mostrarTxtInvalido(lblFeed, "Min 6 carac: 1 min, 1 may, 1 nº y 1 carac. especial");
+					contraseñaCheck = false;
 				} else {
-					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
-					lblFeed.getStyleClass().add("lblFeedValido");
-					lblFeed.setText("Contraseña válida");
-					contraseñaCheck=true;
+					label.mostrarTxtValido(lblFeed, "Contraseña válida");
+					contraseñaCheck = true;
 				}
 			} else {
 				lblFeed.setText(" ");
-				contraseñaCheck=true;
+				contraseñaCheck = true;
 			}
 		});
 

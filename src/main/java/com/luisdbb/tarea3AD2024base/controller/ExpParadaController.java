@@ -16,6 +16,7 @@ import com.luisdbb.tarea3AD2024base.modelo.Parada;
 import com.luisdbb.tarea3AD2024base.modelo.Sesion;
 import com.luisdbb.tarea3AD2024base.services.EstanciaService;
 import com.luisdbb.tarea3AD2024base.services.ParadaService;
+import com.luisdbb.tarea3AD2024base.services.Validaciones;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.collections.FXCollections;
@@ -119,12 +120,15 @@ public class ExpParadaController implements Initializable {
 
 	@Autowired
 	private EstanciaService estanciaService;
-	
+
 	@Autowired
 	private Mnemonic mnemonicConfig;
-	
+
 	@Autowired
-	private Tooltips tooltipConfig;	
+	private Tooltips tooltipConfig;
+
+	@Autowired
+	private Validaciones validaciones;
 
 	Parada parada;
 	LocalDate fechaInicio;
@@ -160,6 +164,9 @@ public class ExpParadaController implements Initializable {
 			}
 		});
 
+		tblEstancias.setPlaceholder(new Label("Estancias"));
+
+		
 		// config img info
 		ayuda.configImgInfo(hpInfo);
 
@@ -194,12 +201,9 @@ public class ExpParadaController implements Initializable {
 
 		mnemonicConfig.informeMnemonic(btnInforme);
 
-
 		mnemonicConfig.volverMnemonic(btnVolver);
 
-
 		mnemonicConfig.salirMnemonic(btnSalir);
-
 
 		// tooltips
 		tooltipConfig.infoTooltip(hpInfo);
@@ -220,23 +224,48 @@ public class ExpParadaController implements Initializable {
 		fechaInicio = dateFechaI.getValue();
 		fechaFin = dateFechaF.getValue();
 
+		int check = validaciones.validarFechas(fechaInicio, fechaFin);
+		if (check != 0) {
+
+			switch (check) {
+
+			case 1:
+				alertas.alertaError("Error", "Debes seleccionar ambas fechas.");
+				return;
+			case 2:
+				alertas.alertaError("Error", "La fecha de inicio debe ser anterior al día de hoy.");
+				return;
+			case 3:
+				alertas.alertaError("Error", "La fecha de fin debe ser anterior al día de hoy.");
+				return;
+			case 4:
+				alertas.alertaError("Error", "La fecha de inicio debe ser anterior a la fecha de fin.");
+				return;
+
+			}
+
+		}
+
 		List<Estancia> estancias = estanciaService.getEstanciasForParada(parada.getId(), fechaInicio, fechaFin);
 
-		if(estancias==null) {
+		if (estancias == null) {
 			return;
 		}
-		
-		
+
 		if (estancias.isEmpty()) {
 			alertas.alertaInformacion("Sin estancias",
-					"No se encontraron estancias registradas entre las fechas seleccionadas.");
+					"No hay estancias registradas entre las fechas seleccionadas");
 			tblEstancias.setItems(null);
+			tblEstancias.setPlaceholder(new Label("Sin estancias registradas"));
+				
 			return;
 		}
-		
+
 		ObservableList<Estancia> listEstancias = FXCollections.observableArrayList(estancias);
 
 		tblEstancias.setItems(listEstancias);
+		
+
 
 	}
 
@@ -253,9 +282,6 @@ public class ExpParadaController implements Initializable {
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		botones.salirConfig();
-		
-		
-		
-		
+
 	}
 }

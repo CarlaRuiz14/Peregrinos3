@@ -1,8 +1,7 @@
-package com.luisdbb.tarea3AD2024base.controller;
+package com.luisdbb.tarea3AD2024base.services;
 
 import java.time.LocalDate;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -37,9 +36,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class Validaciones {
 
-	@Autowired
-	private Alertas alertas;
-
 	public boolean validarEspacios(String usuario) {
 		return !usuario.contains(" ");
 	}
@@ -54,41 +50,35 @@ public class Validaciones {
 		return email.matches(formato);
 	}
 
-	public boolean validarFechas(LocalDate fechaInicio, LocalDate fechaFin) {
+	public int validarFechas(LocalDate fechaInicio, LocalDate fechaFin) {
 		LocalDate hoy = LocalDate.now();
 
 		if (fechaInicio == null || fechaFin == null) {
-			alertas.alertaError("Error", "Debes seleccionar ambas fechas.");
-			return false;
+			return 1;
 		}
 
 		if (fechaInicio.isAfter(hoy)) {
-			alertas.alertaError("Error", "La fecha de inicio debe ser anterior al día de hoy.");
-			return false;
+			return 2;
 		}
 
 		if (fechaFin.isAfter(hoy)) {
-			alertas.alertaError("Error", "La fecha de fin debe ser anterior al día de hoy.");
-			return false;
+			return 3;
 		}
 
 		if (fechaInicio.isAfter(fechaFin)) {
-			alertas.alertaError("Error", "La fecha de inicio debe ser anterior a la fecha de fin.");
-			return false;
+			return 4;
 		}
-		return true;
+		return 0;
 	}
 
-	public boolean validarCredenciales(String usuario, String contraseña) {
+	public int validarCredenciales(String usuario, String contraseña) {
 		if (usuario == null || usuario.isEmpty()) {
-			alertas.alertaError("Faltan datos", "El campo usuario es obligatorio.");
-			return false;
+			return 1;
 		}
 		if (contraseña == null || contraseña.isEmpty()) {
-			alertas.alertaError("Faltan datos", "El campo contraseña es obligatorio.");
-			return false;
+			return 2;
 		}
-		return true;
+		return 0;
 	}
 
 	public boolean validarContraseñas(String contraseña, String confirmacion) {

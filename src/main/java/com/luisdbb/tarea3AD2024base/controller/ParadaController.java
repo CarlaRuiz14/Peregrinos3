@@ -9,11 +9,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.StageManager;
-import com.luisdbb.tarea3AD2024base.modelo.Perfil;
 import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,7 +29,7 @@ import javafx.scene.input.KeyEvent;
 
 @Controller
 public class ParadaController implements Initializable {
-	
+
 	@FXML
 	private Hyperlink hpInfo;
 
@@ -59,19 +57,19 @@ public class ParadaController implements Initializable {
 
 	@Autowired
 	private Ayuda ayuda;
-	
+
 	@Autowired
 	private UsuarioService usuarioService;
-	
+
 	@Autowired
 	private Mnemonic mnemonicConfig;
-	
+
 	@Autowired
 	private Tooltips tooltipConfig;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+
 		// config img info
 		ayuda.configImgInfo(hpInfo);
 
@@ -83,7 +81,7 @@ public class ParadaController implements Initializable {
 
 		// mnemónicos
 		mnemonicConfig.infoMnemonic(hpInfo);
-		
+
 		btnExportar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.X) {
 				btnExportar.fire();
@@ -102,7 +100,6 @@ public class ParadaController implements Initializable {
 
 		mnemonicConfig.salirMnemonic(btnSalir);
 
-
 		// tooltips
 		tooltipConfig.salirTooltip(btnSalir);
 		btnExportar.setTooltip(new Tooltip("Exportar Carnet (Alt+X)"));
@@ -111,12 +108,12 @@ public class ParadaController implements Initializable {
 		tooltipConfig.salirTooltip(btnSalir);
 
 	}
-	
+
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		ayuda.configInfo("/help/help.html");
 	}
-	
+
 	@FXML
 	private void handlerExportar(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.EXPPARADA);
@@ -129,12 +126,11 @@ public class ParadaController implements Initializable {
 
 	@FXML
 	private void handlerLogout(ActionEvent event) throws IOException {
-		usuarioService.configurarSesion(null, Perfil.INVITADO);
-		stageManager.switchScene(FxmlView.LOGIN);
+		botones.logoutConfig(usuarioService, stageManager);
 	}
 
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
-		Platform.exit();
+		botones.salirConfig();
 	}
 }

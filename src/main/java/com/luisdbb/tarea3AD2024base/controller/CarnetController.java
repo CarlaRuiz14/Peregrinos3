@@ -24,7 +24,6 @@ import com.luisdbb.tarea3AD2024base.services.ParadaService;
 import com.luisdbb.tarea3AD2024base.services.PeregrinoService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -146,10 +145,10 @@ public class CarnetController implements Initializable {
 
 	@Autowired
 	private NacionalidadService nacionalidadService;
-	
+
 	@Autowired
 	private Mnemonic mnemonicConfig;
-	
+
 	@Autowired
 	private Tooltips tooltipConfig;
 
@@ -162,7 +161,7 @@ public class CarnetController implements Initializable {
 
 		// sesion activa
 		usuarioActivo = sesion.getUsuarioActivo();
-		peregrinoActivo = peregrinoService.findByUsuario(usuarioActivo.getId());
+		peregrinoActivo = peregrinoService.findByIdUsuario(usuarioActivo.getId());
 		carnetActivo = carnetService.findById(peregrinoActivo.getCarnet().getId());
 
 		// cargar datos
@@ -187,8 +186,10 @@ public class CarnetController implements Initializable {
 
 		List<Parada> lista = paradaService.obtenerParadasPorPeregrino(peregrinoActivo.getId());
 		ObservableList<Parada> listParadas = FXCollections.observableArrayList(lista);
-		tblParadas.setItems(listParadas);
+		tblParadas.setItems(listParadas);		
+		tblParadas.setPlaceholder(new Label("Sin paradas"));
 
+		
 		// config tabla Estancias
 		colIdEstancia.setCellValueFactory(new PropertyValueFactory<>("id"));
 		colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
@@ -209,7 +210,9 @@ public class CarnetController implements Initializable {
 		ObservableList<Estancia> listEstancias = FXCollections.observableArrayList(listaE);
 
 		tblEstancias.setItems(listEstancias);
+		tblEstancias.setPlaceholder(new Label("Sin estancias"));
 
+		
 		// config info
 		ayuda.configImgInfo(hpInfo);
 
@@ -233,7 +236,7 @@ public class CarnetController implements Initializable {
 
 		// mnemónicos
 		mnemonicConfig.infoMnemonic(hpInfo);
-		
+
 		mnemonicConfig.informeMnemonic(btnInforme);
 
 		btnExportar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
@@ -245,9 +248,7 @@ public class CarnetController implements Initializable {
 
 		mnemonicConfig.volverMnemonic(btnVolver);
 
-
 		mnemonicConfig.salirMnemonic(btnSalir);
-
 
 		// tooltips
 		tooltipConfig.infoTooltip(hpInfo);
@@ -282,6 +283,6 @@ public class CarnetController implements Initializable {
 
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
-		Platform.exit();
+		botones.salirConfig();
 	}
 }

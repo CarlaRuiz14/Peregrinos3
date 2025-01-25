@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.luisdbb.tarea3AD2024base.controller.Validaciones;
 import com.luisdbb.tarea3AD2024base.modelo.Carnet;
 import com.luisdbb.tarea3AD2024base.modelo.Estancia;
 import com.luisdbb.tarea3AD2024base.modelo.Parada;
@@ -24,42 +23,33 @@ public class EstanciaService {
 
 	@Autowired
 	private EstanciaRepository estanciaRepository;
-	
+
 	@Autowired
 	private CarnetService carnetService;
-	
-	@Autowired
-	private Validaciones validaciones;
 
 	public List<Estancia> getEstanciasForParada(Long idParada, LocalDate fechaInicio, LocalDate fechaFin) {
-
-		if (!validaciones.validarFechas(fechaInicio, fechaFin)) {
-			return null;
-		}
-		
 		return estanciaRepository.findByIdParadaAndFechaBetween(idParada, fechaInicio, fechaFin);
 
 	}
 
 	@Transactional
-	public boolean registrarEstancia(boolean vip, Peregrino peregrino, Parada parada,Carnet carnet) {
+	public boolean registrarEstancia(boolean vip, Peregrino peregrino, Parada parada, Carnet carnet) {
 
 		LocalDate hoy = LocalDate.now();
 
 		Estancia estancia = new Estancia(hoy, vip, peregrino, parada);
-		
-		if(vip) {
-			carnet.setnVips(carnet.getnVips()+1);
+
+		if (vip) {
+			carnet.setnVips(carnet.getnVips() + 1);
 			carnetService.save(carnet);
 		}
 
 		return estanciaRepository.save(estancia) != null;
 
 	}
-	
-	public List<Estancia> findByPeregrinoId(Long peregrinoId){
+
+	public List<Estancia> findByPeregrinoId(Long peregrinoId) {
 		return estanciaRepository.findByPeregrinoId(peregrinoId);
 	}
-
 
 }

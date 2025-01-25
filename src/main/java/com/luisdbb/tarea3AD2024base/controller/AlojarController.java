@@ -12,7 +12,6 @@ import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.DatosSellado;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -76,10 +75,10 @@ public class AlojarController implements Initializable {
 
 	@Autowired
 	private DatosSellado datosSellado;
-	
+
 	@Autowired
 	private Mnemonic mnemonicConfig;
-	
+
 	@Autowired
 	private Tooltips tooltipConfig;
 
@@ -119,9 +118,7 @@ public class AlojarController implements Initializable {
 
 		mnemonicConfig.volverMnemonic(btnVolver);
 
-
 		mnemonicConfig.salirMnemonic(btnSalir);
-
 
 		// tooltips
 		tooltipConfig.infoTooltip(hpInfo);
@@ -130,7 +127,7 @@ public class AlojarController implements Initializable {
 		tooltipConfig.salirTooltip(btnSalir);
 
 	}
-	
+
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		ayuda.configInfo("/help/help.html");
@@ -147,15 +144,16 @@ public class AlojarController implements Initializable {
 		RadioButton seleccion = (RadioButton) respuesta.getSelectedToggle();
 
 		if (seleccion.equals(rbtnSi)) {
-			alertas.alertaInformacion("Alojar", "El peregrino "+datosSellado.getPeregrino().getNombre()+" será alojado.");
+			alertas.alertaInformacion("Alojar",
+					"El peregrino " + datosSellado.getPeregrino().getNombre() + " será alojado.");
 			stageManager.switchScene(FxmlView.VIP);
 		} else if (seleccion.equals(rbtnNo)) {
-			alertas.alertaInformacion("No alojar",
-					"El peregrino "+datosSellado.getPeregrino().getNombre()+" no será alojado.\nDatos guardados.\n\nVolviendo a su Menú.");
+			alertas.alertaInformacion("No alojar", "El peregrino " + datosSellado.getPeregrino().getNombre()
+					+ " no será alojado.\nDatos guardados.\n\nVolviendo a su Menú.");
 			stageManager.switchScene(FxmlView.PARADA);
 		}
 	}
-	
+
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.SELLAR);
@@ -163,6 +161,6 @@ public class AlojarController implements Initializable {
 
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
-		Platform.exit();
+		botones.salirConfig();
 	}
 }

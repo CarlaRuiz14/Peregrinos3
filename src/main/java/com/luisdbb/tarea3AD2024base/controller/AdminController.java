@@ -9,11 +9,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.StageManager;
-import com.luisdbb.tarea3AD2024base.modelo.Perfil;
 import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -59,10 +57,10 @@ public class AdminController implements Initializable {
 
 	@Autowired
 	private UsuarioService usuarioService;
-	
+
 	@Autowired
 	private Mnemonic mnemonicConfig;
-	
+
 	@Autowired
 	private Tooltips tooltipConfig;
 
@@ -89,9 +87,8 @@ public class AdminController implements Initializable {
 		});
 
 		mnemonicConfig.logoutMnemonic(btnLogout);
-		
+
 		mnemonicConfig.salirMnemonic(btnSalir);
-		
 
 		// tooltips
 		tooltipConfig.infoTooltip(hpInfo);
@@ -112,13 +109,13 @@ public class AdminController implements Initializable {
 
 	@FXML
 	private void handlerLogout(ActionEvent event) throws IOException {
-		usuarioService.configurarSesion(null, Perfil.INVITADO);
-		stageManager.switchScene(FxmlView.LOGIN);
+		botones.logoutConfig(usuarioService,stageManager);
 	}
 
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
-		Platform.exit();
+		botones.salirConfig();
+
 	}
 
 }

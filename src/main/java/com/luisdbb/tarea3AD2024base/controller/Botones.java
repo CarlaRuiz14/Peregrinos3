@@ -5,6 +5,11 @@ import java.util.ResourceBundle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.luisdbb.tarea3AD2024base.config.StageManager;
+import com.luisdbb.tarea3AD2024base.modelo.Perfil;
+import com.luisdbb.tarea3AD2024base.services.UsuarioService;
+import com.luisdbb.tarea3AD2024base.view.FxmlView;
+
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -86,13 +91,24 @@ public class Botones {
 	}
 	
 	public void salirConfig() {
-		boolean respuesta=alertas.alertaConfirmacion("Salir", "Va a cerrar la apliación, ¿está seguro?");
-		
+		boolean respuesta=alertas.alertaConfirmacion("Salir", "Va a cerrar la apliación, ¿está seguro?");		
 		if(respuesta) {
 			alertas.alertaInformacion("Salir", "Saliendo de la apliación.");
 			Platform.exit();
 		}else {
 			alertas.alertaInformacion("Salir", "Acción cancelada. \nVolviendo.");
+		}
+		
+	}
+	
+	public void logoutConfig(UsuarioService usuario, StageManager stage) {		
+		boolean respuesta=alertas.alertaConfirmacion("Cerrar sesión", "¿Está seguro de que desea cerrar su sesión?");		
+		if(respuesta) {
+			alertas.alertaInformacion("Sesión cerrada", "Ha cerrado su sesión correctamente.");
+			usuario.configurarSesion(null, Perfil.INVITADO);
+			stage.switchScene(FxmlView.LOGIN);
+		}else {
+			alertas.alertaInformacion("Operación cancelada", "Su sesión permanece activa.\nVolviendo.");
 		}
 		
 	}

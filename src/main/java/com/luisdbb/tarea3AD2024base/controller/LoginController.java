@@ -11,9 +11,9 @@ import org.springframework.stereotype.Controller;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.Perfil;
 import com.luisdbb.tarea3AD2024base.services.UsuarioService;
+import com.luisdbb.tarea3AD2024base.services.Validaciones;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -170,9 +170,17 @@ public class LoginController implements Initializable {
 	private void handlerLogin(ActionEvent event) throws IOException {		
 
 		String contraseña = passContraseña.isVisible() ? passContraseña.getText() : txtContraseña.getText();
-
-		if (!validaciones.validarCredenciales(txtUsuario.getText(), contraseña)) {
-			return;
+	
+		int check=validaciones.validarCredenciales(txtUsuario.getText(), contraseña);
+		if(check!=0) {
+			switch(check) {
+			case 1:
+				alertas.alertaError("Faltan datos", "El campo usuario es obligatorio.");
+				return;
+			case 2:
+				alertas.alertaError("Faltan datos", "El campo contraseña es obligatorio.");
+				return;			
+			}
 		}
 
 		Perfil perfilActivo = usuarioService.loguear(txtUsuario.getText(), contraseña);
@@ -206,7 +214,7 @@ public class LoginController implements Initializable {
 
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
-		Platform.exit();
+		botones.salirConfig();
 	}
 
 	@FXML

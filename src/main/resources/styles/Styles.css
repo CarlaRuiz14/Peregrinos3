@@ -176,6 +176,13 @@ Button:hover {
     -fx-fill: #1F6A24; 
 }
 
+/* Tabla Marron - Placeholder*/
+
+.tblM .placeholder {
+    -fx-background-color: FFEA77; 
+    -fx-alignment: center;
+	-fx-text-fill: #1F6A24;
+}
 
 
 /* Tabla Verde */
@@ -202,6 +209,13 @@ Button:hover {
     -fx-fill: #1F6A24;
 }
 
+/* Tabla Verde - Placeholder*/
+
+.tblV .placeholder {
+    -fx-background-color: #A7F7AC; 
+    -fx-alignment: center;
+	-fx-text-fill: #1F6A24;
+}
 
 
 /* tabla verde con seleccion */
@@ -236,6 +250,14 @@ Button:hover {
 
 .tblVS .table-row-cell:selected .text {
     -fx-fill: #FFD700;
+}
+
+/* Tabla Verde Selecc - Placeholder*/
+
+.tblVS .placeholder {
+    -fx-background-color: #A7F7AC; 
+    -fx-alignment: center;
+	-fx-text-fill: #1F6A24;
 }
 
 /* Alertas */

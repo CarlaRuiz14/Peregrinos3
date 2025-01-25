@@ -17,9 +17,9 @@ import com.luisdbb.tarea3AD2024base.modelo.Usuario;
 import com.luisdbb.tarea3AD2024base.services.NacionalidadService;
 import com.luisdbb.tarea3AD2024base.services.PeregrinoService;
 import com.luisdbb.tarea3AD2024base.services.UsuarioService;
+import com.luisdbb.tarea3AD2024base.services.Validaciones;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
@@ -84,7 +84,7 @@ public class EditarController implements Initializable {
 	@Lazy
 	@Autowired
 	private StageManager stageManager;
-	
+
 	@Autowired
 	private Alertas alertas;
 
@@ -105,38 +105,42 @@ public class EditarController implements Initializable {
 
 	@Autowired
 	private UsuarioService usuarioService;
-	
+
 	@Autowired
 	private Botones botones;
-	
+
 	@Autowired
 	private Mnemonic mnemonicConfig;
-	
+
 	@Autowired
 	private Tooltips tooltipConfig;
+
+	@Autowired
+	private LabelFeed label;
 
 	Usuario usuarioActivo;
 	Peregrino peregrinoActivo;
 
-	private boolean emailCheck=false;
-	
-	
+	private boolean emailCheck = false;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 		// entidades a editar
 		usuarioActivo = sesion.getUsuarioActivo();
-		peregrinoActivo = peregrinoService.findByUsuario(usuarioActivo.getId());
+		peregrinoActivo = peregrinoService.findByIdUsuario(usuarioActivo.getId());
 
 		// cargar datos
 		txtNombre.setText(peregrinoActivo.getNombre());
 		txtApellidos.setText(peregrinoActivo.getApellidos());
 		txtEmail.setText(usuarioActivo.getEmail());
-		cmbNacionalidad.getSelectionModel().select(peregrinoActivo.getNacionalidad());
+		
+		String nac=nacionalidadService.mapaNacionalidades().get(peregrinoActivo.getNacionalidad());
+		cmbNacionalidad.getSelectionModel().select(nac);
 
 		validarEntradas();
 
-		// combobox nacinalidades
+		// combobox nacionalidades
 		List<String> listaValores = new ArrayList<>(nacionalidadService.mapaNacionalidades().values());
 		listaNac = FXCollections.observableArrayList(listaValores);
 		cmbNacionalidad.setItems(listaNac);
@@ -163,16 +167,14 @@ public class EditarController implements Initializable {
 
 		btnEditar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.ENTER) {
-				btnEditar.fire(); // Simula el clic en el botón
-				event.consume(); // Detiene la propagación del evento
+				btnEditar.fire();
+				event.consume();
 			}
 		});
 
 		mnemonicConfig.volverMnemonic(btnVolver);
 
-		
 		mnemonicConfig.salirMnemonic(btnSalir);
-
 
 		// tooltips
 		tooltipConfig.infoTooltip(hpInfo);
@@ -182,7 +184,7 @@ public class EditarController implements Initializable {
 		tooltipConfig.salirTooltip(btnSalir);
 
 	}
-	
+
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		ayuda.configInfo("/help/help.html");
@@ -198,7 +200,11 @@ public class EditarController implements Initializable {
 			txtNombre.clear();
 			txtApellidos.clear();
 			txtEmail.clear();
+
 			cmbNacionalidad.getSelectionModel().clearSelection();
+			cmbNacionalidad.setValue(null);
+			cmbNacionalidad.setPromptText("Nacionalidad"); 
+			cmbNacionalidad.getParent().requestFocus(); 
 
 		} else {
 			alertas.alertaInformacion("Acción cancelada", "Por favor, rellene el formulario.");
@@ -207,8 +213,8 @@ public class EditarController implements Initializable {
 
 	@FXML
 	private void handlerEditar(ActionEvent event) throws IOException {
-		
-		if(!emailCheck) {
+
+		if (!emailCheck) {
 			alertas.alertaError("Error", "El email no es válido.");
 			return;
 		}
@@ -218,13 +224,14 @@ public class EditarController implements Initializable {
 		}
 
 		peregrinoActivo.setNombre(txtNombre.getText());
-		peregrinoActivo.setApellidos(txtApellidos.getText());		
-		peregrinoActivo.setNacionalidad(nacionalidadService.obtenerNacionalidadSeleccionada(cmbNacionalidad.getValue()));
+		peregrinoActivo.setApellidos(txtApellidos.getText());
+		peregrinoActivo
+				.setNacionalidad(nacionalidadService.obtenerNacionalidadSeleccionada(cmbNacionalidad.getValue()));
 		peregrinoService.actualizarDatosPeregrino(peregrinoActivo);
-		
+
 		usuarioActivo.setEmail(txtEmail.getText());
-		usuarioService.actualizarDatosUsuario(usuarioActivo);		
-		
+		usuarioService.actualizarDatosUsuario(usuarioActivo);
+
 		alertas.alertaInformacion("Actualización exitosa",
 				"Los datos han sido guardados correctamente.\n\nVolviendo al menú.");
 		stageManager.switchScene(FxmlView.PEREGRINO);
@@ -234,10 +241,10 @@ public class EditarController implements Initializable {
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.PEREGRINO);
 	}
-	
+
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
-		Platform.exit();
+		botones.salirConfig();
 	}
 
 	private void validarEntradas() {
@@ -247,25 +254,19 @@ public class EditarController implements Initializable {
 
 		emailProperty.addListener((observable, oldValue, newValue) -> {
 			if (!newValue.isEmpty()) {
-				if (!validaciones.validarEspacios(newValue)) {
-					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
-					lblFeed.getStyleClass().add("lblFeedInvalido");
-					lblFeed.setText("Email sin espacios en blanco");
-					emailCheck=false;
+				if (!validaciones.validarEspacios(newValue)) {//
+					label.mostrarTxtInvalido(lblFeed, "Email sin espacios en blanco");
+					emailCheck = false;
 				} else if (!validaciones.validarEmail(newValue)) {
-					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
-					lblFeed.getStyleClass().add("lblFeedInvalido");
-					lblFeed.setText("Formato email no válido, __@__.__");
-					emailCheck=false;
+					label.mostrarTxtInvalido(lblFeed, "Formato no válido. Formato email: __@__.__");
+					emailCheck = false;
 				} else {
-					lblFeed.getStyleClass().removeAll("lblFeedValido", "lblFeedInvalido");
-					lblFeed.getStyleClass().add("lblFeedValido");
-					lblFeed.setText("Email válido");
-					emailCheck=true;
+					label.mostrarTxtValido(lblFeed, "Email válido.");
+					emailCheck = true;
 				}
 			} else {
 				lblFeed.setText(" ");
-				emailCheck=true;
+				emailCheck = true;
 
 			}
 		});

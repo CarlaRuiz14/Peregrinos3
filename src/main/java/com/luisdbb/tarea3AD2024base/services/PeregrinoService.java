@@ -31,8 +31,12 @@ public class PeregrinoService {
 		return peregrinoRepository.save(entidad);
 	}
 
-	public Peregrino findByUsuario(long id) {
+	public Peregrino findByIdUsuario(long id) {
 		return peregrinoRepository.findByUsuario_id(id);
+	}
+	
+	public Peregrino findByNameUsuario(String nombreUsuario) {
+		return peregrinoRepository.findByUsuario_nombreUsuario(nombreUsuario);
 	}
 
 	public List<Peregrino> findAll() {
