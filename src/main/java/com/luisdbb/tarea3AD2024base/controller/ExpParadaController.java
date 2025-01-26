@@ -2,8 +2,12 @@ package com.luisdbb.tarea3AD2024base.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +41,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
 
 /**
  * @author Carla Ruiz
@@ -166,7 +173,6 @@ public class ExpParadaController implements Initializable {
 
 		tblEstancias.setPlaceholder(new Label("Estancias"));
 
-		
 		// config img info
 		ayuda.configImgInfo(hpInfo);
 
@@ -253,24 +259,47 @@ public class ExpParadaController implements Initializable {
 		}
 
 		if (estancias.isEmpty()) {
-			alertas.alertaInformacion("Sin estancias",
-					"No hay estancias registradas entre las fechas seleccionadas");
+			alertas.alertaInformacion("Sin estancias", "No hay estancias registradas entre las fechas seleccionadas");
 			tblEstancias.setItems(null);
 			tblEstancias.setPlaceholder(new Label("Sin estancias registradas"));
-				
+
 			return;
 		}
 
 		ObservableList<Estancia> listEstancias = FXCollections.observableArrayList(estancias);
 
 		tblEstancias.setItems(listEstancias);
-		
-
 
 	}
 
 	@FXML
 	private void handlerInforme(ActionEvent event) throws IOException {
+
+		try {
+			// Ruta del archivo .jasper
+			String jasperPath = "src/main/resources/reports/InformeEstancias.jasper";
+			String outputPath = "src/main/resources/reports/InformeEstancias.pdf";
+
+			// 1. Parámetros del Informe
+			Map<String, Object> parameters = new HashMap<>();
+            parameters.put("PARADA", parada.getNombre());
+			parameters.put("FECHA_INICIO", fechaInicio);
+			parameters.put("FECHA_FIN", fechaFin);
+
+			// 2. Conexión a la base de datos
+			Connection connection = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/bdtarea3ad_carlaruiz?useSSL=false&serverTimezone=UTC", "root", "");
+
+			// 3. Rellenar el informe con los datos
+			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperPath, parameters, connection);
+
+			// 4. Exportar el informe a PDF
+			JasperExportManager.exportReportToPdfFile(jasperPrint, outputPath);		
+
+			connection.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
