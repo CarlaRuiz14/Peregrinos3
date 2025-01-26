@@ -134,7 +134,7 @@ public class RecuperacionController implements Initializable {
 
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
-		ayuda.configInfo("/help/help.html");
+		ayuda.configInfo("/help/recContraseña.html");
 	}
 
 	@FXML

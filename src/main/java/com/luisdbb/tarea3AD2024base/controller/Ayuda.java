@@ -48,7 +48,7 @@ public class Ayuda {
 		webView.getEngine().load(url);
 
 		Stage helpStage = new Stage();
-		helpStage.setTitle("Info");
+		helpStage.setTitle("Ayuda Estela");
 
 		String iconPath =ResourceBundle.getBundle("Bundle").getString("info.icon");
 		Image icon = new Image(getClass().getResource(iconPath).toExternalForm());

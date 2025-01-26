@@ -130,7 +130,7 @@ public class AlojarController implements Initializable {
 
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
-		ayuda.configInfo("/help/help.html");
+		ayuda.configInfo("/help/alojar.html");
 	}
 
 	@FXML
