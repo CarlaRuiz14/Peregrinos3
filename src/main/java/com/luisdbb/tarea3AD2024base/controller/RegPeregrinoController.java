@@ -142,6 +142,8 @@ public class RegPeregrinoController implements Initializable {
 	@Autowired
 	private LabelFeed label;
 
+	private final StringProperty nombreProperty = new SimpleStringProperty();
+	private final StringProperty apellidosProperty = new SimpleStringProperty();
 	private final StringProperty emailProperty = new SimpleStringProperty();
 	private final StringProperty usuarioProperty = new SimpleStringProperty();
 	private final StringProperty contraseñaProperty = new SimpleStringProperty();
@@ -150,6 +152,8 @@ public class RegPeregrinoController implements Initializable {
 	private Image mostrarIcon;
 	private Image ocultarIcon;
 
+	private boolean nombreCheck = false;
+	private boolean apellidosCheck = true;
 	private boolean emailCheck = false;
 	private boolean usuarioCheck = false;
 	private boolean contraseñaCheck = false;
@@ -252,6 +256,16 @@ public class RegPeregrinoController implements Initializable {
 
 		try {
 
+			if (!nombreCheck) {
+				alertas.alertaError("Error", "El nombre no es válido.");
+				return;
+			}
+
+			if (txtApellidos != null && !txtApellidos.getText().isEmpty() && !apellidosCheck) {
+				alertas.alertaError("Error", "Los apellidos no son válidos.");
+				return;
+			}
+
 			if (!emailCheck) {
 				alertas.alertaError("Error", "El email no es válido.");
 				return;
@@ -280,8 +294,8 @@ public class RegPeregrinoController implements Initializable {
 					paradaInicial, txtNombre.getText(), txtApellidos.getText(), nacionalidad);
 			paradasPeregrinoService.registrarParadaInicial(txtUsuario.getText(), paradaInicial);
 
-					alertas.alertaInformacion("Registro exitoso",
-							"Se ha registrado como peregrino y se ha creado su carnet correctamente.\n\nVolviendo al menú de inicio de sesión.");
+			alertas.alertaInformacion("Registro exitoso",
+					"Se ha registrado como peregrino y se ha creado su carnet correctamente.\n\nVolviendo al menú de inicio de sesión.");
 			stageManager.switchScene(FxmlView.LOGIN);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -333,6 +347,8 @@ public class RegPeregrinoController implements Initializable {
 
 		lblFeed.setText(" ");
 
+		nombreProperty.bind(txtNombre.textProperty());
+		apellidosProperty.bind(txtApellidos.textProperty());
 		emailProperty.bind(txtEmail.textProperty());
 		usuarioProperty.bind(txtUsuario.textProperty());
 
@@ -348,6 +364,36 @@ public class RegPeregrinoController implements Initializable {
 				contraseñaProperty.bind(passContraseña.textProperty());
 			} else {
 				contraseñaProperty.bind(txtContraseña.textProperty());
+			}
+		});
+
+		nombreProperty.addListener((observable, oldValue, newValue) -> {
+			if (!newValue.isEmpty()) {
+				if (!validaciones.validarNombreYApellidos(newValue)) {
+					label.mostrarTxtInvalido(lblFeed, "Nombre sin números ni carac. especiales");
+					nombreCheck = false;
+				} else {
+					label.mostrarTxtValido(lblFeed, "Nombre válido");
+					nombreCheck = true;
+				}
+			} else {
+				lblFeed.setText(" ");
+				nombreCheck = true;
+			}
+		});
+
+		apellidosProperty.addListener((observable, oldValue, newValue) -> {
+			if (!newValue.isEmpty()) {
+				if (!validaciones.validarNombreYApellidos(newValue)) {
+					label.mostrarTxtInvalido(lblFeed, "Apellidos sin números ni carac. especiales");
+					apellidosCheck = false;
+				} else {
+					label.mostrarTxtValido(lblFeed, "Apellidos válidos");
+					apellidosCheck = true;
+				}
+			} else {
+				lblFeed.setText(" ");
+				apellidosCheck = true;
 			}
 		});
 

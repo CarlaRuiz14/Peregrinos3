@@ -39,6 +39,11 @@ public class Validaciones {
 	public boolean validarEspacios(String usuario) {
 		return !usuario.contains(" ");
 	}
+	
+	public boolean validarNombreYApellidos(String nombre) {
+		String formato="^[A-Za-zÁÉÍÓÚáéíóúÑñüÜ' -]+$";
+		return nombre.matches(formato);
+	}
 
 	public boolean validarContraseña(String contraseña) {
 		String formato = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&-_])[A-Za-z\\d@$!%*?&-_]{6,}$";
