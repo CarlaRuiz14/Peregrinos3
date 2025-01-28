@@ -276,30 +276,31 @@ public class ExpParadaController implements Initializable {
 	private void handlerInforme(ActionEvent event) throws IOException {
 
 		try {
-			// Ruta del archivo .jasper
+			
 			String jasperPath = "src/main/resources/reports/InformeEstancias.jasper";
-			String outputPath = "src/main/resources/reports/InformeEstancias.pdf";
-
-			// 1. Parámetros del Informe
+			String outputPath = "src/main/resources/reports/InformeEstancias.pdf";			
+		
 			Map<String, Object> parameters = new HashMap<>();
             parameters.put("PARADA", parada.getNombre());
-			parameters.put("FECHA_INICIO", fechaInicio);
-			parameters.put("FECHA_FIN", fechaFin);
-
-			// 2. Conexión a la base de datos
+            parameters.put("FECHA_INICIO", java.sql.Date.valueOf(fechaInicio));
+            parameters.put("FECHA_FIN", java.sql.Date.valueOf(fechaFin));
+			parameters.put("ID_PARADA", parada.getId());
+		
 			Connection connection = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/bdtarea3ad_carlaruiz?useSSL=false&serverTimezone=UTC", "root", "");
-
-			// 3. Rellenar el informe con los datos
+			
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperPath, parameters, connection);
-
-			// 4. Exportar el informe a PDF
+		
 			JasperExportManager.exportReportToPdfFile(jasperPrint, outputPath);		
 
 			connection.close();
 		} catch (Exception e) {
 			e.printStackTrace();
+			alertas.alertaError("Error", "El informe no se ha podido exportar correctamente.");
+			return;
 		}
+		
+		alertas.alertaInformacion("Informe", "Su informe se ha exportado correctamente en formato .jrxml.");
 
 	}
 
