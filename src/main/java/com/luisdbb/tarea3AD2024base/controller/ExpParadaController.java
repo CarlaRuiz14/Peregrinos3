@@ -278,7 +278,7 @@ public class ExpParadaController implements Initializable {
 		try {
 			
 			String jasperPath = "src/main/resources/reports/InformeEstancias.jasper";
-			String outputPath = "src/main/resources/reports/InformeEstancias.pdf";			
+			String outputPath = "src/main/resources/reports/Informe"+ parada.getNombre() +".pdf";			
 		
 			Map<String, Object> parameters = new HashMap<>();
             parameters.put("PARADA", parada.getNombre());

@@ -23,6 +23,12 @@ header p {
     color: #555;
 }
 
+.intro {
+    text-align: justify;
+    text-indent: 2em;
+    padding: 1.5rem 1.5rem 1.5rem 1rem;
+}  
+
 /* Breadcrumb */
 
 .breadcrumb {
@@ -60,6 +66,18 @@ header p {
 
 .helpSection img {
     max-height: 40px;
+    width: auto;
+}
+
+.passwordSection{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.passwordSection img {
+    max-width: 200px;
     width: auto;
 }
 
