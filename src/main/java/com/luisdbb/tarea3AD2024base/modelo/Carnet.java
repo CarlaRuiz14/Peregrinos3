@@ -41,8 +41,7 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "carnets")
 public class Carnet {
-
-	// atributos
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;

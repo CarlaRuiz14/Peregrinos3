@@ -43,7 +43,6 @@ public class ParadaService {
 
 	public Parada findByUsuario(Long id) {
 		return paradaRepository.findByIdUsuario(id);
-
 	}
 
 	public List<Parada> findAll() {

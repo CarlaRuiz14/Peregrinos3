@@ -35,6 +35,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 
 /**
  * @author Carla Ruiz
@@ -116,32 +117,26 @@ public class SellarController implements Initializable {
 	@Autowired
 	private Tooltips tooltipConfig;
 
-	Parada parada;
-	Carnet carnet;
+	private Parada parada;
+	private Carnet carnet;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
-		// entidades a sellar
+	
 		parada = paradaService.findByUsuario(sesion.getUsuarioActivo().getId());
 		datosSellado.setParada(parada);
-
-		// cargar datos parada
+		
 		lblIdParada.setText(String.valueOf(parada.getId()));
 		lblNombre.setText(parada.getNombre());
 		lblRegion.setText(String.valueOf(parada.getRegion()));
-
-		// config info
+		
 		ayuda.configImgInfo(hpInfo);
-
-		// config tabla
+	
 		colId.setCellValueFactory(new PropertyValueFactory<>("id"));
 		colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
 		colNacionalidad.setCellValueFactory(new PropertyValueFactory<>("nacionalidad"));
-		colIdCarnet.setCellValueFactory(cellData -> {
-			// Obtenemos el carnet asociado al peregrino
-			carnet = cellData.getValue().getCarnet();
-			// Retornamos el ID del carnet como una propiedad observable de tipo Long
+		colIdCarnet.setCellValueFactory(cellData -> {			
+			carnet = cellData.getValue().getCarnet();			
 			return new SimpleObjectProperty<>(carnet != null ? carnet.getId() : null);
 		});
 
@@ -149,32 +144,22 @@ public class SellarController implements Initializable {
 
 		tblPeregrinos.setItems(listPeregrinos);
 		tblPeregrinos.setPlaceholder(new Label("Sin peregrinos registrados"));
-
-
-		// config img btn Sellar
-		botones.imgFlecha(btnSellar);
-
-		// config img btn Volver
-		botones.imgVolver(btnVolver);
-
-		// config img btn Salir
+	
+		botones.imgFlecha(btnSellar);		
+		botones.imgVolver(btnVolver);	
 		botones.imgSalir(btnSalir);
 
-		// mnemónicos
+		
 		mnemonicConfig.infoMnemonic(hpInfo);
-
 		btnSellar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.ENTER) {
 				btnSellar.fire();
 				event.consume();
 			}
 		});
-
 		mnemonicConfig.volverMnemonic(btnVolver);
-
 		mnemonicConfig.salirMnemonic(btnSalir);
-
-		// tooltips
+		
 		tooltipConfig.salirTooltip(btnSalir);
 		btnSellar.setTooltip(new Tooltip("Sellar (Alt+Enter)"));
 		tooltipConfig.volverTooltip(btnVolver);
@@ -183,7 +168,8 @@ public class SellarController implements Initializable {
 
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
-		ayuda.configInfo("/help/sellar.html");
+		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
+		ayuda.configInfo("/help/sellar.html",stage);
 	}
 
 	@FXML

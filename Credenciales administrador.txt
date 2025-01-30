@@ -1,3 +1,0 @@
-Creación automática de administrador con credenciales:
-usuario: admin
-contraseña: Admin_123

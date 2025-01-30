@@ -7,5 +7,6 @@ import com.luisdbb.tarea3AD2024base.modelo.Peregrino;
 public interface PeregrinoRepository extends JpaRepository<Peregrino, Long>{
 
 	Peregrino findByUsuario_id(long id);
+	
 	Peregrino findByUsuario_nombreUsuario(String nombreUsuario);
 }

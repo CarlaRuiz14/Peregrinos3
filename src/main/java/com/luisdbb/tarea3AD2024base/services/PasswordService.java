@@ -44,5 +44,4 @@ public class PasswordService {
 	public boolean verificar(String userPassword, String bdPassword) {
 	    return passwordEncoder.matches(userPassword, bdPassword);	   
 	}
-
 }

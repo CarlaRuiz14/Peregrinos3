@@ -18,7 +18,6 @@ public class Mnemonic {
 			}
 		});		
 	}
-
 	
 	public void logoutMnemonic(Button btn) {
 		btn.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
@@ -76,10 +75,5 @@ public class Mnemonic {
 				event.consume();
 			}
 		});
-	}
-	
-
-	
-	
-	
+	}	
 }

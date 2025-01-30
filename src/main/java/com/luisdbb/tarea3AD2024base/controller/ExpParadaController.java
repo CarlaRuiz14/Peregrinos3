@@ -41,6 +41,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -137,24 +138,23 @@ public class ExpParadaController implements Initializable {
 	@Autowired
 	private Validaciones validaciones;
 
-	Parada parada;
-	LocalDate fechaInicio;
-	LocalDate fechaFin;
+	private Parada parada;
+	private LocalDate fechaInicio;
+	private LocalDate fechaFin;
+	private boolean checkBuscar=false;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 		parada = paradaService.findByUsuario(sesion.getUsuarioActivo().getId());
-
-		// cargar datos parada
+		
 		lblIdPar.setText(String.valueOf(parada.getId()));
 		lblNombrePar.setText(parada.getNombre());
 		lblRegionPar.setText(String.valueOf(parada.getRegion()));
 		lblIdResp.setText(String.valueOf(sesion.getUsuarioActivo().getId()));
 		lblUsuario.setText(sesion.getUsuarioActivo().getNombreUsuario());
 		lblEmail.setText(sesion.getUsuarioActivo().getEmail());
-
-		// config tabla estancias
+		
 		colIdEstancia.setCellValueFactory(new PropertyValueFactory<>("id"));
 		colPeregrino.setCellValueFactory(new PropertyValueFactory<>("nombrePeregrino"));
 		colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
@@ -173,10 +173,9 @@ public class ExpParadaController implements Initializable {
 
 		tblEstancias.setPlaceholder(new Label("Estancias"));
 
-		// config img info
+		
 		ayuda.configImgInfo(hpInfo);
-
-		// config img btn Buscar
+		
 		String rutaBuscar = resources.getString("btnBuscar.icon");
 		Image imgBuscar = new Image(getClass().getResourceAsStream(rutaBuscar));
 		ImageView viewBuscar = new ImageView(imgBuscar);
@@ -184,44 +183,38 @@ public class ExpParadaController implements Initializable {
 		viewBuscar.setFitHeight(25);
 		btnBuscar.setGraphic(viewBuscar);
 
-		// config img btn Informe
+	
 		String rutaInforme = resources.getString("btnInforme.icon");
 		Image imgInforme = new Image(getClass().getResourceAsStream(rutaInforme));
 		btnInforme.setGraphic(botones.createImageView(imgInforme));
 
-		// config img btn Volver
-		botones.imgVolver(btnVolver);
-
-		// config img btn Salir
+		
+		botones.imgVolver(btnVolver);		
 		botones.imgSalir(btnSalir);
 
-		// mnemónicos
+		
 		mnemonicConfig.infoMnemonic(hpInfo);
-
 		btnBuscar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.ENTER) {
 				btnBuscar.fire();
 				event.consume();
 			}
 		});
-
 		mnemonicConfig.informeMnemonic(btnInforme);
-
 		mnemonicConfig.volverMnemonic(btnVolver);
-
 		mnemonicConfig.salirMnemonic(btnSalir);
-
-		// tooltips
+	
 		tooltipConfig.infoTooltip(hpInfo);
 		btnBuscar.setTooltip(new Tooltip("Buscar (Alt+B)"));
 		tooltipConfig.informeTooltip(btnInforme);
 		tooltipConfig.volverTooltip(btnVolver);
-		tooltipConfig.salirTooltip(btnSalir);
+		tooltipConfig.salirTooltip(btnSalir);		
 	}
 
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
-		ayuda.configInfo("/help/expParada.html");
+		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
+		ayuda.configInfo("/help/expParada.html",stage);
 	}
 
 	@FXML
@@ -231,7 +224,9 @@ public class ExpParadaController implements Initializable {
 		fechaFin = dateFechaF.getValue();
 
 		int check = validaciones.validarFechas(fechaInicio, fechaFin);
+		
 		if (check != 0) {
+			checkBuscar=false;
 
 			switch (check) {
 
@@ -247,14 +242,13 @@ public class ExpParadaController implements Initializable {
 			case 4:
 				alertas.alertaError("Error", "La fecha de inicio debe ser anterior a la fecha de fin.");
 				return;
-
 			}
-
 		}
 
 		List<Estancia> estancias = estanciaService.getEstanciasForParada(parada.getId(), fechaInicio, fechaFin);
 
 		if (estancias == null) {
+			checkBuscar=false;
 			return;
 		}
 
@@ -262,21 +256,26 @@ public class ExpParadaController implements Initializable {
 			alertas.alertaInformacion("Sin estancias", "No hay estancias registradas entre las fechas seleccionadas");
 			tblEstancias.setItems(null);
 			tblEstancias.setPlaceholder(new Label("Sin estancias registradas"));
-
+			checkBuscar=false;
 			return;
 		}
 
 		ObservableList<Estancia> listEstancias = FXCollections.observableArrayList(estancias);
 
 		tblEstancias.setItems(listEstancias);
+		checkBuscar=true;
 
 	}
 
 	@FXML
 	private void handlerInforme(ActionEvent event) throws IOException {
+		
+		if(!checkBuscar) {			
+			alertas.alertaError("Error", "Por favor, introduzca fechas válidas para exportar las estancias");
+			return;
+		}
 
-		try {
-			
+		try {			
 			String jasperPath = "src/main/resources/reports/InformeEstancias.jasper";
 			String outputPath = "src/main/resources/reports/Informe"+ parada.getNombre() +".pdf";			
 		
@@ -301,6 +300,7 @@ public class ExpParadaController implements Initializable {
 		}
 		
 		alertas.alertaInformacion("Informe", "Su informe se ha exportado correctamente en formato .jrxml.");
+		checkBuscar=false;
 
 	}
 
@@ -312,6 +312,5 @@ public class ExpParadaController implements Initializable {
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		botones.salirConfig();
-
 	}
 }

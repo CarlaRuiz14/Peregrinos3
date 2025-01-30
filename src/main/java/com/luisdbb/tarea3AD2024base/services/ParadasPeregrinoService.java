@@ -54,7 +54,5 @@ public class ParadasPeregrinoService {
 		ParadasPeregrino paradaPeregrino = new ParadasPeregrino(peregrino, parada, hoy);
 
 		paradasPeregrinoRepository.save(paradaPeregrino);
-
 	}
-
 }

@@ -38,6 +38,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 
 /**
  * @author Carla Ruiz
@@ -162,8 +163,7 @@ public class RegPeregrinoController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		validarEntradas();
-
-		// config hpVisible inicial
+		
 		String mostrarPath = resources.getString("contraseñaC.icon");
 		String ocultarPath = resources.getString("contraseñaO.icon");
 
@@ -171,8 +171,7 @@ public class RegPeregrinoController implements Initializable {
 		ocultarIcon = new Image(getClass().getResourceAsStream(ocultarPath));
 
 		hpVisible.setGraphic(botones.createImageView(mostrarIcon));
-
-		// combobox
+	
 		listaParadas = FXCollections.observableArrayList(paradaService.findAll());
 		cmbParada.setItems(listaParadas);
 
@@ -180,40 +179,25 @@ public class RegPeregrinoController implements Initializable {
 		listaNac = FXCollections.observableArrayList(listaValores);
 		cmbNacionalidad.setItems(listaNac);
 
-		// config info
-		ayuda.configImgInfo(hpInfo);
-
-		// config img btn Limpiar
-		botones.imgLimpiar(btnLimpiar);
-
-		// config img btn Registrar
-		botones.imgFlecha(btnRegistrar);
-
-		// config img btn Volver
-		botones.imgVolver(btnVolver);
-
-		// config img btn Salir
+		
+		ayuda.configImgInfo(hpInfo);		
+		botones.imgLimpiar(btnLimpiar);	
+		botones.imgFlecha(btnRegistrar);		
+		botones.imgVolver(btnVolver);		
 		botones.imgSalir(btnSalir);
-
-		// mnemónicos
+		
 		mnemonicConfig.infoMnemonic(hpInfo);
-
 		mnemonicConfig.visibleMnemonic(hpVisible);
-
 		mnemonicConfig.limpiarMnemonic(btnLimpiar);
-
 		btnRegistrar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.ENTER) {
 				btnRegistrar.fire();
 				event.consume();
 			}
 		});
-
 		mnemonicConfig.volverMnemonic(btnVolver);
-
 		mnemonicConfig.salirMnemonic(btnSalir);
-
-		// tooltips
+		
 		tooltipConfig.salirTooltip(btnSalir);
 		tooltipConfig.visibleTooltip(hpVisible);
 		tooltipConfig.limpiarTooltip(btnLimpiar);
@@ -224,7 +208,8 @@ public class RegPeregrinoController implements Initializable {
 
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
-		ayuda.configInfo("/help/regPeregrino.html");
+		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
+		ayuda.configInfo("/help/regPeregrino.html",stage);
 	}
 
 	@FXML
@@ -301,7 +286,6 @@ public class RegPeregrinoController implements Initializable {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 			alertas.alertaError("Error", "Hubo un problema al registrar los datos. Por favor, revise la información.");
-
 		}
 	}
 
@@ -311,8 +295,7 @@ public class RegPeregrinoController implements Initializable {
 		boolean confirmar = alertas.alertaConfirmacion("Borado de formulario",
 				"Se borrarán los datos introducidos, ¿está de acuerdo?");
 
-		if (confirmar) {
-			// cmbParada.getSelectionModel().clearSelection();
+		if (confirmar) {		
 			cmbParada.setValue(null);
 			cmbParada.setPromptText("Parada Inicial");
 			cmbParada.getParent().requestFocus();
@@ -513,7 +496,6 @@ public class RegPeregrinoController implements Initializable {
 				alertas.alertaError("Error de contraseña",
 						"La confirmación de la contraseña no coincide con la contraseña ingresada.");
 				return false;
-
 			}
 		}
 		return true;

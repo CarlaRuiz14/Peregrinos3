@@ -1,5 +1,10 @@
 package com.luisdbb.tarea3AD2024base.services;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,29 +35,25 @@ public class UsuarioService {
 	@Autowired
 	private Sesion sesion;
 
-	// al crear el usuario automaticamente encripta la constraseña
 	public Usuario saveConPassword(Usuario entidad) {
 		String passwordEncriptada = passwordService.encriptar(entidad.getContraseña());
 		entidad.setContraseña(passwordEncriptada);
 		return usuarioRepository.save(entidad);
 	}
 
-	
 	public void actualizarDatosUsuario(Usuario usuarioActivo) {
-		Usuario user=findById(usuarioActivo.getId());
+		Usuario user = findById(usuarioActivo.getId());
 		user.setEmail(usuarioActivo.getEmail());
-		usuarioRepository.save(user);	 
+		usuarioRepository.save(user);
 	}
-
-
 
 	public Usuario findByUsuario(String usuario) {
 		return usuarioRepository.findByNombreUsuario(usuario);
 	}
 
 	public Usuario findById(long id) {
-	    return usuarioRepository.findById(id)
-	            .orElseThrow(() -> new RuntimeException("Usuario con ID " + id + " no encontrado"));
+		return usuarioRepository.findById(id)
+				.orElseThrow(() -> new RuntimeException("Usuario con ID " + id + " no encontrado"));
 	}
 
 	public boolean existsByNombreUsuario(String nombre) {
@@ -62,13 +63,33 @@ public class UsuarioService {
 	public Perfil loguear(String usuario, String contraseña) {
 
 		Perfil perfil = null;
+		boolean check = false;
 
-		Usuario user = usuarioRepository.findByNombreUsuario(usuario);
+		Properties p = new Properties();
+		try {
+			File file = new File("src/main/resources/application.properties");
+			FileInputStream is = new FileInputStream(file);
+			p.load(is);
+			String user = p.getProperty("usuarioadmin");
+			String pass = p.getProperty("passadmin");
 
-		if (user != null && passwordService.verificar(contraseña, user.getContraseña())) {
-			perfil = user.getPerfil();
+			if (usuario.equalsIgnoreCase(user) && passwordService.verificar(contraseña,pass)) {
+				perfil = Perfil.ADMINISTRADOR;
+				check = true;
+			}
+
+			is.close();
+		} catch (IOException e) {
+			System.out.println("Error al acceder al archivo: " + e.getMessage());
 		}
 
+		if (!check) {
+			Usuario us = usuarioRepository.findByNombreUsuario(usuario);
+
+			if (us != null && passwordService.verificar(contraseña, us.getContraseña())) {
+				perfil = us.getPerfil();
+			}
+		}
 		return perfil;
 	}
 
@@ -87,7 +108,5 @@ public class UsuarioService {
 
 		this.saveConPassword(user);
 		paradaService.save(parada);
-
 	}
-
 }

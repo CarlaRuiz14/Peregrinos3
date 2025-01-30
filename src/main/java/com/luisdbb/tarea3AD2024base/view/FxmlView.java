@@ -190,7 +190,6 @@ public enum FxmlView {
 		}
 	};
 
-	// para asegurar consistencia, metodos abstractos
 	public abstract String getTitle();
 
 	public abstract String getFxmlFile();

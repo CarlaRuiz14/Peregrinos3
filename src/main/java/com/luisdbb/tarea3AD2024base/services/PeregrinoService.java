@@ -64,5 +64,4 @@ public class PeregrinoService {
 		
 		save(peregrinoActivo);
 	}
-
 }

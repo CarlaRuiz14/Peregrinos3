@@ -26,6 +26,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 
 /**
  * @author Carla Ruiz
@@ -98,59 +99,41 @@ public class LoginController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
-		// config hpVisible inicial
+		
 		String mostrarPath = resources.getString("contraseñaC.icon");
 		String ocultarPath = resources.getString("contraseñaO.icon");
 
 		mostrarIcon = new Image(getClass().getResourceAsStream(mostrarPath));
 		ocultarIcon = new Image(getClass().getResourceAsStream(ocultarPath));
 
-		hpVisible.setGraphic(botones.createImageView(mostrarIcon));
-		
-		// config img info
-				ayuda.configImgInfo(hpInfo);
-
-		// config img btn Login
-		botones.imgFlecha(btnLogin);
-
-		// config img btn Volver
-		botones.imgVolver(btnVolver);
-
-		// config img btn Salir
+		hpVisible.setGraphic(botones.createImageView(mostrarIcon));		
+	
+		ayuda.configImgInfo(hpInfo);		
+		botones.imgFlecha(btnLogin);		
+		botones.imgVolver(btnVolver);		
 		botones.imgSalir(btnSalir);
-
-		// config imagen usuario
+		
 		String rutaUsu = resources.getString("usuario.icon");
 		imgUsuario.setImage(new Image(getClass().getResourceAsStream(rutaUsu)));
 
-		// mnemónicos		
-		mnemonicConfig.infoMnemonic(hpInfo);
-		
+				
+		mnemonicConfig.infoMnemonic(hpInfo);		
 		mnemonicConfig.visibleMnemonic(hpVisible);
-
 		hpContraseña.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.C) {
 				hpContraseña.fire();
 				event.consume();
 			}
-		});
-		
+		});		
 		hpRegistro.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.R) {
 				hpRegistro.fire();
 				event.consume();
 			}
 		});
-		
-
 		mnemonicConfig.volverMnemonic(btnVolver);
-
-
 		mnemonicConfig.salirMnemonic(btnSalir);
-
-
-		// tooltips
+	
 		tooltipConfig.infoTooltip(hpInfo);
 		tooltipConfig.visibleTooltip(hpVisible);
 		hpContraseña.setTooltip(new Tooltip("Recuperar (Alt+C)"));
@@ -158,12 +141,12 @@ public class LoginController implements Initializable {
 		btnLogin.setTooltip(new Tooltip("Login (Alt+L)"));
 		tooltipConfig.volverTooltip(btnVolver);
 		tooltipConfig.salirTooltip(btnSalir);
-
 	}
 
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
-		ayuda.configInfo("/help/login.html");
+		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
+		ayuda.configInfo("/help/login.html",stage);
 	}
 	
 	@FXML
@@ -203,7 +186,6 @@ public class LoginController implements Initializable {
 			break;
 		default:
 			alertas.alertaError("Error", "No se ha podido iniciar sesión.");
-
 		}
 	}
 
@@ -242,6 +224,4 @@ public class LoginController implements Initializable {
 			hpVisible.setGraphic(botones.createImageView(mostrarIcon));
 		}
 	}
-
-
 }

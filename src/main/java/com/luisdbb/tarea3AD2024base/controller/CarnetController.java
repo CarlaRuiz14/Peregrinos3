@@ -41,6 +41,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 
 /**
  * @author Carla Ruiz
@@ -152,19 +153,17 @@ public class CarnetController implements Initializable {
 	@Autowired
 	private Tooltips tooltipConfig;
 
-	Usuario usuarioActivo;
-	Peregrino peregrinoActivo;
-	Carnet carnetActivo;
+	private Usuario usuarioActivo;
+	private Peregrino peregrinoActivo;
+	private Carnet carnetActivo;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
-		// sesion activa
+		
 		usuarioActivo = sesion.getUsuarioActivo();
 		peregrinoActivo = peregrinoService.findByIdUsuario(usuarioActivo.getId());
 		carnetActivo = carnetService.findById(peregrinoActivo.getCarnet().getId());
-
-		// cargar datos
+		
 		lblIdCarnet.setText(String.valueOf(carnetActivo.getId()));
 		lblExpedicion.setText(String.valueOf(carnetActivo.getFechaExp()));
 		lblIdPeregrino.setText(String.valueOf(peregrinoActivo.getId()));
@@ -178,8 +177,7 @@ public class CarnetController implements Initializable {
 
 		lblDistancia.setText(String.valueOf(carnetActivo.getDistancia()));
 		lblVips.setText(String.valueOf(carnetActivo.getnVips()));
-
-		// config tabla Paradas
+		
 		colIdParada.setCellValueFactory(new PropertyValueFactory<>("id"));
 		colNombreParada.setCellValueFactory(new PropertyValueFactory<>("nombre"));
 		colRegion.setCellValueFactory(new PropertyValueFactory<>("region"));
@@ -187,10 +185,8 @@ public class CarnetController implements Initializable {
 		List<Parada> lista = paradaService.obtenerParadasPorPeregrino(peregrinoActivo.getId());
 		ObservableList<Parada> listParadas = FXCollections.observableArrayList(lista);
 		tblParadas.setItems(listParadas);		
-		tblParadas.setPlaceholder(new Label("Sin paradas"));
-
+		tblParadas.setPlaceholder(new Label("Sin paradas"));		
 		
-		// config tabla Estancias
 		colIdEstancia.setCellValueFactory(new PropertyValueFactory<>("id"));
 		colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
 		colVip.setCellValueFactory(new PropertyValueFactory<>("vip"));
@@ -210,47 +206,32 @@ public class CarnetController implements Initializable {
 		ObservableList<Estancia> listEstancias = FXCollections.observableArrayList(listaE);
 
 		tblEstancias.setItems(listEstancias);
-		tblEstancias.setPlaceholder(new Label("Sin estancias"));
-
+		tblEstancias.setPlaceholder(new Label("Sin estancias"));		
 		
-		// config info
-		ayuda.configImgInfo(hpInfo);
-
-		// config img peregrino
+		ayuda.configImgInfo(hpInfo);	
+		
 		String rutaPer = resources.getString("carnet.icon");
-		imgCarnet.setImage(new Image(getClass().getResourceAsStream(rutaPer)));
-
-		// config img btn Informe
+		imgCarnet.setImage(new Image(getClass().getResourceAsStream(rutaPer)));	
+		
 		String rutaInforme = resources.getString("btnInforme.icon");
 		Image imgInforme = new Image(getClass().getResourceAsStream(rutaInforme));
-		btnInforme.setGraphic(botones.createImageView(imgInforme));
-
-		// config img btn Exportar
-		botones.imgFlecha(btnExportar);
-
-		// config img btn Volver
-		botones.imgVolver(btnVolver);
-
-		// config img btn Salir
+		btnInforme.setGraphic(botones.createImageView(imgInforme));	
+		
+		botones.imgFlecha(btnExportar);		
+		botones.imgVolver(btnVolver);		
 		botones.imgSalir(btnSalir);
-
-		// mnemónicos
+	
 		mnemonicConfig.infoMnemonic(hpInfo);
-
 		mnemonicConfig.informeMnemonic(btnInforme);
-
 		btnExportar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.X) {
 				btnExportar.fire();
 				event.consume();
 			}
 		});
-
 		mnemonicConfig.volverMnemonic(btnVolver);
-
 		mnemonicConfig.salirMnemonic(btnSalir);
-
-		// tooltips
+		
 		tooltipConfig.infoTooltip(hpInfo);
 		tooltipConfig.informeTooltip(btnInforme);
 		btnExportar.setTooltip(new Tooltip("Exportar (Alt+X)"));
@@ -260,7 +241,8 @@ public class CarnetController implements Initializable {
 
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
-		ayuda.configInfo("/help/expCarnet.html");
+		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
+		ayuda.configInfo("/help/expCarnet.html",stage);
 	}
 
 	@FXML

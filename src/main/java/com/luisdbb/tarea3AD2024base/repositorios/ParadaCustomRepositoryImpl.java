@@ -16,18 +16,15 @@ import jakarta.persistence.PersistenceContext;
 public class ParadaCustomRepositoryImpl implements ParadaCustomRepository {
 
 	@PersistenceContext
-	private EntityManager entityManager;
-
-	JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+	private EntityManager entityManager;	
 
 	@Override
 	public Parada findByIdUsuario(Long id) {
+		
 		JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
-
 		
 		QParada parada = QParada.parada;
-
-		// devolver construccion y ejecucion (fecthOne - devuelve 1) de consulta
+		
 		return queryFactory
 				.select(parada)
 				.from(parada)
@@ -37,8 +34,8 @@ public class ParadaCustomRepositoryImpl implements ParadaCustomRepository {
 
 	@Override
 	public List<Parada> findParadasByPeregrinoId(Long peregrinoId) {
+		
 		JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
-
 
 		QParada parada = QParada.parada;
 		QParadasPeregrino paradasPeregrino = QParadasPeregrino.paradasPeregrino;
@@ -47,8 +44,8 @@ public class ParadaCustomRepositoryImpl implements ParadaCustomRepository {
 				.select(parada)
 				.from(parada)
 				.innerJoin(paradasPeregrino)
-				.on(parada.id.eq(paradasPeregrino.parada.id))// la columna comun
-				.where(paradasPeregrino.peregrino.id.eq(peregrinoId)) // filtro
+				.on(parada.id.eq(paradasPeregrino.parada.id))
+				.where(paradasPeregrino.peregrino.id.eq(peregrinoId))
 				.fetch();
 	}
 

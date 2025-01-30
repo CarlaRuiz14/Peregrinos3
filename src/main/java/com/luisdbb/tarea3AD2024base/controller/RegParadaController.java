@@ -28,6 +28,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 
 /**
  * @author Carla Ruiz
@@ -130,8 +131,7 @@ public class RegParadaController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		validarEntradas();
-
-		// config hpVisible inicial
+		
 		String mostrarPath = resources.getString("contraseñaC.icon");
 		String ocultarPath = resources.getString("contraseñaO.icon");
 
@@ -140,40 +140,25 @@ public class RegParadaController implements Initializable {
 
 		hpVisible.setGraphic(botones.createImageView(mostrarIcon));
 
-		// config info
-		ayuda.configImgInfo(hpInfo);
-
-		// config img btn Limpiar
-		botones.imgLimpiar(btnLimpiar);
-
-		// config img btn Registrar
-		botones.imgFlecha(btnRegistrar);
-
-		// config img btn Volver
-		botones.imgVolver(btnVolver);
-
-		// config img btn Salir
+		
+		ayuda.configImgInfo(hpInfo);		
+		botones.imgLimpiar(btnLimpiar);		
+		botones.imgFlecha(btnRegistrar);	
+		botones.imgVolver(btnVolver);		
 		botones.imgSalir(btnSalir);
-
-		// mnemónicos
+		
 		mnemonicConfig.infoMnemonic(hpInfo);
-
 		mnemonicConfig.visibleMnemonic(hpVisible);
-
 		mnemonicConfig.limpiarMnemonic(btnLimpiar);
-
 		btnRegistrar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.ENTER) {
 				btnRegistrar.fire();
 				event.consume();
 			}
 		});
-
 		mnemonicConfig.volverMnemonic(btnVolver);
-
 		mnemonicConfig.salirMnemonic(btnSalir);
-
-		// tooltips
+	
 		tooltipConfig.salirTooltip(btnSalir);
 		tooltipConfig.visibleTooltip(hpVisible);
 		tooltipConfig.limpiarTooltip(btnLimpiar);
@@ -182,6 +167,13 @@ public class RegParadaController implements Initializable {
 		tooltipConfig.salirTooltip(btnSalir);
 	}
 
+	
+	@FXML
+	private void handlerInfo(ActionEvent event) throws IOException {
+		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
+		ayuda.configInfo("/help/regParada.html",stage);
+	}
+	
 	@FXML
 	private void handlerVisible() {
 		isPassVisible = !isPassVisible;
@@ -204,7 +196,6 @@ public class RegParadaController implements Initializable {
 			passConfirmacion.setVisible(true);
 			hpVisible.setGraphic(botones.createImageView(mostrarIcon));
 		}
-
 	}
 
 	@FXML
@@ -252,7 +243,6 @@ public class RegParadaController implements Initializable {
 			e.printStackTrace();
 			alertas.alertaError("Error", "Hubo un problema al registrar los datos. Por favor, revise la información.");
 		}
-
 	}
 
 	@FXML
@@ -283,12 +273,7 @@ public class RegParadaController implements Initializable {
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		botones.salirConfig();
-	}
-
-	@FXML
-	private void handlerInfo(ActionEvent event) throws IOException {
-		ayuda.configInfo("/help/regParada.html");
-	}
+	}	
 
 	private void validarEntradas() {
 
@@ -445,7 +430,6 @@ public class RegParadaController implements Initializable {
 				alertas.alertaError("Error de contraseña",
 						"La confirmación de la contraseña no coincide con la contraseña ingresada.");
 				return false;
-
 			}
 		}
 		return true;

@@ -25,6 +25,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 
 /**
  * @author Carla Ruiz
@@ -79,8 +80,7 @@ public class RecuperacionController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
-		// config txtUsuario
+		
 		usuarioProperty.bind(txtUsuario.textProperty());
 		usuarioProperty.addListener((observable, oldValue, newValue) -> {
 			Usuario user = usuarioService.findByUsuario(txtUsuario.getText());
@@ -95,46 +95,32 @@ public class RecuperacionController implements Initializable {
 				existeUsuario = true;
 			}
 		});
-
-		// config img btn flecha
+	
 		botones.imgFlecha(btnEnviar);
-
-		// config img btn Volver
-		botones.imgVolver(btnVolver);
-
-		// config img btn Salir
-		botones.imgSalir(btnSalir);
-
-		// config img info
+		botones.imgVolver(btnVolver);		
+		botones.imgSalir(btnSalir);		
 		ayuda.configImgInfo(hpInfo);
-
-		// mnemónicos
+	
 		mnemonicConfig.infoMnemonic(hpInfo);
-
 		btnEnviar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.ENTER) {
 				btnEnviar.fire();
 				event.consume();
 			}
 		});
-
 		mnemonicConfig.volverMnemonic(btnVolver);
-
-
 		mnemonicConfig.salirMnemonic(btnSalir);
-
-
-		// tooltips
+		
 		tooltipConfig.salirTooltip(btnSalir);
 		btnEnviar.setTooltip(new Tooltip("Enviar (Alt+Enter)"));
 		tooltipConfig.volverTooltip(btnVolver);
 		tooltipConfig.salirTooltip(btnSalir);
-
 	}
 
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
-		ayuda.configInfo("/help/recContraseña.html");
+		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
+		ayuda.configInfo("/help/recContraseña.html",stage);
 	}
 
 	@FXML

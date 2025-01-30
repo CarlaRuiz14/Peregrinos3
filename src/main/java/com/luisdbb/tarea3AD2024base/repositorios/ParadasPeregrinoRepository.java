@@ -8,7 +8,5 @@ import com.luisdbb.tarea3AD2024base.modelo.ParadasPeregrinoId;
 
 @Repository
 public interface ParadasPeregrinoRepository extends JpaRepository<ParadasPeregrino, ParadasPeregrinoId>{
-	
-
 
 }

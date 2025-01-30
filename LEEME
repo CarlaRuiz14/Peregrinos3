@@ -6,7 +6,8 @@ Para lanzar el programa, seleccionar:
 Run As > Run Configurations... > en el apartado Goals escribir clean javafx:run y pulsar Run 
 
 Se arrancará String Boot, se conectará a la BD bdtarea3adcarlaruiz y aparecerá la GUI de Main. 
-Para poder autenticarse, introducir en usuario "admin" y en contraseña "Admin_123".
 
-Así se crean unas credenciales admin/admin que dan acceso a la aplicación.
 Desde ahí, ya se pueden insertar nuevos usuarios.
+
+Usuarios pepeparada y pacoperegrino con contraseña Moto_1990 para ver contenido
+de base de datos "bdtarea3ad_carlaruiz"

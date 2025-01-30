@@ -23,6 +23,7 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 
 /**
  * @author Carla Ruiz
@@ -84,53 +85,40 @@ public class AlojarController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
-		// cargar datos
+		
 		lblNombre.setText(datosSellado.getParada().getNombre());
 		lblRegion.setText(String.valueOf(datosSellado.getParada().getRegion()));
 		lblId.setText(String.valueOf(datosSellado.getParada().getId()));
-
-		// config toggle group
+	
 		rbtnSi.setToggleGroup(respuesta);
 		rbtnNo.setToggleGroup(respuesta);
 
-		// config info
-		ayuda.configImgInfo(hpInfo);
-
-		// config img btn Alojar
-		botones.imgFlecha(btnAlojar);
-
-		// config img btn Volver
-		botones.imgVolver(btnVolver);
-
-		// config img btn Salir
+		ayuda.configImgInfo(hpInfo);		
+		botones.imgFlecha(btnAlojar);	
+		botones.imgVolver(btnVolver);		
 		botones.imgSalir(btnSalir);
 
-		// mnemónicos
+		
 		mnemonicConfig.infoMnemonic(hpInfo);
-
 		btnAlojar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.ENTER) {
 				btnAlojar.fire();
 				event.consume();
 			}
 		});
-
 		mnemonicConfig.volverMnemonic(btnVolver);
-
 		mnemonicConfig.salirMnemonic(btnSalir);
-
-		// tooltips
+		
 		tooltipConfig.infoTooltip(hpInfo);
 		btnAlojar.setTooltip(new Tooltip("Alojar (Alt+Enter)"));
 		tooltipConfig.volverTooltip(btnVolver);
 		tooltipConfig.salirTooltip(btnSalir);
-
 	}
 
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
-		ayuda.configInfo("/help/alojar.html");
+		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
+		ayuda.configInfo("/help/alojar.html",stage);
 	}
 
 	@FXML

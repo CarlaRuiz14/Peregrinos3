@@ -21,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 
 /**
  * @author Carla Ruiz
@@ -66,31 +67,21 @@ public class AdminController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
-		// config info
-		ayuda.configImgInfo(hpInfo);
-
-		// config img btn Logout
-		botones.imgLogout(btnLogout);
-
-		// config img btn Salir
+		
+		ayuda.configImgInfo(hpInfo);	
+		botones.imgLogout(btnLogout);		
 		botones.imgSalir(btnSalir);
-
-		// mnemónicos
+		
 		mnemonicConfig.infoMnemonic(hpInfo);
-
 		btnParada.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.N) {
 				btnParada.fire();
 				event.consume();
 			}
 		});
-
 		mnemonicConfig.logoutMnemonic(btnLogout);
-
 		mnemonicConfig.salirMnemonic(btnSalir);
-
-		// tooltips
+		
 		tooltipConfig.infoTooltip(hpInfo);
 		btnParada.setTooltip(new Tooltip("Nueva Parada (Alt+N)"));
 		tooltipConfig.logoutTooltip(btnLogout);
@@ -99,7 +90,8 @@ public class AdminController implements Initializable {
 
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
-		ayuda.configInfo("/help/administrador.html");
+	    Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
+		ayuda.configInfo("/help/administrador.html",stage);
 	}
 
 	@FXML

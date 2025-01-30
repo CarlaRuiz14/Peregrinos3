@@ -35,6 +35,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 
 /**
  * @author Carla Ruiz
@@ -118,19 +119,17 @@ public class EditarController implements Initializable {
 	@Autowired
 	private LabelFeed label;
 
-	Usuario usuarioActivo;
-	Peregrino peregrinoActivo;
+	private Usuario usuarioActivo;
+	private Peregrino peregrinoActivo;
 
 	private boolean emailCheck = false;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
-		// entidades a editar
+		
 		usuarioActivo = sesion.getUsuarioActivo();
 		peregrinoActivo = peregrinoService.findByIdUsuario(usuarioActivo.getId());
-
-		// cargar datos
+		
 		txtNombre.setText(peregrinoActivo.getNombre());
 		txtApellidos.setText(peregrinoActivo.getApellidos());
 		txtEmail.setText(usuarioActivo.getEmail());
@@ -139,55 +138,40 @@ public class EditarController implements Initializable {
 		cmbNacionalidad.getSelectionModel().select(nac);
 
 		validarEntradas();
-
-		// combobox nacionalidades
+	
 		List<String> listaValores = new ArrayList<>(nacionalidadService.mapaNacionalidades().values());
 		listaNac = FXCollections.observableArrayList(listaValores);
 		cmbNacionalidad.setItems(listaNac);
 
-		// config info
-		ayuda.configImgInfo(hpInfo);
-
-		// config img btn Limpiar
-		botones.imgLimpiar(btnLimpiar);
-
-		// config img btn Editar
-		botones.imgFlecha(btnEditar);
-
-		// config img btn Volver
-		botones.imgVolver(btnVolver);
-
-		// config img btn Salir
+		
+		ayuda.configImgInfo(hpInfo);		
+		botones.imgLimpiar(btnLimpiar);	
+		botones.imgFlecha(btnEditar);		
+		botones.imgVolver(btnVolver);		
 		botones.imgSalir(btnSalir);
-
-		// mnemónicos
-		mnemonicConfig.infoMnemonic(hpInfo);
-
+		
+		mnemonicConfig.infoMnemonic(hpInfo);	
 		mnemonicConfig.limpiarMnemonic(btnLimpiar);
-
 		btnEditar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.ENTER) {
 				btnEditar.fire();
 				event.consume();
 			}
 		});
-
 		mnemonicConfig.volverMnemonic(btnVolver);
-
 		mnemonicConfig.salirMnemonic(btnSalir);
-
-		// tooltips
+		
 		tooltipConfig.infoTooltip(hpInfo);
 		tooltipConfig.limpiarTooltip(btnLimpiar);
 		btnEditar.setTooltip(new Tooltip("Editar (Alt+Enter)"));
 		tooltipConfig.volverTooltip(btnVolver);
 		tooltipConfig.salirTooltip(btnSalir);
-
 	}
 
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
-		ayuda.configInfo("/help/editar.html");
+		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
+		ayuda.configInfo("/help/editar.html",stage);
 	}
 
 	@FXML
@@ -285,7 +269,5 @@ public class EditarController implements Initializable {
 		}
 
 		return true;
-
 	}
-
 }

@@ -41,7 +41,7 @@ public class Ayuda {
 		hp.setGraphic(imageView);
 	}
 
-	public void configInfo(String ruta) {
+	public void configInfo(String ruta, Stage ventanaPadre) {
 		WebView webView = new WebView();
 
 		String url = getClass().getResource(ruta).toExternalForm();
@@ -50,7 +50,7 @@ public class Ayuda {
 		Stage helpStage = new Stage();
 		helpStage.setTitle("Ayuda Estela");
 
-		String iconPath =ResourceBundle.getBundle("Bundle").getString("info.icon");
+		String iconPath = ResourceBundle.getBundle("Bundle").getString("info.icon");
 		Image icon = new Image(getClass().getResource(iconPath).toExternalForm());
 		helpStage.getIcons().add(icon);
 
@@ -58,7 +58,11 @@ public class Ayuda {
 		helpStage.setScene(helpScene);
 
 		helpStage.initModality(Modality.APPLICATION_MODAL);
+		helpStage.initOwner(ventanaPadre);
 		helpStage.setResizable(false);
+
+		ventanaPadre.setOpacity(0.7);
+		helpStage.setOnCloseRequest(event -> ventanaPadre.setOpacity(1.0));
 
 		helpStage.show();
 	}

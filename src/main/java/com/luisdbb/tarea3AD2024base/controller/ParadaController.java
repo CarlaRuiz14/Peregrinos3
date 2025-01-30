@@ -21,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 
 /**
  * @author Carla Ruiz
@@ -69,49 +70,39 @@ public class ParadaController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
-		// config img info
-		ayuda.configImgInfo(hpInfo);
-
-		// config img btn Logout
-		botones.imgLogout(btnLogout);
-
-		// config img btn Salir
+		
+		ayuda.configImgInfo(hpInfo);		
+		botones.imgLogout(btnLogout);		
 		botones.imgSalir(btnSalir);
 
-		// mnemónicos
+	
 		mnemonicConfig.infoMnemonic(hpInfo);
-
 		btnExportar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.X) {
 				btnExportar.fire();
 				event.consume();
 			}
 		});
-
 		btnSellar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.A) {
 				btnSellar.fire();
 				event.consume();
 			}
 		});
-
 		mnemonicConfig.logoutMnemonic(btnLogout);
-
 		mnemonicConfig.salirMnemonic(btnSalir);
-
-		// tooltips
+		
 		tooltipConfig.salirTooltip(btnSalir);
 		btnExportar.setTooltip(new Tooltip("Exportar Carnet (Alt+X)"));
 		btnSellar.setTooltip(new Tooltip("Sellar/Alojar (Alt+A)"));
 		tooltipConfig.logoutTooltip(btnLogout);
 		tooltipConfig.salirTooltip(btnSalir);
-
 	}
 
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
-		ayuda.configInfo("/help/parada.html");
+		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
+		ayuda.configInfo("/help/parada.html",stage);
 	}
 
 	@FXML

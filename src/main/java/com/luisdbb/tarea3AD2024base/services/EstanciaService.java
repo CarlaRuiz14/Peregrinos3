@@ -29,7 +29,6 @@ public class EstanciaService {
 
 	public List<Estancia> getEstanciasForParada(Long idParada, LocalDate fechaInicio, LocalDate fechaFin) {
 		return estanciaRepository.findByIdParadaAndFechaBetween(idParada, fechaInicio, fechaFin);
-
 	}
 
 	@Transactional
@@ -45,11 +44,9 @@ public class EstanciaService {
 		}
 
 		return estanciaRepository.save(estancia) != null;
-
 	}
 
 	public List<Estancia> findByPeregrinoId(Long peregrinoId) {
 		return estanciaRepository.findByPeregrinoId(peregrinoId);
 	}
-
 }

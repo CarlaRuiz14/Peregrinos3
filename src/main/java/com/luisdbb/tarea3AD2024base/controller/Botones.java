@@ -88,7 +88,8 @@ public class Botones {
 		imageView.setFitHeight(40);
 		imageView.setPreserveRatio(true);
 		return imageView;
-	}
+	}	
+
 	
 	public void salirConfig() {
 		boolean respuesta=alertas.alertaConfirmacion("Salir", "Va a cerrar la apliación, ¿está seguro?");		
@@ -97,8 +98,7 @@ public class Botones {
 			Platform.exit();
 		}else {
 			alertas.alertaInformacion("Salir", "Acción cancelada. \nVolviendo.");
-		}
-		
+		}		
 	}
 	
 	public void logoutConfig(UsuarioService usuario, StageManager stage) {		
@@ -109,7 +109,6 @@ public class Botones {
 			stage.switchScene(FxmlView.LOGIN);
 		}else {
 			alertas.alertaInformacion("Operación cancelada", "Su sesión permanece activa.\nVolviendo.");
-		}
-		
+		}		
 	}
 }

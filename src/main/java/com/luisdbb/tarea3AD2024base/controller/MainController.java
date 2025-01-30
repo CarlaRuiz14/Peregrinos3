@@ -20,6 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.stage.Stage;
 
 /**
  * @author Carla Ruiz
@@ -59,40 +60,28 @@ public class MainController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
-		// config img info
-		ayuda.configImgInfo(hpInfo);
-
-		// config img btn flecha
-		botones.imgFlecha(btnFlecha);
-
-		// config img btn Salir
-		botones.imgSalir(btnSalir);
-
-		// mnemónicos		
-		mnemonicConfig.infoMnemonic(hpInfo);
-		
+	
+		ayuda.configImgInfo(hpInfo);		
+		botones.imgFlecha(btnFlecha);		
+		botones.imgSalir(btnSalir);				
+		mnemonicConfig.infoMnemonic(hpInfo);		
 		btnFlecha.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.ENTER) {
 				btnFlecha.fire(); 
 				event.consume(); 
 			}
 		});
-
 		mnemonicConfig.salirMnemonic(btnSalir);
-
-
-		// tooltips
+		
 		tooltipConfig.infoTooltip(hpInfo);
 		btnFlecha.setTooltip(new Tooltip("Intro (Alt+Enter)"));
-		tooltipConfig.salirTooltip(btnSalir);
-
-		
+		tooltipConfig.salirTooltip(btnSalir);		
 	}
 
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
-		ayuda.configInfo("/help/main.html");
+		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
+		ayuda.configInfo("/help/main.html",stage);
 	}
 
 	@FXML

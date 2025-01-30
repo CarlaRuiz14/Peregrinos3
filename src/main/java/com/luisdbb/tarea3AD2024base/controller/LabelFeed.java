@@ -19,5 +19,4 @@ public class LabelFeed {
 		lblFeed.getStyleClass().add("lblFeedValido");
 		lblFeed.setText(mensaje);		
 	}
-
 }
