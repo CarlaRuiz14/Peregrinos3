@@ -178,7 +178,6 @@ public class RegPeregrinoController implements Initializable {
 		List<String> listaValores = new ArrayList<>(nacionalidadService.mapaNacionalidades().values());
 		listaNac = FXCollections.observableArrayList(listaValores);
 		cmbNacionalidad.setItems(listaNac);
-
 		
 		ayuda.configImgInfo(hpInfo);		
 		botones.imgLimpiar(btnLimpiar);	
@@ -282,10 +281,10 @@ public class RegPeregrinoController implements Initializable {
 			alertas.alertaInformacion("Registro exitoso",
 					"Se ha registrado como peregrino y se ha creado su carnet correctamente.\n\nVolviendo al menú de inicio de sesión.");
 			stageManager.switchScene(FxmlView.LOGIN);
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+		} catch (Exception e) {		
 			e.printStackTrace();
 			alertas.alertaError("Error", "Hubo un problema al registrar los datos. Por favor, revise la información.");
+			return;
 		}
 	}
 

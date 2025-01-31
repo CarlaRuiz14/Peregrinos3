@@ -81,6 +81,7 @@ public class UsuarioService {
 			is.close();
 		} catch (IOException e) {
 			System.out.println("Error al acceder al archivo: " + e.getMessage());
+			return null;
 		}
 
 		if (!check) {

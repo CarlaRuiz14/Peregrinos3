@@ -9,5 +9,9 @@ Se arrancará String Boot, se conectará a la BD bdtarea3adcarlaruiz y aparecer�
 
 Desde ahí, ya se pueden insertar nuevos usuarios.
 
-Usuarios pepeparada y pacoperegrino con contraseña Moto_1990 para ver contenido
-de base de datos "bdtarea3ad_carlaruiz"
+Base de datos en resources/sql.
+Usuarios pepeparada y pacoperegrino con contraseña Moto_1990 con estancias hechas.
+
+Arguments:
+--module-path "C:\javafx-sdk-23.0.1\lib" --add-modules javafx.controls,javafx.fxml
+--add-modules javafx.web

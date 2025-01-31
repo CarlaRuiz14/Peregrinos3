@@ -23,6 +23,8 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -98,8 +100,16 @@ public class RecuperacionController implements Initializable {
 	
 		botones.imgFlecha(btnEnviar);
 		botones.imgVolver(btnVolver);		
-		botones.imgSalir(btnSalir);		
-		ayuda.configImgInfo(hpInfo);
+		botones.imgSalir(btnSalir);	
+		
+		
+		String rutaInfo = resources.getString("info.icon");
+		Image imagen = new Image(getClass().getResourceAsStream(rutaInfo));
+		ImageView imageView = new ImageView(imagen);
+		imageView.setFitWidth(50);
+		imageView.setFitHeight(50);
+		imageView.setPreserveRatio(true);
+		hpInfo.setGraphic(imageView);
 	
 		mnemonicConfig.infoMnemonic(hpInfo);
 		btnEnviar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {

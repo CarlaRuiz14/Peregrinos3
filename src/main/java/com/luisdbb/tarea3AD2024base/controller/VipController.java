@@ -153,9 +153,9 @@ public class VipController implements Initializable {
 				stageManager.switchScene(FxmlView.PARADA);
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 			e.printStackTrace();
 			alertas.alertaError("Error", "Hubo un problema al registrar los datos. Por favor, revise la información.");
+			return;
 		}
 	}
 

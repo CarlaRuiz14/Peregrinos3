@@ -159,11 +159,11 @@ public class CarnetController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+
 		usuarioActivo = sesion.getUsuarioActivo();
 		peregrinoActivo = peregrinoService.findByIdUsuario(usuarioActivo.getId());
 		carnetActivo = carnetService.findById(peregrinoActivo.getCarnet().getId());
-		
+
 		lblIdCarnet.setText(String.valueOf(carnetActivo.getId()));
 		lblExpedicion.setText(String.valueOf(carnetActivo.getFechaExp()));
 		lblIdPeregrino.setText(String.valueOf(peregrinoActivo.getId()));
@@ -177,16 +177,16 @@ public class CarnetController implements Initializable {
 
 		lblDistancia.setText(String.valueOf(carnetActivo.getDistancia()));
 		lblVips.setText(String.valueOf(carnetActivo.getnVips()));
-		
+
 		colIdParada.setCellValueFactory(new PropertyValueFactory<>("id"));
 		colNombreParada.setCellValueFactory(new PropertyValueFactory<>("nombre"));
 		colRegion.setCellValueFactory(new PropertyValueFactory<>("region"));
 
 		List<Parada> lista = paradaService.obtenerParadasPorPeregrino(peregrinoActivo.getId());
 		ObservableList<Parada> listParadas = FXCollections.observableArrayList(lista);
-		tblParadas.setItems(listParadas);		
-		tblParadas.setPlaceholder(new Label("Sin paradas"));		
-		
+		tblParadas.setItems(listParadas);
+		tblParadas.setPlaceholder(new Label("Sin paradas"));
+
 		colIdEstancia.setCellValueFactory(new PropertyValueFactory<>("id"));
 		colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
 		colVip.setCellValueFactory(new PropertyValueFactory<>("vip"));
@@ -206,21 +206,21 @@ public class CarnetController implements Initializable {
 		ObservableList<Estancia> listEstancias = FXCollections.observableArrayList(listaE);
 
 		tblEstancias.setItems(listEstancias);
-		tblEstancias.setPlaceholder(new Label("Sin estancias"));		
-		
-		ayuda.configImgInfo(hpInfo);	
-		
+		tblEstancias.setPlaceholder(new Label("Sin estancias"));
+
+		ayuda.configImgInfo(hpInfo);
+
 		String rutaPer = resources.getString("carnet.icon");
-		imgCarnet.setImage(new Image(getClass().getResourceAsStream(rutaPer)));	
-		
+		imgCarnet.setImage(new Image(getClass().getResourceAsStream(rutaPer)));
+
 		String rutaInforme = resources.getString("btnInforme.icon");
 		Image imgInforme = new Image(getClass().getResourceAsStream(rutaInforme));
-		btnInforme.setGraphic(botones.createImageView(imgInforme));	
-		
-		botones.imgFlecha(btnExportar);		
-		botones.imgVolver(btnVolver);		
+		btnInforme.setGraphic(botones.createImageView(imgInforme));
+
+		botones.imgFlecha(btnExportar);
+		botones.imgVolver(btnVolver);
 		botones.imgSalir(btnSalir);
-	
+
 		mnemonicConfig.infoMnemonic(hpInfo);
 		mnemonicConfig.informeMnemonic(btnInforme);
 		btnExportar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
@@ -231,7 +231,7 @@ public class CarnetController implements Initializable {
 		});
 		mnemonicConfig.volverMnemonic(btnVolver);
 		mnemonicConfig.salirMnemonic(btnSalir);
-		
+
 		tooltipConfig.infoTooltip(hpInfo);
 		tooltipConfig.informeTooltip(btnInforme);
 		btnExportar.setTooltip(new Tooltip("Exportar (Alt+X)"));
@@ -242,20 +242,44 @@ public class CarnetController implements Initializable {
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
-		ayuda.configInfo("/help/expCarnet.html",stage);
+		ayuda.configInfo("/help/expCarnet.html", stage);
 	}
 
 	@FXML
 	private void handlerInforme(ActionEvent event) throws IOException {
-
+		// falta informe incrustado
 	}
 
 	@FXML
 	private void handlerExportar(ActionEvent event) throws IOException {
-		carnetService.exportarCarnet(peregrinoActivo);
-		alertas.alertaInformacion("Carnet exportado",
-				"Su carnet ha sido exportado correctamente en formato xml.\n\nVolviendo al menú. ");
-		stageManager.switchScene(FxmlView.PEREGRINO);
+
+		int checkCarnet = carnetService.exportarCarnet(peregrinoActivo);
+
+		switch (checkCarnet) {
+
+		case 0 -> {
+			alertas.alertaInformacion("Carnet exportado",
+					"Su carnet ha sido exportado correctamente en formato xml.\n\nVolviendo al menú. ");
+			stageManager.switchScene(FxmlView.PEREGRINO);
+			break;
+		}
+		case 1 -> {
+			alertas.alertaError("Error", "Error en la configuración del parser XML");
+			break;
+		}
+		case 2 -> {
+			alertas.alertaError("Error", "Error en la configuración del transformador XML");
+			break;
+		}
+		case 3 -> {
+			alertas.alertaError("Error", "Error al transformar el documento XML");
+			break;
+		}
+		case 4 -> {
+			alertas.alertaError("Error", "Error inesperado: se intentó acceder a un objeto nulo");
+			break;
+		}
+		}
 	}
 
 	@FXML

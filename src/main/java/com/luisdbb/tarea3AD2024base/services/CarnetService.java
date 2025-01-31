@@ -56,7 +56,7 @@ public class CarnetService {
 		return carnetRepository.findById(id);
 	}
 
-	public void exportarCarnet(Peregrino p) {
+	public int exportarCarnet(Peregrino p) {
 
 		List<Parada> listaParadas = paradaService.obtenerParadasPorPeregrino(p.getId());
 		List<Estancia> listaEstancias = estanciaService.findByPeregrinoId(p.getId());
@@ -209,15 +209,17 @@ public class CarnetService {
 			TransformerFactory fabricaTransformador = TransformerFactory.newInstance();
 			Transformer transformador = fabricaTransformador.newTransformer();
 			transformador.transform(fuente, resultado);
+			
+			return 0;
 
 		} catch (ParserConfigurationException e) {
-			System.err.println("Error en la configuración del parser XML: " + e.getMessage());
+			return 1;
 		} catch (TransformerConfigurationException e) {
-			System.err.println("Error en la configuración del transformador XML: " + e.getMessage());
+			return 2;
 		} catch (TransformerException e) {
-			System.err.println("Error al transformar el documento XML: " + e.getMessage());
+			return 3;
 		} catch (NullPointerException e) {
-			System.err.println("Error inesperado: se intentó acceder a un objeto nulo.");
+			return 4;
 		}
 	}
 }

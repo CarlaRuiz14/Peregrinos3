@@ -238,10 +238,10 @@ public class RegParadaController implements Initializable {
 
 			stageManager.switchScene(FxmlView.ADMIN);
 
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+		} catch (Exception e) {			
 			e.printStackTrace();
 			alertas.alertaError("Error", "Hubo un problema al registrar los datos. Por favor, revise la información.");
+			return;
 		}
 	}
 

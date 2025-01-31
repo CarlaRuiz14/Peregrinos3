@@ -122,7 +122,7 @@ public class EditarController implements Initializable {
 	private Usuario usuarioActivo;
 	private Peregrino peregrinoActivo;
 
-	private boolean emailCheck = false;
+	private boolean emailCheck = true;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

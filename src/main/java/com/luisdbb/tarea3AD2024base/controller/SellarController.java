@@ -212,10 +212,10 @@ public class SellarController implements Initializable {
 						"Por favor, seleccione un peregrino \npara sellar su carnet.");
 			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 			e.printStackTrace();
 			alertas.alertaError("Error de sellado",
 					"Hubo un error al intentar sellar el carnet del peregrino, revise la infomación. ");
+			return;
 		}
 	}
 
