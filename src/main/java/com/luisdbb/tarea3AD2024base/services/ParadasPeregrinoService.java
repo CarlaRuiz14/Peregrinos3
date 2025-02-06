@@ -1,6 +1,7 @@
 package com.luisdbb.tarea3AD2024base.services;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,5 +55,12 @@ public class ParadasPeregrinoService {
 		ParadasPeregrino paradaPeregrino = new ParadasPeregrino(peregrino, parada, hoy);
 
 		paradasPeregrinoRepository.save(paradaPeregrino);
+	}	
+	
+	
+	public List<ParadasPeregrino> listarParadasPeregrino(long idPeregrino){
+		return paradasPeregrinoRepository.findByIdIdPeregrino(idPeregrino);
 	}
+	
+	
 }

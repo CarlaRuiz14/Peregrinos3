@@ -1,11 +1,13 @@
 package com.luisdbb.tarea3AD2024base.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.luisdbb.tarea3AD2024base.modelo.Parada;
+import com.luisdbb.tarea3AD2024base.modelo.ParadasPeregrino;
 import com.luisdbb.tarea3AD2024base.repositorios.ParadaRepository;
 
 /**
@@ -18,6 +20,9 @@ public class ParadaService {
 	@Autowired
 	private ParadaRepository paradaRepository;
 
+	@Autowired
+	private ParadasPeregrinoService paradasPeregrinoService;
+	
 	public Parada save(Parada entidad) {
 		return paradaRepository.save(entidad);
 	}
@@ -42,7 +47,7 @@ public class ParadaService {
 	}
 
 	public Parada findByUsuario(Long id) {
-		return paradaRepository.findByIdUsuario(id);
+		return paradaRepository.findByUsuarioId(id);
 	}
 
 	public List<Parada> findAll() {
@@ -50,6 +55,14 @@ public class ParadaService {
 	}
 
 	public List<Parada> obtenerParadasPorPeregrino(Long peregrinoId) {
-		return paradaRepository.findParadasByPeregrinoId(peregrinoId);
+		List<ParadasPeregrino> listaP=paradasPeregrinoService.listarParadasPeregrino(peregrinoId);
+        List<Parada> paradas = new ArrayList<>();
+	
+		for(ParadasPeregrino p:listaP) {
+			Parada parada=paradaRepository.findParadaById(p.getParada().getId());
+			paradas.add(parada);			
+		}	
+		
+		return paradas;
 	}
 }

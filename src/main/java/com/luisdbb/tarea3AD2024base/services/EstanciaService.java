@@ -28,7 +28,7 @@ public class EstanciaService {
 	private CarnetService carnetService;
 
 	public List<Estancia> getEstanciasForParada(Long idParada, LocalDate fechaInicio, LocalDate fechaFin) {
-		return estanciaRepository.findByIdParadaAndFechaBetween(idParada, fechaInicio, fechaFin);
+		return estanciaRepository.findByParadaIdAndFechaBetween(idParada, fechaInicio, fechaFin);
 	}
 
 	@Transactional
