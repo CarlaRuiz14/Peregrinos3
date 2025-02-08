@@ -51,6 +51,7 @@ public class Tarea3Ad2024baseApplication extends Application {
 	 * @param args Argumentos de la línea de comandos.
 	 */
 	public static void main(final String[] args) {
+	    System.setProperty("java.awt.headless", "false");
 		Application.launch(args);
 	}
 

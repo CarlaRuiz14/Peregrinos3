@@ -1,10 +1,18 @@
 package com.luisdbb.tarea3AD2024base.controller;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.sql.Connection;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+
+import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -14,7 +22,6 @@ import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.Carnet;
 import com.luisdbb.tarea3AD2024base.modelo.Estancia;
 import com.luisdbb.tarea3AD2024base.modelo.Parada;
-import com.luisdbb.tarea3AD2024base.modelo.ParadasPeregrino;
 import com.luisdbb.tarea3AD2024base.modelo.Peregrino;
 import com.luisdbb.tarea3AD2024base.modelo.Sesion;
 import com.luisdbb.tarea3AD2024base.modelo.Usuario;
@@ -27,12 +34,15 @@ import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -42,7 +52,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperPrintManager;
+
+
 
 /**
  * @author Carla Ruiz
@@ -152,7 +168,10 @@ public class CarnetController implements Initializable {
 	private Mnemonic mnemonicConfig;
 
 	@Autowired
-	private Tooltips tooltipConfig;
+	private Tooltips tooltipConfig;	
+	
+	@Autowired
+	private DataSource dataSource;
 
 	private Usuario usuarioActivo;
 	private Peregrino peregrinoActivo;
@@ -246,11 +265,83 @@ public class CarnetController implements Initializable {
 		ayuda.configInfo("/help/expCarnet.html", stage);
 	}
 
+	
 	@FXML
-	private void handlerInforme(ActionEvent event) throws IOException {
-		// falta informe incrustado
+	private void handlerInforme(ActionEvent event) {
+	    try {
+	        // 1. Carga el archivo compilado del informe (.jasper)
+	        InputStream reportStream = getClass().getResourceAsStream("/reports/InformeCarnet.jasper");
+	        if (reportStream == null) {
+	            alertas.alertaError("Error", "No se encontró el archivo del informe.");
+	            return;
+	        }
+	        
+	        // 2. Define los parámetros necesarios para el informe.
+	        Map<String, Object> parameters = new HashMap<>();
+	        parameters.put("peregrinoId", peregrinoActivo.getId());
+	        // Agrega otros parámetros si son necesarios
+
+	        // 3. Obtén una conexión real desde el DataSource
+	        try (Connection connection = dataSource.getConnection()) {
+	            // 4. Llena el informe usando la conexión real
+	            JasperPrint jasperPrint = JasperFillManager.fillReport(reportStream, parameters, connection);
+	            
+	            // 5. Renderiza las páginas del informe a imágenes y muéstralas en una ventana JavaFX
+	            renderReportPages(jasperPrint);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        alertas.alertaError("Error", "No se pudo generar el informe: " + e.getMessage());
+	    }
+	}
+	
+	private void renderReportPages(JasperPrint jasperPrint) {
+	    // Crea un contenedor vertical para las imágenes (una por cada página)
+	    VBox container = new VBox(10); // 10 píxeles de espacio entre páginas
+
+	    // Define el factor de zoom (ajústalo según tus necesidades)
+	    float zoom = 1.5f;
+	    int pageCount = jasperPrint.getPages().size();
+
+	    for (int i = 0; i < pageCount; i++) {
+	        try {
+	            java.awt.Image awtImage = JasperPrintManager.printPageToImage(jasperPrint, i, zoom);
+	            BufferedImage bufferedImage = new BufferedImage(
+	                awtImage.getWidth(null),
+	                awtImage.getHeight(null),
+	                BufferedImage.TYPE_INT_ARGB
+	            );
+	            Graphics2D g2d = bufferedImage.createGraphics();
+	            g2d.drawImage(awtImage, 0, 0, null);
+	            g2d.dispose();
+
+	            javafx.scene.image.Image fxImage = SwingFXUtils.toFXImage(bufferedImage, null);
+	            ImageView imageView = new ImageView(fxImage);
+	            imageView.setPreserveRatio(true);
+	            imageView.setSmooth(true);
+	            imageView.setFitWidth(800);
+	            container.getChildren().add(imageView);
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	            // Opcional: puedes notificar el error y continuar con la siguiente página
+	        }
+	    }
+
+	    // Coloca el contenedor en un ScrollPane para permitir desplazarse en caso de tener muchas páginas
+	    ScrollPane scrollPane = new ScrollPane(container);
+	    scrollPane.setFitToWidth(true);
+	    scrollPane.setStyle("-fx-background-color: transparent;");
+
+	    // Crea una nueva escena y una nueva ventana (Stage) para mostrar el informe
+	    Scene scene = new Scene(scrollPane, 820, 600);
+	    Stage reportStage = new Stage();
+	    reportStage.setTitle("Informe del Carnet");
+	    reportStage.setScene(scene);
+	    reportStage.show();
 	}
 
+	
+	
 	@FXML
 	private void handlerExportar(ActionEvent event) throws IOException {
 
