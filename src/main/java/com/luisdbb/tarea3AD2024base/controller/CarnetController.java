@@ -42,7 +42,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -52,13 +51,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
-
-
 
 /**
  * @author Carla Ruiz
@@ -168,18 +166,21 @@ public class CarnetController implements Initializable {
 	private Mnemonic mnemonicConfig;
 
 	@Autowired
-	private Tooltips tooltipConfig;	
-	
+	private Tooltips tooltipConfig;
+
 	@Autowired
 	private DataSource dataSource;
 
 	private Usuario usuarioActivo;
 	private Peregrino peregrinoActivo;
 	private Carnet carnetActivo;
-
+	private ResourceBundle bundle;
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
+		this.bundle=resources;
+		
 		usuarioActivo = sesion.getUsuarioActivo();
 		peregrinoActivo = peregrinoService.findByIdUsuario(usuarioActivo.getId());
 		carnetActivo = carnetService.findById(peregrinoActivo.getCarnet().getId());
@@ -265,79 +266,62 @@ public class CarnetController implements Initializable {
 		ayuda.configInfo("/help/expCarnet.html", stage);
 	}
 
-	
 	@FXML
 	private void handlerInforme(ActionEvent event) {
-	    try {
-	        // 1. Carga el archivo compilado del informe (.jasper)
-	        InputStream reportStream = getClass().getResourceAsStream("/reports/InformeCarnet.jasper");
-	        if (reportStream == null) {
-	            alertas.alertaError("Error", "No se encontró el archivo del informe.");
-	            return;
-	        }
-	        
-	        // 2. Define los parámetros necesarios para el informe.
-	        Map<String, Object> parameters = new HashMap<>();
-	        parameters.put("peregrinoId", peregrinoActivo.getId());
-	        // Agrega otros parámetros si son necesarios
+		try {
+			InputStream reportStream = getClass().getResourceAsStream("/reports/InformeCarnet.jasper");
+			if (reportStream == null) {
+				alertas.alertaError("Error", "No se encontró el archivo del informe.");
+				return;
+			}
 
-	        // 3. Obtén una conexión real desde el DataSource
-	        try (Connection connection = dataSource.getConnection()) {
-	            // 4. Llena el informe usando la conexión real
-	            JasperPrint jasperPrint = JasperFillManager.fillReport(reportStream, parameters, connection);
-	            
-	            // 5. Renderiza las páginas del informe a imágenes y muéstralas en una ventana JavaFX
-	            renderReportPages(jasperPrint);
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        alertas.alertaError("Error", "No se pudo generar el informe: " + e.getMessage());
-	    }
+			Map<String, Object> parametros = new HashMap<>();
+			parametros.put("id_peregrino", peregrinoActivo.getId());
+			parametros.put("imagen_fondo", "images/fondo.png");
+
+
+			try (Connection conexion = dataSource.getConnection()) {
+				JasperPrint jasperPrint = JasperFillManager.fillReport(reportStream, parametros, conexion);
+				crearImagenInforme(jasperPrint);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			alertas.alertaError("Error", "No se pudo generar el informe");
+		}
 	}
 	
-	private void renderReportPages(JasperPrint jasperPrint) {
-	    // Crea un contenedor vertical para las imágenes (una por cada página)
-	    VBox container = new VBox(10); // 10 píxeles de espacio entre páginas
+	private void crearImagenInforme(JasperPrint jasperPrint) {
+	    try {
+	        java.awt.Image awtImage = JasperPrintManager.printPageToImage(jasperPrint, 0, 1.0f);
+	        BufferedImage bufferedImage = new BufferedImage(
+	            awtImage.getWidth(null),
+	            awtImage.getHeight(null),
+	            BufferedImage.TYPE_INT_ARGB
+	        );
+	        Graphics2D g2d = bufferedImage.createGraphics();
+	        g2d.drawImage(awtImage, 0, 0, null);
+	        g2d.dispose();
 
-	    // Define el factor de zoom (ajústalo según tus necesidades)
-	    float zoom = 1.5f;
-	    int pageCount = jasperPrint.getPages().size();
+	        javafx.scene.image.Image fxImage = SwingFXUtils.toFXImage(bufferedImage, null);
+	        ImageView imageView = new ImageView(fxImage);
+	        imageView.setPreserveRatio(true);
+	        imageView.setSmooth(true);
 
-	    for (int i = 0; i < pageCount; i++) {
-	        try {
-	            java.awt.Image awtImage = JasperPrintManager.printPageToImage(jasperPrint, i, zoom);
-	            BufferedImage bufferedImage = new BufferedImage(
-	                awtImage.getWidth(null),
-	                awtImage.getHeight(null),
-	                BufferedImage.TYPE_INT_ARGB
-	            );
-	            Graphics2D g2d = bufferedImage.createGraphics();
-	            g2d.drawImage(awtImage, 0, 0, null);
-	            g2d.dispose();
+	        BorderPane pane = new BorderPane(imageView);
+	        Scene scene = new Scene(pane, 540, 540);
 
-	            javafx.scene.image.Image fxImage = SwingFXUtils.toFXImage(bufferedImage, null);
-	            ImageView imageView = new ImageView(fxImage);
-	            imageView.setPreserveRatio(true);
-	            imageView.setSmooth(true);
-	            imageView.setFitWidth(800);
-	            container.getChildren().add(imageView);
-	        } catch (Exception ex) {
-	            ex.printStackTrace();
-	            // Opcional: puedes notificar el error y continuar con la siguiente página
-	        }
+	        Stage reportStage = new Stage();
+	        reportStage.setTitle("Carnet de peregrino");
+	        String iconPath = bundle.getString("carnet.icon");
+	        reportStage.getIcons().add(new Image(getClass().getResourceAsStream(iconPath)));	        
+	        reportStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+	        
+	        reportStage.setScene(scene);
+	        reportStage.showAndWait(); 
+	    } catch (JRException e) {
+	        e.printStackTrace();
+	        alertas.alertaError("Error", "Error al cargar el informe");
 	    }
-
-	    // Coloca el contenedor en un ScrollPane para permitir desplazarse en caso de tener muchas páginas
-	    ScrollPane scrollPane = new ScrollPane(container);
-	    scrollPane.setFitToWidth(true);
-	    scrollPane.setStyle("-fx-background-color: transparent;");
-
-	    // Crea una nueva escena y una nueva ventana (Stage) para mostrar el informe
-	    Scene scene = new Scene(scrollPane, 820, 600);
-	    Stage reportStage = new Stage();
-	    reportStage.setTitle("Informe del Carnet");
-	    reportStage.setScene(scene);
-	    reportStage.show();
 	}
 
 	

@@ -54,7 +54,7 @@ public class Ayuda {
 		Image icon = new Image(getClass().getResource(iconPath).toExternalForm());
 		helpStage.getIcons().add(icon);
 
-		Scene helpScene = new Scene(webView, 600, 600);
+		Scene helpScene = new Scene(webView, 540, 540);
 		helpStage.setScene(helpScene);
 
 		helpStage.initModality(Modality.APPLICATION_MODAL);
