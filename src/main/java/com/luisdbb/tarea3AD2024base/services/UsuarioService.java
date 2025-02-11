@@ -1,8 +1,7 @@
 package com.luisdbb.tarea3AD2024base.services;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,38 +60,35 @@ public class UsuarioService {
 	}
 
 	public Perfil loguear(String usuario, String contraseña) {
+	    Perfil perfil = null;
+	    boolean check = false;
 
-		Perfil perfil = null;
-		boolean check = false;
+	    Properties p = new Properties();
 
-		Properties p = new Properties();
-		try {
-			File file = new File("src/main/resources/application.properties");
-			FileInputStream is = new FileInputStream(file);
-			p.load(is);
-			String user = p.getProperty("usuarioadmin");
-			String pass = p.getProperty("passadmin");
+	    try (InputStream is = getClass().getClassLoader().getResourceAsStream("application.properties")) {
+	       
+	        p.load(is);
+	        String user = p.getProperty("usuarioadmin");
+	        String pass = p.getProperty("passadmin");
 
-			if (usuario.equalsIgnoreCase(user) && passwordService.verificar(contraseña,pass)) {
-				perfil = Perfil.ADMINISTRADOR;
-				check = true;
-			}
+	        if (usuario.equalsIgnoreCase(user) && passwordService.verificar(contraseña, pass)) {
+	            perfil = Perfil.ADMINISTRADOR;
+	            check = true;
+	        }
+	    } catch (IOException e) {
+	    	e.printStackTrace();
+	    	return null;
+	    }
 
-			is.close();
-		} catch (IOException e) {
-			System.out.println("Error al acceder al archivo: " + e.getMessage());
-			return null;
-		}
-
-		if (!check) {
-			Usuario us = usuarioRepository.findByNombreUsuario(usuario);
-
-			if (us != null && passwordService.verificar(contraseña, us.getContraseña())) {
-				perfil = us.getPerfil();
-			}
-		}
-		return perfil;
+	    if (!check) {
+	        Usuario us = usuarioRepository.findByNombreUsuario(usuario);
+	        if (us != null && passwordService.verificar(contraseña, us.getContraseña())) {
+	            perfil = us.getPerfil();
+	        }
+	    }
+	    return perfil;
 	}
+
 
 	public void configurarSesion(String usuario, Perfil perfil) {
 		sesion.setUsuarioActivo(findByUsuario(usuario));

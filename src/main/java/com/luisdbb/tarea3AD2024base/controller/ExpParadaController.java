@@ -1,6 +1,7 @@
 package com.luisdbb.tarea3AD2024base.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -269,40 +270,45 @@ public class ExpParadaController implements Initializable {
 
 	@FXML
 	private void handlerInforme(ActionEvent event) throws IOException {
-		
-		if(!checkBuscar) {			
-			alertas.alertaError("Error", "Por favor, introduzca fechas válidas para exportar las estancias");
-			return;
-		}
+	    if (!checkBuscar) {            
+	        alertas.alertaError("Error", "Por favor, introduzca fechas válidas para exportar las estancias");
+	        return;
+	    }
 
-		try {			
-			String jasperPath = "src/main/resources/reports/InformeEstancias.jasper";
-			String outputPath = "src/main/resources/reports/Informe"+ parada.getNombre() +".pdf";			
-		
-			Map<String, Object> parameters = new HashMap<>();
-            parameters.put("PARADA", parada.getNombre());
-            parameters.put("FECHA_INICIO", java.sql.Date.valueOf(fechaInicio));
-            parameters.put("FECHA_FIN", java.sql.Date.valueOf(fechaFin));
-			parameters.put("ID_PARADA", parada.getId());
-		
-			Connection connection = DriverManager.getConnection(
-					"jdbc:mysql://localhost:3306/bdtarea3ad_carlaruiz?useSSL=false&serverTimezone=UTC", "root", "");
-			
-			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperPath, parameters, connection);
-		
-			JasperExportManager.exportReportToPdfFile(jasperPrint, outputPath);		
+	    try {
+	        InputStream jasperStream = getClass().getResourceAsStream("/reports/InformeEstancias.jasper");
+	        if (jasperStream == null) {
+	            alertas.alertaError("Error", "No se encontró el informe Jasper en el classpath.");
+	            return;
+	        }
+	        
+	        String outputPath = System.getProperty("user.home") + "/Desktop/Informe" + parada.getNombre() + ".pdf";
+	        
+	        Map<String, Object> parameters = new HashMap<>();
+	        parameters.put("PARADA", parada.getNombre());
+	        parameters.put("FECHA_INICIO", java.sql.Date.valueOf(fechaInicio));
+	        parameters.put("FECHA_FIN", java.sql.Date.valueOf(fechaFin));
+	        parameters.put("ID_PARADA", parada.getId());
 
-			connection.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-			alertas.alertaError("Error", "El informe no se ha podido exportar correctamente.");
-			return;
-		}
-		
-		alertas.alertaInformacion("Informe", "Su informe se ha exportado correctamente en formato .jrxml.");
-		checkBuscar=false;
+	        Connection connection = DriverManager.getConnection(
+	            "jdbc:mysql://localhost:3306/bdtarea3ad_carlaruiz?useSSL=false&serverTimezone=UTC", "root", "");
 
+	        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperStream, parameters, connection);
+	        
+	        JasperExportManager.exportReportToPdfFile(jasperPrint, outputPath);
+
+	        connection.close();
+
+	        alertas.alertaInformacion("Informe", "Su informe se ha exportado correctamente en: " + outputPath);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        alertas.alertaError("Error", "El informe no se ha podido exportar correctamente.");
+	        return;
+	    }
+	    
+	    checkBuscar = false;
 	}
+
 
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {

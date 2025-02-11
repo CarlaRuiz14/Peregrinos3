@@ -32,6 +32,7 @@ import com.luisdbb.tarea3AD2024base.services.ParadaService;
 import com.luisdbb.tarea3AD2024base.services.PeregrinoService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -176,6 +177,15 @@ public class CarnetController implements Initializable {
 	private Carnet carnetActivo;
 	private ResourceBundle bundle;
 	
+	
+	public CarnetController() {
+	    if (!Platform.isFxApplicationThread() && !Platform.isImplicitExit()) {
+	        Platform.startup(() -> {}); // Inicia JavaFX si no está iniciado
+	    }
+	}
+
+	
+	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -277,7 +287,7 @@ public class CarnetController implements Initializable {
 
 			Map<String, Object> parametros = new HashMap<>();
 			parametros.put("id_peregrino", peregrinoActivo.getId());
-			parametros.put("imagen_fondo", "images/fondo.png");
+			parametros.put("imagen_fondo", "images/fondo20.png");
 
 
 			try (Connection conexion = dataSource.getConnection()) {
@@ -322,9 +332,7 @@ public class CarnetController implements Initializable {
 	        e.printStackTrace();
 	        alertas.alertaError("Error", "Error al cargar el informe");
 	    }
-	}
-
-	
+	}	
 	
 	@FXML
 	private void handlerExportar(ActionEvent event) throws IOException {
