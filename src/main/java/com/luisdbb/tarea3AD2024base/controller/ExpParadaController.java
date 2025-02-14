@@ -1,5 +1,7 @@
 package com.luisdbb.tarea3AD2024base.controller;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -142,20 +144,20 @@ public class ExpParadaController implements Initializable {
 	private Parada parada;
 	private LocalDate fechaInicio;
 	private LocalDate fechaFin;
-	private boolean checkBuscar=false;
+	private boolean checkBuscar = false;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 		parada = paradaService.findByUsuario(sesion.getUsuarioActivo().getId());
-		
+
 		lblIdPar.setText(String.valueOf(parada.getId()));
 		lblNombrePar.setText(parada.getNombre());
 		lblRegionPar.setText(String.valueOf(parada.getRegion()));
 		lblIdResp.setText(String.valueOf(sesion.getUsuarioActivo().getId()));
 		lblUsuario.setText(sesion.getUsuarioActivo().getNombreUsuario());
 		lblEmail.setText(sesion.getUsuarioActivo().getEmail());
-		
+
 		colIdEstancia.setCellValueFactory(new PropertyValueFactory<>("id"));
 		colPeregrino.setCellValueFactory(new PropertyValueFactory<>("nombrePeregrino"));
 		colFecha.setCellValueFactory(new PropertyValueFactory<>("fecha"));
@@ -174,9 +176,8 @@ public class ExpParadaController implements Initializable {
 
 		tblEstancias.setPlaceholder(new Label("Estancias"));
 
-		
 		ayuda.configImgInfo(hpInfo);
-		
+
 		String rutaBuscar = resources.getString("btnBuscar.icon");
 		Image imgBuscar = new Image(getClass().getResourceAsStream(rutaBuscar));
 		ImageView viewBuscar = new ImageView(imgBuscar);
@@ -184,16 +185,13 @@ public class ExpParadaController implements Initializable {
 		viewBuscar.setFitHeight(25);
 		btnBuscar.setGraphic(viewBuscar);
 
-	
 		String rutaInforme = resources.getString("btnInforme.icon");
 		Image imgInforme = new Image(getClass().getResourceAsStream(rutaInforme));
 		btnInforme.setGraphic(botones.createImageView(imgInforme));
 
-		
-		botones.imgVolver(btnVolver);		
+		botones.imgVolver(btnVolver);
 		botones.imgSalir(btnSalir);
 
-		
 		mnemonicConfig.infoMnemonic(hpInfo);
 		btnBuscar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.ENTER) {
@@ -204,18 +202,18 @@ public class ExpParadaController implements Initializable {
 		mnemonicConfig.informeMnemonic(btnInforme);
 		mnemonicConfig.volverMnemonic(btnVolver);
 		mnemonicConfig.salirMnemonic(btnSalir);
-	
+
 		tooltipConfig.infoTooltip(hpInfo);
 		btnBuscar.setTooltip(new Tooltip("Buscar (Alt+B)"));
 		tooltipConfig.informeTooltip(btnInforme);
 		tooltipConfig.volverTooltip(btnVolver);
-		tooltipConfig.salirTooltip(btnSalir);		
+		tooltipConfig.salirTooltip(btnSalir);
 	}
 
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
-		ayuda.configInfo("/help/expParada.html",stage);
+		ayuda.configInfo("/help/expParada.html", stage);
 	}
 
 	@FXML
@@ -225,9 +223,9 @@ public class ExpParadaController implements Initializable {
 		fechaFin = dateFechaF.getValue();
 
 		int check = validaciones.validarFechas(fechaInicio, fechaFin);
-		
+
 		if (check != 0) {
-			checkBuscar=false;
+			checkBuscar = false;
 
 			switch (check) {
 
@@ -249,7 +247,7 @@ public class ExpParadaController implements Initializable {
 		List<Estancia> estancias = estanciaService.getEstanciasForParada(parada.getId(), fechaInicio, fechaFin);
 
 		if (estancias == null) {
-			checkBuscar=false;
+			checkBuscar = false;
 			return;
 		}
 
@@ -257,58 +255,80 @@ public class ExpParadaController implements Initializable {
 			alertas.alertaInformacion("Sin estancias", "No hay estancias registradas entre las fechas seleccionadas");
 			tblEstancias.setItems(null);
 			tblEstancias.setPlaceholder(new Label("Sin estancias registradas"));
-			checkBuscar=false;
+			checkBuscar = false;
 			return;
 		}
 
 		ObservableList<Estancia> listEstancias = FXCollections.observableArrayList(estancias);
 
 		tblEstancias.setItems(listEstancias);
-		checkBuscar=true;
+		checkBuscar = true;
 
 	}
 
 	@FXML
 	private void handlerInforme(ActionEvent event) throws IOException {
-	    if (!checkBuscar) {            
-	        alertas.alertaError("Error", "Por favor, introduzca fechas válidas para exportar las estancias");
-	        return;
-	    }
+		if (!checkBuscar) {
+			alertas.alertaError("Error", "Por favor, introduzca fechas válidas para exportar las estancias");
+			return;
+		}
 
-	    try {
-	        InputStream jasperStream = getClass().getResourceAsStream("/reports/InformeEstancias.jasper");
-	        if (jasperStream == null) {
-	            alertas.alertaError("Error", "No se encontró el informe Jasper en el classpath.");
-	            return;
-	        }
-	        
-	        String outputPath = System.getProperty("user.home") + "/Desktop/Informe" + parada.getNombre() + ".pdf";
-	        
-	        Map<String, Object> parameters = new HashMap<>();
-	        parameters.put("PARADA", parada.getNombre());
-	        parameters.put("FECHA_INICIO", java.sql.Date.valueOf(fechaInicio));
-	        parameters.put("FECHA_FIN", java.sql.Date.valueOf(fechaFin));
-	        parameters.put("ID_PARADA", parada.getId());
+		try {
+			InputStream jasperStream = getClass().getResourceAsStream("/reports/InformeEstancias.jasper");
+			if (jasperStream == null) {
+				alertas.alertaError("Error", "No se encontró el informe Jasper en el classpath.");
+				return;
+			}
 
-	        Connection connection = DriverManager.getConnection(
-	            "jdbc:mysql://localhost:3306/bdtarea3ad_carlaruiz?useSSL=false&serverTimezone=UTC", "root", "");
+			String outputPath = System.getProperty("user.home") + "/Desktop/Informe" + parada.getNombre() + ".pdf";
 
-	        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperStream, parameters, connection);
-	        
-	        JasperExportManager.exportReportToPdfFile(jasperPrint, outputPath);
+			Map<String, Object> parameters = new HashMap<>();
+			parameters.put("PARADA", parada.getNombre());
+			parameters.put("FECHA_INICIO", java.sql.Date.valueOf(fechaInicio));
+			parameters.put("FECHA_FIN", java.sql.Date.valueOf(fechaFin));
+			parameters.put("ID_PARADA", parada.getId());
 
-	        connection.close();
+			Connection connection = DriverManager.getConnection(
+					"jdbc:mysql://localhost:3306/bdtarea3ad_carlaruiz?useSSL=false&serverTimezone=UTC", "root", "");
 
-	        alertas.alertaInformacion("Informe", "Su informe se ha exportado correctamente en: " + outputPath);
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        alertas.alertaError("Error", "El informe no se ha podido exportar correctamente.");
-	        return;
-	    }
-	    
-	    checkBuscar = false;
+			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperStream, parameters, connection);
+
+			JasperExportManager.exportReportToPdfFile(jasperPrint, outputPath);
+
+			connection.close();
+
+			Boolean respuesta = alertas.alertaConfirmacion("Informe",
+					"Su informe se ha exportado correctamente en:\n" + outputPath + "\n¿Quiere verlo en pantalla?");
+			if (respuesta) {
+				try {
+					File pdfFile = new File(outputPath);
+					if (pdfFile.exists()) {
+						if (Desktop.isDesktopSupported()) {
+							Desktop.getDesktop().open(pdfFile);
+						} else {
+							alertas.alertaError("Error", "La apertura de archivos no está soportada en este sistema.");
+						}
+					} else {
+						alertas.alertaError("Error", "El archivo PDF no fue encontrado.");
+					}
+				} catch (IOException ex) {
+					ex.printStackTrace();
+					alertas.alertaError("Error", "Ocurrió un error al intentar abrir el PDF.");
+				}
+
+			} else {
+				alertas.alertaInformacion("Informe", "Informe exportado. \nVolviendo...");
+				stageManager.switchScene(FxmlView.EXPPARADA);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			alertas.alertaError("Error", "El informe no se ha podido exportar correctamente.");
+			return;
+		}
+
+		checkBuscar = false;
 	}
-
 
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {

@@ -3,8 +3,10 @@ package com.luisdbb.tarea3AD2024base.controller;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
+import com.luisdbb.tarea3AD2024base.Tarea3Ad2024baseApplication;
 import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.Perfil;
 import com.luisdbb.tarea3AD2024base.services.UsuarioService;
@@ -35,7 +37,8 @@ public class Botones {
 	ResourceBundle resources;
 
 	@Autowired
-	private Alertas alertas;
+	private Alertas alertas;	
+
 	
 	public void imgFlecha(Button button) {
 		String rutaFlecha = resources.getString("btnFlecha.icon");
@@ -95,6 +98,12 @@ public class Botones {
 		boolean respuesta=alertas.alertaConfirmacion("Salir", "Va a cerrar la apliación, ¿está seguro?");		
 		if(respuesta) {
 			alertas.alertaInformacion("Salir", "Saliendo de la apliación.");
+			
+	        ConfigurableApplicationContext springContext = Tarea3Ad2024baseApplication.getSpringContext();
+
+			if (springContext != null && springContext.isActive()) {
+		        springContext.close();
+		    }
 			Platform.exit();
 		}else {
 			alertas.alertaInformacion("Salir", "Acción cancelada. \nVolviendo.");

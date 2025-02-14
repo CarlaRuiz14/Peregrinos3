@@ -188,6 +188,17 @@ public enum FxmlView {
 		public String getFxmlFile() {
 			return "/fxml/Vip.fxml";
 		}
+	},
+	SERVICIO {
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("servicio.title");
+		}
+
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/Servicio.fxml";
+		}
 	};
 
 	public abstract String getTitle();

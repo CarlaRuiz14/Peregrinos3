@@ -39,6 +39,9 @@ public class AdminController implements Initializable {
 
 	@FXML
 	private Button btnParada;
+	
+	@FXML
+	private Button btnServicio;	
 
 	@FXML
 	private Button btnLogout;
@@ -97,6 +100,11 @@ public class AdminController implements Initializable {
 	@FXML
 	private void handlerParada(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.REGPARADA);
+	}
+	
+	@FXML
+	private void handlerServicio(ActionEvent event) throws IOException {
+		stageManager.switchScene(FxmlView.SERVICIO);
 	}
 
 	@FXML

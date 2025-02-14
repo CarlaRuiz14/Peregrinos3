@@ -7,6 +7,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import com.luisdbb.tarea3AD2024base.config.StageManager;
+import com.luisdbb.tarea3AD2024base.repositorios.ConjuntoServicioRepository;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Application;
@@ -33,8 +34,10 @@ import javafx.stage.Stage;
 @SpringBootApplication
 public class Tarea3Ad2024baseApplication extends Application {
 
-	protected ConfigurableApplicationContext springContext;
+	protected static ConfigurableApplicationContext springContext;
 	protected StageManager stageManager;
+	
+	
 
 	/**
 	 * Método invocado automáticamente por JavaFX antes de lanzar la aplicación.
@@ -43,6 +46,11 @@ public class Tarea3Ad2024baseApplication extends Application {
 	@Override
 	public void init() throws Exception {
 		springContext = springBootApplicationContext();
+		
+		// en application se pide directamente el bean
+	    ConjuntoServicioRepository csr = springContext.getBean(ConjuntoServicioRepository.class);
+
+		csr.crearSecuenciaId();
 	}
 
 	/**
@@ -73,6 +81,20 @@ public class Tarea3Ad2024baseApplication extends Application {
 		primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(iconPath)));
 
 		primaryStage.setResizable(false);
+		
+		// Interceptar cierre con la X
+	    primaryStage.setOnCloseRequest(event -> {
+	        // 1) Cerrar el contexto de Spring
+	        if (springContext != null && springContext.isActive()) {
+	            springContext.close();
+	        }
+	        // 2) O bien dejas que JavaFX cierre solo:
+	        //    - Si no llamas a `Platform.exit()`, JavaFX seguirá el cierre normal.
+
+	        // O si quieres forzar el cierre inmediato de JavaFX:
+	        // Platform.exit();
+	    });
+		
 	}
 
 	/**
@@ -93,4 +115,8 @@ public class Tarea3Ad2024baseApplication extends Application {
 		String[] args = getParameters().getRaw().stream().toArray(String[]::new);
 		return builder.run(args);
 	}
+	
+	 public static ConfigurableApplicationContext getSpringContext() {
+	        return springContext;
+	    }
 }
