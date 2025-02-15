@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
+import com.db4o.query.Predicate;
 import com.luisdbb.tarea3AD2024base.config.DataConnection;
 import com.luisdbb.tarea3AD2024base.modelo.Parada;
 import com.luisdbb.tarea3AD2024base.modelo.SecuenciaId;
@@ -35,21 +36,31 @@ public class ConjuntoServicioRepository {
 
 	// METODOS SERVICIOS
 
+	public boolean existeNombreServicio(String nombre) {
+		ObjectContainer db = dataConnection.getDb();
+
+		// Native Query (Predicate) para filtrar por nombre ignorando may/min
+		List<Servicio> encontrados = db.query(new Predicate<Servicio>() {
+			@Override
+			public boolean match(Servicio s) {
+				return s.getNombre().equalsIgnoreCase(nombre);
+			}
+		});
+
+		return !encontrados.isEmpty();
+
+	}
+
+	// quitar validacion de nombre cuando este implementado el lblfeed
 	public void saveServicio(Servicio servicio) {
 		ObjectContainer db = dataConnection.getDb();
 
-		Servicio ejemplo = new Servicio(); 
-		ejemplo.setNombre(servicio.getNombre());
-		
-		ObjectSet<Servicio> result = db.queryByExample(ejemplo);
-		
-		if(!result.hasNext()) {			
-			long nuevoId = secuenciaId.nextId();
-			servicio.setId(nuevoId);
-			actualizarSecuenciaId(nuevoId);
-			db.store(servicio);
-			db.commit();			
-		}			
+		long nuevoId = secuenciaId.nextId();
+		servicio.setId(nuevoId);
+		actualizarSecuenciaId(nuevoId);
+		db.store(servicio);
+		db.commit();
+
 	}
 
 	public List<Servicio> findAllServicios() {

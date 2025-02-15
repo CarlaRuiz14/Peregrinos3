@@ -242,6 +242,12 @@ Button:hover {
     -fx-fill: #1F6A24;
 }
 
+.tblVS .placeholder {
+    -fx-background-color: #A7F7AC; 
+    -fx-alignment: center;
+	-fx-text-fill: #1F6A24;
+}
+
 /* Celdas Seleccion */
 .tblVS .table-row-cell:selected {
     -fx-background-color: #1F6A24;

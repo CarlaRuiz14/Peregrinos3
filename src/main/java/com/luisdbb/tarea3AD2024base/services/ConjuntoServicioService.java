@@ -18,9 +18,6 @@ public class ConjuntoServicioService {
 	
 	@Autowired
 	private Alertas alertas;
-	
-	
-	
 
 	// METODOS CONJUNTOCONTRATADO
 
@@ -28,6 +25,9 @@ public class ConjuntoServicioService {
 
 	// METODOS SERVICIOS
 	
+	public boolean existeNombreServicio(String nombre) {
+		return csr.existeNombreServicio(nombre);
+	}
 
 	public void saveServicio(Servicio servicioNuevo) {
 		csr.saveServicio(servicioNuevo);		

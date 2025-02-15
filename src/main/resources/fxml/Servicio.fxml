@@ -58,19 +58,19 @@
             </HBox>
             <VBox spacing="10.0" GridPane.rowIndex="1">
                <children>
-                  <TableView fx:id="tblServicios" prefHeight="200.0" prefWidth="200.0">
+                  <TableView fx:id="tblServicios" prefHeight="200.0" prefWidth="200.0" styleClass="tblVS">
                      <columns>
-                        <TableColumn fx:id="colIdServicio" prefWidth="91.20001983642578" text="ID" />
-                        <TableColumn fx:id="colNombreServicio" prefWidth="237.5999755859375" text="SERVICIO" />
-                        <TableColumn fx:id="colPrecioServicio" prefWidth="112.00006103515625" text="PRECIO" />
+                        <TableColumn fx:id="colIdServicio" prefWidth="90.0" text="ID" />
+                        <TableColumn fx:id="colNombreServicio" prefWidth="228.0" text="SERVICIO" />
+                        <TableColumn fx:id="colPrecioServicio" prefWidth="120.0" text="PRECIO" />
                      </columns>
                   </TableView>
-                  <TableView fx:id="tblParadas" prefHeight="200.0" prefWidth="200.0">
+                  <TableView fx:id="tblParadas" prefHeight="200.0" prefWidth="200.0" styleClass="tblVS">
                     <columns>
-                      <TableColumn fx:id="colIdParada" prefWidth="88.80005645751953" text="ID" />
-                      <TableColumn fx:id="colNombreParada" prefWidth="160.0" text="PARADA" />
-                        <TableColumn fx:id="colRegionParada" prefWidth="87.20001220703125" text="REGION" />
-                        <TableColumn fx:id="colCheckParada" prefWidth="104.800048828125" text="SERVICIO" />
+                      <TableColumn fx:id="colIdParada" prefWidth="95.0" text="ID" />
+                      <TableColumn fx:id="colNombreParada" prefWidth="143.0" text="PARADA" />
+                        <TableColumn fx:id="colRegionParada" text="REGION" />
+                        <TableColumn fx:id="colCheckParada" prefWidth="120.0" text="SERVICIO" />
                     </columns>
                   </TableView>
                </children>

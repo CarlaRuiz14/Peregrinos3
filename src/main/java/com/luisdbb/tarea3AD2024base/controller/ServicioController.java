@@ -82,6 +82,9 @@ public class ServicioController implements Initializable {
 	private Button btnVolver;
 
 	@FXML
+	private Label lblFeed;
+
+	@FXML
 	private Button btnSalir;
 
 	@Lazy
@@ -105,14 +108,21 @@ public class ServicioController implements Initializable {
 
 	@Autowired
 	private ParadaService paradaService;
-	
+
 	@Autowired
 	private Alertas alertas;
+
+	@Autowired
+	private LabelFeed label;
+
+	private boolean checkNombre = true;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 		cargarServiciosTabla();
+		tblParadas.setPlaceholder(new Label("Selecciona un servicio"));
+
 
 		// Servicio Seleccionado
 		tblServicios.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
@@ -154,7 +164,7 @@ public class ServicioController implements Initializable {
 		tooltipConfig.salirTooltip(btnSalir);
 
 	}
-	
+
 	public void cargarServiciosTabla() {
 		tblServicios.setEditable(true);
 		List<Servicio> listaS = css.findAllServicios();
@@ -168,7 +178,23 @@ public class ServicioController implements Initializable {
 		colNombreServicio.setCellFactory(TextFieldTableCell.forTableColumn());
 		colNombreServicio.setOnEditCommit(event -> {
 			Servicio servicio = event.getRowValue();
-			servicio.setNombre(event.getNewValue());
+			String oldValue = servicio.getNombre();
+			String newValue = event.getNewValue();
+			lblFeed.setText(" ");
+			checkNombre = true;
+
+			if (css.existeNombreServicio(newValue) || existeNombreEnTabla(newValue, servicio)) {
+
+				servicio.setNombre(oldValue);
+
+				tblServicios.refresh();
+				label.mostrarTxtInvalido(lblFeed, "El nombre '" + newValue + "' ya existe");
+				checkNombre = false;
+			} else {
+				servicio.setNombre(newValue);
+				label.mostrarTxtValido(lblFeed, "Nombre actualizado correctamente a '" + newValue + "'.");
+				checkNombre = true;
+			}
 		});
 
 		colPrecioServicio.setCellValueFactory(new PropertyValueFactory<>("precio"));
@@ -179,10 +205,18 @@ public class ServicioController implements Initializable {
 		});
 	}
 
+	private boolean existeNombreEnTabla(String nombre, Servicio servicioActual) {
+		for (Servicio s : tblServicios.getItems()) {
+			if (s != servicioActual && s.getNombre().equalsIgnoreCase(nombre)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void cargarParadasTabla(Servicio servicioSeleccionado) {
 		tblParadas.setEditable(true);
 		colCheckParada.setEditable(true);
-
 
 		// Lista con todas las paradas existentes
 		List<Parada> todasParadas = paradaService.findAll();
@@ -199,17 +233,16 @@ public class ServicioController implements Initializable {
 			listaCheck.add(cp);
 		}
 
-		
 		for (CheckParada cp : listaCheck) {
-	        cp.checkProperty().addListener((obs, oldVal, newVal) -> {
-	            if (newVal) {
-	                servicioSeleccionado.getListaParadas().add(cp.getParada().getId());
-	            } else {
-	                servicioSeleccionado.getListaParadas().remove(cp.getParada().getId());
-	            }
-	        });
-	    }
-		
+			cp.checkProperty().addListener((obs, oldVal, newVal) -> {
+				if (newVal) {
+					servicioSeleccionado.getListaParadas().add(cp.getParada().getId());
+				} else {
+					servicioSeleccionado.getListaParadas().remove(cp.getParada().getId());
+				}
+			});
+		}
+
 		// Observable con valores de listaCheck
 		ObservableList<CheckParada> listaTabla = FXCollections.observableArrayList(listaCheck);
 		tblParadas.setItems(listaTabla);
@@ -236,37 +269,44 @@ public class ServicioController implements Initializable {
 	}
 
 	@FXML
-	private void handlerNuevo(ActionEvent event) throws IOException {		
-	
-		Servicio nuevo=css.crearServicioVacio();	
-		
-	    tblServicios.getItems().add(nuevo);
-	
-	    tblServicios.getSelectionModel().select(nuevo);
-	    tblServicios.scrollTo(nuevo);
-	    
-	    tblServicios.edit(tblServicios.getItems().size() - 1, colNombreServicio);
+	private void handlerNuevo(ActionEvent event) throws IOException {
+
+		Servicio nuevo = css.crearServicioVacio();
+
+		tblServicios.getItems().add(nuevo);
+
+		tblServicios.getSelectionModel().select(nuevo);
+		tblServicios.scrollTo(nuevo);
+
+		tblServicios.edit(tblServicios.getItems().size() - 1, colNombreServicio);
 	}
 
 	@FXML
 	private void handlerGuardar(ActionEvent event) throws IOException {
-		
-		boolean respuesta=alertas.alertaConfirmacion("Confirmación datos", "Los cambios en los servicios se guardarán.\n¿Está de acuerdo?");
-		
-		if(respuesta) {			
-	        for (Servicio s : tblServicios.getItems()) {
-	            css.saveServicio(s);	            
-	        }	  		
-	        alertas.alertaInformacion("Guardado", "Se han guardado los cambios correctamente.");			
-			
-		}else {
-			alertas.alertaInformacion("Cancelado", "Los cambios no se guardarán.\nVolviendo...");
+
+		if (checkNombre) {
+			boolean respuesta = alertas.alertaConfirmacion("Confirmación de Guardado",
+					"Se guardarán todos los cambios realizados en los servicios.\n" + "¿Desea continuar?");
+			if (respuesta) {
+				for (Servicio s : tblServicios.getItems()) {
+					css.saveServicio(s);
+				}
+				alertas.alertaInformacion("Guardado Exitoso", "Los cambios se han guardado correctamente.");
+			} else {
+				alertas.alertaInformacion("Operación Cancelada", "Los cambios no se guardarán.\nVolviendo...");
+			}
+			lblFeed.setText(" ");
+
+		} else {
+			alertas.alertaError("Nombre Duplicado", "Existen nombres de servicio repetidos.\n"
+					+ "Por favor revise los servicios con nombres duplicados y corríjalos antes de guardar.");
 		}
+
 	}
 
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
-		stageManager.switchScene(FxmlView.ADMIN);		
+		stageManager.switchScene(FxmlView.ADMIN);
 	}
 
 	@FXML
