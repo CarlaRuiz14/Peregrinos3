@@ -89,4 +89,6 @@ public class Validaciones {
 	public boolean validarRegion(String region) {	   
 	    return region.length() == 1 && Character.isLetter(region.charAt(0));
 	}
+	
+	
 }

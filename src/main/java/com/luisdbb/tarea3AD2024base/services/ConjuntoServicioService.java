@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.luisdbb.tarea3AD2024base.controller.Alertas;
 import com.luisdbb.tarea3AD2024base.modelo.Servicio;
 import com.luisdbb.tarea3AD2024base.repositorios.ConjuntoServicioRepository;
 
@@ -14,10 +13,7 @@ public class ConjuntoServicioService {
 
 	
 	@Autowired
-	private ConjuntoServicioRepository csr;
-	
-	@Autowired
-	private Alertas alertas;
+	private ConjuntoServicioRepository csr;	
 
 	// METODOS CONJUNTOCONTRATADO
 

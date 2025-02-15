@@ -1,9 +1,13 @@
 package com.luisdbb.tarea3AD2024base.controller;
 
 import java.io.IOException;
+import java.math.RoundingMode;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +20,7 @@ import com.luisdbb.tarea3AD2024base.modelo.Parada;
 import com.luisdbb.tarea3AD2024base.modelo.Servicio;
 import com.luisdbb.tarea3AD2024base.services.ConjuntoServicioService;
 import com.luisdbb.tarea3AD2024base.services.ParadaService;
+import com.luisdbb.tarea3AD2024base.services.Validaciones;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.beans.property.SimpleObjectProperty;
@@ -34,10 +39,11 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import javafx.util.converter.DoubleStringConverter;
+import javafx.util.StringConverter;
 
 @Component
 public class ServicioController implements Initializable {
@@ -113,16 +119,19 @@ public class ServicioController implements Initializable {
 	private Alertas alertas;
 
 	@Autowired
+	private Validaciones validaciones;
+
+	@Autowired
 	private LabelFeed label;
 
 	private boolean checkNombre = true;
+	private boolean checkPrecio = true;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 		cargarServiciosTabla();
 		tblParadas.setPlaceholder(new Label("Selecciona un servicio"));
-
 
 		// Servicio Seleccionado
 		tblServicios.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
@@ -137,6 +146,9 @@ public class ServicioController implements Initializable {
 
 		// Botones, mnemonicos y tooltips
 		ayuda.configImgInfo(hpInfo);
+		String rutaNuevo = resources.getString("btnNuevo.icon");
+		Image imgNuevo = new Image(getClass().getResourceAsStream(rutaNuevo));
+		btnNuevo.setGraphic(botones.createImageView(imgNuevo));
 		botones.imgFlecha(btnGuardar);
 		botones.imgVolver(btnVolver);
 		botones.imgSalir(btnSalir);
@@ -183,27 +195,89 @@ public class ServicioController implements Initializable {
 			lblFeed.setText(" ");
 			checkNombre = true;
 
-			if (css.existeNombreServicio(newValue) || existeNombreEnTabla(newValue, servicio)) {
-
+			if (newValue == null || newValue.trim().isEmpty()) {
 				servicio.setNombre(oldValue);
-
+				tblServicios.refresh();
+				label.mostrarTxtInvalido(lblFeed, "El nombre no puede estar vacío");
+				checkNombre = false;
+			} else if (css.existeNombreServicio(newValue) || existeNombreEnTabla(newValue, servicio)) {
+				servicio.setNombre(oldValue);
 				tblServicios.refresh();
 				label.mostrarTxtInvalido(lblFeed, "El nombre '" + newValue + "' ya existe");
 				checkNombre = false;
+			} else if (!validaciones.validarNombreYApellidos(newValue)) {
+				servicio.setNombre(oldValue);
+				tblServicios.refresh();
+				label.mostrarTxtInvalido(lblFeed, "Nombre sin números ni carac. especiales");
+				checkNombre = false;
 			} else {
 				servicio.setNombre(newValue);
-				label.mostrarTxtValido(lblFeed, "Nombre actualizado correctamente a '" + newValue + "'.");
+				label.mostrarTxtValido(lblFeed, "Nombre actualizado correctamente a '" + newValue);
 				checkNombre = true;
 			}
 		});
 
+		
+		StringConverter<Double> conversorDouble = new StringConverter<Double>() {
+
+		    private final DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance(Locale.US);		    
+		    private final DecimalFormat df;
+		    {
+		        df = new DecimalFormat("#0.00", symbols);
+		        df.setRoundingMode(RoundingMode.HALF_UP);
+		    }
+
+		    @Override
+		    public String toString(Double value) {
+		        if (value == null) {
+		            return "";
+		        }
+		        return df.format(value);
+		    }
+
+		    @Override
+		    public Double fromString(String text) {
+		        if (text == null || text.trim().isEmpty()) {
+		            return null;
+		        }
+		        try {
+		            text = text.replace(',', '.');
+
+		            Number number = df.parse(text);
+
+		            double d = number.doubleValue();
+
+		            return d;
+		        } catch (Exception e) {
+		            return null;
+		        }
+		    }
+		};
+
+		
 		colPrecioServicio.setCellValueFactory(new PropertyValueFactory<>("precio"));
-		colPrecioServicio.setCellFactory(TextFieldTableCell.forTableColumn(new DoubleStringConverter()));
+		colPrecioServicio.setCellFactory(TextFieldTableCell.forTableColumn(conversorDouble));
 		colPrecioServicio.setOnEditCommit(event -> {
-			Servicio servicio = event.getRowValue();
-			servicio.setPrecio(event.getNewValue());
-		});
-	}
+		    Servicio servicio = event.getRowValue();
+		    Double oldValue = servicio.getPrecio();
+		    Double newValue = event.getNewValue(); 
+
+		    lblFeed.setText("");
+		    checkPrecio = true;
+
+		    if (newValue == null) {
+		        servicio.setPrecio(oldValue);
+		        tblServicios.refresh();
+		        label.mostrarTxtInvalido(lblFeed, "El precio debe ser un número válido");
+		        checkPrecio = false;
+		    } else {
+		        servicio.setPrecio(newValue);
+		        tblServicios.refresh();
+		        label.mostrarTxtValido(lblFeed, "Precio actualizado correctamente");
+		        checkPrecio = true;
+		    }
+		});}
+
 
 	private boolean existeNombreEnTabla(String nombre, Servicio servicioActual) {
 		for (Servicio s : tblServicios.getItems()) {
@@ -277,6 +351,7 @@ public class ServicioController implements Initializable {
 
 		tblServicios.getSelectionModel().select(nuevo);
 		tblServicios.scrollTo(nuevo);
+		tblServicios.requestFocus();
 
 		tblServicios.edit(tblServicios.getItems().size() - 1, colNombreServicio);
 	}
@@ -284,7 +359,7 @@ public class ServicioController implements Initializable {
 	@FXML
 	private void handlerGuardar(ActionEvent event) throws IOException {
 
-		if (checkNombre) {
+		if (checkNombre && checkPrecio) {
 			boolean respuesta = alertas.alertaConfirmacion("Confirmación de Guardado",
 					"Se guardarán todos los cambios realizados en los servicios.\n" + "¿Desea continuar?");
 			if (respuesta) {
@@ -298,10 +373,9 @@ public class ServicioController implements Initializable {
 			lblFeed.setText(" ");
 
 		} else {
-			alertas.alertaError("Nombre Duplicado", "Existen nombres de servicio repetidos.\n"
-					+ "Por favor revise los servicios con nombres duplicados y corríjalos antes de guardar.");
+			alertas.alertaError("Error al guardar",
+					"Hay problemas con los datos introducidos.\nPor favor, revise la infomación.");
 		}
-
 	}
 
 	@FXML

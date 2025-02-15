@@ -20,9 +20,7 @@ public class prueba {
         } finally {
             db.close();
         }
-    }
-
-   
+    }   
 
     private static void consultarDatos(ObjectContainer db) {
         ObjectSet<Servicio> result = db.query(Servicio.class);
