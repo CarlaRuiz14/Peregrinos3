@@ -7,7 +7,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import com.luisdbb.tarea3AD2024base.config.StageManager;
-import com.luisdbb.tarea3AD2024base.repositorios.ConjuntoServicioRepository;
+import com.luisdbb.tarea3AD2024base.services.ConjuntoServicioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
 import javafx.application.Application;
@@ -41,16 +41,24 @@ public class Tarea3Ad2024baseApplication extends Application {
 
 	/**
 	 * Método invocado automáticamente por JavaFX antes de lanzar la aplicación.
-	 * Inicializa el contexto de Spring Boot.
+	 * 
+	 * Aquí se inicializa el contexto de Spring Boot y, a continuación, se obtiene
+	 * el bean {@code ConjuntoServicioRepository} desde el contexto de Spring para
+	 * garantizar que la secuencia de IDs (usada por db4o) se cree si no existe.
+	 * De esta forma, cuando se inicie la aplicación JavaFX, tendremos disponible
+	 * la configuración de persistencia y la secuencia de IDs lista para usar.
+	 * <
+	 *
+	 * @throws Exception si ocurre algún error durante la inicialización
 	 */
 	@Override
 	public void init() throws Exception {
 		springContext = springBootApplicationContext();
 		
 		// en application se pide directamente el bean
-	    ConjuntoServicioRepository csr = springContext.getBean(ConjuntoServicioRepository.class);
+	    ConjuntoServicioService css = springContext.getBean(ConjuntoServicioService.class);
 
-		csr.crearSecuenciaId();
+		css.crearSecuenciaId();
 	}
 
 	/**
@@ -64,10 +72,17 @@ public class Tarea3Ad2024baseApplication extends Application {
 	}
 
 	/**
-	 * Método invocado automáticamente por JavaFX después de `init`. Configura y
-	 * muestra la ventana principal.
+	 * Método invocado automáticamente por JavaFX después de {@code init()}. 
 	 * 
-	 * @param primaryStage Escenario principal proporcionado por JavaFX.
+	 * Configura la ventana principal de la aplicación y muestra la escena inicial. 
+	 * También carga el ícono de la aplicación desde los recursos y deshabilita 
+	 * el redimensionado de la ventana. 
+	 * 
+	 * Se intercepta el evento de cierre (la “X”) para cerrar de forma ordenada 
+	 * el contexto de Spring y así invocar los métodos marcados con {@code @PreDestroy}.
+	 * 
+	 *
+	 * @param primaryStage El escenario principal proporcionado por JavaFX.
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -84,17 +99,10 @@ public class Tarea3Ad2024baseApplication extends Application {
 		
 		// Interceptar cierre con la X
 	    primaryStage.setOnCloseRequest(event -> {
-	        // 1) Cerrar el contexto de Spring
 	        if (springContext != null && springContext.isActive()) {
 	            springContext.close();
-	        }
-	        // 2) O bien dejas que JavaFX cierre solo:
-	        //    - Si no llamas a `Platform.exit()`, JavaFX seguirá el cierre normal.
-
-	        // O si quieres forzar el cierre inmediato de JavaFX:
-	        // Platform.exit();
-	    });
-		
+	        }	       
+	    });		
 	}
 
 	/**

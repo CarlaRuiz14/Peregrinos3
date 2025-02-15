@@ -9,38 +9,82 @@ import org.springframework.stereotype.Repository;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.luisdbb.tarea3AD2024base.config.DataConnection;
+import com.luisdbb.tarea3AD2024base.modelo.Parada;
 import com.luisdbb.tarea3AD2024base.modelo.SecuenciaId;
 import com.luisdbb.tarea3AD2024base.modelo.Servicio;
 
 @Repository
 public class ConjuntoServicioRepository {
-	
+
 	@Autowired
-    private DataConnection dataConnection;
-   
+	private DataConnection dataConnection;
 
-	public List<Servicio> findAllServicios() {
-	    ObjectContainer db = dataConnection.getDb();
+	@Autowired
+	private ParadaRepository paradaRepository;
 
-	    Servicio ejemplo = new Servicio(); 
-	    // consulta con ejemplo vacio para sacar todos 
-	    ObjectSet<Servicio> result = db.queryByExample(ejemplo);
+	@Autowired
+	private SecuenciaId secuenciaId;
 
-	    return new ArrayList<>(result);
+	public List<Parada> findAllParadas() {
+		return paradaRepository.findAll();
 	}
 
-	
+	// METODOS CONJUNTOCONTRATADO
+
+	// METODOS CONJUNTOSERVICIOS
+
+	// METODOS SERVICIOS
+
+	public void saveServicio(Servicio servicio) {
+		ObjectContainer db = dataConnection.getDb();
+
+		Servicio ejemplo = new Servicio(); 
+		ejemplo.setNombre(servicio.getNombre());
+		
+		ObjectSet<Servicio> result = db.queryByExample(ejemplo);
+		
+		if(!result.hasNext()) {			
+			long nuevoId = secuenciaId.nextId();
+			servicio.setId(nuevoId);
+			actualizarSecuenciaId(nuevoId);
+			db.store(servicio);
+			db.commit();			
+		}			
+	}
+
+	public List<Servicio> findAllServicios() {
+		ObjectContainer db = dataConnection.getDb();
+
+		Servicio ejemplo = new Servicio();
+		ObjectSet<Servicio> result = db.queryByExample(ejemplo);
+
+		return new ArrayList<>(result);
+	}
+
 	// METODOS SECUENCIAID
 	public void crearSecuenciaId() {
-        ObjectContainer db = dataConnection.getDb();
+		ObjectContainer db = dataConnection.getDb();
 
-        SecuenciaId ejemplo = new SecuenciaId();
-        ObjectSet<SecuenciaId> result = db.queryByExample(ejemplo);
+		SecuenciaId ejemplo = new SecuenciaId();
+		ObjectSet<SecuenciaId> result = db.queryByExample(ejemplo);
 
-        if (result.isEmpty()) {           
-            SecuenciaId nueva = new SecuenciaId(0);
-            db.store(nueva);
-            db.commit();             
-        }
-    }
+		if (result.isEmpty()) {
+			SecuenciaId nueva = new SecuenciaId(0);
+			db.store(nueva);
+			db.commit();
+		}
+	}
+
+	public void actualizarSecuenciaId(long idNuevo) {
+		ObjectContainer db = dataConnection.getDb();
+		SecuenciaId ejemplo = new SecuenciaId();
+		ObjectSet<SecuenciaId> result = db.queryByExample(ejemplo);
+
+		if (result.hasNext()) {
+			SecuenciaId secuencia = result.next();
+			secuencia.setId(idNuevo);
+			db.store(secuencia);
+			db.commit();
+		}
+	}
 }

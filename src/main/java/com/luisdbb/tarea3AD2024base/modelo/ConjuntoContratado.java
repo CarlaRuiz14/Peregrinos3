@@ -17,17 +17,27 @@ public class ConjuntoContratado {
 		super();
 	}
 
+	public ConjuntoContratado(long id, double precioTotal, char modoPago, long idEstancia,
+			List<Long> listaServicios) {
+		super();
+		this.id = id;
+		this.precioTotal = precioTotal;
+		this.modoPago = modoPago;
+		this.idEstancia = idEstancia;
+		this.listaServicios = listaServicios = new ArrayList<>();
+	}		
+	
 	public ConjuntoContratado(long id, double precioTotal, char modoPago, String extra, long idEstancia,
 			List<Long> listaServicios) {
 		super();
 		this.id = id;
 		this.precioTotal = precioTotal;
 		this.modoPago = modoPago;
-		this.extra = null;
+		this.extra = extra;
 		this.idEstancia = idEstancia;
 		this.listaServicios = listaServicios = new ArrayList<>();
-	}	
-	
+	}
+
 	public void addServicio(long idServicio) {
 		listaServicios.add(idServicio);	
 	}		
