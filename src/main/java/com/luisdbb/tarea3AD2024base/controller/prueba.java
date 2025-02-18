@@ -13,8 +13,7 @@ public class prueba {
         String dbPath = "peregrinos.db4o";  
         ObjectContainer db = Db4oEmbedded.openFile(Db4oEmbedded.newConfiguration(), dbPath);
 
-        try {
-            
+        try {            
             consultarDatos(db);
             consultarDatosSecuencia(db);
         } finally {

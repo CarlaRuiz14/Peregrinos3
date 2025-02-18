@@ -134,7 +134,7 @@ public class AlojarController implements Initializable {
 		if (seleccion.equals(rbtnSi)) {
 			alertas.alertaInformacion("Alojar",
 					"El peregrino " + datosSellado.getPeregrino().getNombre() + " será alojado.");
-			stageManager.switchScene(FxmlView.VIP);
+			stageManager.switchScene(FxmlView.CONJUNTO);
 		} else if (seleccion.equals(rbtnNo)) {
 			alertas.alertaInformacion("No alojar", "El peregrino " + datosSellado.getPeregrino().getNombre()
 					+ " no será alojado.\nDatos guardados.\n\nVolviendo a su Menú.");

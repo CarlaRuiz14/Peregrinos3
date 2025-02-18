@@ -178,15 +178,15 @@ public enum FxmlView {
 			return "/fxml/Alojar.fxml";
 		}
 	},
-	VIP {
+	CONJUNTO {
 		@Override
 		public String getTitle() {
-			return getStringFromResourceBundle("vip.title");
+			return getStringFromResourceBundle("conjunto.title");
 		}
 
 		@Override
 		public String getFxmlFile() {
-			return "/fxml/Vip.fxml";
+			return "/fxml/Conjunto.fxml";
 		}
 	},
 	SERVICIO {
