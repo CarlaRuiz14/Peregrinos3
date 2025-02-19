@@ -3,6 +3,7 @@ package com.luisdbb.tarea3AD2024base.controller;
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
+import com.luisdbb.tarea3AD2024base.modelo.ConjuntoContratado;
 import com.luisdbb.tarea3AD2024base.modelo.SecuenciaId;
 import com.luisdbb.tarea3AD2024base.modelo.Servicio;
 
@@ -27,7 +28,14 @@ public class prueba {
         for (Servicio s : result) {
             System.out.println(s);
         }
+        ObjectSet<ConjuntoContratado> resultado = db.query(ConjuntoContratado.class);
+        System.out.println("Conjuntos en la base:");
+        for (ConjuntoContratado c : resultado) {
+            System.out.println(c);
+        }
     }
+    
+   
     
     private static void consultarDatosSecuencia(ObjectContainer db) {
         ObjectSet<SecuenciaId> result = db.query(SecuenciaId.class);

@@ -32,7 +32,7 @@ public class EstanciaService {
 	}
 
 	@Transactional
-	public boolean registrarEstancia(boolean vip, Peregrino peregrino, Parada parada, Carnet carnet) {
+	public Estancia registrarEstancia(boolean vip, Peregrino peregrino, Parada parada, Carnet carnet) {
 
 		LocalDate hoy = LocalDate.now();
 
@@ -41,9 +41,10 @@ public class EstanciaService {
 		if (vip) {
 			carnet.setnVips(carnet.getnVips() + 1);
 			carnetService.save(carnet);
-		}
-
-		return estanciaRepository.save(estancia) != null;
+		}	
+		estanciaRepository.save(estancia);
+		
+		return estancia;
 	}
 
 	public List<Estancia> findByPeregrinoId(Long peregrinoId) {

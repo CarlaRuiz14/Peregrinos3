@@ -14,7 +14,7 @@ import jakarta.annotation.PreDestroy;
 public class DataConnection {
 
 	private ObjectContainer db;
-	
+
 	@Value("${db4o.path}")
 	private String path;
 
@@ -24,8 +24,8 @@ public class DataConnection {
 			EmbeddedConfiguration config = Db4oEmbedded.newConfiguration();
 			db = Db4oEmbedded.openFile(config, path);
 		}
-	}	
-	
+	}
+
 	public ObjectContainer getDb() {
 		if (db == null || db.ext().isClosed()) {
 			throw new IllegalStateException("La conexión a db4o no está abierta. Llama a openConnection() primero.");

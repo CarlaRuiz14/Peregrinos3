@@ -133,18 +133,15 @@ public class ServicioController implements Initializable {
 		cargarServiciosTabla();
 		tblParadas.setPlaceholder(new Label("Selecciona un servicio"));
 
-		// Servicio Seleccionado
 		tblServicios.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
 			if (newVal == null) {
 				tblParadas.setItems(FXCollections.emptyObservableList());
 				tblParadas.setPlaceholder(new Label("Sin paradas"));
 			} else {
-
 				cargarParadasTabla(newVal);
 			}
 		});
 
-		// Botones, mnemonicos y tooltips
 		ayuda.configImgInfo(hpInfo);
 		String rutaNuevo = resources.getString("btnNuevo.icon");
 		Image imgNuevo = new Image(getClass().getResourceAsStream(rutaNuevo));
@@ -174,7 +171,67 @@ public class ServicioController implements Initializable {
 		btnGuardar.setTooltip(new Tooltip("Guardar (Alt+G)"));
 		tooltipConfig.volverTooltip(btnVolver);
 		tooltipConfig.salirTooltip(btnSalir);
+	}
 
+	@FXML
+	private void handlerInfo(ActionEvent event) throws IOException {
+		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
+		ayuda.configInfo("/help/servicios.html", stage);
+	}
+
+	@FXML
+	private void handlerNuevo(ActionEvent event) throws IOException {
+
+		Servicio nuevo = css.crearServicioVacio();
+
+		tblServicios.getItems().add(nuevo);
+
+		tblServicios.getSelectionModel().select(nuevo);
+		tblServicios.scrollTo(nuevo);
+		tblServicios.requestFocus();
+
+		tblServicios.edit(tblServicios.getItems().size() - 1, colNombreServicio);
+	}
+
+	@FXML
+	private void handlerGuardar(ActionEvent event) throws IOException {
+
+		try {
+			if (checkNombre && checkPrecio) {
+				boolean respuesta = alertas.alertaConfirmacion("Confirmación de Guardado",
+						"Se guardarán todos los cambios realizados en los servicios.\n" + "¿Desea continuar?");
+				if (respuesta) {
+					for (Servicio s : tblServicios.getItems()) {
+						List<Long> paradasActualizadas = new ArrayList<>(s.getListaParadas());
+						s.setListaParadas(paradasActualizadas);
+						css.saveServicio(s);
+					}
+					alertas.alertaInformacion("Guardado Exitoso", "Los cambios se han guardado correctamente.");
+				} else {
+					alertas.alertaInformacion("Operación Cancelada", "Los cambios no se guardarán.\nVolviendo...");
+				}
+				lblFeed.setText(" ");
+
+			} else {
+				alertas.alertaError("Error al guardar",
+						"Hay problemas con los datos introducidos.\nPor favor, revise la infomación.");
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+	        alertas.alertaError("Error", "Hubo un problema al registrar los servicios.");
+		}
+
+	}
+
+	@FXML
+	private void handlerVolver(ActionEvent event) throws IOException {
+		stageManager.switchScene(FxmlView.ADMIN);
+	}
+
+	@FXML
+	private void handlerSalir(ActionEvent event) throws IOException {
+		botones.salirConfig();
 	}
 
 	public void cargarServiciosTabla() {
@@ -217,67 +274,29 @@ public class ServicioController implements Initializable {
 			}
 		});
 
-		
-		StringConverter<Double> conversorDouble = new StringConverter<Double>() {
-
-		    private final DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance(Locale.US);		    
-		    private final DecimalFormat df;
-		    {
-		        df = new DecimalFormat("#0.00", symbols);
-		        df.setRoundingMode(RoundingMode.HALF_UP);
-		    }
-
-		    @Override
-		    public String toString(Double value) {
-		        if (value == null) {
-		            return "";
-		        }
-		        return df.format(value);
-		    }
-
-		    @Override
-		    public Double fromString(String text) {
-		        if (text == null || text.trim().isEmpty()) {
-		            return null;
-		        }
-		        try {
-		            text = text.replace(',', '.');
-
-		            Number number = df.parse(text);
-
-		            double d = number.doubleValue();
-
-		            return d;
-		        } catch (Exception e) {
-		            return null;
-		        }
-		    }
-		};
-
-		
 		colPrecioServicio.setCellValueFactory(new PropertyValueFactory<>("precio"));
-		colPrecioServicio.setCellFactory(TextFieldTableCell.forTableColumn(conversorDouble));
+		colPrecioServicio.setCellFactory(TextFieldTableCell.forTableColumn(getConversorDouble()));
 		colPrecioServicio.setOnEditCommit(event -> {
-		    Servicio servicio = event.getRowValue();
-		    Double oldValue = servicio.getPrecio();
-		    Double newValue = event.getNewValue(); 
+			Servicio servicio = event.getRowValue();
+			Double oldValue = servicio.getPrecio();
+			Double newValue = event.getNewValue();
 
-		    lblFeed.setText("");
-		    checkPrecio = true;
+			lblFeed.setText("");
+			checkPrecio = true;
 
-		    if (newValue == null) {
-		        servicio.setPrecio(oldValue);
-		        tblServicios.refresh();
-		        label.mostrarTxtInvalido(lblFeed, "El precio debe ser un número válido");
-		        checkPrecio = false;
-		    } else {
-		        servicio.setPrecio(newValue);
-		        tblServicios.refresh();
-		        label.mostrarTxtValido(lblFeed, "Precio actualizado correctamente");
-		        checkPrecio = true;
-		    }
-		});}
-
+			if (newValue == null) {
+				servicio.setPrecio(oldValue);
+				tblServicios.refresh();
+				label.mostrarTxtInvalido(lblFeed, "El precio debe ser un número válido");
+				checkPrecio = false;
+			} else {
+				servicio.setPrecio(newValue);
+				tblServicios.refresh();
+				label.mostrarTxtValido(lblFeed, "Precio actualizado correctamente");
+				checkPrecio = true;
+			}
+		});
+	}
 
 	private boolean existeNombreEnTabla(String nombre, Servicio servicioActual) {
 		for (Servicio s : tblServicios.getItems()) {
@@ -336,55 +355,40 @@ public class ServicioController implements Initializable {
 
 	}
 
-	@FXML
-	private void handlerInfo(ActionEvent event) throws IOException {
-		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
-		ayuda.configInfo("/help/servicios.html", stage);
-	}
+	private StringConverter<Double> getConversorDouble() {
+		return new StringConverter<Double>() {
 
-	@FXML
-	private void handlerNuevo(ActionEvent event) throws IOException {
-
-		Servicio nuevo = css.crearServicioVacio();
-
-		tblServicios.getItems().add(nuevo);
-
-		tblServicios.getSelectionModel().select(nuevo);
-		tblServicios.scrollTo(nuevo);
-		tblServicios.requestFocus();
-
-		tblServicios.edit(tblServicios.getItems().size() - 1, colNombreServicio);
-	}
-
-	@FXML
-	private void handlerGuardar(ActionEvent event) throws IOException {
-
-		if (checkNombre && checkPrecio) {
-			boolean respuesta = alertas.alertaConfirmacion("Confirmación de Guardado",
-					"Se guardarán todos los cambios realizados en los servicios.\n" + "¿Desea continuar?");
-			if (respuesta) {
-				for (Servicio s : tblServicios.getItems()) {
-					css.saveServicio(s);
-				}
-				alertas.alertaInformacion("Guardado Exitoso", "Los cambios se han guardado correctamente.");
-			} else {
-				alertas.alertaInformacion("Operación Cancelada", "Los cambios no se guardarán.\nVolviendo...");
+			private final DecimalFormatSymbols symbols = DecimalFormatSymbols.getInstance(Locale.US);
+			private final DecimalFormat df;
+			{
+				df = new DecimalFormat("#0.00", symbols);
+				df.setRoundingMode(RoundingMode.HALF_UP);
 			}
-			lblFeed.setText(" ");
 
-		} else {
-			alertas.alertaError("Error al guardar",
-					"Hay problemas con los datos introducidos.\nPor favor, revise la infomación.");
-		}
+			@Override
+			public String toString(Double value) {
+				if (value == null) {
+					return "";
+				}
+				return df.format(value);
+			}
+
+			@Override
+			public Double fromString(String text) {
+				if (text == null || text.trim().isEmpty()) {
+					return null;
+				}
+				try {
+					text = text.replace(',', '.');
+
+					Number number = df.parse(text);
+
+					return number.doubleValue();
+				} catch (Exception e) {
+					return null;
+				}
+			}
+		};
 	}
 
-	@FXML
-	private void handlerVolver(ActionEvent event) throws IOException {
-		stageManager.switchScene(FxmlView.ADMIN);
-	}
-
-	@FXML
-	private void handlerSalir(ActionEvent event) throws IOException {
-		botones.salirConfig();
-	}
 }

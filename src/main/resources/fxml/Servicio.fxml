@@ -65,7 +65,7 @@
                         <TableColumn fx:id="colPrecioServicio" prefWidth="120.0" text="PRECIO" />
                      </columns>
                   </TableView>
-                  <TableView fx:id="tblParadas" prefHeight="200.0" prefWidth="200.0" styleClass="tblVS">
+                  <TableView fx:id="tblParadas" prefHeight="200.0" prefWidth="200.0" styleClass="tblV">
                     <columns>
                       <TableColumn fx:id="colIdParada" prefWidth="95.0" text="ID" />
                       <TableColumn fx:id="colNombreParada" prefWidth="143.0" text="PARADA" />

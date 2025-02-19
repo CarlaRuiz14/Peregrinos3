@@ -58,7 +58,12 @@ public class Tarea3Ad2024baseApplication extends Application {
 		// en application se pide directamente el bean
 	    ConjuntoServicioService css = springContext.getBean(ConjuntoServicioService.class);
 
-		css.crearSecuenciaId();
+	    try {
+	    	css.crearSecuenciaId();
+	    }catch(Exception e) {
+	    	e.printStackTrace();
+	    }
+		
 	}
 
 	/**
