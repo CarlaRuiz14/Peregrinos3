@@ -46,5 +46,10 @@ public class ConjuntoServicioService {
 	public Servicio crearServicioVacio() {
 		return new Servicio(0, "", 0.0, null, null);
 	}
+	
+	public Set<Servicio> findServiciosByIdParada(long idParada){
+		return csr.findServiciosByIdParada(idParada);
+	}
+
 
 }

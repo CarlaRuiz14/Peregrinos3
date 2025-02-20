@@ -19,6 +19,7 @@ import com.luisdbb.tarea3AD2024base.modelo.ConjuntoContratado;
 import com.luisdbb.tarea3AD2024base.modelo.DatosSellado;
 import com.luisdbb.tarea3AD2024base.modelo.Estancia;
 import com.luisdbb.tarea3AD2024base.modelo.Servicio;
+import com.luisdbb.tarea3AD2024base.modelo.Sesion;
 import com.luisdbb.tarea3AD2024base.services.ConjuntoServicioService;
 import com.luisdbb.tarea3AD2024base.services.EstanciaService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
@@ -116,6 +117,9 @@ public class ConjuntoController implements Initializable {
 
 	@Autowired
 	private ConjuntoServicioService css;
+	
+	@Autowired
+	private Sesion sesion;
 
 	Map<Character, String> mapPago = new HashMap<>();
 
@@ -127,7 +131,7 @@ public class ConjuntoController implements Initializable {
 		colPrecioServicio.setCellValueFactory(new PropertyValueFactory<>("precio"));
 
 		tblServicios.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		Set<Servicio> listaS = css.findAllServicios();
+		Set<Servicio> listaS = css.findServiciosByIdParada(sesion.getUsuarioActivo().getId());
 		ObservableList<Servicio> listServicios = FXCollections.observableArrayList(listaS);
 		tblServicios.setItems(listServicios);
 		tblServicios.setPlaceholder(new Label("Sin Servicios"));
@@ -239,7 +243,7 @@ public class ConjuntoController implements Initializable {
 			conjunto.setModoPago(seleccionVacia?'-':getKeyPago(mapPago, cmbPago.getSelectionModel().getSelectedItem()));
 			conjunto.setExtra(txaNotas.getText().isEmpty() ? null : txaNotas.getText());
 			conjunto.setIdEstancia(estancia.getId());
-			List<Servicio> listaSeleccion = new ArrayList<>(tblServicios.getSelectionModel().getSelectedItems());
+			List<Servicio> listaSeleccion = new ArrayList<Servicio>(tblServicios.getSelectionModel().getSelectedItems());
 			List<Long> listaIds = new ArrayList<>();
 			for (Servicio servicio : listaSeleccion) {
 				listaIds.add(servicio.getId());

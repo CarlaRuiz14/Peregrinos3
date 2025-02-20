@@ -3,6 +3,7 @@ package com.luisdbb.tarea3AD2024base.modelo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class ConjuntoContratado {
 	
@@ -18,24 +19,24 @@ public class ConjuntoContratado {
 	}
 
 	public ConjuntoContratado(long id, double precioTotal, char modoPago, long idEstancia,
-			List<Long> listaServicios) {
+			Set<Long> listaServicios) {
 		super();
 		this.id = id;
 		this.precioTotal = precioTotal;
 		this.modoPago = modoPago;
 		this.idEstancia = idEstancia;
-		this.listaServicios = listaServicios = new ArrayList<>();
+		this.listaServicios = new ArrayList<>(listaServicios);
 	}		
 	
 	public ConjuntoContratado(long id, double precioTotal, char modoPago, String extra, long idEstancia,
-			List<Long> listaServicios) {
+			Set<Long> listaServicios) {
 		super();
 		this.id = id;
 		this.precioTotal = precioTotal;
 		this.modoPago = modoPago;
 		this.extra = extra;
 		this.idEstancia = idEstancia;
-		this.listaServicios = listaServicios = new ArrayList<>();
+		this.listaServicios = new ArrayList<>(listaServicios);
 	}
 
 	public void addServicio(long idServicio) {

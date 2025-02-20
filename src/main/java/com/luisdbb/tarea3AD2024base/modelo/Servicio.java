@@ -3,6 +3,7 @@ package com.luisdbb.tarea3AD2024base.modelo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 public class Servicio {
 
@@ -12,17 +13,17 @@ public class Servicio {
 	private List<Long> listaParadas;
 	private List<Long> listaConjuntos;
 	
-	public Servicio() {
+	public Servicio() {		
 		super();
 	}
 	
-	public Servicio(long id, String nombre, double precio, List<Long> listaParadas, List<Long> listaConjuntos) {
+	public Servicio(long id, String nombre, double precio, Set<Long> listaParadas, Set<Long> listaConjuntos) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.precio = precio;
-		this.listaParadas = listaParadas = new ArrayList<>();
-		this.listaConjuntos = listaConjuntos = new ArrayList<>();
+		this.listaParadas = new ArrayList<>(listaParadas);
+		this.listaConjuntos =  new ArrayList<>(listaConjuntos);
 	}	
 	
 	public void addParada(long idParada) {
@@ -76,7 +77,7 @@ public class Servicio {
 	public int hashCode() {
 		return Objects.hash(id, listaConjuntos, listaParadas, nombre, precio);
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -90,7 +91,7 @@ public class Servicio {
 				&& Objects.equals(listaParadas, other.listaParadas) && Objects.equals(nombre, other.nombre)
 				&& Double.doubleToLongBits(precio) == Double.doubleToLongBits(other.precio);
 	}
-	
+
 	@Override
 	public String toString() {
 		return "Servicio [id=" + id + ", nombre=" + nombre + ", precio=" + precio + ", listaParadas=" + listaParadas

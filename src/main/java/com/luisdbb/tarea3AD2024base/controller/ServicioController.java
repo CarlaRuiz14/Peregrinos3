@@ -203,7 +203,7 @@ public class ServicioController implements Initializable {
 						"Se guardarán todos los cambios realizados en los servicios.\n" + "¿Desea continuar?");
 				if (respuesta) {
 					for (Servicio s : tblServicios.getItems()) {
-						List<Long> paradasActualizadas = new ArrayList<>(s.getListaParadas());
+						List<Long> paradasActualizadas = new ArrayList<Long>(s.getListaParadas());
 						s.setListaParadas(paradasActualizadas);
 						css.saveServicio(s);
 					}

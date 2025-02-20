@@ -47,7 +47,7 @@ public class ConjuntoServicioRepository {
 	    ObjectContainer db = dataConnection.getDb();
 
 	    ConjuntoContratado ejemplo = new ConjuntoContratado();
-	    ObjectSet result = db.queryByExample(ejemplo);
+	    ObjectSet<ConjuntoContratado> result = db.queryByExample(ejemplo);
 	   
 	    return new HashSet<>(result);
 	}
@@ -88,10 +88,31 @@ public class ConjuntoServicioRepository {
 	    ObjectContainer db = dataConnection.getDb();
 
 	    Servicio ejemplo = new Servicio();
-	    ObjectSet result = db.queryByExample(ejemplo);
+	    ObjectSet<Servicio> result = db.queryByExample(ejemplo);
 	   
-	    return new HashSet<>(result);
+	    return new HashSet<Servicio>(result);
 	}
 
+	
+	public Set<Servicio> findServiciosByIdParada(long idUsuario){
+		
+		long idParada=paradaRepository.findByUsuarioId(idUsuario).getId();
+		
+		Set<Servicio> servicios = new HashSet<>();
+		
+		Set<Servicio> todos =findAllServicios();
+		
+		for(Servicio s:todos) {
+			List<Long> paradas = s.getListaParadas();
+			for(long id:paradas) {				
+				if(id==idParada) {
+					servicios.add(s);
+				}
+			}			
+		}
+		
+		return servicios;
+		
+	}
 	
 }
