@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -236,7 +237,7 @@ public class ServicioController implements Initializable {
 
 	public void cargarServiciosTabla() {
 		tblServicios.setEditable(true);
-		List<Servicio> listaS = css.findAllServicios();
+		Set<Servicio> listaS = css.findAllServicios();
 
 		ObservableList<Servicio> listaServicios = FXCollections.observableArrayList(listaS);
 		tblServicios.setItems(listaServicios);

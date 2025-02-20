@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -126,7 +127,7 @@ public class ConjuntoController implements Initializable {
 		colPrecioServicio.setCellValueFactory(new PropertyValueFactory<>("precio"));
 
 		tblServicios.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-		List<Servicio> listaS = css.findAllServicios();
+		Set<Servicio> listaS = css.findAllServicios();
 		ObservableList<Servicio> listServicios = FXCollections.observableArrayList(listaS);
 		tblServicios.setItems(listServicios);
 		tblServicios.setPlaceholder(new Label("Sin Servicios"));
@@ -232,6 +233,7 @@ public class ConjuntoController implements Initializable {
 	private boolean saveConjunto(Estancia estancia) {
 		try {
 			ConjuntoContratado conjunto = new ConjuntoContratado();
+			conjunto.setId(0);
 			conjunto.setPrecioTotal(Double.parseDouble(lblTotal.getText().replace(",", ".")));
 			boolean seleccionVacia=tblServicios.getSelectionModel().getSelectedItems().isEmpty();
 			conjunto.setModoPago(seleccionVacia?'-':getKeyPago(mapPago, cmbPago.getSelectionModel().getSelectedItem()));

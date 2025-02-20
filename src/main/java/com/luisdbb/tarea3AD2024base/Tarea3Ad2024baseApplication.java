@@ -53,17 +53,7 @@ public class Tarea3Ad2024baseApplication extends Application {
 	 */
 	@Override
 	public void init() throws Exception {
-		springContext = springBootApplicationContext();
-		
-		// en application se pide directamente el bean
-	    ConjuntoServicioService css = springContext.getBean(ConjuntoServicioService.class);
-
-	    try {
-	    	css.crearSecuenciaId();
-	    }catch(Exception e) {
-	    	e.printStackTrace();
-	    }
-		
+		springContext = springBootApplicationContext();		
 	}
 
 	/**

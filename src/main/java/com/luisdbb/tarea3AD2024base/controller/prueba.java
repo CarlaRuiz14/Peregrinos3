@@ -4,7 +4,6 @@ import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.luisdbb.tarea3AD2024base.modelo.ConjuntoContratado;
-import com.luisdbb.tarea3AD2024base.modelo.SecuenciaId;
 import com.luisdbb.tarea3AD2024base.modelo.Servicio;
 
 public class prueba {
@@ -16,7 +15,6 @@ public class prueba {
 
         try {            
             consultarDatos(db);
-            consultarDatosSecuencia(db);
         } finally {
             db.close();
         }
@@ -32,16 +30,6 @@ public class prueba {
         System.out.println("Conjuntos en la base:");
         for (ConjuntoContratado c : resultado) {
             System.out.println(c);
-        }
-    }
-    
-   
-    
-    private static void consultarDatosSecuencia(ObjectContainer db) {
-        ObjectSet<SecuenciaId> result = db.query(SecuenciaId.class);
-        System.out.println("Secuencia en la base:");
-        for (SecuenciaId s : result) {
-            System.out.println(s);
         }
     }
 }
