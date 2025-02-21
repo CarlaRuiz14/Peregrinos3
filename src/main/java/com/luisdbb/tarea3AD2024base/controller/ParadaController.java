@@ -44,6 +44,9 @@ public class ParadaController implements Initializable {
 	private Button btnSellar;
 
 	@FXML
+	private Button btnEnvios;
+	
+	@FXML
 	private Button btnLogout;
 
 	@FXML
@@ -113,6 +116,11 @@ public class ParadaController implements Initializable {
 	@FXML
 	private void handlerSellar(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.SELLAR);
+	}
+	
+	@FXML
+	private void handlerEnvios(ActionEvent event) throws IOException {
+		stageManager.switchScene(FxmlView.LISTAENVIOS);
 	}
 
 	@FXML

@@ -25,7 +25,7 @@ public class ConjuntoContratado {
 		this.precioTotal = precioTotal;
 		this.modoPago = modoPago;
 		this.idEstancia = idEstancia;
-		this.listaServicios = new ArrayList<>(listaServicios);
+		this.listaServicios = new ArrayList<>();
 	}		
 	
 	public ConjuntoContratado(long id, double precioTotal, char modoPago, String extra, long idEstancia,

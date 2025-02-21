@@ -50,6 +50,9 @@ public class ConjuntoServicioService {
 	public Set<Servicio> findServiciosByIdParada(long idParada){
 		return csr.findServiciosByIdParada(idParada);
 	}
-
+	
+	public Servicio getServicioByName(String nombre) {
+		return csr.getServicioByName(nombre);
+	}
 
 }

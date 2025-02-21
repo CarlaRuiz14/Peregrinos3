@@ -72,9 +72,11 @@ public class ConjuntoServicioRepository {
 
 	public void saveServicio(Servicio servicio) {
 		ObjectContainer db = dataConnection.getDb();
-		try {			
-			long nuevoId = findAllServicios().size()+1;
-			servicio.setId(nuevoId);
+		try {	
+			if(servicio.getId()==0) {
+				long nuevoId = findAllServicios().size()+1;
+				servicio.setId(nuevoId);				
+			}			
 			db.store(servicio);
 			db.commit();
 		} catch (Exception e) {
@@ -114,5 +116,23 @@ public class ConjuntoServicioRepository {
 		return servicios;
 		
 	}
+	
+	
+	public Servicio getServicioByName(String nombre) {
+	    ObjectContainer db = dataConnection.getDb();
+
+	    Servicio ejemplo = new Servicio(0,nombre,0.0,null,null);
+	    ObjectSet<Servicio> result = db.queryByExample(ejemplo);
+	    
+	    if(result.hasNext()) {	    	
+	    	return result.next();
+	    }else {
+	    	return null;
+	    }
+		
+		
+	}
+	
+	
 	
 }

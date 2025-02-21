@@ -312,4 +312,9 @@ Button:hover {
     -fx-pref-height: 30px; /* Altura preferida más pequeña */
 }
 
+/* Envio */
+.txtEnvio{
+	-fx-font-size: 14px; 
+	-fx-pref-height: 30px;
+}
 

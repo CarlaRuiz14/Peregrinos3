@@ -26,10 +26,11 @@
          <children>
             <Hyperlink fx:id="hpInfo" onAction="#handlerInfo" prefHeight="30.0" prefWidth="30.0" GridPane.halignment="RIGHT" GridPane.valignment="TOP" />
             <Label fx:id="lblTitulo" alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" styleClass="lblTitulo2" text="MI CUENTA" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <VBox alignment="CENTER" spacing="30.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+            <VBox alignment="CENTER" spacing="20.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
                <children>
                   <Button fx:id="btnExportar" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerExportar" prefHeight="40.0" prefWidth="200.0" styleClass="btnFlecha" text="Exportar Parada" />
                   <Button fx:id="btnSellar" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerSellar" prefHeight="40.0" prefWidth="200.0" styleClass="btnFlecha" text="Sellar / Alojar" />
+                  <Button fx:id="btnEnvios" alignment="CENTER" onAction="#handlerEnvios" prefHeight="48.0" prefWidth="200.0" text="Envíos" />
                </children>
             </VBox>
             <Button fx:id="btnSalir" onAction="#handlerSalir" prefHeight="30.0" prefWidth="30.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">

@@ -22,8 +22,8 @@ public class Servicio {
 		this.id = id;
 		this.nombre = nombre;
 		this.precio = precio;
-		this.listaParadas = new ArrayList<>(listaParadas);
-		this.listaConjuntos =  new ArrayList<>(listaConjuntos);
+		this.listaParadas = new ArrayList<>();
+		this.listaConjuntos =  new ArrayList<>();
 	}	
 	
 	public void addParada(long idParada) {

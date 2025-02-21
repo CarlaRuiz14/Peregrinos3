@@ -117,7 +117,7 @@ public class ConjuntoController implements Initializable {
 
 	@Autowired
 	private ConjuntoServicioService css;
-	
+
 	@Autowired
 	private Sesion sesion;
 
@@ -135,10 +135,10 @@ public class ConjuntoController implements Initializable {
 		ObservableList<Servicio> listServicios = FXCollections.observableArrayList(listaS);
 		tblServicios.setItems(listServicios);
 		tblServicios.setPlaceholder(new Label("Sin Servicios"));
-		
+
 		tblServicios.getSelectionModel().getSelectedItems().addListener((ListChangeListener<Servicio>) change -> {
-		    boolean seleccionVacia = tblServicios.getSelectionModel().getSelectedItems().isEmpty();
-		    cmbPago.setDisable(seleccionVacia);
+			boolean seleccionVacia = tblServicios.getSelectionModel().getSelectedItems().isEmpty();
+			cmbPago.setDisable(seleccionVacia);
 		});
 
 		tblServicios.getSelectionModel().getSelectedItems().addListener((ListChangeListener<Servicio>) change -> {
@@ -186,7 +186,10 @@ public class ConjuntoController implements Initializable {
 	@FXML
 	private void handlerContratar(ActionEvent event) {
 		try {
-			if (!tblServicios.getSelectionModel().getSelectedItems().isEmpty()&&cmbPago.getSelectionModel().getSelectedItem().isEmpty()) {
+
+			List<Servicio> listaSeleccion = tblServicios.getSelectionModel().getSelectedItems();
+
+			if (!listaSeleccion.isEmpty() && cmbPago.getSelectionModel().getSelectedItem()==null) {
 				alertas.alertaError("Error", "Por favor seleccione un método de pago.");
 				return;
 			}
@@ -202,9 +205,17 @@ public class ConjuntoController implements Initializable {
 				alertas.alertaError("Error",
 						"Se registró la estancia, pero hubo un problema al registrar los servicios.");
 			} else {
-				alertas.alertaInformacion("Contrato Exitoso",
-						"La estancia y los servicios han sido registrados correctamente.");
-				stageManager.switchScene(FxmlView.PARADA);
+
+				if (listaSeleccion.contains(css.getServicioByName("Envío a casa"))) {
+					alertas.alertaInformacion("Envío a casa",
+							"Ha sido contratado el servicio de envío a casa.\nPor favor, continúe para completar los detalles del envío.");
+					stageManager.switchScene(FxmlView.ENVIO);
+
+				} else {
+					alertas.alertaInformacion("Contrato Exitoso",
+							"La estancia y los servicios han sido registrados correctamente.");
+					stageManager.switchScene(FxmlView.PARADA);
+				}
 			}
 
 		} catch (Exception e) {
@@ -239,11 +250,13 @@ public class ConjuntoController implements Initializable {
 			ConjuntoContratado conjunto = new ConjuntoContratado();
 			conjunto.setId(0);
 			conjunto.setPrecioTotal(Double.parseDouble(lblTotal.getText().replace(",", ".")));
-			boolean seleccionVacia=tblServicios.getSelectionModel().getSelectedItems().isEmpty();
-			conjunto.setModoPago(seleccionVacia?'-':getKeyPago(mapPago, cmbPago.getSelectionModel().getSelectedItem()));
+			boolean seleccionVacia = tblServicios.getSelectionModel().getSelectedItems().isEmpty();
+			conjunto.setModoPago(
+					seleccionVacia ? '-' : getKeyPago(mapPago, cmbPago.getSelectionModel().getSelectedItem()));
 			conjunto.setExtra(txaNotas.getText().isEmpty() ? null : txaNotas.getText());
 			conjunto.setIdEstancia(estancia.getId());
-			List<Servicio> listaSeleccion = new ArrayList<Servicio>(tblServicios.getSelectionModel().getSelectedItems());
+			List<Servicio> listaSeleccion = new ArrayList<Servicio>(
+					tblServicios.getSelectionModel().getSelectedItems());
 			List<Long> listaIds = new ArrayList<>();
 			for (Servicio servicio : listaSeleccion) {
 				listaIds.add(servicio.getId());
