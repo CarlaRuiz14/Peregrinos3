@@ -38,10 +38,10 @@
             <Label fx:id="lblTitulo" alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" styleClass="lblTitulo2" text="ENVIOS" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             <TableView fx:id="tblEnvios" maxWidth="-Infinity" prefHeight="200.0" prefWidth="460.0" styleClass="tblVS" GridPane.rowIndex="1">
               <columns>
-                <TableColumn fx:id="colIdEnvio" prefWidth="111.0" text="ID" />
-                <TableColumn fx:id="colUrgente" prefWidth="111.0" text="URGENTE" />
-                  <TableColumn fx:id="colPeso" minWidth="8.800048828125" prefWidth="111.0" text="PESO" />
-                  <TableColumn fx:id="colVolumen" prefWidth="111.0" text="VOLUMEN" />
+                <TableColumn fx:id="colIdEnvio" prefWidth="45.60003662109375" text="ID" />
+                <TableColumn fx:id="colUrgente" prefWidth="92.79999542236328" text="URGENTE" />
+                  <TableColumn fx:id="colPeso" minWidth="8.800048828125" prefWidth="126.4000244140625" text="PESO" />
+                  <TableColumn fx:id="colVolumen" prefWidth="180.79998779296875" text="VOLUMEN" />
               </columns>
             </TableView>
             <Button fx:id="btnVolver" alignment="CENTER" onAction="#handlerVolver" prefHeight="30.0" prefWidth="30.0" GridPane.halignment="LEFT" GridPane.rowIndex="6" GridPane.valignment="BOTTOM">

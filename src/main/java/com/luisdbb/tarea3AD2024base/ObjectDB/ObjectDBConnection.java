@@ -10,9 +10,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class ObjectDBConnection {
 
-    private EntityManagerFactory emf = 
-        Persistence.createEntityManagerFactory("objectdb:ODBB_Peregrinos.odb");
+    private static final String objectdbPath = "objectdb:ODBB_Peregrinos.odb";
+    private EntityManagerFactory emf;
   
+    public void abrirConexion() {
+        if (emf == null || !emf.isOpen()) {
+            emf = Persistence.createEntityManagerFactory(objectdbPath);        }
+    }
+    
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
@@ -20,7 +25,6 @@ public class ObjectDBConnection {
     public void cerrarConexion() {
         if (emf != null && emf.isOpen()) {
             emf.close();
-            System.out.println("Conexión con ObjectDB cerrada correctamente.");
         }
     }
 }

@@ -94,7 +94,6 @@ public class ConjuntoServicioRepository {
 	   
 	    return new HashSet<Servicio>(result);
 	}
-
 	
 	public Set<Servicio> findServiciosByIdParada(long idUsuario){
 		

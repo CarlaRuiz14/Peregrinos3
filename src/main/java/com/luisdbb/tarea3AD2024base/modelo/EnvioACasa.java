@@ -10,8 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-
-
 @Entity
 public class EnvioACasa extends Servicio implements Serializable {
 
@@ -19,17 +17,17 @@ public class EnvioACasa extends Servicio implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	private double peso;
 	private double[] volumen;
-	private boolean urgente=false;
-	
+	private boolean urgente = false;
+
 	@Embedded
 	private Direccion direccion;
-	
+
 	private long idParada;
 
 	public EnvioACasa() {
@@ -44,7 +42,7 @@ public class EnvioACasa extends Servicio implements Serializable {
 		this.direccion = direccion;
 		this.idParada = idParada;
 	}
-	
+
 	public EnvioACasa(long id, double peso, double[] volumen, boolean urgente, Direccion direccion, long idParada) {
 		super();
 		this.id = id;
@@ -135,7 +133,5 @@ public class EnvioACasa extends Servicio implements Serializable {
 		return "EnvioACasa [id=" + id + ", peso=" + peso + ", volumen=" + Arrays.toString(volumen) + ", urgente="
 				+ urgente + ", direccion=" + direccion + ", idParada=" + idParada + "]";
 	}
-	
-	
 
 }
