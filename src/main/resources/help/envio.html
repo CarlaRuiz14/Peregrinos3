@@ -11,19 +11,24 @@
 <body>
 
   <header>
-    <h1>Envio</h1>
+    <h1>Envío a casa</h1>
   </header>
 
   <nav class="breadcrumb">
     Página principal &gt;
     Inicio de sesión &gt;
-    <a href="administrador.html">Menú administrador</a> &gt;
-    Crear/Editar Servicio
+    <a href="parada.html">Menú parada</a> &gt;
+    <a href="sellar.html">Sellar parada</a> &gt;
+    <a href="alojar.html">Alojamiento en parada</a> &gt;
+    <a href="conjunto.html">Contratar Servicios</a> &gt;
+    Envío a casa
   </nav>
 
-  <p class="intro">En esta pantalla puedes crear un nuevo servicio o editar uno existente. Aquí podrás
-    definir los detalles del servicio, como su nombre o su precio.
-    Asegúrate de guardar los cambios una vez que hayas completado o modificado los datos.</p>
+  <p class="intro">
+    En esta ventana puedes gestionar el envío de paquetes a domicilio.
+    Introduce la dirección y localidad de destino, así como las características del paquete,
+    incluyendo dimensiones, peso y si el envío es urgente.
+  </p>
 
   <div class="helpSection">
     <img src="img/info.png" alt="Botón Información" />
@@ -33,34 +38,60 @@
   </div>
 
   <div class="helpSection">
-    <img src="img/tblServicios.png" alt="Lista de servicios" />
+    <img src="img/direccion.png" alt="Campo dirección" />
     <p>
-      En esta tabla se muestran los servicios disponibles junto con su <b>ID</b>, <b>nombre</b> y <b>precio</b>.
-      Puedes seleccionar un servicio para asignarlo a una parada o modificar su información.
+      En este campo se introduce la <b>dirección</b> a la que será enviada el paquete. Esta puede contener letras,
+      números y los caracteres: ".", ",", "/","ª","º" y "-".
     </p>
   </div>
 
   <div class="helpSection">
-    <img src="img/tblParadas.png" alt="Lista de paradas" />
+    <img src="img/localidad.png" alt="Campo localidad" />
     <p>
-      Esta tabla muestra las paradas registradas junto con su <b>ID</b>, <b>nombre</b> y <b>región</b>. 
-      Utiliza la casilla de verificación para asignar o desasignar un servicio a una parada seleccionada.
+      En este campo se introduce la <b>localidad</b> a la que será enviada el paquete. Esta puede contener letras y "-".
     </p>
   </div>
 
   <div class="helpSection">
-    <img src="img/add.png" alt="Botón agregar servicio" />
+    <img src="img/urgente.png" alt="Opción urgente" />
     <p>
-      Utiliza este botón para <b>añadir un nuevo servicio</b> a la lista de servicios disponibles en la aplicación.
+      Para contratar un envío <b>urgente</b> esta opción debe estar marcada.
     </p>
   </div>
 
   <div class="helpSection">
-    <img src="img/flecha.png" alt="Botón flecha" />
+    <img src="img/peso.png" alt="Campo peso" />
     <p>
-      Haz clic en este botón para <b>completar tu registro</b> como peregrino una vez que hayas
-      ingresado toda tu información y confirmado los datos.
+      En este campo se introduce el <b>peso</b> en kilogramos del paquete a enviar. Puede ser un número decimal o
+      entero.
+    </p>
+  </div>
 
+  <div class="helpSection">
+    <img src="img/alto.png" alt="Campo alto" />
+    <p>
+      En este campo se introduce el <b>alto</b> en centímetros del paquete. Puede ser un número decimal o entero.
+    </p>
+  </div>
+
+  <div class="helpSection">
+    <img src="img/ancho.png" alt="Campo ancho" />
+    <p>
+      En este campo se introduce el <b>ancho</b> en centímetros del paquete. Puede ser un número decimal o entero.
+    </p>
+  </div>
+
+  <div class="helpSection">
+    <img src="img/fondo.png" alt="Campo fondo" />
+    <p>
+      En este campo se introduce el <b>fondo</b> en centímetros del paquete. Puede ser un número decimal o entero.
+    </p>
+  </div>
+
+  <div class="helpSection">
+    <img src="img/flecha.png" alt="Botón contratar" />
+    <p>
+      Haz clic en este botón para confirmar los datos y <b>contratar</b> el envío a casa con los datos introducidos.
     </p>
   </div>
 
@@ -82,8 +113,8 @@
   <footer>
     <h2>¿Necesitas más ayuda? Visita:</h2>
     <ul>
-      <li><a href="administrador.html">Menú administrador</a></li>
-      <li><a href="regParada.html">Registro de parada</a></li>
+      <li><a href="expParada.html">Exportar parada</a></li>
+      <li><a href="listaEnvios.html">Lista de envíos</a></li>
     </ul>
   </footer>
 </body>

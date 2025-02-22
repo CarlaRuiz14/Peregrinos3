@@ -11,7 +11,7 @@
 <body>
 
   <header>
-    <h1>Contratar Conjunto de Servicios</h1>
+    <h1>Contratar Servicios</h1>
   </header>
 
   <nav class="breadcrumb">
@@ -20,14 +20,17 @@
     <a href="parada.html">Menú parada</a> &gt;
     <a href="sellar.html">Sellar parada</a> &gt;
     <a href="alojar.html">Alojamiento en parada</a> &gt;
-    Contratar Conjunto de Servicios  
+    Contratar Servicios
   </nav>
 
   <p class="intro">
-    En esta pantalla puedes registrar si el peregrino desea una estancia VIP en tu parada. Selecciona Sí
-    si el peregrino opta por este tipo de estancia con mayores comodidades o No si prefiere continuar con el
-    alojamiento estándar. Esta información se registrará en su carnet.
+    En esta ventana puedes gestionar la compra de servicios ofrecidos en la parada.
+    Se muestra una lista con los servicios disponibles junto con su precio correspondiente.
+    Puedes seleccionar los servicios deseados y, si procede, indicar si la estancia es VIP.
+    Es obligatorio elegir el método de pago y tienes la opción de añadir notas acerca del peregrino o del servicio
+    contratado.
   </p>
+
 
   <div class="helpSection">
     <img src="img/info.png" alt="Botón Información" />
@@ -37,18 +40,50 @@
   </div>
 
   <div class="helpSection">
-    <img src="img/sino.png" alt="Opciones Sí o No" />
+    <img src="img/tblServicio2.png" alt="Tabla servicios" />
     <p>
-      Selecciona <b>Sí</b> si el peregrino desea realizar una <b>estancia VIP</b> o <b>No</b> si elige continuar con el
-      alojamiento estándar.
+      En esta tabla se muestran los servicios disponibles junto con su ID, nombre y precio.
+      Se pueden seleccionar varios servicios manteniendo "ctrl" al hacer "click" sobre ellos. Los servicios
+      seleccionados
+      serán los contratados al hacer click en contratar.
     </p>
   </div>
 
   <div class="helpSection">
-    <img src="img/flecha.png" alt="Botón confirmar elección" />
+    <img src="img/vip.png" alt="Opción vip" />
     <p>
-      Utiliza este botón para <b>registrar la elección del peregrino</b> y actualizar su carnet con la información
-      correspondiente.
+      Se marca si el peregrino quiere una estancia <b>VIP</b>.
+    </p>
+  </div>
+
+  <div class="helpSection">
+    <img src="img/pago.png" alt="Desplegable método de pago" />
+    <p>
+      Desplegable con los <b>métodos de pago</b> disponibles en caso de contratar servicios. Esta opción estará
+      desahbilitada en caso de no haber servicios seleccionados.
+    </p>
+  </div>
+
+  <div class="helpSection">
+    <img src="img/notas.png" alt="Campo para notas" />
+    <p>
+      Campo opcional para poder escribir <b>notas</b> explicativas acerca de los servicios contratados, peticiones de
+      los peregrinos o cualquier información adicional.
+    </p>
+  </div>
+
+  <div class="helpSection">
+    <img src="img/total.png" alt="Total a pagar" />
+    <p>
+      Total de la <b>suma</b> de los servicios seleccionados.
+    </p>
+  </div>
+
+  <div class="helpSection">
+    <img src="img/flecha.png" alt="Botón contratar" />
+    <p>
+      Utiliza este botón para <b>contratar los servicios</b>. Se confirmará la compra y se completarán los datos en caso
+      de ser necesario.
     </p>
   </div>
 
@@ -71,6 +106,8 @@
     <h2>¿Necesitas más ayuda? Visita:</h2>
     <ul>
       <li><a href="expParada.html">Exportar parada</a></li>
+      <li><a href="envio.html">Envío a casa</a></li>
+      <li><a href="listaEnvios.html">Lista de envíos</a></li>
     </ul>
   </footer>
 

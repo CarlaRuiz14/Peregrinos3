@@ -176,21 +176,19 @@ public class CarnetController implements Initializable {
 	private Peregrino peregrinoActivo;
 	private Carnet carnetActivo;
 	private ResourceBundle bundle;
-	
-	
+
 	public CarnetController() {
-	    if (!Platform.isFxApplicationThread() && !Platform.isImplicitExit()) {
-	        Platform.startup(() -> {}); // Inicia JavaFX si no está iniciado
-	    }
+		if (!Platform.isFxApplicationThread() && !Platform.isImplicitExit()) {
+			Platform.startup(() -> {
+			}); // Inicia JavaFX si no está iniciado
+		}
 	}
 
-	
-	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		this.bundle=resources;
-		
+		this.bundle = resources;
+
 		usuarioActivo = sesion.getUsuarioActivo();
 		peregrinoActivo = peregrinoService.findByIdUsuario(usuarioActivo.getId());
 		carnetActivo = carnetService.findById(peregrinoActivo.getCarnet().getId());
@@ -289,7 +287,6 @@ public class CarnetController implements Initializable {
 			parametros.put("id_peregrino", peregrinoActivo.getId());
 			parametros.put("imagen_fondo", "images/fondo20.png");
 
-
 			try (Connection conexion = dataSource.getConnection()) {
 				JasperPrint jasperPrint = JasperFillManager.fillReport(reportStream, parametros, conexion);
 				crearImagenInforme(jasperPrint);
@@ -299,41 +296,38 @@ public class CarnetController implements Initializable {
 			alertas.alertaError("Error", "No se pudo generar el informe");
 		}
 	}
-	
+
 	private void crearImagenInforme(JasperPrint jasperPrint) {
-	    try {
-	        java.awt.Image awtImage = JasperPrintManager.printPageToImage(jasperPrint, 0, 1.0f);
-	        BufferedImage bufferedImage = new BufferedImage(
-	            awtImage.getWidth(null),
-	            awtImage.getHeight(null),
-	            BufferedImage.TYPE_INT_ARGB
-	        );
-	        Graphics2D g2d = bufferedImage.createGraphics();
-	        g2d.drawImage(awtImage, 0, 0, null);
-	        g2d.dispose();
+		try {
+			java.awt.Image awtImage = JasperPrintManager.printPageToImage(jasperPrint, 0, 1.0f);
+			BufferedImage bufferedImage = new BufferedImage(awtImage.getWidth(null), awtImage.getHeight(null),
+					BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = bufferedImage.createGraphics();
+			g2d.drawImage(awtImage, 0, 0, null);
+			g2d.dispose();
 
-	        javafx.scene.image.Image fxImage = SwingFXUtils.toFXImage(bufferedImage, null);
-	        ImageView imageView = new ImageView(fxImage);
-	        imageView.setPreserveRatio(true);
-	        imageView.setSmooth(true);
+			javafx.scene.image.Image fxImage = SwingFXUtils.toFXImage(bufferedImage, null);
+			ImageView imageView = new ImageView(fxImage);
+			imageView.setPreserveRatio(true);
+			imageView.setSmooth(true);
 
-	        BorderPane pane = new BorderPane(imageView);
-	        Scene scene = new Scene(pane, 540, 540);
+			BorderPane pane = new BorderPane(imageView);
+			Scene scene = new Scene(pane, 540, 540);
 
-	        Stage reportStage = new Stage();
-	        reportStage.setTitle("Carnet de peregrino");
-	        String iconPath = bundle.getString("carnet.icon");
-	        reportStage.getIcons().add(new Image(getClass().getResourceAsStream(iconPath)));	        
-	        reportStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
-	        
-	        reportStage.setScene(scene);
-	        reportStage.showAndWait(); 
-	    } catch (JRException e) {
-	        e.printStackTrace();
-	        alertas.alertaError("Error", "Error al cargar el informe");
-	    }
-	}	
-	
+			Stage reportStage = new Stage();
+			reportStage.setTitle("Carnet de peregrino");
+			String iconPath = bundle.getString("carnet.icon");
+			reportStage.getIcons().add(new Image(getClass().getResourceAsStream(iconPath)));
+			reportStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+
+			reportStage.setScene(scene);
+			reportStage.showAndWait();
+		} catch (JRException e) {
+			e.printStackTrace();
+			alertas.alertaError("Error", "Error al cargar el informe");
+		}
+	}
+
 	@FXML
 	private void handlerExportar(ActionEvent event) throws IOException {
 
