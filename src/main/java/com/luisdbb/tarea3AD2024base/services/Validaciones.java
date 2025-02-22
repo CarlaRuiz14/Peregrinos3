@@ -90,5 +90,14 @@ public class Validaciones {
 	    return region.length() == 1 && Character.isLetter(region.charAt(0));
 	}
 	
+	public boolean esNumero(String numero) {
+		String formato="\\d+(\\.\\d+)?";
+	    return numero.matches(formato);
+	}
+	
+	public boolean esDireccion(String direccion) {
+		String formato="^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\\s,.\\-/ºª]+$";
+	    return direccion.matches(formato);
+	}
 	
 }

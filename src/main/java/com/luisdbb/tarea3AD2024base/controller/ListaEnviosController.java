@@ -94,12 +94,12 @@ public class ListaEnviosController implements Initializable{
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
-		ayuda.configInfo("/help/conjunto.html", stage);
+		ayuda.configInfo("/help/listaEnvios.html", stage);
 	}
 	
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
-		stageManager.switchScene(FxmlView.ALOJAR);
+		stageManager.switchScene(FxmlView.PARADA);
 	}
 
 	@FXML

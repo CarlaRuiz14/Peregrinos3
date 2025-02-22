@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
@@ -15,7 +15,7 @@ import com.luisdbb.tarea3AD2024base.modelo.ConjuntoContratado;
 import com.luisdbb.tarea3AD2024base.modelo.Parada;
 import com.luisdbb.tarea3AD2024base.modelo.Servicio;
 
-@Repository
+@Component
 public class ConjuntoServicioRepository {
 
 	@Autowired
