@@ -14,11 +14,18 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+/**
+ * Servicio para la gestión de nacionalidades a partir del archivo XML de
+ * países.
+ * 
+ * @author Carla Ruiz
+ * @since 28/12/2024
+ */
 @Service
 public class NacionalidadService {
-	
+
 	/**
-	 * Método que SELECCIONA los paises de paises.xml
+	 * Método que SELECCIONA los paises de paises.xml y los almacena en un mapa
 	 * 
 	 * @return Map de clave-siglas,valor-nacionalidad
 	 * @throws ParserConfigurationException lanzdada si hay error de configuración
@@ -71,6 +78,13 @@ public class NacionalidadService {
 		return nacionalidades;
 	}
 
+	/**
+	 * Busca la clave asociada a una nacionalidad dentro del mapa de nacionalidades.
+	 * 
+	 * @param mapa  Mapa con nacionalidades.
+	 * @param valor Nombre de la nacionalidad a buscar.
+	 * @return Clave asociada a la nacionalidad o {@code null} si no se encuentra.
+	 */
 	public String buscarClavePorValor(LinkedHashMap<String, String> mapa, String valor) {
 		for (Map.Entry<String, String> entrada : mapa.entrySet()) {
 			if (entrada.getValue().equals(valor)) {
@@ -79,9 +93,16 @@ public class NacionalidadService {
 		}
 		return null;
 	}
-	
+
+	/**
+	 * Obtiene la clave de la nacionalidad seleccionada en función del valor
+	 * proporcionado.
+	 * 
+	 * @param seleccion Nombre de la nacionalidad seleccionada.
+	 * @return Clave de la nacionalidad o {@code null} si no se encuentra.
+	 */
 	public String obtenerNacionalidadSeleccionada(String seleccion) {
-	    return buscarClavePorValor(mapaNacionalidades(), seleccion);
+		return buscarClavePorValor(mapaNacionalidades(), seleccion);
 	}
 
 }

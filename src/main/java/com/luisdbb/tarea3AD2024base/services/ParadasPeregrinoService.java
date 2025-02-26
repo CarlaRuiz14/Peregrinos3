@@ -16,6 +16,8 @@ import com.luisdbb.tarea3AD2024base.repositorios.ParadasPeregrinoRepository;
 import jakarta.transaction.Transactional;
 
 /**
+ * Servicio para gestionar la relación entre peregrinos y paradas.
+ * 
  * @author Carla Ruiz
  * @since 28/12/2024
  */
@@ -34,6 +36,12 @@ public class ParadasPeregrinoService {
 	@Autowired
 	private PeregrinoService peregrinoService;
 
+	/**
+	 * Registra la parada inicial de un peregrino.
+	 * 
+	 * @param nombreUsuario Nombre de usuario del peregrino.
+	 * @param parada        Parada donde inicia su camino.
+	 */
 	@Transactional
 	public void registrarParadaInicial(String nombreUsuario, Parada parada) {
 		Peregrino peregrino = peregrinoService.findByNameUsuario(nombreUsuario);
@@ -41,11 +49,28 @@ public class ParadasPeregrinoService {
 		paradasPeregrinoRepository.save(paradaPeregrino);
 	}
 
+	/**
+	 * Comprueba si un peregrino ha visitado una parada específica en la fecha
+	 * actual.
+	 * 
+	 * @param parada    Parada a comprobar.
+	 * @param peregrino Peregrino que se desea verificar.
+	 * @return {@code true} si el peregrino ha visitado la parada, {@code false} en
+	 *         caso contrario.
+	 */
 	public boolean existeParada(Parada parada, Peregrino peregrino) {
 		ParadasPeregrinoId id = new ParadasPeregrinoId(peregrino.getId(), parada.getId(), LocalDate.now());
 		return paradasPeregrinoRepository.existsById(id);
 	}
 
+	/**
+	 * Registra una parada visitada por un peregrino y sella su carnet aumentando la
+	 * distancia recorrida.
+	 * 
+	 * @param carnet    Carnet del peregrino.
+	 * @param parada    Parada visitada.
+	 * @param peregrino Peregrino que realizó la visita.
+	 */
 	@Transactional
 	public void registrarParadaYSellarCarnet(Carnet carnet, Parada parada, Peregrino peregrino) {
 
@@ -55,12 +80,16 @@ public class ParadasPeregrinoService {
 		ParadasPeregrino paradaPeregrino = new ParadasPeregrino(peregrino, parada, hoy);
 
 		paradasPeregrinoRepository.save(paradaPeregrino);
-	}	
-	
-	
-	public List<ParadasPeregrino> listarParadasPeregrino(long idPeregrino){
+	}
+
+	/**
+	 * Obtiene la lista de paradas visitadas por un peregrino.
+	 * 
+	 * @param idPeregrino ID del peregrino.
+	 * @return Lista de paradas visitadas o una lista vacía si no hay registros.
+	 */
+	public List<ParadasPeregrino> listarParadasPeregrino(long idPeregrino) {
 		return paradasPeregrinoRepository.findByIdIdPeregrino(idPeregrino);
 	}
-	
-	
+
 }

@@ -17,7 +17,7 @@ import javafx.stage.Stage;
  * Clase para gestionar el cambio de escenas en la ventana principal de la
  * aplicación.
  * 
- * <b>Responsabilidades principales:</b>
+ * Responsabilidades principales:
  * <ul>
  * <li>Cargar vistas desde archivos FXML utilizando un cargador de Spring.</li>
  * <li>Configurar y mostrar escenas en la ventana principal

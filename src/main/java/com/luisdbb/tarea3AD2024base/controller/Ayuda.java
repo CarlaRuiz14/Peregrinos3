@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 /**
  * Configuración de ayuda e información en la aplicación.
  * 
- * <b>Funciones principales:</b>
+ * Funciones principales:
  * <ul>
  * <li>Configurar imágenes para componentes de ayuda.</li>
  * <li>Abrir ventanas modales con información en formato web.</li>

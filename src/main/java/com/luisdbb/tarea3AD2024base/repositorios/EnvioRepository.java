@@ -11,6 +11,13 @@ import org.springframework.stereotype.Component;
 import com.luisdbb.tarea3AD2024base.ObjectDB.ObjectDBConnection;
 import com.luisdbb.tarea3AD2024base.modelo.EnvioACasa;
 
+/**
+ * Repositorio para la gestión de envíos a casa mediante ObjectDB. Proporciona
+ * métodos para almacenar y recuperar envíos asociados a una parada.
+ * 
+ * @author Carla Ruiz
+ * @since 28/12/2024
+ */
 @Component
 public class EnvioRepository {
 
@@ -18,13 +25,19 @@ public class EnvioRepository {
 	private ObjectDBConnection oc;
 
 	@Autowired
-	private ParadaRepository paradaRepository;	
+	private ParadaRepository paradaRepository;
 
+	/**
+	 * Guarda un nuevo envío en la base de datos.
+	 * 
+	 * @param envio Envío a almacenar.
+	 * @return El envío almacenado o {@code null} si ocurre un error.
+	 */
 	public EnvioACasa saveEnvio(EnvioACasa envio) {
-		
+
 		oc.abrirConexion();
 		EntityManager em = oc.getEntityManager();
-		
+
 		try {
 			em.getTransaction().begin();
 			em.persist(envio);
@@ -39,19 +52,26 @@ public class EnvioRepository {
 			oc.cerrarConexion();
 		}
 	}
-	
+
+	/**
+	 * Obtiene todos los envíos registrados en la parada del usuario.
+	 * 
+	 * @param idUsuario Identificador del usuario.
+	 * @return Lista de envíos asociados a la parada del usuario.
+	 */
 	public List<EnvioACasa> getEnvios(long idUsuario) {
-		
-		long idParada=paradaRepository.findByUsuarioId(idUsuario).getId();
-		
+
+		long idParada = paradaRepository.findByUsuarioId(idUsuario).getId();
+
 		oc.abrirConexion();
 		EntityManager em = oc.getEntityManager();
 
 		try {
-			TypedQuery<EnvioACasa> query = em.createQuery("SELECT e FROM EnvioACasa e WHERE e.idParada = :idParada", EnvioACasa.class);
-	        query.setParameter("idParada", idParada);
-	        return query.getResultList();		
-			
+			TypedQuery<EnvioACasa> query = em.createQuery("SELECT e FROM EnvioACasa e WHERE e.idParada = :idParada",
+					EnvioACasa.class);
+			query.setParameter("idParada", idParada);
+			return query.getResultList();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -59,7 +79,7 @@ public class EnvioRepository {
 			em.close();
 			oc.cerrarConexion();
 		}
-		
+
 	}
 
 }

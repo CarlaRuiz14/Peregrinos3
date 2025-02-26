@@ -26,6 +26,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 /**
+ * Controlador de la pantalla de alojamiento, donde se decide si un peregrino se
+ * alojará en la parada.
+ * 
  * @author Carla Ruiz
  * @since 28/12/2024
  */
@@ -83,22 +86,25 @@ public class AlojarController implements Initializable {
 	@Autowired
 	private Tooltips tooltipConfig;
 
+	/**
+	 * Inicializa la pantalla, configurando los elementos visuales, accesos rápidos
+	 * y tooltips.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+
 		lblNombre.setText(datosSellado.getParada().getNombre());
 		lblRegion.setText(String.valueOf(datosSellado.getParada().getRegion()));
 		lblId.setText(String.valueOf(datosSellado.getParada().getId()));
-	
+
 		rbtnSi.setToggleGroup(respuesta);
 		rbtnNo.setToggleGroup(respuesta);
 
-		ayuda.configImgInfo(hpInfo);		
-		botones.imgFlecha(btnAlojar);	
-		botones.imgVolver(btnVolver);		
+		ayuda.configImgInfo(hpInfo);
+		botones.imgFlecha(btnAlojar);
+		botones.imgVolver(btnVolver);
 		botones.imgSalir(btnSalir);
 
-		
 		mnemonicConfig.infoMnemonic(hpInfo);
 		btnAlojar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.ENTER) {
@@ -108,19 +114,38 @@ public class AlojarController implements Initializable {
 		});
 		mnemonicConfig.volverMnemonic(btnVolver);
 		mnemonicConfig.salirMnemonic(btnSalir);
-		
+
 		tooltipConfig.infoTooltip(hpInfo);
 		btnAlojar.setTooltip(new Tooltip("Alojar (Alt+Enter)"));
 		tooltipConfig.volverTooltip(btnVolver);
 		tooltipConfig.salirTooltip(btnSalir);
 	}
 
+	/**
+	 * Muestra la ayuda de la pantalla de alojamiento.
+	 * 
+	 * @param event Evento de acción al hacer clic en el enlace de información.
+	 * @throws IOException Si ocurre un error al cargar la ayuda.
+	 */
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
-		ayuda.configInfo("/help/alojar.html",stage);
+		ayuda.configInfo("/help/alojar.html", stage);
 	}
 
+	/**
+	 * Gestiona la acción de alojar o no al peregrino.
+	 * 
+	 * <ul>
+	 * <li>Si no se ha seleccionado una opción, muestra una alerta informativa.</li>
+	 * <li>Si se selecciona "Sí", muestra un mensaje de confirmación y redirige a la
+	 * pantalla de conjuntos.</li>
+	 * <li>Si se selecciona "No", muestra un mensaje de confirmación y vuelve al
+	 * menú de la parada.</li>
+	 * </ul>
+	 * 
+	 * @param event Evento de acción al hacer clic en el botón "Alojar".
+	 */
 	@FXML
 	private void handlerAlojar(ActionEvent event) {
 
@@ -142,11 +167,23 @@ public class AlojarController implements Initializable {
 		}
 	}
 
+	/**
+	 * Vuelve a la pantalla de sellado de carnet.
+	 * 
+	 * @param event Evento de acción al hacer clic en el botón "Volver".
+	 * @throws IOException Si ocurre un error al cambiar de escena.
+	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.SELLAR);
 	}
 
+	/**
+	 * Cierra la aplicación al hacer clic en el botón "Salir".
+	 * 
+	 * @param event Evento de acción al hacer clic en el botón "Salir".
+	 * @throws IOException Si ocurre un error al cerrar la aplicación.
+	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		botones.salirConfig();

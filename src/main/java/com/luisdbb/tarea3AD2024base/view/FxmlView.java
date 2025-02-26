@@ -5,13 +5,13 @@ import java.util.ResourceBundle;
 /**
  * Enumeración que representa las vistas disponibles en la aplicación.
  * 
- * <h2>Responsabilidades principales:</h2>
+ * Responsabilidades principales:
  * <ul>
  * <li>Proveer el título de la vista desde el archivo `Bundle.properties`.</li>
  * <li>Proveer la ruta del archivo FXML correspondiente a cada vista.</li>
  * </ul>
  * 
- * <h2>Constantes:</h2>
+ * Constantes:
  * <ul>
  * <li><b>ADMIN:</b> Vista para la administración general.</li> *
  * <li><b>CARNET:</b> Vista para la gestión del carnet.</li>
@@ -26,7 +26,10 @@ import java.util.ResourceBundle;
  * <li><b>REGPEREGRINO:</b> Vista para registrar peregrinos.</li>
  * <li><b>SELLAR:</b> Vista para sellar un carnet.</li>
  * <li><b>ALOJAR:</b> Vista para gestionar el alojamiento.</li>
- * <li><b>VIP:</b> Vista para gestionar estancias VIP.</li>
+ * <li><b>CONJUNTO:</b> Vista para contratación de servicios.</li>
+ * <li><b>SERVICIO:</b> Vista para la creación o edición de servicios.</li>
+ * <li><b>ENVIO:</b> Vista para la gestión de envíos.</li>
+ * <li><b>LISTAENVIOS:</b> Vista para visualizar la lista de envíos.</li>
  * </ul>
  * 
  * @author Carla Ruiz

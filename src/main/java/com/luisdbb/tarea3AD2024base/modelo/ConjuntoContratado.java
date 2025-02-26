@@ -5,29 +5,47 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Representa un conjunto de servicios contratados en una estancia, incluyendo
+ * su precio total, método de pago y servicios asociados.
+ * 
+ * Atributos:
+ * <ul>
+ * <li><b>id:</b> Identificador único del conjunto contratado.</li>
+ * <li><b>precioTotal:</b> Precio total de los servicios contratados.</li>
+ * <li><b>modoPago:</b> Método de pago utilizado.</li>
+ * <li><b>extra:</b> Información adicional sobre el servicio contratado.</li>
+ * <li><b>idEstancia:</b> Identificador de la estancia asociada a los
+ * servicios.</li>
+ * <li><b>listaServicios:</b> Lista de identificadores de servicios
+ * contratados.</li>
+ * </ul>
+ * 
+ * @author Carla Ruiz
+ * @since 28/12/2024
+ */
 public class ConjuntoContratado {
-	
+
 	private long id;
 	private double precioTotal;
 	private char modoPago;
 	private String extra;
 	private long idEstancia;
 	private List<Long> listaServicios;
-	
+
 	public ConjuntoContratado() {
 		super();
 	}
 
-	public ConjuntoContratado(long id, double precioTotal, char modoPago, long idEstancia,
-			Set<Long> listaServicios) {
+	public ConjuntoContratado(long id, double precioTotal, char modoPago, long idEstancia, Set<Long> listaServicios) {
 		super();
 		this.id = id;
 		this.precioTotal = precioTotal;
 		this.modoPago = modoPago;
 		this.idEstancia = idEstancia;
 		this.listaServicios = new ArrayList<>();
-	}		
-	
+	}
+
 	public ConjuntoContratado(long id, double precioTotal, char modoPago, String extra, long idEstancia,
 			Set<Long> listaServicios) {
 		super();
@@ -40,9 +58,9 @@ public class ConjuntoContratado {
 	}
 
 	public void addServicio(long idServicio) {
-		listaServicios.add(idServicio);	
-	}		
-	
+		listaServicios.add(idServicio);
+	}
+
 	public long getId() {
 		return id;
 	}
@@ -114,5 +132,5 @@ public class ConjuntoContratado {
 	public String toString() {
 		return "ConjuntoContratado [id=" + id + ", precioTotal=" + precioTotal + ", modoPago=" + modoPago + ", extra="
 				+ extra + ", idEstancia=" + idEstancia + ", listaServicios=" + listaServicios + "]";
-	}	
+	}
 }

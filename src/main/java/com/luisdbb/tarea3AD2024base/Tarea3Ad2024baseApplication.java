@@ -16,9 +16,8 @@ import javafx.stage.Stage;
 /**
  * Clase principal de la aplicación que combina Spring Boot y JavaFX.
  *
- * <p>
  * Responsabilidades principales:
- * </p>
+ * 
  * <ul>
  * <li>Inicializar el contexto de Spring Boot.</li>
  * <li>Configurar la ventana principal de JavaFX.</li>
@@ -35,24 +34,19 @@ public class Tarea3Ad2024baseApplication extends Application {
 
 	protected static ConfigurableApplicationContext springContext;
 	protected StageManager stageManager;
-	
-	
 
 	/**
 	 * Método invocado automáticamente por JavaFX antes de lanzar la aplicación.
 	 * 
-	 * Aquí se inicializa el contexto de Spring Boot y, a continuación, se obtiene
-	 * el bean {@code ConjuntoServicioRepository} desde el contexto de Spring para
-	 * garantizar que la secuencia de IDs (usada por db4o) se cree si no existe.
-	 * De esta forma, cuando se inicie la aplicación JavaFX, tendremos disponible
-	 * la configuración de persistencia y la secuencia de IDs lista para usar.
-	 * <
+	 * Inicializa el contexto de Spring Boot y permite que los beans de la
+	 * aplicación estén disponibles antes de que la UI de JavaFX se cargue.
 	 *
-	 * @throws Exception si ocurre algún error durante la inicialización
+	 * @throws Exception si ocurre algún error durante la inicialización del
+	 *                   contexto.
 	 */
 	@Override
 	public void init() throws Exception {
-		springContext = springBootApplicationContext();		
+		springContext = springBootApplicationContext();
 	}
 
 	/**
@@ -61,22 +55,19 @@ public class Tarea3Ad2024baseApplication extends Application {
 	 * @param args Argumentos de la línea de comandos.
 	 */
 	public static void main(final String[] args) {
-	    System.setProperty("java.awt.headless", "false");
+		System.setProperty("java.awt.headless", "false");
 		Application.launch(args);
 	}
 
 	/**
-	 * Método invocado automáticamente por JavaFX después de {@code init()}. 
+	 * Método invocado automáticamente por JavaFX después de {@code init()}.
+	 * 	
+	 * Configura la ventana principal de la aplicación, muestra la escena inicial y
+	 * carga el icono de la aplicación. También deshabilita el redimensionado de la
+	 * ventana y gestiona su cierre adecuado.
 	 * 
-	 * Configura la ventana principal de la aplicación y muestra la escena inicial. 
-	 * También carga el ícono de la aplicación desde los recursos y deshabilita 
-	 * el redimensionado de la ventana. 
-	 * 
-	 * Se intercepta el evento de cierre (la “X”) para cerrar de forma ordenada 
-	 * el contexto de Spring y así invocar los métodos marcados con {@code @PreDestroy}.
-	 * 
-	 *
 	 * @param primaryStage El escenario principal proporcionado por JavaFX.
+	 * @throws Exception si ocurre un error durante la configuración de la ventana.
 	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -90,13 +81,13 @@ public class Tarea3Ad2024baseApplication extends Application {
 		primaryStage.getIcons().add(new Image(getClass().getResourceAsStream(iconPath)));
 
 		primaryStage.setResizable(false);
-		
+
 		// Interceptar cierre con la X
-	    primaryStage.setOnCloseRequest(event -> {
-	        if (springContext != null && springContext.isActive()) {
-	            springContext.close();
-	        }	       
-	    });		
+		primaryStage.setOnCloseRequest(event -> {
+			if (springContext != null && springContext.isActive()) {
+				springContext.close();
+			}
+		});
 	}
 
 	/**
@@ -117,8 +108,13 @@ public class Tarea3Ad2024baseApplication extends Application {
 		String[] args = getParameters().getRaw().stream().toArray(String[]::new);
 		return builder.run(args);
 	}
-	
-	 public static ConfigurableApplicationContext getSpringContext() {
-	        return springContext;
-	    }
+
+	/**
+	 * Obtiene el contexto de Spring Boot.
+	 * 
+	 * @return El contexto de Spring Boot en ejecución.
+	 */
+	public static ConfigurableApplicationContext getSpringContext() {
+		return springContext;
+	}
 }

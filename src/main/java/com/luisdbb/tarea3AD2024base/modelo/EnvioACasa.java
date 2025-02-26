@@ -10,12 +10,32 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+/**
+ * Representa un servicio de envío a casa dentro de la aplicación.
+ * 
+ * Atributos:
+ * <ul>
+ * <li><b>id:</b> Identificador único del envío.</li>
+ * <li><b>peso:</b> Peso del paquete en kilogramos.</li>
+ * <li><b>volumen:</b> Dimensiones del paquete (alto, ancho y fondo).</li>
+ * <li><b>urgente:</b> Indica si el envío es urgente.</li>
+ * <li><b>direccion:</b> Dirección de destino del envío.</li>
+ * <li><b>idParada:</b> Identificador de la parada desde donde se gestiona el
+ * envío.</li>
+ * </ul>
+ * 
+ * Relaciones:
+ * <ul>
+ * <li><b>Embedded:</b> La dirección del envío está embebida como objeto dentro
+ * de la entidad.</li>
+ * </ul>
+ *
+ * @author Carla Ruiz
+ * @since 28/12/2024
+ */
 @Entity
 public class EnvioACasa extends Servicio implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	@Id

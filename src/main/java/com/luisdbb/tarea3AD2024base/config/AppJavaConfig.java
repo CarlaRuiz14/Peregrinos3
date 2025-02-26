@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 /**
  * Clase de configuración principal de la aplicación.
+ * 
  * <ul>
  * <li>Proporciona configuraciones para el manejo del contexto de Spring.</li>
  * <li>Define Beans esenciales como el <b>ResourceBundle</b> y el

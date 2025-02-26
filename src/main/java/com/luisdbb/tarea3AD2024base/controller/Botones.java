@@ -18,12 +18,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
- * Clase para configurar iconos de botones en la interfaz gráfica.
+ * Clase para configurar los iconos y gestionar las acciones de los botones en
+ * la interfaz gráfica.
  * 
- * <b>Funciones principales:</b>
  * <ul>
- * <li>Asignar imágenes a botones según su función.</li>
- * <li>Crear objetos <code>ImageView</code> reutilizables con un tamaño
+ * <li>Asigna imágenes a los botones según su función.</li>
+ * <li>Proporciona métodos para cerrar la aplicación y cerrar sesión.</li>
+ * <li>Crea objetos <code>ImageView</code> reutilizables con un tamaño
  * uniforme.</li>
  * </ul>
  * 
@@ -37,9 +38,8 @@ public class Botones {
 	ResourceBundle resources;
 
 	@Autowired
-	private Alertas alertas;	
+	private Alertas alertas;
 
-	
 	public void imgFlecha(Button button) {
 		String rutaFlecha = resources.getString("btnFlecha.icon");
 		Image imgFlecha = new Image(getClass().getResourceAsStream(rutaFlecha));
@@ -91,33 +91,32 @@ public class Botones {
 		imageView.setFitHeight(40);
 		imageView.setPreserveRatio(true);
 		return imageView;
-	}	
+	}
 
-	
 	public void salirConfig() {
-		boolean respuesta=alertas.alertaConfirmacion("Salir", "Va a cerrar la apliación, ¿está seguro?");		
-		if(respuesta) {
+		boolean respuesta = alertas.alertaConfirmacion("Salir", "Va a cerrar la apliación, ¿está seguro?");
+		if (respuesta) {
 			alertas.alertaInformacion("Salir", "Saliendo de la apliación.");
-			
-	        ConfigurableApplicationContext springContext = Tarea3Ad2024baseApplication.getSpringContext();
+
+			ConfigurableApplicationContext springContext = Tarea3Ad2024baseApplication.getSpringContext();
 
 			if (springContext != null && springContext.isActive()) {
-		        springContext.close();
-		    }
+				springContext.close();
+			}
 			Platform.exit();
-		}else {
+		} else {
 			alertas.alertaInformacion("Salir", "Acción cancelada. \nVolviendo.");
-		}		
+		}
 	}
-	
-	public void logoutConfig(UsuarioService usuario, StageManager stage) {		
-		boolean respuesta=alertas.alertaConfirmacion("Cerrar sesión", "¿Está seguro de que desea cerrar su sesión?");		
-		if(respuesta) {
+
+	public void logoutConfig(UsuarioService usuario, StageManager stage) {
+		boolean respuesta = alertas.alertaConfirmacion("Cerrar sesión", "¿Está seguro de que desea cerrar su sesión?");
+		if (respuesta) {
 			alertas.alertaInformacion("Sesión cerrada", "Ha cerrado su sesión correctamente.");
 			usuario.configurarSesion(null, Perfil.INVITADO);
 			stage.switchScene(FxmlView.LOGIN);
-		}else {
+		} else {
 			alertas.alertaInformacion("Operación cancelada", "Su sesión permanece activa.\nVolviendo.");
-		}		
+		}
 	}
 }

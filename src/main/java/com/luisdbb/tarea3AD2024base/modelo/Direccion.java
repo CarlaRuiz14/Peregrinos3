@@ -5,18 +5,30 @@ import java.util.Objects;
 
 import javax.persistence.Embeddable;
 
-
+/**
+ * Representa una dirección con información de dirección y localidad.
+ * 
+ * Atributos:
+ * <ul>
+ * <li><b>direccion:</b> Calle y número de la dirección.</li>
+ * <li><b>localidad:</b> Ciudad o localidad donde se encuentra la
+ * dirección.</li>
+ * </ul>
+ *
+ * La clase es embeddable, por lo que puede ser usada dentro de otras
+ * entidades en JPA sin ser una entidad independiente.
+ * 
+ * @author Carla Ruiz
+ * @since 28/12/2024
+ */
 @Embeddable
-public class Direccion implements Serializable{
-	
-	/**
-	 * 
-	 */
+public class Direccion implements Serializable {
+
 	private static final long serialVersionUID = 1L;
 
 	private String direccion;
 	private String localidad;
-	
+
 	public Direccion() {
 	}
 
@@ -65,6 +77,6 @@ public class Direccion implements Serializable{
 	@Override
 	public String toString() {
 		return "Direccion [direccion=" + direccion + ", localidad=" + localidad + "]";
-	}	
-	
+	}
+
 }

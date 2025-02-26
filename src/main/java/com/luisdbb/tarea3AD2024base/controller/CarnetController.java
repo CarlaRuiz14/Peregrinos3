@@ -60,6 +60,8 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperPrintManager;
 
 /**
+ * Controlador para gestionar la vista de información del carnet de peregrino.
+ * 
  * @author Carla Ruiz
  * @since 28/12/2024
  */

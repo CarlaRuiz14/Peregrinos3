@@ -30,6 +30,8 @@ import com.luisdbb.tarea3AD2024base.modelo.Peregrino;
 import com.luisdbb.tarea3AD2024base.repositorios.CarnetRepository;
 
 /**
+ * Servicio para la gestión de los carnets de peregrinos.
+ * 
  * @author Carla Ruiz
  * @since 28/12/2024
  */
@@ -48,14 +50,39 @@ public class CarnetService {
 	@Autowired
 	private EstanciaService estanciaService;
 
+	/**
+	 * Guarda un carnet en la base de datos.
+	 * 
+	 * @param entidad Carnet a guardar.
+	 * @return Carnet guardado o {@code null} si no lo guarda.
+	 */
 	public Carnet save(Carnet entidad) {
 		return carnetRepository.save(entidad);
 	}
 
+	/**
+	 * Busca un carnet por su identificador único.
+	 * 
+	 * @param id Identificador del carnet.
+	 * @return Carnet encontrado o {@code null} si no existe.
+	 */
 	public Carnet findById(long id) {
 		return carnetRepository.findById(id);
 	}
 
+	/**
+	 * Exporta la información de un carnet a un archivo XML.
+	 * 
+	 * @param p Peregrino cuyo carnet será exportado.
+	 * @return Código de resultado de la exportación:
+	 *         <ul>
+	 *         <li>0 - Exportación exitosa.</li>
+	 *         <li>1 - Error en la configuración del parser.</li>
+	 *         <li>2 - Error en la configuración del transformador XML.</li>
+	 *         <li>3 - Error en la transformación de datos a XML.</li>
+	 *         <li>4 - Error por datos nulos en la exportación.</li>
+	 *         </ul>
+	 */
 	public int exportarCarnet(Peregrino p) {
 
 		List<Parada> listaParadas = paradaService.obtenerParadasPorPeregrino(p.getId());
@@ -209,7 +236,7 @@ public class CarnetService {
 			TransformerFactory fabricaTransformador = TransformerFactory.newInstance();
 			Transformer transformador = fabricaTransformador.newTransformer();
 			transformador.transform(fuente, resultado);
-			
+
 			return 0;
 
 		} catch (ParserConfigurationException e) {
