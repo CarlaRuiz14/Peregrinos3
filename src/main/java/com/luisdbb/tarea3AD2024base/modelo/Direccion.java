@@ -3,7 +3,7 @@ package com.luisdbb.tarea3AD2024base.modelo;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.persistence.Embeddable;
+import jakarta.persistence.Embeddable;
 
 /**
  * Representa una dirección con información de dirección y localidad.

@@ -2,14 +2,14 @@ package com.luisdbb.tarea3AD2024base.repositorios;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.luisdbb.tarea3AD2024base.ObjectDB.ObjectDBConnection;
 import com.luisdbb.tarea3AD2024base.modelo.EnvioACasa;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 
 /**
  * Repositorio para la gestión de envíos a casa mediante ObjectDB. Proporciona

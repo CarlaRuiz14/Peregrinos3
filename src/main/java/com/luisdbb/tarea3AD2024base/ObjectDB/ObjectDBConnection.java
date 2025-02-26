@@ -1,10 +1,10 @@
 package com.luisdbb.tarea3AD2024base.ObjectDB;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
 import org.springframework.stereotype.Component;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 
 /**
  * Clase que gestiona la conexión con la base de datos ObjectDB.
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ObjectDBConnection {
 
-	private static final String objectdbPath = "objectdb:ODBB_Peregrinos.odb";
+	private static final String objectdbPath = "objectdb://localhost:6136/peregrinos.odb;user=admin;password=admin";
 	private EntityManagerFactory emf;
 
 	/**
