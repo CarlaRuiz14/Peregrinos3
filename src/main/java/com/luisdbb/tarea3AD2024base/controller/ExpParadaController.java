@@ -50,6 +50,8 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 
 /**
+ * Controlador para exportar el informe de estancias de una parada.
+ * 
  * @author Carla Ruiz
  * @since 28/12/2024
  */
@@ -146,6 +148,22 @@ public class ExpParadaController implements Initializable {
 	private LocalDate fechaFin;
 	private boolean checkBuscar = false;
 
+	/**
+	 * Inicializa la vista con los datos de la parada y configura la tabla de
+	 * estancias.
+	 * <ul>
+	 * <li>Recupera la parada asociada al usuario activo.</li>
+	 * <li>Asigna los valores de identificación y contacto a las etiquetas
+	 * correspondientes.</li>
+	 * <li>Configura las columnas de la tabla de estancias, incluyendo la
+	 * visualización de datos booleanos.</li>
+	 * <li>Establece los atajos de teclado y tooltips para la interacción del
+	 * usuario.</li>
+	 * </ul>
+	 *
+	 * @param location  La URL utilizada para resolver el objeto raíz, o null.
+	 * @param resources Los recursos de localización, o null.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -210,12 +228,33 @@ public class ExpParadaController implements Initializable {
 		tooltipConfig.salirTooltip(btnSalir);
 	}
 
+	/**
+	 * Muestra la ayuda relacionada con la exportación de estancias de la parada.
+	 *
+	 * @param event Evento de acción disparado al hacer clic en el enlace de
+	 *              información.
+	 * @throws IOException Si ocurre un error al cargar el recurso de ayuda.
+	 */
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
 		ayuda.configInfo("/help/expParada.html", stage);
 	}
 
+	/**
+	 * Busca estancias de la parada dentro del rango de fechas especificado.
+	 * <ul>
+	 * <li>Obtiene las fechas de inicio y fin del DatePicker.</li>
+	 * <li>Valida que las fechas sean correctas mediante el método de
+	 * validación.</li>
+	 * <li>Recupera la lista de estancias para la parada en el rango de fechas.</li>
+	 * <li>Muestra la lista en la tabla o informa al usuario si no se encontraron
+	 * registros.</li>
+	 * </ul>
+	 *
+	 * @param event Evento de acción disparado al hacer clic en el botón "Buscar".
+	 * @throws IOException Si ocurre un error durante la búsqueda.
+	 */
 	@FXML
 	private void handlerBuscar(ActionEvent event) throws IOException {
 
@@ -266,6 +305,18 @@ public class ExpParadaController implements Initializable {
 
 	}
 
+	/**
+	 * Exporta el informe de estancias a un archivo PDF.
+	 * <ul>
+	 * <li>Valida que se hayan buscado estancias previamente.</li>
+	 * <li>Carga el reporte Jasper y establece los parámetros necesarios.</li>
+	 * <li>Genera y exporta el informe a un archivo PDF en el escritorio.</li>
+	 * <li>Pregunta al usuario si desea abrir el archivo PDF generado.</li>
+	 * </ul>
+	 *
+	 * @param event Evento de acción disparado al hacer clic en el botón "Informe".
+	 * @throws IOException Si ocurre un error durante la exportación.
+	 */
 	@FXML
 	private void handlerInforme(ActionEvent event) throws IOException {
 		if (!checkBuscar) {
@@ -330,11 +381,23 @@ public class ExpParadaController implements Initializable {
 		checkBuscar = false;
 	}
 
+	/**
+	 * Regresa a la vista de la parada.
+	 *
+	 * @param event Evento de acción disparado al hacer clic en "Volver".
+	 * @throws IOException Si ocurre un error al cambiar de escena.
+	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.PARADA);
 	}
 
+	/**
+	 * Sale de la aplicación.
+	 *
+	 * @param event Evento de acción disparado al hacer clic en "Salir".
+	 * @throws IOException Si ocurre un error durante la configuración de salida.
+	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		botones.salirConfig();

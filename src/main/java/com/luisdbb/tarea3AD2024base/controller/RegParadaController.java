@@ -31,6 +31,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 /**
+ * RegParadaController es el controlador para el registro de un usuario
+ * responsable de una parada.
+ * 
  * @author Carla Ruiz
  * @since 28/12/2024
  */
@@ -127,11 +130,24 @@ public class RegParadaController implements Initializable {
 	private boolean regionCheck = false;
 	private boolean contraseñaCheck = false;
 
+	/**
+	 * Inicializa el controlador y configura la interfaz del registro de parada.
+	 * <ul>
+	 * <li>Configura la validación de las entradas: usuario, email, región y
+	 * contraseña.</li>
+	 * <li>Carga los iconos para mostrar y ocultar la contraseña y establece el
+	 * estado inicial.</li>
+	 * <li>Configura los botones con imágenes, atajos de teclado y tooltips.</li>
+	 * </ul>
+	 *
+	 * @param location  La URL utilizada para resolver el objeto raíz, o null.
+	 * @param resources Los recursos de localización o null.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 		validarEntradas();
-		
+
 		String mostrarPath = resources.getString("contraseñaC.icon");
 		String ocultarPath = resources.getString("contraseñaO.icon");
 
@@ -140,13 +156,12 @@ public class RegParadaController implements Initializable {
 
 		hpVisible.setGraphic(botones.createImageView(mostrarIcon));
 
-		
-		ayuda.configImgInfo(hpInfo);		
-		botones.imgLimpiar(btnLimpiar);		
-		botones.imgFlecha(btnRegistrar);	
-		botones.imgVolver(btnVolver);		
+		ayuda.configImgInfo(hpInfo);
+		botones.imgLimpiar(btnLimpiar);
+		botones.imgFlecha(btnRegistrar);
+		botones.imgVolver(btnVolver);
 		botones.imgSalir(btnSalir);
-		
+
 		mnemonicConfig.infoMnemonic(hpInfo);
 		mnemonicConfig.visibleMnemonic(hpVisible);
 		mnemonicConfig.limpiarMnemonic(btnLimpiar);
@@ -158,7 +173,7 @@ public class RegParadaController implements Initializable {
 		});
 		mnemonicConfig.volverMnemonic(btnVolver);
 		mnemonicConfig.salirMnemonic(btnSalir);
-	
+
 		tooltipConfig.salirTooltip(btnSalir);
 		tooltipConfig.visibleTooltip(hpVisible);
 		tooltipConfig.limpiarTooltip(btnLimpiar);
@@ -167,13 +182,27 @@ public class RegParadaController implements Initializable {
 		tooltipConfig.salirTooltip(btnSalir);
 	}
 
-	
+	/**
+	 * Muestra la ayuda relacionada con el registro de parada.
+	 * 
+	 * @param event Evento de acción disparado al hacer clic en el enlace de ayuda.
+	 * @throws IOException Si ocurre un error al cargar la ayuda.
+	 */
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
-		ayuda.configInfo("/help/regParada.html",stage);
+		ayuda.configInfo("/help/regParada.html", stage);
 	}
-	
+
+	/**
+	 * Alterna la visibilidad de los campos de contraseña.
+	 * <ul>
+	 * <li>Si la contraseña es visible, se ocultan y se muestra el icono para
+	 * "mostrar".</li>
+	 * <li>Si la contraseña está oculta, se muestran en un campo de texto y se
+	 * cambia el icono a "ocultar".</li>
+	 * </ul>
+	 */
 	@FXML
 	private void handlerVisible() {
 		isPassVisible = !isPassVisible;
@@ -198,6 +227,19 @@ public class RegParadaController implements Initializable {
 		}
 	}
 
+	/**
+	 * Procesa el registro del usuario responsable de una parada.
+	 * <ul>
+	 * <li>Verifica que cada campo sea válido (usuario, email, región y
+	 * contraseña).</li>
+	 * <li>Llama al servicio para registrar el usuario y la parada.</li>
+	 * <li>Notifica al usuario del registro exitoso y redirige a la vista de
+	 * administrador.</li>
+	 * </ul>
+	 *
+	 * @param event Evento de acción disparado al hacer clic en "Registrar".
+	 * @throws IOException Si ocurre un error durante el registro.
+	 */
 	@FXML
 	private void handlerRegistrar(ActionEvent event) throws IOException {
 
@@ -238,13 +280,24 @@ public class RegParadaController implements Initializable {
 
 			stageManager.switchScene(FxmlView.ADMIN);
 
-		} catch (Exception e) {			
+		} catch (Exception e) {
 			e.printStackTrace();
 			alertas.alertaError("Error", "Hubo un problema al registrar los datos. Por favor, revise la información.");
 			return;
 		}
 	}
 
+	/**
+	 * Limpia el formulario de registro.
+	 * <ul>
+	 * <li>Pide confirmación al usuario antes de borrar los datos ingresados.</li>
+	 * <li>Si se confirma, limpia todos los campos del formulario.</li>
+	 * <li>Si se cancela, notifica al usuario que la acción fue cancelada.</li>
+	 * </ul>
+	 *
+	 * @param event Evento de acción disparado al hacer clic en "Limpiar".
+	 * @throws IOException Si ocurre un error durante la acción.
+	 */
 	@FXML
 	private void handlerLimpiar(ActionEvent event) throws IOException {
 
@@ -265,16 +318,32 @@ public class RegParadaController implements Initializable {
 		}
 	}
 
+	/**
+	 * Regresa a la vista de administrador.
+	 * 
+	 * @param event Evento de acción disparado al hacer clic en "Volver".
+	 * @throws IOException Si ocurre un error al cambiar de escena.
+	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.ADMIN);
 	}
 
+	/**
+	 * Ejecuta la acción de salida de la aplicación.
+	 * 
+	 * @param event Evento de acción disparado al hacer clic en "Salir".
+	 * @throws IOException Si ocurre un error durante la salida.
+	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		botones.salirConfig();
-	}	
+	}
 
+	/**
+	 * Configura la validación de las entradas del formulario de registro.
+	 * 
+	 */
 	private void validarEntradas() {
 
 		lblFeed.setText(" ");
@@ -369,6 +438,11 @@ public class RegParadaController implements Initializable {
 
 	}
 
+	/**
+	 * Valida que los campos obligatorios del registro estén completos y correctos.
+	 *
+	 * @return true si la validación es exitosa, false en caso contrario.
+	 */
 	private boolean validarRegistro() {
 		if (txtUsuario.getText() == null || txtUsuario.getText().isEmpty()) {
 			alertas.alertaError("Error de validación", "El nombre de usuario no puede estar vacío.");

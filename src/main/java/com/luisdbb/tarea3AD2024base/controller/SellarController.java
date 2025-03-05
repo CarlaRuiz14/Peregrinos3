@@ -38,6 +38,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 /**
+ * SellarController es el controlador para la vista de sellado de carnet.
+ * 
  * @author Carla Ruiz
  * @since 28/12/2024
  */
@@ -120,23 +122,39 @@ public class SellarController implements Initializable {
 	private Parada parada;
 	private Carnet carnet;
 
+	/**
+	 * Inicializa la vista del controlador SellarController.
+	 * <ul>
+	 * <li>Obtiene la parada asociada al usuario activo y la asigna a
+	 * datosSellado.</li>
+	 * <li>Muestra los datos de la parada (ID, nombre y región) en los labels
+	 * correspondientes.</li>
+	 * <li>Configura la tabla de peregrinos, asignando las columnas y estableciendo
+	 * el contenido.</li>
+	 * <li>Configura atajos de teclado y tooltips para los botones de sellar, volver
+	 * y salir.</li>
+	 * </ul>
+	 *
+	 * @param location  La URL utilizada para resolver el objeto raíz, o null.
+	 * @param resources Los recursos de localización, o null.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-	
+
 		parada = paradaService.findByUsuario(sesion.getUsuarioActivo().getId());
 		datosSellado.setParada(parada);
-		
+
 		lblIdParada.setText(String.valueOf(parada.getId()));
 		lblNombre.setText(parada.getNombre());
 		lblRegion.setText(String.valueOf(parada.getRegion()));
-		
+
 		ayuda.configImgInfo(hpInfo);
-	
+
 		colId.setCellValueFactory(new PropertyValueFactory<>("id"));
 		colNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
 		colNacionalidad.setCellValueFactory(new PropertyValueFactory<>("nacionalidad"));
-		colIdCarnet.setCellValueFactory(cellData -> {			
-			carnet = cellData.getValue().getCarnet();			
+		colIdCarnet.setCellValueFactory(cellData -> {
+			carnet = cellData.getValue().getCarnet();
 			return new SimpleObjectProperty<>(carnet != null ? carnet.getId() : null);
 		});
 
@@ -144,12 +162,11 @@ public class SellarController implements Initializable {
 
 		tblPeregrinos.setItems(listPeregrinos);
 		tblPeregrinos.setPlaceholder(new Label("Sin peregrinos registrados"));
-	
-		botones.imgFlecha(btnSellar);		
-		botones.imgVolver(btnVolver);	
+
+		botones.imgFlecha(btnSellar);
+		botones.imgVolver(btnVolver);
 		botones.imgSalir(btnSalir);
 
-		
 		mnemonicConfig.infoMnemonic(hpInfo);
 		btnSellar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.ENTER) {
@@ -159,19 +176,41 @@ public class SellarController implements Initializable {
 		});
 		mnemonicConfig.volverMnemonic(btnVolver);
 		mnemonicConfig.salirMnemonic(btnSalir);
-		
+
 		tooltipConfig.salirTooltip(btnSalir);
 		btnSellar.setTooltip(new Tooltip("Sellar (Alt+Enter)"));
 		tooltipConfig.volverTooltip(btnVolver);
 		tooltipConfig.salirTooltip(btnSalir);
 	}
 
+	/**
+	 * Muestra la ayuda relacionada con el sellado del carnet.
+	 * 
+	 * @param event Evento de acción disparado al hacer clic en el enlace de ayuda.
+	 * @throws IOException Si ocurre un error al cargar el recurso de ayuda.
+	 */
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
-		ayuda.configInfo("/help/sellar.html",stage);
+		ayuda.configInfo("/help/sellar.html", stage);
 	}
 
+	/**
+	 * Procesa el sellado del carnet para el peregrino seleccionado.
+	 * <ul>
+	 * <li>Verifica que se haya seleccionado un peregrino en la tabla.</li>
+	 * <li>Comprueba que el peregrino no tenga ya registrada la parada para
+	 * hoy.</li>
+	 * <li>Asigna el peregrino y el carnet a datosSellado.</li>
+	 * <li>Muestra un mensaje de confirmación con los datos del peregrino y la
+	 * parada.</li>
+	 * <li>Si se confirma, registra la parada y sella el carnet, notificando al
+	 * usuario del éxito.</li>
+	 * </ul>
+	 *
+	 * @param event Evento de acción disparado al hacer clic en "Sellar".
+	 * @throws IOException Si ocurre un error durante el proceso de sellado.
+	 */
 	@FXML
 	private void handlerSellar(ActionEvent event) throws IOException {
 
@@ -219,11 +258,23 @@ public class SellarController implements Initializable {
 		}
 	}
 
+	/**
+	 * Regresa a la vista de la parada.
+	 * 
+	 * @param event Evento de acción disparado al hacer clic en "Volver".
+	 * @throws IOException Si ocurre un error al cambiar de escena.
+	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.PARADA);
 	}
 
+	/**
+	 * Ejecuta la acción de salida de la aplicación.
+	 * 
+	 * @param event Evento de acción disparado al hacer clic en "Salir".
+	 * @throws IOException Si ocurre un error durante la salida.
+	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		botones.salirConfig();

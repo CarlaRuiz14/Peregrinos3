@@ -32,6 +32,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
+/**
+ * Controlador para gestionar el envío a casa.
+ * 
+ * @author Carla
+ * @since 28/12/2024
+ */
 @Controller
 public class EnvioController implements Initializable {
 
@@ -119,6 +125,17 @@ public class EnvioController implements Initializable {
 	private boolean anchoCheck = false;
 	private boolean fondoCheck = false;
 
+	/**
+	 * Inicializa el controlador, configurando las validaciones de entrada y los
+	 * atajos.
+	 * <ul>
+	 * <li>Configura la validación de los campos del formulario.</li>
+	 * <li>Configura la ayuda, imágenes, tooltips y atajos de teclado.</li>
+	 * </ul>
+	 *
+	 * @param location  La URL utilizada para resolver el objeto raíz o null.
+	 * @param resources Los recursos de localización o null.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -145,12 +162,33 @@ public class EnvioController implements Initializable {
 		tooltipConfig.salirTooltip(btnSalir);
 	}
 
+	/**
+	 * Muestra la ayuda relacionada con el envío a casa.
+	 *
+	 * @param event Evento de acción disparado al hacer clic en el enlace de
+	 *              información.
+	 * @throws IOException Si ocurre un error al cargar el recurso de ayuda.
+	 */
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
 		ayuda.configInfo("/help/envio.html", stage);
 	}
 
+	/**
+	 * Valida y procesa el envío a casa.
+	 * 
+	 * Se verifican que:
+	 * <ul>
+	 * <li>Ningún campo obligatorio esté vacío.</li>
+	 * <li>Cada campo cumpla con su formato específico.</li>
+	 * </ul>
+	 * 
+	 * Si la validación es exitosa, se crea un objeto EnvioACasa y se guarda.
+	 *
+	 * @param event Evento de acción disparado al hacer clic en el botón "Enviar".
+	 * @throws IOException Si ocurre un error durante el procesamiento.
+	 */
 	@FXML
 	private void handlerEnviar(ActionEvent event) throws IOException {
 		try {
@@ -201,17 +239,17 @@ public class EnvioController implements Initializable {
 			volumen[2] = Double.parseDouble(txtFondo.getText());
 
 			EnvioACasa envio = new EnvioACasa(Double.parseDouble(txtPeso.getText()), volumen, chUrgente.isSelected(),
-					direccion, idParada);			
-			
-			EnvioACasa nuevoEnvio=envioService.saveEnvio(envio);
-			
-			if(nuevoEnvio!=null) {
+					direccion, idParada);
+
+			EnvioACasa nuevoEnvio = envioService.saveEnvio(envio);
+
+			if (nuevoEnvio != null) {
 				alertas.alertaInformacion("Envío a casa exitoso",
 						"Se ha contratado el envío a casa correctamente.\nVolviendo al menú...");
-				stageManager.switchScene(FxmlView.PARADA);				
-			}else {
-				alertas.alertaError("Error", "Error al guardar el envío, no se pudo guardar la información.");				
-			}	
+				stageManager.switchScene(FxmlView.PARADA);
+			} else {
+				alertas.alertaError("Error", "Error al guardar el envío, no se pudo guardar la información.");
+			}
 
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
@@ -223,16 +261,40 @@ public class EnvioController implements Initializable {
 
 	}
 
+	/**
+	 * Regresa a la pantalla anterior.
+	 *
+	 * @param event Evento de acción disparado al hacer clic en "Volver".
+	 * @throws IOException Si ocurre un error al cambiar de escena.
+	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.ALOJAR);
 	}
 
+	/**
+	 * Sale de la aplicación.
+	 *
+	 * @param event Evento de acción disparado al hacer clic en "Salir".
+	 * @throws IOException Si ocurre un error durante la configuración de salida.
+	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		botones.salirConfig();
 	}
 
+	/**
+	 * Configura la validación de los campos del formulario.
+	 * 
+	 * Se establecen listeners para validar:
+	 * <ul>
+	 * <li>Dirección: Verifica que la dirección no contenga caracteres
+	 * inválidos.</li>
+	 * <li>Localidad: Verifica que la localidad cumpla con el formato
+	 * permitido.</li>
+	 * <li>Peso, alto, ancho y fondo: Se validan como números.</li>
+	 * </ul>
+	 */
 	private void validarEntradas() {
 
 		lblFeed.setText(" ");

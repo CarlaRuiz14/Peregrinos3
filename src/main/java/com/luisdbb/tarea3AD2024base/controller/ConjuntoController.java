@@ -46,6 +46,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 /**
+ * Controlador para la contratación de servicios asociados a una estancia.
+ * 
  * @author Carla Ruiz
  * @since 28/12/2024
  */
@@ -123,6 +125,22 @@ public class ConjuntoController implements Initializable {
 
 	Map<Character, String> mapPago = new HashMap<>();
 
+	/**
+	 * Inicializa el controlador y configura la interfaz.
+	 * 
+	 * Se realiza lo siguiente:
+	 * <ul>
+	 * <li>Configurar las columnas de la tabla de servicios.</li>
+	 * <li>Establecer la selección múltiple en la tabla.</li>
+	 * <li>Cargar los servicios disponibles y mostrarlos en la tabla.</li>
+	 * <li>Configurar listeners para actualizar el método de pago y el total.</li>
+	 * <li>Inicializar el ComboBox de métodos de pago.</li>
+	 * <li>Configurar imágenes, tooltips y atajos de teclado.</li>
+	 * </ul>
+	 *
+	 * @param location  La URL para resolver el objeto raíz, o null.
+	 * @param resources Los recursos de localización, o null.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -177,19 +195,33 @@ public class ConjuntoController implements Initializable {
 		tooltipConfig.salirTooltip(btnSalir);
 	}
 
+	/**
+	 * Muestra la información de ayuda para la contratación.
+	 *
+	 * @param event Evento disparado al hacer clic en el enlace de información.
+	 * @throws IOException Si ocurre un error al cargar el recurso de ayuda.
+	 */
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
 		ayuda.configInfo("/help/conjunto.html", stage);
 	}
 
+	/**
+	 * Gestiona la acción de contratación.
+	 * 
+	 * Valida la selección de servicios y método de pago, guarda la estancia y los
+	 * servicios contratados, y redirige la vista según corresponda.
+	 *
+	 * @param event Evento disparado al hacer clic en el botón de contratar.
+	 */
 	@FXML
 	private void handlerContratar(ActionEvent event) {
 		try {
 
 			List<Servicio> listaSeleccion = tblServicios.getSelectionModel().getSelectedItems();
 
-			if (!listaSeleccion.isEmpty() && cmbPago.getSelectionModel().getSelectedItem()==null) {
+			if (!listaSeleccion.isEmpty() && cmbPago.getSelectionModel().getSelectedItem() == null) {
 				alertas.alertaError("Error", "Por favor seleccione un método de pago.");
 				return;
 			}
@@ -225,16 +257,33 @@ public class ConjuntoController implements Initializable {
 
 	}
 
+	/**
+	 * Regresa a la pantalla anterior.
+	 *
+	 * @param event Evento disparado al hacer clic en el botón de volver.
+	 * @throws IOException Si ocurre un error al cambiar la escena.
+	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.ALOJAR);
 	}
 
+	/**
+	 * Sale de la aplicación.
+	 *
+	 * @param event Evento disparado al hacer clic en el botón de salir.
+	 * @throws IOException Si ocurre un error durante la configuración de salida.
+	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		botones.salirConfig();
 	}
 
+	/**
+	 * Guarda la estancia en el sistema.
+	 *
+	 * @return La estancia registrada o null si ocurre un error.
+	 */
 	private Estancia guardarEstancia() {
 		try {
 			return estanciaService.registrarEstancia(chVip.isSelected(), datosSellado.getPeregrino(),
@@ -245,6 +294,12 @@ public class ConjuntoController implements Initializable {
 		}
 	}
 
+	/**
+	 * Registra el conjunto de servicios contratados para la estancia.
+	 *
+	 * @param estancia La estancia a la que se asocian los servicios.
+	 * @return true si se registra correctamente, false en caso contrario.
+	 */
 	private boolean saveConjunto(Estancia estancia) {
 		try {
 			ConjuntoContratado conjunto = new ConjuntoContratado();
@@ -271,6 +326,13 @@ public class ConjuntoController implements Initializable {
 
 	}
 
+	/**
+	 * Obtiene la clave correspondiente a un método de pago a partir de su valor.
+	 *
+	 * @param mapPago El mapa de métodos de pago.
+	 * @param valor   El valor del método de pago.
+	 * @return La clave del método de pago o null si no se encuentra.
+	 */
 	private Character getKeyPago(Map<Character, String> mapPago, String valor) {
 		for (Entry<Character, String> entry : mapPago.entrySet()) {
 			if (entry.getValue().equals(valor)) {

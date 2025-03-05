@@ -7,6 +7,16 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+/**
+ * Clase Mnemonic.
+ * <ul>
+ *   <li>Configura los atajos de teclado para diversos controles de la interfaz.</li>
+ *   <li>Permite disparar acciones mediante combinaciones de teclas.</li>
+ * </ul>
+ * 
+ * @author 
+ * @since 28/12/2024
+ */
 @Component
 public class Mnemonic {
 	

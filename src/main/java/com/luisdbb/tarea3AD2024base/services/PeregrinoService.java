@@ -90,6 +90,10 @@ public class PeregrinoService {
 	public void registrarUsuarioCarnetYPeregrino(String usuario, String email, String contraseña, Parada paradaInicial,
 			String nombrePer, String apellidos, String nacionalidad) {
 
+		if (usuarioService.existsByNombreUsuario(usuario)) {
+			throw new RuntimeException("El usuario ya existe");
+		}
+
 		Usuario user = new Usuario(usuario, email, contraseña, Perfil.PEREGRINO);
 		usuarioService.saveConPassword(user);
 
@@ -105,11 +109,18 @@ public class PeregrinoService {
 
 	/**
 	 * Actualiza los datos de un peregrino en la base de datos.
-	 * 
+	 *
 	 * @param peregrinoActivo Peregrino con los datos actualizados.
+	 * @throws RuntimeException Si el peregrino es nulo o sus datos son inválidos.
 	 */
 	public void actualizarDatosPeregrino(Peregrino peregrinoActivo) {
+	    if (peregrinoActivo == null) {
+	        throw new RuntimeException("El peregrino no puede ser nulo.");
+	    }
 
-		save(peregrinoActivo);
+	    save(peregrinoActivo);
 	}
+	
+	
+
 }

@@ -1,5 +1,6 @@
 package com.luisdbb.tarea3AD2024base.ObjectDB;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import jakarta.persistence.EntityManager;
@@ -15,7 +16,8 @@ import jakarta.persistence.Persistence;
 @Component
 public class ObjectDBConnection {
 
-	private static final String objectdbPath = "objectdb://localhost:6136/peregrinos.odb;user=admin;password=admin";
+	@Value("${objectdb.datasource.url}")
+	private String objectdbPath;
 	private EntityManagerFactory emf;
 
 	/**

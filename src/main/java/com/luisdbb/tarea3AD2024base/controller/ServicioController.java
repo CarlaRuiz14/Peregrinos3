@@ -46,6 +46,13 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
+/**
+ * ServicioController es el controlador encargado de gestionar la edición de
+ * servicios y la asignación de paradas a cada servicio.
+ * 
+ * @author Carla Ruiz
+ * @since 28/12/2024
+ */
 @Component
 public class ServicioController implements Initializable {
 
@@ -128,6 +135,17 @@ public class ServicioController implements Initializable {
 	private boolean checkNombre = true;
 	private boolean checkPrecio = true;
 
+	/**
+	 * Inicializa el controlador.
+	 * <ul>
+	 * <li>Carga la tabla de servicios y establece un listener para actualizar la
+	 * tabla de paradas en función del servicio seleccionado.</li>
+	 * <li>Configura imágenes, atajos de teclado y tooltips para los botones.</li>
+	 * </ul>
+	 *
+	 * @param location  La URL para resolver el objeto raíz, o null.
+	 * @param resources Los recursos de localización, o null.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -174,12 +192,31 @@ public class ServicioController implements Initializable {
 		tooltipConfig.salirTooltip(btnSalir);
 	}
 
+	/**
+	 * Muestra la ayuda relacionada con la edición de servicios.
+	 *
+	 * @param event Evento de acción disparado al hacer clic en el enlace de ayuda.
+	 * @throws IOException Si ocurre un error al cargar la ayuda.
+	 */
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
 		ayuda.configInfo("/help/servicios.html", stage);
 	}
 
+	/**
+	 * Agrega un nuevo servicio a la tabla.
+	 * <ul>
+	 * <li>Crea un servicio vacío mediante el servicio de conjunto de
+	 * servicios.</li>
+	 * <li>Lo añade a la tabla de servicios, lo selecciona y lo desplaza a la
+	 * vista.</li>
+	 * <li>Inicia la edición de la celda de nombre del nuevo servicio.</li>
+	 * </ul>
+	 *
+	 * @param event Evento de acción disparado al hacer clic en "Nuevo".
+	 * @throws IOException Si ocurre un error durante la acción.
+	 */
 	@FXML
 	private void handlerNuevo(ActionEvent event) throws IOException {
 
@@ -194,6 +231,18 @@ public class ServicioController implements Initializable {
 		tblServicios.edit(tblServicios.getItems().size() - 1, colNombreServicio);
 	}
 
+	/**
+	 * Guarda los cambios realizados en los servicios.
+	 * <ul>
+	 * <li>Valida que el nombre y el precio sean correctos.</li>
+	 * <li>Solicita confirmación al usuario para guardar todos los cambios.</li>
+	 * <li>Guarda cada servicio mediante el servicio de conjunto de servicios.</li>
+	 * <li>Muestra mensajes informativos según el resultado.</li>
+	 * </ul>
+	 *
+	 * @param event Evento de acción disparado al hacer clic en "Guardar".
+	 * @throws IOException Si ocurre un error durante el guardado.
+	 */
 	@FXML
 	private void handlerGuardar(ActionEvent event) throws IOException {
 
@@ -220,21 +269,36 @@ public class ServicioController implements Initializable {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-	        alertas.alertaError("Error", "Hubo un problema al registrar los servicios.");
+			alertas.alertaError("Error", "Hubo un problema al registrar los servicios.");
 		}
 
 	}
 
+	/**
+	 * Regresa a la vista de administrador.
+	 *
+	 * @param event Evento de acción disparado al hacer clic en "Volver".
+	 * @throws IOException Si ocurre un error al cambiar de escena.
+	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.ADMIN);
 	}
 
+	/**
+	 * Ejecuta la acción de salida de la aplicación.
+	 *
+	 * @param event Evento de acción disparado al hacer clic en "Salir".
+	 * @throws IOException Si ocurre un error durante la salida.
+	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		botones.salirConfig();
 	}
 
+	/**
+	 * Carga la tabla de servicios con los datos existentes.
+	 */
 	public void cargarServiciosTabla() {
 		tblServicios.setEditable(true);
 		Set<Servicio> listaS = css.findAllServicios();
@@ -299,6 +363,13 @@ public class ServicioController implements Initializable {
 		});
 	}
 
+	/**
+	 * Verifica si un nombre ya existe en la tabla, excluyendo el servicio actual.
+	 *
+	 * @param nombre         El nombre a verificar.
+	 * @param servicioActual El servicio que se está editando.
+	 * @return true si el nombre existe en otro servicio, false en caso contrario.
+	 */
 	private boolean existeNombreEnTabla(String nombre, Servicio servicioActual) {
 		for (Servicio s : tblServicios.getItems()) {
 			if (s != servicioActual && s.getNombre().equalsIgnoreCase(nombre)) {
@@ -308,6 +379,20 @@ public class ServicioController implements Initializable {
 		return false;
 	}
 
+	/**
+	 * Carga la tabla de paradas asociadas al servicio seleccionado.
+	 * <ul>
+	 * <li>Recupera la lista de todas las paradas.</li>
+	 * <li>Crea una lista de objetos CheckParada que indican si cada parada está
+	 * asociada al servicio.</li>
+	 * <li>Configura las columnas de la tabla de paradas: ID, nombre, región y el
+	 * check de asociación.</li>
+	 * <li>Agrega listeners para actualizar la lista de paradas del servicio al
+	 * marcar o desmarcar.</li>
+	 * </ul>
+	 *
+	 * @param servicioSeleccionado El servicio para el cual se cargarán las paradas.
+	 */
 	public void cargarParadasTabla(Servicio servicioSeleccionado) {
 		tblParadas.setEditable(true);
 		colCheckParada.setEditable(true);
@@ -356,6 +441,12 @@ public class ServicioController implements Initializable {
 
 	}
 
+	/**
+	 * Crea un conversor para valores de tipo Double, formateándolos con dos
+	 * decimales.
+	 *
+	 * @return Un StringConverter para Double.
+	 */
 	private StringConverter<Double> getConversorDouble() {
 		return new StringConverter<Double>() {
 

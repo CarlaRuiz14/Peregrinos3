@@ -38,10 +38,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 /**
+ * Controlador para editar los datos del peregrino y usuario.
+ * 
  * @author Carla Ruiz
  * @since 28/12/2024
  */
-
 @Controller
 public class EditarController implements Initializable {
 
@@ -124,33 +125,47 @@ public class EditarController implements Initializable {
 
 	private boolean emailCheck = true;
 
+	/**
+	 * Inicializa el controlador.
+	 * 
+	 * Se realizan las siguientes acciones:
+	 * <ul>
+	 * <li>Cargar los datos del usuario y peregrino activo.</li>
+	 * <li>Establecer los valores iniciales en los campos del formulario.</li>
+	 * <li>Configurar el ComboBox con la lista de nacionalidades.</li>
+	 * <li>Configurar imágenes, tooltips y atajos de teclado.</li>
+	 * <li>Iniciar la validación de las entradas del formulario.</li>
+	 * </ul>
+	 *
+	 * @param location  La URL utilizada para resolver el objeto raíz o null.
+	 * @param resources Los recursos de localización o null.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+
 		usuarioActivo = sesion.getUsuarioActivo();
 		peregrinoActivo = peregrinoService.findByIdUsuario(usuarioActivo.getId());
-		
+
 		txtNombre.setText(peregrinoActivo.getNombre());
 		txtApellidos.setText(peregrinoActivo.getApellidos());
 		txtEmail.setText(usuarioActivo.getEmail());
-		
-		String nac=nacionalidadService.mapaNacionalidades().get(peregrinoActivo.getNacionalidad());
+
+		String nac = nacionalidadService.mapaNacionalidades().get(peregrinoActivo.getNacionalidad());
 		cmbNacionalidad.getSelectionModel().select(nac);
 
 		validarEntradas();
-	
+
 		List<String> listaValores = new ArrayList<>(nacionalidadService.mapaNacionalidades().values());
 		listaNac = FXCollections.observableArrayList(listaValores);
 		cmbNacionalidad.setItems(listaNac);
 
-		
-		ayuda.configImgInfo(hpInfo);		
-		botones.imgLimpiar(btnLimpiar);	
-		botones.imgFlecha(btnEditar);		
-		botones.imgVolver(btnVolver);		
+		ayuda.configImgInfo(hpInfo);
+		botones.imgLimpiar(btnLimpiar);
+		botones.imgFlecha(btnEditar);
+		botones.imgVolver(btnVolver);
 		botones.imgSalir(btnSalir);
-		
-		mnemonicConfig.infoMnemonic(hpInfo);	
+
+		mnemonicConfig.infoMnemonic(hpInfo);
 		mnemonicConfig.limpiarMnemonic(btnLimpiar);
 		btnEditar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.ENTER) {
@@ -160,7 +175,7 @@ public class EditarController implements Initializable {
 		});
 		mnemonicConfig.volverMnemonic(btnVolver);
 		mnemonicConfig.salirMnemonic(btnSalir);
-		
+
 		tooltipConfig.infoTooltip(hpInfo);
 		tooltipConfig.limpiarTooltip(btnLimpiar);
 		btnEditar.setTooltip(new Tooltip("Editar (Alt+Enter)"));
@@ -168,12 +183,24 @@ public class EditarController implements Initializable {
 		tooltipConfig.salirTooltip(btnSalir);
 	}
 
+	/**
+	 * Muestra la ayuda relacionada con la edición.
+	 *
+	 * @param event Evento disparado al hacer clic en el enlace de información.
+	 * @throws IOException Si ocurre un error al cargar el recurso de ayuda.
+	 */
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
-		ayuda.configInfo("/help/editar.html",stage);
+		ayuda.configInfo("/help/editar.html", stage);
 	}
 
+	/**
+	 * Limpia el formulario tras confirmar la acción.
+	 *
+	 * @param event Evento disparado al hacer clic en el botón de limpiar.
+	 * @throws IOException Si ocurre un error durante la acción.
+	 */
 	@FXML
 	private void handlerLimpiar(ActionEvent event) throws IOException {
 
@@ -187,14 +214,20 @@ public class EditarController implements Initializable {
 
 			cmbNacionalidad.getSelectionModel().clearSelection();
 			cmbNacionalidad.setValue(null);
-			cmbNacionalidad.setPromptText("Nacionalidad"); 
-			cmbNacionalidad.getParent().requestFocus(); 
+			cmbNacionalidad.setPromptText("Nacionalidad");
+			cmbNacionalidad.getParent().requestFocus();
 
 		} else {
 			alertas.alertaInformacion("Acción cancelada", "Por favor, rellene el formulario.");
 		}
 	}
 
+	/**
+	 * Actualiza los datos del peregrino y usuario tras validar la información.
+	 *
+	 * @param event Evento disparado al hacer clic en el botón de editar.
+	 * @throws IOException Si ocurre un error durante la actualización.
+	 */
 	@FXML
 	private void handlerEditar(ActionEvent event) throws IOException {
 
@@ -221,16 +254,32 @@ public class EditarController implements Initializable {
 		stageManager.switchScene(FxmlView.PEREGRINO);
 	}
 
+	/**
+	 * Regresa a la pantalla del menú principal.
+	 *
+	 * @param event Evento disparado al hacer clic en el botón de volver.
+	 * @throws IOException Si ocurre un error al cambiar de escena.
+	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.PEREGRINO);
 	}
 
+	/**
+	 * Sale de la aplicación.
+	 *
+	 * @param event Evento disparado al hacer clic en el botón de salir.
+	 * @throws IOException Si ocurre un error durante la configuración de salida.
+	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		botones.salirConfig();
 	}
 
+	/**
+	 * Configura la validación de las entradas del formulario.
+	 * 
+	 */
 	private void validarEntradas() {
 		lblFeed.setText(" ");
 
@@ -256,6 +305,11 @@ public class EditarController implements Initializable {
 		});
 	}
 
+	/**
+	 * Valida que los campos obligatorios del formulario estén completos.
+	 *
+	 * @return true si la validación es exitosa, false en caso contrario.
+	 */
 	private boolean validarRegistro() {
 
 		if (txtNombre.getText() == null || txtNombre.getText().isEmpty()) {

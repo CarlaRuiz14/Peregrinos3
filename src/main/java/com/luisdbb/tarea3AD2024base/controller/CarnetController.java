@@ -32,7 +32,6 @@ import com.luisdbb.tarea3AD2024base.services.ParadaService;
 import com.luisdbb.tarea3AD2024base.services.PeregrinoService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -179,13 +178,16 @@ public class CarnetController implements Initializable {
 	private Carnet carnetActivo;
 	private ResourceBundle bundle;
 
-	public CarnetController() {
-		if (!Platform.isFxApplicationThread() && !Platform.isImplicitExit()) {
-			Platform.startup(() -> {
-			}); // Inicia JavaFX si no está iniciado
-		}
-	}
-
+	/**
+	 * Inicializa el controlador y la vista asociada.
+	 * 
+	 * Configura los componentes de la interfaz, carga los datos del usuario, del
+	 * carnet y de las actividades del peregrino, y asigna las acciones
+	 * correspondientes a los botones y eventos.
+	 * 
+	 * @param location  La URL usada para resolver el objeto raíz o null.
+	 * @param resources Los recursos de localización o null.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -270,12 +272,23 @@ public class CarnetController implements Initializable {
 		tooltipConfig.salirTooltip(btnSalir);
 	}
 
+	/**
+	 * Maneja la acción para mostrar la información de ayuda del carnet.
+	 * 
+	 * @param event Evento disparado al hacer clic en el enlace de información.
+	 * @throws IOException Si ocurre un error al cargar el recurso de ayuda.
+	 */
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
 		ayuda.configInfo("/help/expCarnet.html", stage);
 	}
 
+	/**
+	 * Maneja la acción para generar y mostrar el informe del carnet.	
+	 *
+	 * @param event Evento disparado al hacer clic en el botón de informe.
+	 */
 	@FXML
 	private void handlerInforme(ActionEvent event) {
 		try {
@@ -299,6 +312,13 @@ public class CarnetController implements Initializable {
 		}
 	}
 
+	/**
+	 * Convierte el informe JasperPrint en una imagen y la muestra en una ventana
+	 * modal.	
+	 *
+	 * @param jasperPrint El objeto JasperPrint que contiene el informe a
+	 *                    visualizar.
+	 */
 	private void crearImagenInforme(JasperPrint jasperPrint) {
 		try {
 			java.awt.Image awtImage = JasperPrintManager.printPageToImage(jasperPrint, 0, 1.0f);
@@ -330,6 +350,12 @@ public class CarnetController implements Initializable {
 		}
 	}
 
+	/**
+	 * Maneja la acción para exportar el carnet a formato XML.
+	 *
+	 * @param event Evento disparado al hacer clic en el botón de exportar.
+	 * @throws IOException Si ocurre un error durante el proceso de exportación.
+	 */
 	@FXML
 	private void handlerExportar(ActionEvent event) throws IOException {
 
@@ -362,11 +388,23 @@ public class CarnetController implements Initializable {
 		}
 	}
 
+	/**
+	 * Maneja la acción para volver a la pantalla principal del peregrino.
+	 *
+	 * @param event Evento disparado al hacer clic en el botón de volver.
+	 * @throws IOException Si ocurre un error al cambiar la escena.
+	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.PEREGRINO);
 	}
 
+	/**
+	 * Maneja la acción para salir de la aplicación.
+	 *
+	 * @param event Evento disparado al hacer clic en el botón de salir.
+	 * @throws IOException Si ocurre un error durante la configuración de salida.
+	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		botones.salirConfig();

@@ -41,6 +41,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 /**
+ * RegPeregrinoController es el controlador para el registro de un usuario
+ * peregrino.
+ * 
  * @author Carla Ruiz
  * @since 28/12/2024
  */
@@ -159,11 +162,27 @@ public class RegPeregrinoController implements Initializable {
 	private boolean usuarioCheck = false;
 	private boolean contraseñaCheck = false;
 
+	/**
+	 * Inicializa el controlador y configura la interfaz para el registro de
+	 * peregrino.
+	 * <ul>
+	 * <li>Valida las entradas del formulario (nombre, apellidos, email, usuario y
+	 * contraseña).</li>
+	 * <li>Carga los iconos para la visibilidad de la contraseña y los asigna al
+	 * control correspondiente.</li>
+	 * <li>Configura los ComboBox de parada inicial y nacionalidad.</li>
+	 * <li>Asigna imágenes, atajos de teclado y tooltips a los botones de limpiar,
+	 * registrar, volver y salir.</li>
+	 * </ul>
+	 *
+	 * @param location  La URL utilizada para resolver el objeto raíz o null.
+	 * @param resources Los recursos de localización o null.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
 		validarEntradas();
-		
+
 		String mostrarPath = resources.getString("contraseñaC.icon");
 		String ocultarPath = resources.getString("contraseñaO.icon");
 
@@ -171,20 +190,20 @@ public class RegPeregrinoController implements Initializable {
 		ocultarIcon = new Image(getClass().getResourceAsStream(ocultarPath));
 
 		hpVisible.setGraphic(botones.createImageView(mostrarIcon));
-	
+
 		listaParadas = FXCollections.observableArrayList(paradaService.findAll());
 		cmbParada.setItems(listaParadas);
 
 		List<String> listaValores = new ArrayList<>(nacionalidadService.mapaNacionalidades().values());
 		listaNac = FXCollections.observableArrayList(listaValores);
 		cmbNacionalidad.setItems(listaNac);
-		
-		ayuda.configImgInfo(hpInfo);		
-		botones.imgLimpiar(btnLimpiar);	
-		botones.imgFlecha(btnRegistrar);		
-		botones.imgVolver(btnVolver);		
+
+		ayuda.configImgInfo(hpInfo);
+		botones.imgLimpiar(btnLimpiar);
+		botones.imgFlecha(btnRegistrar);
+		botones.imgVolver(btnVolver);
 		botones.imgSalir(btnSalir);
-		
+
 		mnemonicConfig.infoMnemonic(hpInfo);
 		mnemonicConfig.visibleMnemonic(hpVisible);
 		mnemonicConfig.limpiarMnemonic(btnLimpiar);
@@ -196,7 +215,7 @@ public class RegPeregrinoController implements Initializable {
 		});
 		mnemonicConfig.volverMnemonic(btnVolver);
 		mnemonicConfig.salirMnemonic(btnSalir);
-		
+
 		tooltipConfig.salirTooltip(btnSalir);
 		tooltipConfig.visibleTooltip(hpVisible);
 		tooltipConfig.limpiarTooltip(btnLimpiar);
@@ -205,12 +224,27 @@ public class RegPeregrinoController implements Initializable {
 		tooltipConfig.salirTooltip(btnSalir);
 	}
 
+	/**
+	 * Muestra la ayuda para el registro de peregrino.
+	 *
+	 * @param event Evento de acción disparado al hacer clic en el enlace de ayuda.
+	 * @throws IOException Si ocurre un error al cargar la ayuda.
+	 */
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
-		ayuda.configInfo("/help/regPeregrino.html",stage);
+		ayuda.configInfo("/help/regPeregrino.html", stage);
 	}
 
+	/**
+	 * Alterna la visibilidad de los campos de contraseña y confirmación.
+	 * <ul>
+	 * <li>Si las contraseñas son visibles, las oculta y muestra el icono
+	 * "mostrar".</li>
+	 * <li>Si están ocultas, las muestra en un TextField y cambia el icono a
+	 * "ocultar".</li>
+	 * </ul>
+	 */
 	@FXML
 	private void handlerVisible() {
 		isPassVisible = !isPassVisible;
@@ -235,6 +269,21 @@ public class RegPeregrinoController implements Initializable {
 		}
 	}
 
+	/**
+	 * Procesa el registro del usuario peregrino.
+	 * <ul>
+	 * <li>Verifica que los campos de nombre, email, usuario y contraseña sean
+	 * válidos.</li>
+	 * <li>Llama a los servicios para registrar el usuario, crear su carnet y
+	 * asignar la parada inicial.</li>
+	 * <li>Registra la parada inicial para el peregrino.</li>
+	 * <li>Notifica al usuario del registro exitoso y redirige a la vista de
+	 * login.</li>
+	 * </ul>
+	 *
+	 * @param event Evento de acción disparado al hacer clic en "Registrar".
+	 * @throws IOException Si ocurre un error durante el registro.
+	 */
 	@FXML
 	private void handlerRegistrar(ActionEvent event) throws IOException {
 
@@ -281,20 +330,32 @@ public class RegPeregrinoController implements Initializable {
 			alertas.alertaInformacion("Registro exitoso",
 					"Se ha registrado como peregrino y se ha creado su carnet correctamente.\n\nVolviendo al menú de inicio de sesión.");
 			stageManager.switchScene(FxmlView.LOGIN);
-		} catch (Exception e) {		
+		} catch (Exception e) {
 			e.printStackTrace();
 			alertas.alertaError("Error", "Hubo un problema al registrar los datos. Por favor, revise la información.");
 			return;
 		}
 	}
 
+	/**
+	 * Limpia el formulario de registro.
+	 * <ul>
+	 * <li>Solicita confirmación al usuario antes de borrar los datos.</li>
+	 * <li>Si se confirma, limpia todos los campos del formulario y restablece los
+	 * ComboBox.</li>
+	 * <li>Si se cancela, informa al usuario que la acción fue cancelada.</li>
+	 * </ul>
+	 *
+	 * @param event Evento de acción disparado al hacer clic en "Limpiar".
+	 * @throws IOException Si ocurre un error durante la acción.
+	 */
 	@FXML
 	private void handlerLimpiar(ActionEvent event) throws IOException {
 
 		boolean confirmar = alertas.alertaConfirmacion("Borado de formulario",
 				"Se borrarán los datos introducidos, ¿está de acuerdo?");
 
-		if (confirmar) {		
+		if (confirmar) {
 			cmbParada.setValue(null);
 			cmbParada.setPromptText("Parada Inicial");
 			cmbParada.getParent().requestFocus();
@@ -315,16 +376,31 @@ public class RegPeregrinoController implements Initializable {
 		}
 	}
 
+	/**
+	 * Regresa a la vista de login.
+	 *
+	 * @param event Evento de acción disparado al hacer clic en "Volver".
+	 * @throws IOException Si ocurre un error al cambiar de escena.
+	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.LOGIN);
 	}
 
+	/**
+	 * Ejecuta la acción de salida de la aplicación.
+	 *
+	 * @param event Evento de acción disparado al hacer clic en "Salir".
+	 * @throws IOException Si ocurre un error durante la salida.
+	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		botones.salirConfig();
 	}
 
+	/**
+	 * Configura la validación de las entradas del formulario.
+	 */
 	private void validarEntradas() {
 
 		lblFeed.setText(" ");
@@ -438,6 +514,12 @@ public class RegPeregrinoController implements Initializable {
 
 	}
 
+	/**
+	 * Valida que todos los campos obligatorios del registro estén completos y
+	 * correctos.
+	 * 
+	 * @return true si la validación es exitosa, false en caso contrario.
+	 */
 	private boolean validarRegistro() {
 
 		if (cmbParada.getSelectionModel().getSelectedItem() == null) {

@@ -29,12 +29,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 /**
- * @author Carla Ruiz
+ * LoginController es el controlador para la pantalla de inicio de sesión.
+ *
+ * @author Carla
  * @since 28/12/2024
  */
 @Controller
 public class LoginController implements Initializable {
-	
+
 	@FXML
 	private Hyperlink hpInfo;
 
@@ -70,7 +72,7 @@ public class LoginController implements Initializable {
 
 	@Autowired
 	private UsuarioService usuarioService;
-	
+
 	@Autowired
 	private Ayuda ayuda;
 
@@ -86,45 +88,56 @@ public class LoginController implements Initializable {
 
 	@Autowired
 	private Botones botones;
-	
+
 	@Autowired
 	private Mnemonic mnemonicConfig;
-	
+
 	@Autowired
 	private Tooltips tooltipConfig;
-	
+
 	private boolean isPassVisible = false;
 	private Image mostrarIcon;
 	private Image ocultarIcon;
 
+	/**
+	 * Inicializa el controlador con la configuración de iconos, atajos de teclado y
+	 * tooltips.
+	 * <ul>
+	 * <li>Carga los iconos para mostrar y ocultar la contraseña.</li>
+	 * <li>Configura la visibilidad del campo de contraseña.</li>
+	 * <li>Establece los tooltips y atajos para los elementos de la interfaz.</li>
+	 * </ul>
+	 *
+	 * @param location  La URL utilizada para resolver el objeto raíz o null.
+	 * @param resources Los recursos de localización o null.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
+
 		String mostrarPath = resources.getString("contraseñaC.icon");
 		String ocultarPath = resources.getString("contraseñaO.icon");
 
 		mostrarIcon = new Image(getClass().getResourceAsStream(mostrarPath));
 		ocultarIcon = new Image(getClass().getResourceAsStream(ocultarPath));
 
-		hpVisible.setGraphic(botones.createImageView(mostrarIcon));		
-	
-		ayuda.configImgInfo(hpInfo);		
-		botones.imgFlecha(btnLogin);		
-		botones.imgVolver(btnVolver);		
+		hpVisible.setGraphic(botones.createImageView(mostrarIcon));
+
+		ayuda.configImgInfo(hpInfo);
+		botones.imgFlecha(btnLogin);
+		botones.imgVolver(btnVolver);
 		botones.imgSalir(btnSalir);
-		
+
 		String rutaUsu = resources.getString("usuario.icon");
 		imgUsuario.setImage(new Image(getClass().getResourceAsStream(rutaUsu)));
 
-				
-		mnemonicConfig.infoMnemonic(hpInfo);		
+		mnemonicConfig.infoMnemonic(hpInfo);
 		mnemonicConfig.visibleMnemonic(hpVisible);
 		hpContraseña.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.C) {
 				hpContraseña.fire();
 				event.consume();
 			}
-		});		
+		});
 		hpRegistro.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.R) {
 				hpRegistro.fire();
@@ -133,7 +146,7 @@ public class LoginController implements Initializable {
 		});
 		mnemonicConfig.volverMnemonic(btnVolver);
 		mnemonicConfig.salirMnemonic(btnSalir);
-	
+
 		tooltipConfig.infoTooltip(hpInfo);
 		tooltipConfig.visibleTooltip(hpVisible);
 		hpContraseña.setTooltip(new Tooltip("Recuperar (Alt+C)"));
@@ -143,26 +156,50 @@ public class LoginController implements Initializable {
 		tooltipConfig.salirTooltip(btnSalir);
 	}
 
+	/**
+	 * Muestra la ayuda del login en una ventana modal.
+	 * 
+	 * <ul>
+	 * <li>Abre el archivo de ayuda correspondiente a la pantalla de login.</li>
+	 * </ul>
+	 *
+	 * @param event Evento de acción disparado al hacer clic en el enlace de ayuda.
+	 * @throws IOException Si ocurre un error al cargar el recurso de ayuda.
+	 */
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
-		ayuda.configInfo("/help/login.html",stage);
+		ayuda.configInfo("/help/login.html", stage);
 	}
-	
+
+	/**
+	 * Procesa el inicio de sesión del usuario.
+	 * <ul>
+	 * <li>Obtiene el nombre de usuario y contraseña, considerando la visibilidad
+	 * del campo de contraseña.</li>
+	 * <li>Valida que los campos no estén vacíos mediante el servicio de
+	 * validaciones.</li>
+	 * <li>Realiza el logueo y, según el perfil, redirige a la vista
+	 * correspondiente.</li>
+	 * </ul>
+	 *
+	 * @param event Evento de acción disparado al hacer clic en el botón de login.
+	 * @throws IOException Si ocurre un error durante el inicio de sesión.
+	 */
 	@FXML
-	private void handlerLogin(ActionEvent event) throws IOException {		
+	private void handlerLogin(ActionEvent event) throws IOException {
 
 		String contraseña = passContraseña.isVisible() ? passContraseña.getText() : txtContraseña.getText();
-	
-		int check=validaciones.validarCredenciales(txtUsuario.getText(), contraseña);
-		if(check!=0) {
-			switch(check) {
+
+		int check = validaciones.validarCredenciales(txtUsuario.getText(), contraseña);
+		if (check != 0) {
+			switch (check) {
 			case 1:
 				alertas.alertaError("Faltan datos", "El campo usuario es obligatorio.");
 				return;
 			case 2:
 				alertas.alertaError("Faltan datos", "El campo contraseña es obligatorio.");
-				return;			
+				return;
 			}
 		}
 
@@ -189,26 +226,69 @@ public class LoginController implements Initializable {
 		}
 	}
 
+	/**
+	 * Regresa a la vista principal.
+	 * 
+	 * @param event Evento de acción disparado al hacer clic en el botón "Volver".
+	 * @throws IOException Si ocurre un error al cambiar de escena.
+	 */
 	@FXML
 	private void handlerVolver(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.MAIN);
 	}
 
+	/**
+	 * Ejecuta la acción de salida de la aplicación.
+	 *
+	 * @param event Evento de acción disparado al hacer clic en el botón "Salir".
+	 * @throws IOException Si ocurre un error durante la salida.
+	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		botones.salirConfig();
 	}
 
+	/**
+	 * Navega a la vista de recuperación de contraseña.
+	 * 
+	 * <ul>
+	 * <li>Cambia la escena a la vista de recuperación.</li>
+	 * </ul>
+	 *
+	 * @param event Evento de acción disparado al hacer clic en el enlace de
+	 *              recuperación.
+	 * @throws IOException Si ocurre un error durante la navegación.
+	 */
 	@FXML
 	private void handlerHpContraseña(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.RECUPERACION);
 	}
 
+	/**
+	 * Navega a la vista de registro de usuario.
+	 * 
+	 * <ul>
+	 * <li>Cambia la escena a la vista de registro para nuevos peregrinos.</li>
+	 * </ul>
+	 *
+	 * @param event Evento de acción disparado al hacer clic en el enlace de
+	 *              registro.
+	 * @throws IOException Si ocurre un error durante la navegación.
+	 */
 	@FXML
 	private void handlerHpRegistro(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.REGPEREGRINO);
 	}
 
+	/**
+	 * Alterna la visibilidad del campo de contraseña.
+	 * <ul>
+	 * <li>Si la contraseña está oculta, la muestra en un campo de texto y cambia el
+	 * icono a "ocultar".</li>
+	 * <li>Si la contraseña es visible, la oculta y cambia el icono a
+	 * "mostrar".</li>
+	 * </ul>
+	 */
 	@FXML
 	private void handlerVisible() {
 		isPassVisible = !isPassVisible;

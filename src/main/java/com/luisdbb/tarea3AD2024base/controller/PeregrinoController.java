@@ -24,10 +24,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 /**
+ * PeregrinoController es el controlador para la vista del usuario peregrino.
+ * 
  * @author Carla Ruiz
  * @since 28/12/2024
  */
-
 @Controller
 public class PeregrinoController implements Initializable {
 
@@ -68,14 +69,25 @@ public class PeregrinoController implements Initializable {
 	@Autowired
 	private Tooltips tooltipConfig;
 
+	/**
+	 * Inicializa la vista del controlador del peregrino.
+	 * <ul>
+	 * <li>Configura la imagen de ayuda y los iconos de logout y salida.</li>
+	 * <li>Asigna atajos de teclado para exportar y editar, y configura el logout y
+	 * la salida.</li>
+	 * <li>Establece tooltips descriptivos para cada botón.</li>
+	 * </ul>
+	 *
+	 * @param location  La URL utilizada para resolver el objeto raíz o null.
+	 * @param resources Los recursos de localización o null.
+	 */
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
-		ayuda.configImgInfo(hpInfo);		
-		botones.imgLogout(btnLogout);	
+
+		ayuda.configImgInfo(hpInfo);
+		botones.imgLogout(btnLogout);
 		botones.imgSalir(btnSalir);
 
-		
 		mnemonicConfig.infoMnemonic(hpInfo);
 		btnExportar.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
 			if (event.isAltDown() && event.getCode() == KeyCode.X) {
@@ -91,7 +103,7 @@ public class PeregrinoController implements Initializable {
 		});
 		mnemonicConfig.logoutMnemonic(btnLogout);
 		mnemonicConfig.salirMnemonic(btnSalir);
-		
+
 		tooltipConfig.salirTooltip(btnSalir);
 		btnExportar.setTooltip(new Tooltip("Exportar Carnet (Alt+X)"));
 		btnEditar.setTooltip(new Tooltip("Editar (Alt+E)"));
@@ -99,27 +111,57 @@ public class PeregrinoController implements Initializable {
 		tooltipConfig.salirTooltip(btnSalir);
 	}
 
+	/**
+	 * Muestra la ayuda relacionada con la vista del peregrino.
+	 * 
+	 * @param event Evento de acción disparado al hacer clic en el enlace de ayuda.
+	 * @throws IOException Si ocurre un error al cargar el recurso de ayuda.
+	 */
 	@FXML
 	private void handlerInfo(ActionEvent event) throws IOException {
 		Stage stage = (Stage) ((Hyperlink) event.getSource()).getScene().getWindow();
-		ayuda.configInfo("/help/peregrino.html",stage);
+		ayuda.configInfo("/help/peregrino.html", stage);
 	}
 
+	/**
+	 * Navega a la vista del carnet.
+	 *
+	 * @param event Evento de acción disparado al hacer clic en "Exportar".
+	 * @throws IOException Si ocurre un error al cambiar de escena.
+	 */
 	@FXML
 	private void handlerExportar(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.CARNET);
 	}
 
+	/**
+	 * Navega a la vista de edición de datos.
+	 *
+	 * @param event Evento de acción disparado al hacer clic en "Editar".
+	 * @throws IOException Si ocurre un error al cambiar de escena.
+	 */
 	@FXML
 	private void handlerEditar(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.EDITAR);
 	}
 
+	/**
+	 * Realiza el logout del usuario.
+	 * 
+	 * @param event Evento de acción disparado al hacer clic en "Logout".
+	 * @throws IOException Si ocurre un error durante el proceso de logout.
+	 */
 	@FXML
 	private void handlerLogout(ActionEvent event) throws IOException {
 		botones.logoutConfig(usuarioService, stageManager);
 	}
 
+	/**
+	 * Ejecuta la acción de salida de la aplicación.
+	 *
+	 * @param event Evento de acción disparado al hacer clic en "Salir".
+	 * @throws IOException Si ocurre un error durante la salida.
+	 */
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		botones.salirConfig();
