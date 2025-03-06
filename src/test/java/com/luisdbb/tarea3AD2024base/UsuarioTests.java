@@ -30,6 +30,7 @@ class UsuarioTests {
 	void setUp() {
 		MockitoAnnotations.openMocks(this);
 	}
+	
 
 	@Test
 	void testLoginAdminExitoso() {
