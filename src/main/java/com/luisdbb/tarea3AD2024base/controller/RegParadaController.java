@@ -271,8 +271,9 @@ public class RegParadaController implements Initializable {
 
 			String contraseña = passContraseña.isVisible() ? passContraseña.getText() : txtContraseña.getText();
 
-			usuarioService.registrarUsuarioYParada(txtUsuario.getText(), txtEmail.getText(), contraseña,
+			usuarioService.registrarUsuarioParadaColeccion(txtUsuario.getText(), txtEmail.getText(), contraseña,
 					txtNombreP.getText(), txtRegionP.getText().charAt(0));
+			
 
 			alertas.alertaInformacion("Registro exitoso",
 					"Se han registrado el usuario responsable de parada y la parada correctamente.\n"

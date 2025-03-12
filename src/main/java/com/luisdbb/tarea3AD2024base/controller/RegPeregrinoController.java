@@ -323,9 +323,10 @@ public class RegPeregrinoController implements Initializable {
 			String nacionalidad = nacionalidadService
 					.obtenerNacionalidadSeleccionada(cmbNacionalidad.getSelectionModel().getSelectedItem());
 
+			
+			
 			peregrinoService.registrarUsuarioCarnetYPeregrino(txtUsuario.getText(), txtEmail.getText(), contraseña,
-					paradaInicial, txtNombre.getText(), txtApellidos.getText(), nacionalidad);
-			paradasPeregrinoService.registrarParadaInicial(txtUsuario.getText(), paradaInicial);
+					paradaInicial, txtNombre.getText(), txtApellidos.getText(), nacionalidad);				
 
 			alertas.alertaInformacion("Registro exitoso",
 					"Se ha registrado como peregrino y se ha creado su carnet correctamente.\n\nVolviendo al menú de inicio de sesión.");

@@ -1,5 +1,6 @@
 package com.luisdbb.tarea3AD2024base.services;
 
+import java.io.File;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,15 @@ public class PeregrinoService {
 
 	@Autowired
 	private UsuarioService usuarioService;
+
+	@Autowired
+	private ExistDBService existDBService;
+
+	@Autowired
+	private CarnetService carnetService;
+
+	@Autowired
+	private ParadasPeregrinoService paradasPeregrinoService;
 
 	/**
 	 * Guarda un peregrino en la base de datos.
@@ -85,10 +95,11 @@ public class PeregrinoService {
 	 * @param nombrePer     Nombre del peregrino.
 	 * @param apellidos     Apellidos del peregrino.
 	 * @param nacionalidad  Nacionalidad del peregrino.
+	 * @throws Exception
 	 */
 	@Transactional
 	public void registrarUsuarioCarnetYPeregrino(String usuario, String email, String contraseña, Parada paradaInicial,
-			String nombrePer, String apellidos, String nacionalidad) {
+			String nombrePer, String apellidos, String nacionalidad) throws Exception {
 
 		if (usuarioService.existsByNombreUsuario(usuario)) {
 			throw new RuntimeException("El usuario ya existe");
@@ -105,6 +116,14 @@ public class PeregrinoService {
 
 		peregrinoRepository.save(peregrino);
 
+		paradasPeregrinoService.registrarParadaInicial(usuario, paradaInicial);
+
+		carnetService.exportarCarnet(peregrino);
+
+		File carnetFile = new File("carnets/"+nombrePer+".xml");
+		// comprobado que recoge bien el carnet
+		existDBService.almacenarCarnet(paradaInicial.getNombre(), carnetFile);
+
 	}
 
 	/**
@@ -114,13 +133,11 @@ public class PeregrinoService {
 	 * @throws RuntimeException Si el peregrino es nulo o sus datos son inválidos.
 	 */
 	public void actualizarDatosPeregrino(Peregrino peregrinoActivo) {
-	    if (peregrinoActivo == null) {
-	        throw new RuntimeException("El peregrino no puede ser nulo.");
-	    }
+		if (peregrinoActivo == null) {
+			throw new RuntimeException("El peregrino no puede ser nulo.");
+		}
 
-	    save(peregrinoActivo);
+		save(peregrinoActivo);
 	}
-	
-	
 
 }

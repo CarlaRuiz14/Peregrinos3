@@ -34,6 +34,9 @@ public class UsuarioService {
 	private PasswordService passwordService;
 
 	@Autowired
+	private ExistDBService existDBService;
+
+	@Autowired
 	private Sesion sesion;
 
 	/**
@@ -147,22 +150,26 @@ public class UsuarioService {
 	}
 
 	/**
-	 * Registra un usuario con perfil de parada junto con su parada asociada.
+	 * Registra un usuario con perfil de parada, la parada y su coleccion en existDB
+	 * para los carnets
 	 * 
 	 * @param usuario      Nombre de usuario.
 	 * @param email        Correo electrónico del usuario.
 	 * @param contraseña   Contraseña del usuario.
 	 * @param nombreParada Nombre de la parada asociada.
-	 * @param region       Región de la parada.
+	 * @param region       Código de la región de la parada.
+	 * @throws Exception Si ocurre un error en la creación de la colección en
+	 *                   eXistDB o en el registro de usuario/parada.
 	 */
 	@Transactional
-	public void registrarUsuarioYParada(String usuario, String email, String contraseña, String nombreParada,
-			char region) {
+	public void registrarUsuarioParadaColeccion(String usuario, String email, String contraseña, String nombreParada,
+			char region) throws Exception {
 
 		Usuario user = new Usuario(usuario, email, contraseña, Perfil.PARADA);
 
 		Parada parada = new Parada(nombreParada, region, user);
 
+		existDBService.crearColeccionEnParadas(nombreParada);
 		this.saveConPassword(user);
 		paradaService.save(parada);
 	}

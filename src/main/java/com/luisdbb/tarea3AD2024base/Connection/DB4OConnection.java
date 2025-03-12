@@ -1,4 +1,4 @@
-package com.luisdbb.tarea3AD2024base.config;
+package com.luisdbb.tarea3AD2024base.Connection;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

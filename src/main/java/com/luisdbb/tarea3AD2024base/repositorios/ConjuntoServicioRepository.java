@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
 import com.db4o.query.Predicate;
-import com.luisdbb.tarea3AD2024base.config.DB4OConnection;
+import com.luisdbb.tarea3AD2024base.Connection.DB4OConnection;
 import com.luisdbb.tarea3AD2024base.modelo.ConjuntoContratado;
 import com.luisdbb.tarea3AD2024base.modelo.Parada;
 import com.luisdbb.tarea3AD2024base.modelo.Servicio;

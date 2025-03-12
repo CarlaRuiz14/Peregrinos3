@@ -229,12 +229,16 @@ public class CarnetService {
 			}
 
 			Source fuente = new DOMSource(documento);
-			String ruta = "src/main/resources/carnets/" + p.getNombre() + ".xml";
+			String ruta = "carnets/" + p.getNombre() + ".xml";
 			File fichero = new File(ruta);
 			Result resultado = new StreamResult(fichero);
 
 			TransformerFactory fabricaTransformador = TransformerFactory.newInstance();
 			Transformer transformador = fabricaTransformador.newTransformer();
+
+			transformador.setOutputProperty(javax.xml.transform.OutputKeys.ENCODING, "UTF-8");
+			transformador.setOutputProperty(javax.xml.transform.OutputKeys.INDENT, "yes");
+
 			transformador.transform(fuente, resultado);
 
 			return 0;

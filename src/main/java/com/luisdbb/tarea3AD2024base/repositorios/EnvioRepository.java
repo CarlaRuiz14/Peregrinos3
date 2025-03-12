@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.luisdbb.tarea3AD2024base.ObjectDB.ObjectDBConnection;
+import com.luisdbb.tarea3AD2024base.Connection.ObjectDBConnection;
 import com.luisdbb.tarea3AD2024base.modelo.EnvioACasa;
 
 import jakarta.persistence.EntityManager;
