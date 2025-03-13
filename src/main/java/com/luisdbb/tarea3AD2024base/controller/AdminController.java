@@ -2,6 +2,7 @@ package com.luisdbb.tarea3AD2024base.controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,9 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 
 import com.luisdbb.tarea3AD2024base.config.StageManager;
+import com.luisdbb.tarea3AD2024base.modelo.Peregrino;
+import com.luisdbb.tarea3AD2024base.services.CarnetService;
+import com.luisdbb.tarea3AD2024base.services.PeregrinoService;
 import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
@@ -43,6 +47,9 @@ public class AdminController implements Initializable {
 
 	@FXML
 	private Button btnServicio;
+	
+	@FXML
+	private Button btnBackup;
 
 	@FXML
 	private Button btnLogout;
@@ -63,6 +70,12 @@ public class AdminController implements Initializable {
 	@Autowired
 	private UsuarioService usuarioService;
 
+	@Autowired 
+	private PeregrinoService peregrinoService;
+	
+	@Autowired
+	private CarnetService carnetService;
+	
 	@Autowired
 	private Mnemonic mnemonicConfig;
 
@@ -129,6 +142,24 @@ public class AdminController implements Initializable {
 	private void handlerServicio(ActionEvent event) throws IOException {
 		stageManager.switchScene(FxmlView.SERVICIO);
 	}
+	
+	@FXML
+	private void handlerBackup(ActionEvent event) throws IOException {		
+		
+		// recorrer todos los peregrinos de mysql  findAll peregrinoService
+		List<Peregrino> todosPeregrinos = peregrinoService.findAll();
+		
+		for(Peregrino per:todosPeregrinos) {
+			
+			
+			
+			carnetService.exportarCarnet(per);
+			
+		}
+		
+		
+		
+	}
 
 	/**
 	 * Cierra la sesión del usuario actual y vuelve a la pantalla de login.
@@ -150,7 +181,6 @@ public class AdminController implements Initializable {
 	@FXML
 	private void handlerSalir(ActionEvent event) throws IOException {
 		botones.salirConfig();
-
 	}
 
 }

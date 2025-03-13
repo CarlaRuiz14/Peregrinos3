@@ -33,11 +33,9 @@
             <Label fx:id="lblTitulo" alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" styleClass="lblTitulo2" text="CARNETS" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             <TableView fx:id="tblCarnets" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="280.0" prefWidth="460.0" styleClass="tblVS" GridPane.rowIndex="1" GridPane.valignment="TOP">
               <columns>
-                <TableColumn fx:id="colIdCarnet" prefWidth="58.4000244140625" text="ID" />
-                <TableColumn fx:id="colFecha" prefWidth="84.79999542236328" text="Fecha" />
-                  <TableColumn fx:id="colKm" minWidth="8.800048828125" prefWidth="67.20001220703125" text="Km" />
-                  <TableColumn fx:id="colVips" prefWidth="68.79998779296875" text="Vips" />
-                  <TableColumn fx:id="colPeregrino" prefWidth="149.5999755859375" text="Peregrino" />
+                <TableColumn fx:id="colIdCarnet" prefWidth="100.0" text="ID" />
+                <TableColumn fx:id="colFecha" prefWidth="130.0" text="Fecha" />
+                  <TableColumn fx:id="colPeregrino" prefWidth="211.0" text="Peregrino" />
               </columns>
             </TableView>
             <Button fx:id="btnVolver" alignment="CENTER" onAction="#handlerVolver" prefHeight="30.0" prefWidth="30.0" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">

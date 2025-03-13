@@ -19,7 +19,6 @@ import com.luisdbb.tarea3AD2024base.services.ExistDBService;
 import com.luisdbb.tarea3AD2024base.services.ParadaService;
 import com.luisdbb.tarea3AD2024base.view.FxmlView;
 
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -52,12 +51,6 @@ public class CarnetsListaController implements Initializable {
 
 	@FXML
 	private TableColumn<Carnet, LocalDate> colFecha;
-
-	@FXML
-	private TableColumn<Carnet, Double> colKm;
-
-	@FXML
-	private TableColumn<Carnet, Integer> colVips;
 
 	@FXML
 	private TableColumn<Carnet, String> colPeregrino;
@@ -104,11 +97,6 @@ public class CarnetsListaController implements Initializable {
 
 		colIdCarnet.setCellValueFactory(new PropertyValueFactory<>("id"));
 		colFecha.setCellValueFactory(new PropertyValueFactory<>("fechaExp"));
-		colKm.setCellValueFactory(new PropertyValueFactory<>("distancia"));
-		colVips.setCellValueFactory(cellData -> {
-			Integer vips = cellData.getValue().getnVips();
-			return new SimpleObjectProperty<>(vips != null ? vips : 0);
-		});
 		colPeregrino.setCellValueFactory(cellData -> {
 			Carnet carnet = cellData.getValue();
 			if (carnet != null && carnet.getPeregrino() != null) {

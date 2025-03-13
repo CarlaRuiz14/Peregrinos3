@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <carnet>
-   <id>3</id>
+   <id>1</id>
    <fechaexp>2025-03-13</fechaexp>
-   <expedidoen>gijon</expedidoen>
+   <expedidoen>Gijon</expedidoen>
    <peregrino>
-      <nombre>lucas</nombre>
-      <nacionalidad>Vietnam</nacionalidad>
+      <nombre>hector</nombre>
+      <nacionalidad>Indonesia</nacionalidad>
    </peregrino>
    <hoy>2025-03-13</hoy>
-   <distanciatotal>0.0</distanciatotal>
+   <distanciatotal>30.0</distanciatotal>
    <paradas>
       <parada>
          <orden>1</orden>
-         <nombre>gijon</nombre>
+         <nombre>Gijon</nombre>
          <region>a</region>
       </parada>
    </paradas>
    <estancias>
       <estancia>
-         <id>No hay estancias</id>
+         <id>1</id>
+         <fecha>2025-03-13</fecha>
+         <paradaestancia>sarria</paradaestancia>
       </estancia>
    </estancias>
 </carnet>

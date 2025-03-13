@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <carnet>
-   <id>2</id>
+   <id>3</id>
    <fechaexp>2025-03-13</fechaexp>
-   <expedidoen>Villaviciosa</expedidoen>
+   <expedidoen>Gijon</expedidoen>
    <peregrino>
-      <nombre>carla</nombre>
+      <nombre>rosa</nombre>
       <nacionalidad>Bélgica</nacionalidad>
    </peregrino>
    <hoy>2025-03-13</hoy>
-   <distanciatotal>30.0</distanciatotal>
+   <distanciatotal>15.0</distanciatotal>
    <paradas>
       <parada>
          <orden>1</orden>
@@ -17,11 +17,6 @@
       </parada>
       <parada>
          <orden>2</orden>
-         <nombre>Villaviciosa</nombre>
-         <region>a</region>
-      </parada>
-      <parada>
-         <orden>3</orden>
          <nombre>sarria</nombre>
          <region>a</region>
       </parada>
