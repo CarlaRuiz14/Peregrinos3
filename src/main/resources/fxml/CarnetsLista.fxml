@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="540.0" prefWidth="540.0" stylesheets="@../styles/Styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.luisdbb.tarea3AD2024base.controller.CarnetsListaController">
+   <children>
+      <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" styleClass="panel" StackPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="250.0" />
+            <ColumnConstraints />
+        </columnConstraints>
+        <rowConstraints>            
+          <RowConstraints minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="310.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                                
+        </rowConstraints>
+         <children>
+            <Hyperlink fx:id="hpInfo" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerInfo" prefHeight="30.0" prefWidth="30.0" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Hyperlink>
+            <Label fx:id="lblTitulo" alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" styleClass="lblTitulo2" text="CARNETS" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <TableView fx:id="tblCarnets" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="280.0" prefWidth="460.0" styleClass="tblVS" GridPane.rowIndex="1" GridPane.valignment="TOP">
+              <columns>
+                <TableColumn fx:id="colIdCarnet" prefWidth="58.4000244140625" text="ID" />
+                <TableColumn fx:id="colFecha" prefWidth="84.79999542236328" text="Fecha" />
+                  <TableColumn fx:id="colKm" minWidth="8.800048828125" prefWidth="67.20001220703125" text="Km" />
+                  <TableColumn fx:id="colVips" prefWidth="68.79998779296875" text="Vips" />
+                  <TableColumn fx:id="colPeregrino" prefWidth="149.5999755859375" text="Peregrino" />
+              </columns>
+            </TableView>
+            <Button fx:id="btnVolver" alignment="CENTER" onAction="#handlerVolver" prefHeight="30.0" prefWidth="30.0" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Button>
+            <Button fx:id="btnSalir" onAction="#handlerSalir" prefHeight="30.0" prefWidth="30.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
+            </Button>
+         </children>
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </GridPane>
+   </children>
+</StackPane>

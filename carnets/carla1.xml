@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<carnet>
+   <id>2</id>
+   <fechaexp>2025-03-13</fechaexp>
+   <expedidoen>Sarria</expedidoen>
+   <peregrino>
+      <nombre>carla</nombre>
+      <nacionalidad>Austria</nacionalidad>
+   </peregrino>
+   <hoy>2025-03-13</hoy>
+   <distanciatotal>0.0</distanciatotal>
+   <paradas>
+      <parada>
+         <orden>1</orden>
+         <nombre>Sarria</nombre>
+         <region>l</region>
+      </parada>
+   </paradas>
+   <estancias>
+      <estancia>
+         <id>No hay estancias</id>
+      </estancia>
+   </estancias>
+</carnet>

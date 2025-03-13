@@ -68,7 +68,7 @@ public class UsuarioService {
 	 * @param usuario Nombre de usuario a buscar.
 	 * @return Usuario encontrado o {@code null} si no existe.
 	 */
-	public Usuario findByUsuario(String usuario) {
+	public Usuario findByNombreUsuario(String usuario) {
 		return usuarioRepository.findByNombreUsuario(usuario);
 	}
 
@@ -145,7 +145,7 @@ public class UsuarioService {
 	 * @param perfil  Perfil del usuario autenticado.
 	 */
 	public void configurarSesion(String usuario, Perfil perfil) {
-		sesion.setUsuarioActivo(findByUsuario(usuario));
+		sesion.setUsuarioActivo(findByNombreUsuario(usuario));
 		sesion.setPerfilActivo(perfil);
 	}
 

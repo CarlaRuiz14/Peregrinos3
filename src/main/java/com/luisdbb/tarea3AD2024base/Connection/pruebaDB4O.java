@@ -1,4 +1,4 @@
-package com.luisdbb.tarea3AD2024base.controller;
+package com.luisdbb.tarea3AD2024base.Connection;
 
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
@@ -9,7 +9,7 @@ import com.luisdbb.tarea3AD2024base.modelo.Servicio;
 /**
  * Clase de prueba para mostrar contenido db4o
  */
-public class prueba {
+public class pruebaDB4O {
 
 	public static void main(String[] args) {
 

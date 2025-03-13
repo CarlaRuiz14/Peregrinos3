@@ -2,6 +2,7 @@ package com.luisdbb.tarea3AD2024base.repositorios;
 
 import java.io.File;
 
+import org.exist.xmldb.EXistResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.xmldb.api.base.Collection;
@@ -26,9 +27,12 @@ public class ExistDBRepository {
 			}
 
 			Collection paradasCol = rootCol.getChildCollection("paradas");
-			if (paradasCol == null) {
-				throw new Exception("La colección 'paradas' no existe. Asegúrate de crearla primero.");
-			}
+	        if (paradasCol == null) {
+	            CollectionManagementService rootMgtService = (CollectionManagementService) rootCol
+	                    .getService("CollectionManagementService", "1.0");
+	            
+	            paradasCol = rootMgtService.createCollection("paradas");
+	        }
 
 			CollectionManagementService mgtService = (CollectionManagementService) paradasCol
 					.getService("CollectionManagementService", "1.0");
@@ -61,7 +65,9 @@ public class ExistDBRepository {
 			}
 
 			XMLResource resource = (XMLResource) paradaCollection.createResource(carnetXml.getName(), "XMLResource");
-		
+			
+			((EXistResource)resource).setMimeType("carnet/xml");
+
 			resource.setContent(carnetXml);
 
 			paradaCollection.storeResource(resource);
@@ -73,4 +79,36 @@ public class ExistDBRepository {
 		}
 	}
 
+	public String[] listarCarnets(String nombreParada) throws Exception {
+
+		existDBConnection.abrirConexion();
+		Collection colBase = existDBConnection.getCollection();
+
+		try {
+			if (colBase == null) {
+				throw new Exception("No se pudo conectar a la colección base en eXistDB.");
+			}
+
+			Collection paradasCollection = colBase.getChildCollection("paradas");
+			if (paradasCollection == null) {
+				throw new Exception("La colección paradas no existe en eXistDB. Debes crearla primero.");
+			}
+
+			Collection paradaCollection = paradasCollection.getChildCollection(nombreParada);
+			if (paradaCollection == null) {
+				throw new Exception("La colección paradas/ " + nombreParada + " no existe en eXistDB.");
+			}
+
+			String[] carnets = paradaCollection.listResources();
+
+			paradaCollection.close();
+
+			return carnets;
+
+		} catch (Exception e) {
+			throw new Exception("Error al guardar el carnet en eXistDB");
+		} finally {
+			existDBConnection.cerrarConexion();
+		}
+	}
 }

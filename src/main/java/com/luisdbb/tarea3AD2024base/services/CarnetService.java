@@ -27,6 +27,7 @@ import com.luisdbb.tarea3AD2024base.modelo.Carnet;
 import com.luisdbb.tarea3AD2024base.modelo.Estancia;
 import com.luisdbb.tarea3AD2024base.modelo.Parada;
 import com.luisdbb.tarea3AD2024base.modelo.Peregrino;
+import com.luisdbb.tarea3AD2024base.modelo.Usuario;
 import com.luisdbb.tarea3AD2024base.repositorios.CarnetRepository;
 
 /**
@@ -50,6 +51,12 @@ public class CarnetService {
 	@Autowired
 	private EstanciaService estanciaService;
 
+	@Autowired
+	private UsuarioService usuarioService;
+
+	@Autowired
+	private PeregrinoService peregrinoService;
+
 	/**
 	 * Guarda un carnet en la base de datos.
 	 * 
@@ -68,6 +75,20 @@ public class CarnetService {
 	 */
 	public Carnet findById(long id) {
 		return carnetRepository.findById(id);
+	}
+
+	Carnet findByPeregrino(Peregrino peregrino) {
+		return carnetRepository.findByPeregrino(peregrino);
+	}
+
+	public Carnet getCarnetByUsuarioId(String nombreUsuario) {
+
+		if (nombreUsuario.endsWith(".xml")) {
+			nombreUsuario = nombreUsuario.substring(0, nombreUsuario.length() - 4);
+		}
+		Usuario usuario = usuarioService.findByNombreUsuario(nombreUsuario);
+		Peregrino peregrino = peregrinoService.findByIdUsuario(usuario.getId());
+		return findByPeregrino(peregrino);
 	}
 
 	/**
@@ -229,7 +250,7 @@ public class CarnetService {
 			}
 
 			Source fuente = new DOMSource(documento);
-			String ruta = "carnets/" + p.getNombre() + ".xml";
+			String ruta = "carnets/" + p.getUsuario().getNombreUsuario() + ".xml";
 			File fichero = new File(ruta);
 			Result resultado = new StreamResult(fichero);
 

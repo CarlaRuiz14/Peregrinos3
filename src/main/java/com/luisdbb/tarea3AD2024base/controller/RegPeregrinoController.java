@@ -14,7 +14,6 @@ import com.luisdbb.tarea3AD2024base.config.StageManager;
 import com.luisdbb.tarea3AD2024base.modelo.Parada;
 import com.luisdbb.tarea3AD2024base.services.NacionalidadService;
 import com.luisdbb.tarea3AD2024base.services.ParadaService;
-import com.luisdbb.tarea3AD2024base.services.ParadasPeregrinoService;
 import com.luisdbb.tarea3AD2024base.services.PeregrinoService;
 import com.luisdbb.tarea3AD2024base.services.UsuarioService;
 import com.luisdbb.tarea3AD2024base.services.Validaciones;
@@ -124,9 +123,6 @@ public class RegPeregrinoController implements Initializable {
 
 	@Autowired
 	private PeregrinoService peregrinoService;
-
-	@Autowired
-	private ParadasPeregrinoService paradasPeregrinoService;
 
 	@Autowired
 	private UsuarioService usuarioService;
@@ -479,7 +475,7 @@ public class RegPeregrinoController implements Initializable {
 				if (!validaciones.validarEspacios(newValue)) {
 					label.mostrarTxtInvalido(lblFeed, "Usuario sin espacios en blanco");
 					usuarioCheck = false;
-				} else if (usuarioService.findByUsuario(newValue) != null) {
+				} else if (usuarioService.findByNombreUsuario(newValue) != null) {
 					label.mostrarTxtInvalido(lblFeed, "El usuario ya existe");
 
 					usuarioCheck = false;

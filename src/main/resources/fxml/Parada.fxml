@@ -31,6 +31,7 @@
                   <Button fx:id="btnExportar" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerExportar" prefHeight="40.0" prefWidth="200.0" styleClass="btnFlecha" text="Exportar Parada" />
                   <Button fx:id="btnSellar" alignment="CENTER" contentDisplay="CENTER" onAction="#handlerSellar" prefHeight="40.0" prefWidth="200.0" styleClass="btnFlecha" text="Sellar / Alojar" />
                   <Button fx:id="btnEnvios" alignment="CENTER" onAction="#handlerEnvios" prefHeight="48.0" prefWidth="200.0" text="Envíos" />
+                  <Button fx:id="btnCarnets" alignment="CENTER" onAction="#handlerCarnets" prefHeight="48.0" prefWidth="200.0" text="Carnets" />
                </children>
             </VBox>
             <Button fx:id="btnSalir" onAction="#handlerSalir" prefHeight="30.0" prefWidth="30.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="BOTTOM">

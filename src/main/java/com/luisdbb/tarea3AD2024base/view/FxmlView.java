@@ -224,6 +224,17 @@ public enum FxmlView {
 		public String getFxmlFile() {
 			return "/fxml/listaenvios.fxml";
 		}
+	},
+	CARNETSLISTA {
+		@Override
+		public String getTitle() {
+			return getStringFromResourceBundle("carnets.title");
+		}
+
+		@Override
+		public String getFxmlFile() {
+			return "/fxml/CarnetsLista.fxml";
+		}
 	};
 
 	public abstract String getTitle();

@@ -20,4 +20,8 @@ public class ExistDBService {
 	public void almacenarCarnet(String paradaInicial, File carnetXml) throws Exception {
 		existdbRespository.almacenarCarnet(paradaInicial, carnetXml);
 	}
+	
+	public String[] listarCarnets(String nombreParada) throws Exception {
+		return existdbRespository.listarCarnets(nombreParada);
+	}
 }

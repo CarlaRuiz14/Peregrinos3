@@ -101,7 +101,7 @@ public class RecuperacionController implements Initializable {
 
 		usuarioProperty.bind(txtUsuario.textProperty());
 		usuarioProperty.addListener((observable, oldValue, newValue) -> {
-			Usuario user = usuarioService.findByUsuario(txtUsuario.getText());
+			Usuario user = usuarioService.findByNombreUsuario(txtUsuario.getText());
 			if (txtUsuario.getText().isEmpty()) {
 				lblEmail.setText("Email");
 				existeUsuario = false;

@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.luisdbb.tarea3AD2024base.modelo.Carnet;
+import com.luisdbb.tarea3AD2024base.modelo.Peregrino;
 
 /**
  * Repositorio para la entidad {@link Carnet}. Proporciona operaciones de acceso
@@ -22,4 +23,6 @@ public interface CarnetRepository extends JpaRepository<Carnet, Long> {
 	 * @return El carnet encontrado o {@code null} si no existe.
 	 */
 	Carnet findById(long id);
+	
+	Carnet findByPeregrino(Peregrino peregrino);
 }

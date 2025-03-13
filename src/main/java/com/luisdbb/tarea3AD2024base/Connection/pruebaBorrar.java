@@ -13,7 +13,7 @@ import java.io.File;
 import org.exist.xmldb.DatabaseInstanceManager;
 import org.exist.xmldb.EXistResource;
 
-public class prueba {
+public class pruebaBorrar {
 	public static void main(String args[]) {
 //		// URI colección
 //		String URI = "xmldb:exist://localhost:8080/exist/xmlrpc/db/objetos";
@@ -52,6 +52,10 @@ public class prueba {
 //			File f = new File("prueba.xml");
 //			res = (XMLResource) col.createResource(f.getName(), "XMLResource");
 //			res.setContent(f);
+		
+		
+		
+		
 //			System.out.print("storing document " + res.getId() + "...");
 //			col.storeResource(res);
 //			System.out.println("ok.");
