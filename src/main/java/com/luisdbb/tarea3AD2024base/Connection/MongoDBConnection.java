@@ -1,11 +1,13 @@
 package com.luisdbb.tarea3AD2024base.Connection;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 
+@Component
 public class MongoDBConnection {
 
     @Value("${mongodb.datasource.url}")

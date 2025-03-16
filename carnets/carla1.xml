@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <carnet>
-   <id>4</id>
+   <id>2</id>
    <fechaexp>2025-03-13</fechaexp>
-   <expedidoen>sarria</expedidoen>
+   <expedidoen>Sarria</expedidoen>
    <peregrino>
-      <nombre>roman</nombre>
-      <nacionalidad>Bélgica</nacionalidad>
+      <nombre>carla</nombre>
+      <nacionalidad>Austria</nacionalidad>
    </peregrino>
-   <hoy>2025-03-14</hoy>
+   <hoy>2025-03-13</hoy>
    <distanciatotal>0.0</distanciatotal>
    <paradas>
       <parada>
          <orden>1</orden>
-         <nombre>sarria</nombre>
-         <region>a</region>
+         <nombre>Sarria</nombre>
+         <region>l</region>
       </parada>
    </paradas>
    <estancias>
