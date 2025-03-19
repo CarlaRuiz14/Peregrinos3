@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,21 +28,19 @@ public class CarnetMongoService {
 	@Autowired
 	private CarnetMongoRepository carnetMongoRepository;
 
-	public void saveBackupCarnets() {		
-		
-		List<Peregrino> todosPeregrinos = peregrinoService.findAll();
-		
-		for(Peregrino per:todosPeregrinos) {			
-			carnetService.exportarCarnet(per);			
-		}		
-		
-		String xmlUnico = generarXMLUnico(); 
-		CarnetMongo documento = new CarnetMongo(xmlUnico);
-		carnetMongoRepository.save(documento);
-
-	}
-	
-	
+	public void saveBackupCarnets() {        
+	    List<Peregrino> todosPeregrinos = peregrinoService.findAll();
+	    
+	    for (Peregrino per : todosPeregrinos) {            
+	        carnetService.exportarCarnet(per);            
+	    }        
+	    
+	    String xmlUnico = generarXMLUnico(); 
+	    String nombreDocumento = generarNombreDocumento();
+	    
+	    CarnetMongo documento = new CarnetMongo(nombreDocumento, xmlUnico);
+	    carnetMongoRepository.save(documento);
+	}	
 
     private String generarXMLUnico() {
         StringBuilder xmlFinal = new StringBuilder();
@@ -74,7 +74,10 @@ public class CarnetMongoService {
         xmlFinal.append("</carnets>"); 
         return xmlFinal.toString();
     }
-	
-	
-	
+    
+    private String generarNombreDocumento() {
+        LocalDateTime fechaActual = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("_dd-MM-yyyy_HH-mm-ss");
+        return "backupcarnets" + fechaActual.format(formatter);
+    }	
 }

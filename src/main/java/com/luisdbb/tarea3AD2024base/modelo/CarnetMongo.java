@@ -6,29 +6,30 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "backupCarnets") 
 public class CarnetMongo {
 
-	    @Id
-	    private String id;
-	    private String contenidoXML; 
+    @Id  
+    private String nombreDocumento; // Nuevo campo para el nombre
+    private String contenidoXML; 
 
-	    public CarnetMongo() {}
+    public CarnetMongo() {}
 
-	    public CarnetMongo(String contenidoXML) {
-	        this.contenidoXML = contenidoXML;
-	    }
+    public CarnetMongo(String nombreDocumento, String contenidoXML) {
+        this.nombreDocumento = nombreDocumento;
+        this.contenidoXML = contenidoXML;
+    }  
 
-	    public String getId() {
-	        return id;
-	    }
+    public String getNombreDocumento() {
+        return nombreDocumento;
+    }
 
-	    public void setId(String id) {
-	        this.id = id;
-	    }
+    public void setNombreDocumento(String nombreDocumento) {
+        this.nombreDocumento = nombreDocumento;
+    }
 
-	    public String getContenidoXML() {
-	        return contenidoXML;
-	    }
+    public String getContenidoXML() {
+        return contenidoXML;
+    }
 
-	    public void setContenidoXML(String contenidoXML) {
-	        this.contenidoXML = contenidoXML;
-	    }
+    public void setContenidoXML(String contenidoXML) {
+        this.contenidoXML = contenidoXML;
+    }
 }

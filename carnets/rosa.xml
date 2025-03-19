@@ -7,8 +7,8 @@
       <nombre>rosa</nombre>
       <nacionalidad>Bélgica</nacionalidad>
    </peregrino>
-   <hoy>2025-03-14</hoy>
-   <distanciatotal>15.0</distanciatotal>
+   <hoy>2025-03-19</hoy>
+   <distanciatotal>30.0</distanciatotal>
    <paradas>
       <parada>
          <orden>1</orden>
@@ -20,10 +20,17 @@
          <nombre>sarria</nombre>
          <region>a</region>
       </parada>
+      <parada>
+         <orden>3</orden>
+         <nombre>barcelona</nombre>
+         <region>C</region>
+      </parada>
    </paradas>
    <estancias>
       <estancia>
-         <id>No hay estancias</id>
+         <id>2</id>
+         <fecha>2025-03-19</fecha>
+         <paradaestancia>barcelona</paradaestancia>
       </estancia>
    </estancias>
 </carnet>
